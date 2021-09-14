@@ -1,0 +1,1352 @@
+{
+	"info": {
+		"_postman_id": "c45a7062-2f61-4f76-a322-d058a0d2815b",
+		"name": "Cover Compared",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Nexusmutual",
+			"item": [
+				{
+					"name": "Capacity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity",
+							"protocol": "https",
+							"host": [
+								"api",
+								"staging",
+								"nexusmutual",
+								"io"
+							],
+							"path": [
+								"v1",
+								"contracts",
+								"0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+								"capacity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Quote",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.staging.nexusmutual.io/v1/quote?coverAmount=1000000000000000000&currency=DAI&period=30&contractAddress=0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+							"protocol": "https",
+							"host": [
+								"api",
+								"staging",
+								"nexusmutual",
+								"io"
+							],
+							"path": [
+								"v1",
+								"quote"
+							],
+							"query": [
+								{
+									"key": "coverAmount",
+									"value": "1000000000000000000"
+								},
+								{
+									"key": "currency",
+									"value": "DAI"
+								},
+								{
+									"key": "period",
+									"value": "30"
+								},
+								{
+									"key": "contractAddress",
+									"value": "0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cover List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.nexusmutual.io/coverables/contracts.json",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nexusmutual",
+								"io"
+							],
+							"path": [
+								"coverables",
+								"contracts.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Nsure",
+			"item": [
+				{
+					"name": "Quote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product\": 14,\n  \"amount\": \"5000000000000000000\",\n  \"period\": 30,\n  \"currency\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.nsure.network/v1/get_quote",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nsure",
+								"network"
+							],
+							"path": [
+								"v1",
+								"get_quote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cover List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.nsure.network/v1/cover/list",
+							"protocol": "https",
+							"host": [
+								"api",
+								"nsure",
+								"network"
+							],
+							"path": [
+								"v1",
+								"cover",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "InsurAce",
+			"item": [
+				{
+					"name": "Cover List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    let risktype = [];",
+									"    console.log(\"DATA Length\", jsonData.length)",
+									"    jsonData.map(value => {",
+									"        if(!risktype.includes(value.risk_type)){",
+									"            risktype.push(value.risk_type)",
+									"        }",
+									"    })",
+									"    console.log(\"Risk Type\", risktype)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"chain\": \"BSC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.insurace.io/ops/v1/getProductList?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
+							"protocol": "https",
+							"host": [
+								"api",
+								"insurace",
+								"io"
+							],
+							"path": [
+								"ops",
+								"v1",
+								"getProductList"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA=="
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Currency List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    let risktype = [];",
+									"    console.log(\"DATA Length\", jsonData.length)",
+									"    jsonData.map(value => {",
+									"        if(!risktype.includes(value.risk_type)){",
+									"            risktype.push(value.risk_type)",
+									"        }",
+									"    })",
+									"    console.log(\"Risk Type\", risktype)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"chain\": \"BSC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.insurace.io/ops/v1/getCurrencyList?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
+							"protocol": "https",
+							"host": [
+								"api",
+								"insurace",
+								"io"
+							],
+							"path": [
+								"ops",
+								"v1",
+								"getCurrencyList"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA=="
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cover Quote",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\n    \"productIds\": [\n        \"20\"\n    ],\n    \"coverDays\": [\n        \"15\"\n    ],\n    \"coverAmounts\": [\n        \"1000000000000000000000\"\n    ],\n    \"owner\": \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n    \"referralCode\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.insurace.io/ops/v1/getCoverPremium?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D",
+							"protocol": "https",
+							"host": [
+								"api",
+								"insurace",
+								"io"
+							],
+							"path": [
+								"ops",
+								"v1",
+								"getCoverPremium"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "P4L",
+			"item": [
+				{
+					"name": "Device Details",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"device\":\"Mobile Phone\",\n    \"partner_code\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://dev.protect4less.com/app-api/device-details",
+							"protocol": "http",
+							"host": [
+								"dev",
+								"protect4less",
+								"com"
+							],
+							"path": [
+								"app-api",
+								"device-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cover list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    let quoteFalse = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"            if(value.quote === false){",
+							"                quoteFalse.push(value)",
+							"            }",
+							"        })",
+							"        console.log(\"Current Page Length \", jsonData.data.list.length)",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"        console.log(\"False Quote : \", JSON.stringify(quoteFalse))",
+							"        console.log(\"Current PAge : \", jsonData.data.current_page);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3006/api/cover-list?company=insurace",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"cover-list"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "0x0000000000000000000000000000000000000009",
+							"disabled": true
+						},
+						{
+							"key": "company",
+							"value": "insurace",
+							"description": "insurace, nexus, nsure"
+						},
+						{
+							"key": "type",
+							"value": "custodian",
+							"disabled": true
+						},
+						{
+							"key": "supported_chain",
+							"value": "Polygon",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "5",
+							"disabled": true
+						},
+						{
+							"key": "duration_min_day",
+							"value": "365",
+							"disabled": true
+						},
+						{
+							"key": "get_quote",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "currency",
+							"value": "DAI",
+							"disabled": true
+						},
+						{
+							"key": "duration_max_day",
+							"value": "600",
+							"disabled": true
+						},
+						{
+							"key": "amount_min",
+							"value": "0.1",
+							"disabled": true
+						},
+						{
+							"key": "amount_max",
+							"value": "100",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MSO List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    let quoteFalse = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"            if(value.quote === false){",
+							"                quoteFalse.push(value)",
+							"            }",
+							"        })",
+							"        console.log(\"Current Page Length \", jsonData.data.list.length)",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"        console.log(\"False Quote : \", JSON.stringify(quoteFalse))",
+							"        console.log(\"Current PAge : \", jsonData.data.current_page);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3006/api/mso-list?user_limit=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"mso-list"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "basic",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "plan_type",
+							"value": "Single cover",
+							"disabled": true
+						},
+						{
+							"key": "amount_min",
+							"value": "55",
+							"disabled": true
+						},
+						{
+							"key": "amount_max",
+							"value": "75",
+							"disabled": true
+						},
+						{
+							"key": "add_on_service",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "ehr",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "user_limit",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cover Options",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"        })",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3006/api/cover-options",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"cover-options"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cover Capacity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"        })",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3006/api/cover-capacity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"cover-capacity"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Insurace Capacity",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"product_id\": \"20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-capacity",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-capacity"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "329"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"149-f/ehYd3Rjsc+rv/LjtScl0gCeNA\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 08 Sep 2021 11:51:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"product_id\": \"20\",\n        \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n        \"name\": \"1inch \",\n        \"type\": \"protocol\",\n        \"company\": \"InsurAce\",\n        \"company_code\": \"insurace\",\n        \"min_eth\": 0.5,\n        \"capacity\": 915.0666004282433,\n        \"supportedChains\": [\n            \"Ethereum\"\n        ],\n        \"duration_days_min\": \"15\",\n        \"duration_days_max\": \"365\"\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Nsure.Network Capacity",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nsure\",\n    \"address\": \"0x111111111117dc0aa78b770fa6a738034120c302\",\n    \"product_id\": \"13\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-capacity",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-capacity"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "368"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"170-iZ2WM/sLY6IjpE09EvaGhZael48\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 08 Sep 2021 11:52:53 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"product_id\": 13,\n        \"uid\": 13,\n        \"address\": \"0x111111111117dc0aa78b770fa6a738034120c302\",\n        \"name\": \"1inch\",\n        \"type\": \"protocol\",\n        \"website\": \"https://app.1inch.io/\",\n        \"company\": \"Nsure.Network\",\n        \"company_code\": \"nsure\",\n        \"min_eth\": 0.1,\n        \"capacity\": 48.504641626641785,\n        \"supportedChains\": [\n            \"Ethereum\"\n        ],\n        \"duration_days_min\": 30,\n        \"duration_days_max\": 365\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Nexus Mutual Capacity",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-capacity",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-capacity"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "362"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"16a-UGeH9nAVuxNJT1H31/yrVscatNo\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 08 Sep 2021 11:53:51 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n        \"name\": \"0x V3\",\n        \"type\": \"protocol\",\n        \"company\": \"Nexus Mutual\",\n        \"company_code\": \"nexus\",\n        \"min_eth\": 1,\n        \"supportedChains\": [\n            \"Ethereum\",\n            \"BSC\"\n        ],\n        \"duration_days_min\": 30,\n        \"duration_days_max\": 365,\n        \"capacity\": {\n            \"capacityETH\": 5059.661224659394,\n            \"capacityDAI\": 17317429385625092000\n        }\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Cover Quote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3006/api/cover-quote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"cover-quote"
+					]
+				},
+				"description": "currency : ETH,DAI"
+			},
+			"response": [
+				{
+					"name": "Nexus Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0x11111254369792b2Ca5d084aB5eEA397cA8fa48B\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "414"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"19e-8KTepeUpTNNgu1nBv1x+wW4hsjA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Sep 2021 13:28:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"currency\": \"ETH\",\n        \"period\": \"30\",\n        \"amount\": \"1\",\n        \"price\": \"2135523613963039\",\n        \"priceInNXM\": \"55846036413586696\",\n        \"expiresAt\": 1630852122,\n        \"generatedAt\": 1630848521961,\n        \"contract\": \"0x11111254369792b2ca5d084ab5eea397ca8fa48b\",\n        \"v\": 27,\n        \"r\": \"0x59c43c226cfbfdfd2ded2f36715dfd3b0db58267510f0ffc9aa95ad1ea9ce0ec\",\n        \"s\": \"0x0a60b4b8df34ddb9c8d00abb6cf8e955988b229f7a7a236ab6c865dff31a5847\"\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Nsure Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nsure\",\n    \"address\": \"0x111111111117dc0aa78b770fa6a738034120c302\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 13\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "103"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"67-c9PW65hn0pzkWa+qOHjvwogCy2U\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Sep 2021 16:07:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"list\": 0.006435068493150685,\n        \"count\": null,\n        \"page\": null\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "InsurAce Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "523"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"20b-970uMEzO5gq3cFy5z/tFmVY1Qec\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 09 Sep 2021 09:00:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"chain\": \"ETH\",\n        \"premiumAmount\": \"2100000000000000\",\n        \"discountPercent\": \"10000\",\n        \"ownerInsurReward\": \"0\",\n        \"referrerInsurReward\": \"0\",\n        \"contractAddress\": \"0x88ef6f235a4790292068646e79ee563339c796a0\",\n        \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n            \"415876349625649217205108628878641030387073606180\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Cover Min Quote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"currency\": \"DAI\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": null,\n    \"supported_chain\": \"BSC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3006/api/cover-min-quote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"cover-min-quote"
+					]
+				},
+				"description": "currency : ETH,DAI"
+			},
+			"response": [
+				{
+					"name": "InsurAce Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"product_id\": 20,\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-min-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-min-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"10-Z5xpJd4A7FeLa5mMSpnpz09SOaI\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 09 Sep 2021 10:48:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"quote\": 0.0021\n}"
+				},
+				{
+					"name": "Nexus Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0x11111254369792b2Ca5d084aB5eEA397cA8fa48B\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-min-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-min-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "69"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"45-PAr8rjj5eHxtiGhqBc+O4AkRkpg\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 09 Sep 2021 10:54:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": 0.002135523613963039,\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Nsure Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nsure\",\n    \"address\": \"0x111111111117dc0aa78b770fa6a738034120c302\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 13\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-min-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-min-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "69"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"45-Sec9HpcsXgtJEjx23M6JT281sUE\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 09 Sep 2021 10:55:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": 0.006435068493150685,\n    \"errors\": {}\n}"
+				}
+			]
+		}
+	]
+}

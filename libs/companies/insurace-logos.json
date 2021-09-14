@@ -1,0 +1,281 @@
+[
+    {
+        "logo": "UMA.png",
+        "name": "UMA"
+    },
+    {
+        "logo": "DODO.png",
+        "name": "DODO"
+    },
+    {
+        "logo": "DODO.png",
+        "name": "DODO"
+    },
+    {
+        "logo": "AlpacaFinance.png",
+        "name": "Alpaca Finance"
+    },
+    {
+        "logo": "Hegic.png",
+        "name": "HEGIC"
+    },
+    {
+        "logo": "BadgerFinance.png",
+        "name": "Badger Finance"
+    },
+    {
+        "logo": "Pendle.png",
+        "name": "Pendle"
+    },
+    {
+        "logo": "OrionMoney.png",
+        "name": "Orion Money"
+    },
+    {
+        "logo": "AnchorProtocol.png",
+        "name": "Anchor"
+    },
+    {
+        "logo": "AlphaHomora.png",
+        "name": "Alpha Homora V2"
+    },
+    {
+        "logo": "ImpossibleFinance.png",
+        "name": "Impossible Finance"
+    },
+    {
+        "logo": "dHEDGE.png",
+        "name": "dHEDGE V2"
+    },
+    {
+        "logo": "PerpetualProtocol.png",
+        "name": "Perpetual Protocol"
+    },
+    {
+        "logo": "HarvestFinance.png",
+        "name": "Harvest Finance"
+    },
+    {
+        "logo": "KyberNetwork.png",
+        "name": "Kyber"
+    },
+    {
+        "logo": "AlchemixV1.png",
+        "name": "Alchemix V1"
+    },
+    {
+        "logo": "Balancer.png",
+        "name": "Balancer V2"
+    },
+    {
+        "logo": "MushroomsFinance.png",
+        "name": "Mushrooms"
+    },
+    {
+        "logo": "MirrorFinance.png",
+        "name": "Mirror Finance"
+    },
+    {
+        "logo": "Lido.png",
+        "name": "Lido"
+    },
+    {
+        "logo": "Balancer.png",
+        "name": "Balancer V2"
+    },
+    {
+        "logo": "mStable.png",
+        "name": "mStable"
+    },
+    {
+        "logo": "Autofarm.png",
+        "name": "Autofarm"
+    },
+    {
+        "logo": "ConvexFinance.png",
+        "name": "Convex"
+    },
+    {
+        "logo": "SushiSwap.png",
+        "name": "SushiSwap V1"
+    },
+    {
+        "logo": "Bella.png",
+        "name": "Bella"
+    },
+    {
+        "logo": "UniswapV3.png",
+        "name": "Uniswap V3"
+    },
+    {
+        "logo": "SpookySwap.png",
+        "name": "SpookySwap"
+    },
+    {
+        "logo": "SpiritSwap.png",
+        "name": "Spirit Swap"
+    },
+    {
+        "logo": "QuickSwap.png",
+        "name": "QuickSwap"
+    },
+    {
+        "logo": "CurveAllPools.png",
+        "name": "Curve (All Pools)"
+    },
+    {
+        "logo": "AaveV2.png",
+        "name": "Aave V2"
+    },
+    {
+        "logo": "Raydium.png",
+        "name": "Raydium"
+    },
+    {
+        "logo": "Serum.png",
+        "name": "Serum DEX"
+    },
+    {
+        "logo": "1inch.png",
+        "name": "1inch "
+    },
+    {
+        "logo": "AlphaHomora.png",
+        "name": "Alpha Homora V1"
+    },
+    {
+        "logo": "MDEX.png",
+        "name": "MDEX"
+    },
+    {
+        "logo": "MDEX.png",
+        "name": "MDEX"
+    },
+    {
+        "logo": "Autofarm.png",
+        "name": "Autofarm"
+    },
+    {
+        "logo": "PancakeSwapV1.png",
+        "name": "PancakeSwap"
+    },
+    {
+        "logo": "Venus.png",
+        "name": "Venus"
+    },
+    {
+        "logo": "Huobi.png",
+        "name": "Huobi"
+    },
+    {
+        "logo": "Coinbase.png",
+        "name": "Coinbase"
+    },
+    {
+        "logo": "Binance.png",
+        "name": "Binance"
+    },
+    {
+        "logo": "FTX.png",
+        "name": "FTX"
+    },
+    {
+        "name": "PentaLaunch"
+    },
+    {
+        "logo": "MapleFinance.png",
+        "name": "Maple"
+    },
+    {
+        "logo": "88mph.png",
+        "name": "88mph V2"
+    },
+    {
+        "logo": "dHEDGE.png",
+        "name": "dHEDGE"
+    },
+    {
+        "logo": "MirrorFinance.png",
+        "name": "Mirror Finance"
+    },
+    {
+        "logo": "mStable.png",
+        "name": "mStable"
+    },
+    {
+        "logo": "1inch.png",
+        "name": "1inch "
+    },
+    {
+        "logo": "Reflexer.png",
+        "name": "Reflexer"
+    },
+    {
+        "logo": "Bancor.png",
+        "name": "Bancor"
+    },
+    {
+        "logo": "DyDx.png",
+        "name": "DyDx"
+    },
+    {
+        "logo": "Ren.png",
+        "name": "RenVM"
+    },
+    {
+        "logo": "Vesper.png",
+        "name": "Vesper"
+    },
+    {
+        "logo": "Balancer.png",
+        "name": "Balancer V1"
+    },
+    {
+        "logo": "Synthetix.png",
+        "name": "Synthetix"
+    },
+    {
+        "logo": "SetProtocolV2.png",
+        "name": "Set Protocol V2"
+    },
+    {
+        "logo": "TornadoCash.png",
+        "name": "Tornado Cash"
+    },
+    {
+        "logo": "CompoundV2.png",
+        "name": "Compound V2"
+    },
+    {
+        "logo": "AaveV2.png",
+        "name": "Aave V2"
+    },
+    {
+        "logo": "Eth2.0.png",
+        "name": "Eth 2.0"
+    },
+    {
+        "logo": "SushiSwap.png",
+        "name": "SushiSwap V1"
+    },
+    {
+        "logo": "UniswapV2.png",
+        "name": "Uniswap V2"
+    },
+    {
+        "logo": "CurveAllPools.png",
+        "name": "Curve (All Pools)"
+    },
+    {
+        "logo": "MakerDAOMCD.png",
+        "name": "MakerDAO MCD"
+    },
+    {
+        "logo": "YearnFinance.png",
+        "name": "Yearn Finance (all vaults)"
+    },
+    {
+        "logo": "AlphaHomora.png",
+        "name": "Alpha Homora V1"
+    }
+]
