@@ -6,368 +6,414 @@
 	},
 	"item": [
 		{
-			"name": "Nexusmutual",
+			"name": "Demo",
 			"item": [
 				{
-					"name": "Capacity",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity",
-							"protocol": "https",
-							"host": [
-								"api",
-								"staging",
-								"nexusmutual",
-								"io"
-							],
-							"path": [
-								"v1",
-								"contracts",
-								"0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
-								"capacity"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Quote",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://api.staging.nexusmutual.io/v1/quote?coverAmount=1000000000000000000&currency=DAI&period=30&contractAddress=0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
-							"protocol": "https",
-							"host": [
-								"api",
-								"staging",
-								"nexusmutual",
-								"io"
-							],
-							"path": [
-								"v1",
-								"quote"
-							],
-							"query": [
-								{
-									"key": "coverAmount",
-									"value": "1000000000000000000"
-								},
-								{
-									"key": "currency",
-									"value": "DAI"
-								},
-								{
-									"key": "period",
-									"value": "30"
-								},
-								{
-									"key": "contractAddress",
-									"value": "0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Cover List",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://api.nexusmutual.io/coverables/contracts.json",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nexusmutual",
-								"io"
-							],
-							"path": [
-								"coverables",
-								"contracts.json"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Nsure",
-			"item": [
-				{
-					"name": "Quote",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"product\": 14,\n  \"amount\": \"5000000000000000000\",\n  \"period\": 30,\n  \"currency\": 0\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://api.nsure.network/v1/get_quote",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nsure",
-								"network"
-							],
-							"path": [
-								"v1",
-								"get_quote"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Cover List",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://api.nsure.network/v1/cover/list",
-							"protocol": "https",
-							"host": [
-								"api",
-								"nsure",
-								"network"
-							],
-							"path": [
-								"v1",
-								"cover",
-								"list"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "InsurAce",
-			"item": [
-				{
-					"name": "Cover List",
-					"event": [
+					"name": "P4L",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Your test name\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    let risktype = [];",
-									"    console.log(\"DATA Length\", jsonData.length)",
-									"    jsonData.map(value => {",
-									"        if(!risktype.includes(value.risk_type)){",
-									"            risktype.push(value.risk_type)",
-									"        }",
-									"    })",
-									"    console.log(\"Risk Type\", risktype)",
-									"});"
+							"name": "P4L Device Details",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
+										"type": "text"
+									}
 								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"chain\": \"BSC\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"device\": \"Mobile Phone\",\n \"partner_code\": \"Crypto\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://dev.protect4less.com/app-api/device-details/",
+									"protocol": "https",
+									"host": [
+										"dev",
+										"protect4less",
+										"com"
+									],
+									"path": [
+										"app-api",
+										"device-details",
+										""
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "https://api.insurace.io/ops/v1/getProductList?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
-							"protocol": "https",
-							"host": [
-								"api",
-								"insurace",
-								"io"
-							],
-							"path": [
-								"ops",
-								"v1",
-								"getProductList"
-							],
-							"query": [
-								{
-									"key": "code",
-									"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA=="
+						{
+							"name": "P4L Plan Details",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"device\": \"Mobile Phone\",\n    \"brand\": \"APPLE\",\n    \"device_value\": \"between_2000_3000\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"tran_id\": \"1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://dev.protect4less.com/app-api/plan-details/",
+									"protocol": "https",
+									"host": [
+										"dev",
+										"protect4less",
+										"com"
+									],
+									"path": [
+										"app-api",
+										"plan-details",
+										""
+									]
 								}
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Currency List",
-					"event": [
+					"name": "InsurAce",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Your test name\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    let risktype = [];",
-									"    console.log(\"DATA Length\", jsonData.length)",
-									"    jsonData.map(value => {",
-									"        if(!risktype.includes(value.risk_type)){",
-									"            risktype.push(value.risk_type)",
-									"        }",
-									"    })",
-									"    console.log(\"Risk Type\", risktype)",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"chain\": \"BSC\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://api.insurace.io/ops/v1/getCurrencyList?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
-							"protocol": "https",
-							"host": [
-								"api",
-								"insurace",
-								"io"
-							],
-							"path": [
-								"ops",
-								"v1",
-								"getCurrencyList"
-							],
-							"query": [
+							"name": "Cover List",
+							"event": [
 								{
-									"key": "code",
-									"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA=="
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    let risktype = [];",
+											"    console.log(\"DATA Length\", jsonData.length)",
+											"    jsonData.map(value => {",
+											"        if(!risktype.includes(value.risk_type)){",
+											"            risktype.push(value.risk_type)",
+											"        }",
+											"    })",
+											"    console.log(\"Risk Type\", risktype)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"chain\": \"BSC\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.insurace.io/ops/v1/getProductList?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
+									"protocol": "https",
+									"host": [
+										"api",
+										"insurace",
+										"io"
+									],
+									"path": [
+										"ops",
+										"v1",
+										"getProductList"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA=="
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Currency List",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    let risktype = [];",
+											"    console.log(\"DATA Length\", jsonData.length)",
+											"    jsonData.map(value => {",
+											"        if(!risktype.includes(value.risk_type)){",
+											"            risktype.push(value.risk_type)",
+											"        }",
+											"    })",
+											"    console.log(\"Risk Type\", risktype)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"chain\": \"BSC\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.insurace.io/ops/v1/getCurrencyList?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
+									"protocol": "https",
+									"host": [
+										"api",
+										"insurace",
+										"io"
+									],
+									"path": [
+										"ops",
+										"v1",
+										"getCurrencyList"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA=="
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cover Quote",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\n    \"productIds\": [\n        \"20\"\n    ],\n    \"coverDays\": [\n        \"15\"\n    ],\n    \"coverAmounts\": [\n        \"1000000000000000000000\"\n    ],\n    \"owner\": \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n    \"referralCode\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.insurace.io/ops/v1/getCoverPremium?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D",
+									"protocol": "https",
+									"host": [
+										"api",
+										"insurace",
+										"io"
+									],
+									"path": [
+										"ops",
+										"v1",
+										"getCoverPremium"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Cover Quote",
-					"event": [
+					"name": "Nsure",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\n    \"productIds\": [\n        \"20\"\n    ],\n    \"coverDays\": [\n        \"15\"\n    ],\n    \"coverAmounts\": [\n        \"1000000000000000000000\"\n    ],\n    \"owner\": \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n    \"referralCode\": \"\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Quote",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"product\": 14,\n  \"amount\": \"5000000000000000000\",\n  \"period\": 30,\n  \"currency\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.nsure.network/v1/get_quote",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nsure",
+										"network"
+									],
+									"path": [
+										"v1",
+										"get_quote"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "https://api.insurace.io/ops/v1/getCoverPremium?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D",
-							"protocol": "https",
-							"host": [
-								"api",
-								"insurace",
-								"io"
-							],
-							"path": [
-								"ops",
-								"v1",
-								"getCoverPremium"
-							],
-							"query": [
-								{
-									"key": "code",
-									"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D"
+						{
+							"name": "Cover List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://napi.nsure.network/v1/cover/list",
+									"protocol": "https",
+									"host": [
+										"napi",
+										"nsure",
+										"network"
+									],
+									"path": [
+										"v1",
+										"cover",
+										"list"
+									]
 								}
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "P4L",
-			"item": [
+					]
+				},
 				{
-					"name": "Device Details",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"device\":\"Mobile Phone\",\n    \"partner_code\": \"test\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Nexusmutual",
+					"item": [
+						{
+							"name": "Capacity",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity",
+									"protocol": "https",
+									"host": [
+										"api",
+										"staging",
+										"nexusmutual",
+										"io"
+									],
+									"path": [
+										"v1",
+										"contracts",
+										"0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+										"capacity"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://dev.protect4less.com/app-api/device-details",
-							"protocol": "http",
-							"host": [
-								"dev",
-								"protect4less",
-								"com"
-							],
-							"path": [
-								"app-api",
-								"device-details"
-							]
+						{
+							"name": "Quote",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.staging.nexusmutual.io/v1/quote?coverAmount=1000000000000000000&currency=DAI&period=30&contractAddress=0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+									"protocol": "https",
+									"host": [
+										"api",
+										"staging",
+										"nexusmutual",
+										"io"
+									],
+									"path": [
+										"v1",
+										"quote"
+									],
+									"query": [
+										{
+											"key": "coverAmount",
+											"value": "1000000000000000000"
+										},
+										{
+											"key": "currency",
+											"value": "DAI"
+										},
+										{
+											"key": "period",
+											"value": "30"
+										},
+										{
+											"key": "contractAddress",
+											"value": "0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cover List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.nexusmutual.io/coverables/contracts.json",
+									"protocol": "https",
+									"host": [
+										"api",
+										"nexusmutual",
+										"io"
+									],
+									"path": [
+										"coverables",
+										"contracts.json"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -417,7 +463,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3006/api/cover-list?company=insurace",
+					"raw": "http://localhost:3006/api/cover-list?company=nsure&get_quote=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -435,7 +481,7 @@
 						},
 						{
 							"key": "company",
-							"value": "insurace",
+							"value": "nsure",
 							"description": "insurace, nexus, nsure"
 						},
 						{
@@ -460,8 +506,7 @@
 						},
 						{
 							"key": "get_quote",
-							"value": "1",
-							"disabled": true
+							"value": "1"
 						},
 						{
 							"key": "currency",
@@ -1347,6 +1392,76 @@
 					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": 0.006435068493150685,\n    \"errors\": {}\n}"
 				}
 			]
+		},
+		{
+			"name": "P4L Device Details",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"endpoint\": \"device-details\",\n    \"device\": \"Mobile Phone\",\n    \"partner_code\": \"Crypto\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3006/api/p4l-forward",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"p4l-forward"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "P4L Plan Details",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"endpoint\": \"plan-details\",\n  \"device\": \"Mobile Phone\",\n    \"brand\": \"APPLE\",\n    \"device_value\": \"between_2000_3000\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"tran_id\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3006/api/p4l-forward",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"api",
+						"p4l-forward"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
