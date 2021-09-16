@@ -6,8 +6,8 @@ exports.defaultList = [
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
         "MSOplanName": "BASIC PLAN",
-        "MSOPrice": "$50",
-        "MSOAddOnService": "$15",
+        "MSOPrice": "50",
+        "MSOAddOnService": "15",
         "MSOPlanType": "Single cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "User - 1",
@@ -17,8 +17,8 @@ exports.defaultList = [
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
         "MSOplanName": "SILVER PLAN",
-        "MSOPrice": "$60",
-        "MSOAddOnService": "$20",
+        "MSOPrice": "60",
+        "MSOAddOnService": "20",
         "MSOPlanType": "Family cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "2 plus 2: Husband, wife and 2 children",
@@ -28,8 +28,8 @@ exports.defaultList = [
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
         "MSOplanName": "GOLD PLAN",
-        "MSOPrice": "$70",
-        "MSOAddOnService": "$25",
+        "MSOPrice": "70",
+        "MSOAddOnService": "25",
         "MSOPlanType": "Family cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "3 plus 3: Husband, two wives, and 3 children",
@@ -39,8 +39,8 @@ exports.defaultList = [
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
         "MSOplanName": "PLATINUM PLAN",
-        "MSOPrice": "$85",
-        "MSOAddOnService": "$30",
+        "MSOPrice": "85",
+        "MSOAddOnService": "30",
         "MSOPlanType": "Family cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "unlimited: Husband, all wives, all children, parents on husband& wives’ side",
