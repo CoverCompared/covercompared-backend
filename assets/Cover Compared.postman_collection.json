@@ -463,7 +463,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3006/api/cover-list?company=nsure&get_quote=1",
+					"raw": "http://localhost:3006/api/cover-list?company=unore",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -481,8 +481,8 @@
 						},
 						{
 							"key": "company",
-							"value": "nsure",
-							"description": "insurace, nexus, nsure"
+							"value": "unore",
+							"description": "insurace, nexus, nsur, unore"
 						},
 						{
 							"key": "type",
@@ -506,7 +506,8 @@
 						},
 						{
 							"key": "get_quote",
-							"value": "1"
+							"value": "1",
+							"disabled": true
 						},
 						{
 							"key": "currency",
