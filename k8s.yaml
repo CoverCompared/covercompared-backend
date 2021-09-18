@@ -19,7 +19,7 @@ spec:
       - name: nginx
         image: $BUILD_IMAGE
         ports:
-        - containerPort: 3000
+        - containerPort: 3006
         resources:
           requests:
             memory: "64Mi"
@@ -37,8 +37,8 @@ metadata:
   namespace: $K8S_NAMESPACE
 spec:
   ports:
-  - port: 3000
-    targetPort: 3000
+  - port: 3006
+    targetPort: 3006
     protocol: TCP
   selector:
     app: $REPO_SLUG-$SERVER_ENV
