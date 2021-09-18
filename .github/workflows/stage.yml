@@ -1,0 +1,43 @@
+name: Stage Workflow
+on:
+  push:
+    branches: [ staging ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+          echo "$NODE_CONFIG" | base64 -d > .env
+          export BUILD_IMAGE=$DOCKER_REGISTRY/$REPO_SLUG:$SERVER_ENV-$GITHUB_RUN_NUMBER
+          docker build -t $BUILD_IMAGE .
+          docker push $BUILD_IMAGE
+          cat k8s.yaml | envsubst > k8s-real.yaml
+          cat k8s-real.yaml
+        env:
+          SERVER_ENV: stage
+          REPO_SLUG: covercompared-backend
+          K8S_NAMESPACE: polkacover
+          DOCKER_REGISTRY: audacelabs
+          NODE_CONFIG: ${{ secrets.NODE_CONFIG_STAGE }}
+      - name: Remove Registry Login
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          version: v1.18.17
+          command: delete secret --ignore-not-found=true docker-registry docker-registry-auth
+      - name: Create Registry Login
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          version: v1.18.17
+          command: create secret docker-registry docker-registry-auth --docker-username=${{ secrets.REGISTRY_USERNAME }} --docker-password=${{ secrets.REGISTRY_PASSWORD }}
+      - name: Deploy
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          version: v1.18.17
+          command: apply -f k8s-real.yaml
