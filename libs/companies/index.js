@@ -1,6 +1,7 @@
 const nexus = require("./nexus");
 const nsure = require("./nsure");
 const insurace = require("./insurace");
+const unore = require("./unore");
 const _ = require("lodash");
 const NodeCache = require("node-cache");
 const config = require("../../config");
@@ -11,7 +12,8 @@ const myCache = new NodeCache();
 exports.companies = {
     nexus,
     nsure,
-    insurace
+    insurace,
+    unore
 }
 
 /**
@@ -311,6 +313,8 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
 
         } else if (company_code == this.companies.nsure.code) {
             quote = await this.companies.nsure.getQuote(product_id, utils.convertToCurrency(amount, 18), period)
+        } else if (company_code == this.companies.unore.code) {
+            quote = await this.companies.unore.getQuote(product_id, utils.convertToCurrency(amount, 18), period)
         }
         if (quote.status == false) {
             quote.data = quote.data.toString()
@@ -338,6 +342,12 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
         }
 
     } else if (company_code == this.companies.nsure.code) {
+        if (quote.status == true) {
+            quote = _.get(quote, "data.list", false);
+        } else {
+            quote = false
+        }
+    } else if (company_code == this.companies.unore.code) {
         if (quote.status == true) {
             quote = _.get(quote, "data.list", false);
         } else {

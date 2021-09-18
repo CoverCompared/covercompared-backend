@@ -1,7 +1,10 @@
+const config = require(".");
+
 module.exports = {
     "nsure": {
         "name": "Nsure Network",
         "code": "nsure",
+        "icon" : `${config.api_url}images/company-icons/Nsure Network.png`,
         "status": true,
         "min_eth": 0.1,
         "apis": {
@@ -13,9 +16,19 @@ module.exports = {
             }
         }
     },
+    "unore": {
+        "name": "Uno Re",
+        "code": "unore",
+        "icon" : `${config.api_url}images/company-icons/UNORE.png`,
+        "status": true,
+        "min_eth": 0.1,
+        "logo_url": `${config.api_url}images/unore/`,
+        "apis": {}
+    },
     "nexus": {
         "name": "Nexus Mutual",
         "code": "nexus",
+        "icon" : `${config.api_url}images/company-icons/nexus-mutual-icon.png`,
         "status": true,
         "min_eth": 1,
         "logo_url": "https://app.nexusmutual.io/logos/",
@@ -34,6 +47,7 @@ module.exports = {
     "insurace": {
         "name": "InsurAce",
         "code": "insurace",
+        "icon" : `${config.api_url}images/company-icons/insurace-icon.png`,
         "status": true,
         "min_eth": 0.5,
         "logo_url": "https://app.insurace.io/asset/product/",

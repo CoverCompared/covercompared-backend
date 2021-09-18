@@ -85,7 +85,7 @@ exports.list = async (req, res, next) => {
 exports.options = async (req, res, next) => {
     let { supported_chain_option, type_option, duration_days_option, currency_option, amount_option } = await companies.coverListOptions()
     let companies_option = _.map(config_companies, (company, code) => {
-        return { name: company.name, code: company.code }
+        return { name: company.name, code: company.code, icon: company.icon }
     })
 
     res.send(utils.apiResponseData(true, {
