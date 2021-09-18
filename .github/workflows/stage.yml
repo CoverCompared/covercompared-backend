@@ -1,4 +1,4 @@
-name: Staging Workflow
+name: Stage Workflow
 on:
   push:
     branches: [ staging ]
@@ -18,7 +18,7 @@ jobs:
           cat k8s.yaml | envsubst > k8s-real.yaml
           cat k8s-real.yaml
         env:
-          SERVER_ENV: staging
+          SERVER_ENV: stage
           REPO_SLUG: covercompared-backend
           K8S_NAMESPACE: polkacover
           DOCKER_REGISTRY: audacelabs

@@ -13,7 +13,7 @@ jobs:
           docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
           echo "$NODE_CONFIG" | base64 -d > .env
           export BUILD_IMAGE=$DOCKER_REGISTRY/$REPO_SLUG:$SERVER_ENV-$GITHUB_RUN_NUMBER
-          docker build --build-arg NODE_ENV=$SERVER_ENV -t $BUILD_IMAGE .
+          docker build -t $BUILD_IMAGE .
           docker push $BUILD_IMAGE
           cat k8s.yaml | envsubst > k8s-real.yaml
           cat k8s-real.yaml
@@ -22,6 +22,7 @@ jobs:
           REPO_SLUG: covercompared-backend
           K8S_NAMESPACE: polkacover
           DOCKER_REGISTRY: audacelabs
+          NODE_CONFIG: ${{ secrets.NODE_CONFIG_PRODUCTION }}
       - name: Remove Registry Login
         uses: steebchen/kubectl@v2.0.0
         with:
