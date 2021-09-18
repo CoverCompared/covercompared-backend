@@ -22,7 +22,7 @@ jobs:
           REPO_SLUG: covercompared-backend
           K8S_NAMESPACE: polkacover
           DOCKER_REGISTRY: audacelabs
-          NODE_CONFIG: ${{ secrets.NODE_CONFIG_STAGE }}
+          NODE_CONFIG: ${{ secrets.NODE_CONFIG_STAGING }}
       - name: Remove Registry Login
         uses: steebchen/kubectl@v2.0.0
         with:
