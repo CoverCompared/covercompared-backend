@@ -5,10 +5,10 @@ const _ = require("lodash");
 exports.defaultList = [
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "MSOplanName": "BASIC PLAN",
-        "MSOPrice": "50",
+        "name": "BASIC PLAN",
+        "quote": "50",
         "MSOAddOnService": "15",
-        "MSOPlanType": "Single cover",
+        "type": "Single cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "User - 1",
         "MSOCoverUserLimit": "1",
@@ -16,10 +16,10 @@ exports.defaultList = [
     },
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "MSOplanName": "SILVER PLAN",
-        "MSOPrice": "60",
+        "name": "SILVER PLAN",
+        "quote": "60",
         "MSOAddOnService": "20",
-        "MSOPlanType": "Family cover",
+        "type": "Family cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "2 plus 2: Husband, wife and 2 children",
         "MSOCoverUserLimit": "2",
@@ -27,10 +27,10 @@ exports.defaultList = [
     },
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "MSOplanName": "GOLD PLAN",
-        "MSOPrice": "70",
+        "name": "GOLD PLAN",
+        "quote": "70",
         "MSOAddOnService": "25",
-        "MSOPlanType": "Family cover",
+        "type": "Family cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "3 plus 3: Husband, two wives, and 3 children",
         "MSOCoverUserLimit": "3",
@@ -38,10 +38,10 @@ exports.defaultList = [
     },
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "MSOplanName": "PLATINUM PLAN",
-        "MSOPrice": "85",
+        "name": "PLATINUM PLAN",
+        "quote": "85",
         "MSOAddOnService": "30",
-        "MSOPlanType": "Family cover",
+        "type": "Family cover",
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "unlimited: Husband, all wives, all children, parents on husband& wives’ side",
         "MSOCoverUserLimit": "unlimited",
@@ -64,24 +64,24 @@ exports.list = async (req, res, next) => {
 
     if (Array.isArray(plan_types) && plan_types.length) {
         list = await list.filter((object) => {
-            return plan_types.includes(object.MSOPlanType);
+            return plan_types.includes(object.type);
         })
     }
 
     if (search !== false) {
         list = await list.filter((object) => {
-            return new RegExp(search, "gi").test(object.MSOplanName) || new RegExp(search, "gi").test(object.InsurancePlanType)
+            return new RegExp(search, "gi").test(object.name) || new RegExp(search, "gi").test(object.InsurancePlanType)
         })
     }
 
     if (amount_min) {
         list = await list.filter((object) => {
-            return parseInt(object.MSOPrice) >= amount_min
+            return parseInt(object.quote) >= amount_min
         })
     }
     if (amount_max) {
         list = await list.filter((object) => {
-            return parseInt(object.MSOPrice) <= amount_max
+            return parseInt(object.quote) <= amount_max
         })
     }
     if (user_limit) {
