@@ -31,6 +31,7 @@ exports.coverList = async () => {
             }},
             duration_days_min: 15,
             duration_days_max: 365,
+            is_coming_soon: true
         },
         {
             unique_id : utils.getUniqueCoverID("Rocket Vault Finance", "", this.company.code),
@@ -50,6 +51,7 @@ exports.coverList = async () => {
             }},
             duration_days_min: 15,
             duration_days_max: 365,
+            is_coming_soon: true
         }
     ]
 
