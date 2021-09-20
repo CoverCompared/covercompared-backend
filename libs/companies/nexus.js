@@ -57,14 +57,18 @@ exports.coverList = async () => {
                 if (currencyList[currency[k]])
                     currency_limit[currency[k]] = currencyList[currency[k]];
             }
+
+            let product_id = null;
+            let company_code = this.company.code;
             return {
-                product_id: null,
+                unique_id : utils.getUniqueCoverID(product_id, key, company_code),
+                product_id,
                 address: key,
                 logo: `${this.company.logo_url}${_.get(data, "logo", "")}`,
                 name: _.get(data, "name", ""),
                 type: _.get(data, "type", ""),
                 company: this.company.name,
-                company_code: this.company.code,
+                company_code,
                 min_eth: this.company.min_eth,
                 supportedChains: utils.convertSupportedChain(_.get(data, "supportedChains", [])),
                 currency, currency_limit,

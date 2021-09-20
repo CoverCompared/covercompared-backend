@@ -14,6 +14,7 @@ exports.coverList = async () => {
 
     let list = [
         {
+            unique_id : utils.getUniqueCoverID("Umbrella Network", "", this.company.code),
             product_id: "",
             address: "",
             name: "Umbrella Network",
@@ -32,9 +33,10 @@ exports.coverList = async () => {
             duration_days_max: 365,
         },
         {
+            unique_id : utils.getUniqueCoverID("Rocket Vault Finance", "", this.company.code),
             product_id: "",
             address: "",
-            name: "Rocket Vault Finance ",
+            name: "Rocket Vault Finance",
             type: "custodian",
             company: this.company.name,
             company_code: this.company.code,

@@ -101,15 +101,19 @@ exports.coverList = async () => {
             }
 
             let name = _.get(data, "name", "");
+            let product_id = _.get(data, "product_id", ""); 
+            let address = _.get(data, "capacity_currency", ""); 
+            let company_code = this.company.code;
 
             return {
-                product_id: _.get(data, "product_id", ""),
-                address: _.get(data, "capacity_currency", ""),
+                unique_id : utils.getUniqueCoverID(product_id, address, company_code),
+                product_id,
+                address,
                 name,
                 type: this.convertRiskType(data),
                 logo: `${this.company.logo_url}${this.getLogoName(name)}`,
                 company: this.company.name,
-                company_code: this.company.code,
+                company_code,
                 min_eth: this.company.min_eth,
                 capacity: (_.get(data, "capacity_remaining", 0) / (10 ** 18)),
                 supportedChains: [supportedChain],

@@ -95,4 +95,15 @@ utils.getCurrencyList = async (key, setValue) => {
 utils.convertToCurrency = (amount, decimal) => {
     return BigInt(amount * (10**decimal)).toString()
 }
+
+/**
+ * Used to Create unique value for cover details
+ * @param {*} product_id 
+ * @param {*} address 
+ * @param {*} company_code 
+ * @returns 
+ */
+utils.getUniqueCoverID = (product_id, address, company_code) => {
+    return `${product_id}.${address}.${company_code}`;
+}
 module.exports = utils;

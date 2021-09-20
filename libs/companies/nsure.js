@@ -58,15 +58,19 @@ exports.coverList = async () => {
             }
         }
 
+        let product_id = _.get(data, "uid", "");
+        let address = _.get(data, "address", "");
+        let company_code = this.company.code;
         return {
-            product_id: _.get(data, "uid", ""),
+            unique_id : utils.getUniqueCoverID(product_id, address, company_code),
+            product_id,
             uid: _.get(data, "uid", ""),
-            address: _.get(data, "address", ""),
+            address,
             name: _.get(data, "name", ""),
             type: _.get(data, "type", "protocol"),
             website: _.get(data, "website", ""),
             company: this.company.name,
-            company_code: this.company.code,
+            company_code,
             min_eth: this.company.min_eth,
             capacity: currency_max,
             supportedChains: utils.convertSupportedChain(_.get(data, "supportedChains", ["Ethereum"])),
