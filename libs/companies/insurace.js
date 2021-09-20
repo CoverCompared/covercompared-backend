@@ -113,6 +113,7 @@ exports.coverList = async () => {
                 type: this.convertRiskType(data),
                 logo: `${this.company.logo_url}${this.getLogoName(name)}`,
                 company: this.company.name,
+                company_icon: this.company.icon,
                 company_code,
                 min_eth: this.company.min_eth,
                 capacity: (_.get(data, "capacity_remaining", 0) / (10 ** 18)),

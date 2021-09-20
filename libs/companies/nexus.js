@@ -68,6 +68,7 @@ exports.coverList = async () => {
                 name: _.get(data, "name", ""),
                 type: _.get(data, "type", ""),
                 company: this.company.name,
+                company_icon: this.company.icon,
                 company_code,
                 min_eth: this.company.min_eth,
                 supportedChains: utils.convertSupportedChain(_.get(data, "supportedChains", [])),

@@ -70,6 +70,7 @@ exports.coverList = async () => {
             type: _.get(data, "type", "protocol"),
             website: _.get(data, "website", ""),
             company: this.company.name,
+            company_icon: this.company.icon,
             company_code,
             min_eth: this.company.min_eth,
             capacity: currency_max,
