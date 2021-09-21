@@ -1,6 +1,7 @@
 const utils = require("../libs/utils");
 const companies = require("./../libs/companies")
 const _ = require("lodash");
+const config = require("../config");
 
 exports.defaultList = [
     {
@@ -12,7 +13,8 @@ exports.defaultList = [
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "User - 1",
         "MSOCoverUserLimit": "1",
-        "EHR": "EHR & PORTAL"
+        "EHR": "EHR & PORTAL",
+        "logo": `${config.api_url}images/mso.png`
     },
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
@@ -23,7 +25,8 @@ exports.defaultList = [
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "2 plus 2: Husband, wife and 2 children",
         "MSOCoverUserLimit": "2",
-        "EHR": "EHR & PORTAL"
+        "EHR": "EHR & PORTAL",
+        "logo": `${config.api_url}images/mso.png`
     },
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
@@ -34,7 +37,8 @@ exports.defaultList = [
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "3 plus 3: Husband, two wives, and 3 children",
         "MSOCoverUserLimit": "3",
-        "EHR": "EHR & PORTAL"
+        "EHR": "EHR & PORTAL",
+        "logo": `${config.api_url}images/mso.png`
     },
     {
         "InsurancePlanType": "Medical Second Opinion (MSO)",
@@ -45,7 +49,8 @@ exports.defaultList = [
         "MSOPlanDuration": "Annual Plan",
         "MSOCoverUser": "unlimited: Husband, all wives, all children, parents on husband& wives’ side",
         "MSOCoverUserLimit": "unlimited",
-        "EHR": "EHR & PORTAL"
+        "EHR": "EHR & PORTAL",
+        "logo": `${config.api_url}images/mso.png`
     }
 ];
 
