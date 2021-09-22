@@ -19,7 +19,7 @@ utils.apiResponseError = (status, error = {}) => {
  * 
  * @param {Boolean} status 
  * @param {string} msg 
- * @param {any} data 
+ * @param {any} data    
  * @param {any} error 
  * @returns 
  */

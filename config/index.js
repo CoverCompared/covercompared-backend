@@ -3,7 +3,8 @@ let config = {
     cache_time: 300,
     api_url: "http://localhost:3006/api/",
     db: `${process.env.MONGODB_URL}${process.env.DATABASE_NAME}`,
-    dbName: process.env.DATABASE_NAME
+    dbName: process.env.DATABASE_NAME,
+    JWT_TOKEN_EXPIRY: 86400 // 24h
 }
 
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {

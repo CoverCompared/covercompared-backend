@@ -418,6 +418,137 @@
 			]
 		},
 		{
+			"name": "User APIs",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        pm.collectionVariables.set(\"token\", jsonData.data.token);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}login",
+							"host": [
+								"{{host}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Email Exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        pm.collectionVariables.set(\"token\", jsonData.data.token);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"romik@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}check-email-exist",
+							"host": [
+								"{{host}}check-email-exist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Profile Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        pm.collectionVariables.set(\"token\", jsonData.data.token);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"romik@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/add-profile-details",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"add-profile-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Cover list",
 			"event": [
 				{
@@ -463,15 +594,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3006/api/cover-list?company=unore",
-					"protocol": "http",
+					"raw": "{{host}}cover-list",
 					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-list"
+						"{{host}}cover-list"
 					],
 					"query": [
 						{
@@ -481,8 +606,9 @@
 						},
 						{
 							"key": "company",
-							"value": "unore",
-							"description": "insurace, nexus, nsur, unore"
+							"value": "insurace",
+							"description": "insurace, nexus, nsur, unore",
+							"disabled": true
 						},
 						{
 							"key": "type",
@@ -580,7 +706,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3006/api/mso-list?user_limit=3",
+					"raw": "http://localhost:3006/api/mso-list?plan_type=Single cover",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -603,8 +729,7 @@
 						},
 						{
 							"key": "plan_type",
-							"value": "Single cover",
-							"disabled": true
+							"value": "Single cover"
 						},
 						{
 							"key": "amount_min",
@@ -628,7 +753,8 @@
 						},
 						{
 							"key": "user_limit",
-							"value": "3"
+							"value": "3",
+							"disabled": true
 						}
 					]
 				}
@@ -674,15 +800,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3006/api/cover-options",
-					"protocol": "http",
+					"raw": "{{host}}cover-options",
 					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-options"
+						"{{host}}cover-options"
 					]
 				}
 			},
@@ -1463,6 +1583,44 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3006/api/"
+		},
+		{
+			"key": "staging",
+			"value": "https://staging-covercompared.polkacover.com/api/"
+		},
+		{
+			"key": "live",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }

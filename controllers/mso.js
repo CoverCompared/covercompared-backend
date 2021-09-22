@@ -6,6 +6,7 @@ const config = require("../config");
 exports.defaultList = [
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
+        unique_id: "BASIC_PLAN",
         name: "BASIC PLAN",
         quote: "50",
         MSOAddOnService: "15",
@@ -24,6 +25,7 @@ exports.defaultList = [
     },
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
+        unique_id: "SILVER_PLAN",
         name: "SILVER PLAN",
         quote: "60",
         MSOAddOnService: "20",
@@ -42,6 +44,7 @@ exports.defaultList = [
     },
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
+        unique_id: "GOLD_PLAN",
         name: "GOLD PLAN",
         quote: "70",
         MSOAddOnService: "25",
@@ -60,6 +63,7 @@ exports.defaultList = [
     },
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
+        unique_id: "PLATINUM_PLAN",
         name: "PLATINUM PLAN",
         quote: "85",
         MSOAddOnService: "30",

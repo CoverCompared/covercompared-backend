@@ -1,3 +1,5 @@
+# Requirements
+    Node = 12
 
 # Installation Steps
     > cp .env.example .env

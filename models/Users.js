@@ -13,7 +13,9 @@ const UsersSchema = new Schema({
     first_name: { type: String, default: null },
     last_name: { type: String, default: null },
     email: { type: String, default: null },
-    email_verified_at: { type: Date, default: null }
+    email_verified_at: { type: Date, default: null },
+    otp: { type: String, default: null },
+    otp_expire_at: { type: Date, default: null }
 }, {
     timestamps: true
 });
