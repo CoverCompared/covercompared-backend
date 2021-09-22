@@ -508,7 +508,7 @@
 									"pm.test(\"Your test name\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    if(jsonData.success){",
-									"        pm.collectionVariables.set(\"token\", jsonData.data.token);",
+									"        ",
 									"    }",
 									"});"
 								],
@@ -527,7 +527,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"romik@gmail.com\"\n}",
+							"raw": "{\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\":\"makavanaromik1214@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -541,6 +541,102 @@
 							],
 							"path": [
 								"add-profile-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Verify Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"makavanaromik1214@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/resend-verification-email",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"resend-verification-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"otp\":\"677354\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/verify-otp",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"verify-otp"
 							]
 						}
 					},
