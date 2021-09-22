@@ -1,0 +1,34 @@
+<table width="100%" bgcolor="#e4e4e4" style="background-color: #e4e4e4;" border="0">
+  <tbody>
+    <tr>
+      <td>
+        <div
+          style="max-width: 600px; width: 100%; margin: auto;background-color: white;padding: 10px;padding-top: 20px;">
+          <div style="text-align: center;">
+            <img style="height: 50px;" src="<%= config.baseUrl + config.email_images.logo %>" alt="">
+          </div>
+          <div>
+
+            <div style="text-align: center;">
+              <img style="width: 80%;" src="<%= image_file %>" alt="">
+              <p>
+                <%= description %>
+              </p>
+              <div style="text-align: center; margin: 30px;">
+                <a href="<%= link %>" style="padding: 15px 24px;
+      background: #fe27b7;
+      border-radius: 24px;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;">Read Article</a>
+              </div>
+
+              <%- include ("footer.ejs") %>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+</table>

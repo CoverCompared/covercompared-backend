@@ -4,6 +4,7 @@
 # Installation Steps
     > cp .env.example .env
     > set NODE_ENV in .env file
+    > set MAIL_SERVICE=aws
     
 
 # Other Configuration

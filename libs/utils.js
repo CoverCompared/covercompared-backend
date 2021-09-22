@@ -106,4 +106,8 @@ utils.convertToCurrency = (amount, decimal) => {
 utils.getUniqueCoverID = (product_id, address, company_code) => {
     return `${product_id}.${address}.${company_code}`;
 }
+
+utils.getEmailOtp = () => {
+    return Math.ceil(Math.random() * 1000000)
+}
 module.exports = utils;
