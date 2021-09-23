@@ -152,3 +152,70 @@ exports.verifyOtp = async (req, res, next) => {
     }
 }
 
+exports.profile = async (req, res, next) => {
+
+    try {
+        // Find Email Exist
+        let walletAddress = await WalletAddresses.find({ user_id: req.user._id });
+        if(walletAddress && walletAddress.length){
+            walletAddress = walletAddress.map(address => address.wallet_address);
+        }
+        let response = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            is_verified: _.get(req.user, "email_verified_at", false) ? true : false,
+            wallet_addresses: walletAddress,
+        }
+        return res.status(200).send(utils.apiResponseData(true, response));
+
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
+
+exports.addWalletAddress = async (req, res, next) => {
+
+    try {
+
+        // Check Exist Already
+        let rules = {
+            "wallet_address": ["required"]
+        }
+
+        let v = new niv.Validator(req.body, rules);
+        let validation = await v.check();
+
+        if (!validation) {
+            res.status(200).send(utils.apiResponseData(false, v.errors))
+            return;
+        }
+
+        // Find Email Exist
+        let walletAddress = await WalletAddresses.findOne({ wallet_address: req.body.wallet_address });
+
+        if(walletAddress && walletAddress.user_id.toString() != req.user._id.toString()){
+            return res.status(200).send(utils.apiResponseMessage(false, "Wallet Address is already attached with another user."));
+        }
+
+        if(!walletAddress){
+
+            wallet = new WalletAddresses;
+            wallet.wallet_address = req.body.wallet_address;
+            wallet.user_id = req.user._id;
+            await wallet.save();
+
+        }
+
+        return res.status(200).send(utils.apiResponseMessage(true, "Wallet Address added successfully."));
+        
+        
+
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
+
+

@@ -23,5 +23,7 @@ router.post('/login', mainController.login);
 router.post('/user/add-profile-details',  authVerify, userController.addProfileDetails);
 router.post('/user/resend-verification-email',  authVerify, userController.resendVerificationEmail);
 router.post('/user/verify-otp',  authVerify, userController.verifyOtp);
+router.get('/user/profile',  authVerify, userController.profile);
+router.post('/user/add-wallet-address',  authVerify, userController.addWalletAddress);
 
 module.exports = router;

@@ -443,7 +443,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da362\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -527,7 +527,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\":\"makavanaromik1214@gmail.com\"\n}",
+							"raw": "{\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\":\"makavanaromik1214+1@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -575,7 +575,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"makavanaromik1214@gmail.com\"\n}",
+							"raw": "{\n    \"email\":\"makavanaromik1214+1@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -623,7 +623,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"otp\":\"677354\"\n}",
+							"raw": "{\n    \"otp\":\"159851\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -637,6 +637,176 @@
 							],
 							"path": [
 								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"otp\":\"159851\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/profile",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Profile",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"otp\":\"159851\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/profile",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "264"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"108-RqmBPuhS6ZUeWgSHbh7thBg49n8\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 23 Sep 2021 06:12:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"first_name\": \"Romik\",\n        \"last_name\": \"Makavana\",\n        \"email\": \"makavanaromik1214+1@gmail.com\",\n        \"is_verified\": true,\n        \"wallet_addresses\": [\n            \"0xC789300309520F5dDFa95C59571aB809aB1Da362\",\n            \"0xC789300309520F5dDFa95C59571aB809aB1Da363\"\n        ]\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Add Wallet Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da363\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/add-wallet-address",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"add-wallet-address"
 							]
 						}
 					},
