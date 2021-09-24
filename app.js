@@ -21,7 +21,7 @@ axios.interceptors.request.use(function (config) {
 
 var app = express();
 
-if (process.env.NODE_ENV == "local") {
+if (process.env.NODE_ENV == "local" || process.env.NODE_ENV == "staging") {
   app.use(require("cors")())
 }
 
