@@ -29,7 +29,7 @@ exports.addProfileDetails = async (req, res, next) => {
             res.status(200).send(utils.apiResponseData(false, v.errors))
             return;
         }
-
+        let otp;
         // Find Email Exist
         let user = await Users.findOne({ _id: req.user._id });
         user.first_name = req.body.first_name;
@@ -54,12 +54,18 @@ exports.addProfileDetails = async (req, res, next) => {
                         email: req.body.email,
                         otp: unverifiedEmail.otp
                     })
-
+                otp = unverifiedEmail.otp
             }
         }
         await user.save();
 
-        return res.status(200).send(utils.apiResponseMessage(true, "Details added successfully."));
+        let data = {};
+
+        if (process.env.NODE_ENV == "local" || process.env.NODE_ENV == "staging") {
+            data['otp'] = otp
+        }
+
+        return res.status(200).send(utils.apiResponse(true, "Details added successfully.", data));
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
@@ -95,7 +101,11 @@ exports.resendVerificationEmail = async (req, res, next) => {
                     email: req.body.email,
                     otp: unverifiedEmail.otp
                 })
-            return res.status(200).send(utils.apiResponseMessage(true, "Email sent successfully."));
+            let data = {};
+            if (process.env.NODE_ENV == "local" || process.env.NODE_ENV == "staging") {
+                data['otp'] = unverifiedEmail.otp
+            }
+            return res.status(200).send(utils.apiResponse(true, "Email sent successfully.", data));
         } else {
             return res.status(200).send(utils.apiResponseMessage(true, "Invalid Request Email."));
         }
