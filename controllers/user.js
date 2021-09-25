@@ -42,17 +42,18 @@ exports.addProfileDetails = async (req, res, next) => {
                     unverifiedEmail = new UnverifiedEmails;
                     unverifiedEmail.user_id = user._id;
                     unverifiedEmail.email = req.body.email;
-                    unverifiedEmail.otp = utils.getEmailOtp();
-                    unverifiedEmail.otp_send_at = new Date(moment());
-                    await unverifiedEmail.save();
-
-                    await mailer.emailVerification(
-                        req.body.email,
-                        {
-                            email: req.body.email,
-                            otp: unverifiedEmail.otp
-                        })
                 }
+                
+                unverifiedEmail.otp = utils.getEmailOtp();
+                unverifiedEmail.otp_send_at = new Date(moment());
+                await unverifiedEmail.save();
+
+                await mailer.emailVerification(
+                    req.body.email,
+                    {
+                        email: req.body.email,
+                        otp: unverifiedEmail.otp
+                    })
 
             }
         }
