@@ -15,7 +15,8 @@ const UsersSchema = new Schema({
     email: { type: String, default: null },
     email_verified_at: { type: Date, default: null },
     otp: { type: String, default: null },
-    otp_expire_at: { type: Date, default: null }
+    otp_expire_at: { type: Date, default: null },
+    cart_items: { type : Schema.Types.Mixed }
 }, {
     timestamps: true
 });

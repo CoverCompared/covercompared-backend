@@ -25,5 +25,7 @@ router.post('/user/resend-verification-email',  authVerify, userController.resen
 router.post('/user/verify-otp',  authVerify, userController.verifyOtp);
 router.get('/user/profile',  authVerify, userController.profile);
 router.post('/user/add-wallet-address',  authVerify, userController.addWalletAddress);
+router.get('/user/cart-items',  authVerify, userController.getCartItems);
+router.post('/user/cart-items',  authVerify, userController.addCartItems);
 
 module.exports = router;

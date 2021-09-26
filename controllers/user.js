@@ -229,4 +229,38 @@ exports.addWalletAddress = async (req, res, next) => {
     }
 }
 
+exports.addCartItems = async (req, res, next) => {
 
+    // Check Exist Already
+    let rules = {
+        "cart_items": ["nullable", "array"]
+    }
+    
+    let v = new niv.Validator(req.body, rules);
+    let validation = await v.check();
+    
+    if (!validation) {
+        res.status(200).send(utils.apiResponseData(false, v.errors))
+        return;
+    }
+    try {
+        let user = await Users.findOne({ _id: req.user._id });
+        user.cart_items = req.body.cart_items;
+        await user.save();
+
+        return res.status(200).send(utils.apiResponse(true, "Cart items added successfully.", user.cart_items));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
+exports.getCartItems = async (req, res, next) => {
+
+    try {
+        let user = await Users.findOne({ _id: req.user._id });
+        return res.status(200).send(utils.apiResponseData(true, _.get(user, "cart_items", [])));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
