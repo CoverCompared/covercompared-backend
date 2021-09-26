@@ -527,7 +527,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\":\"makavanaromik1214+1@gmail.com\"\n}",
+							"raw": "{\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\":\"makavanaromik1214+2@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -575,7 +575,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"makavanaromik1214+1@gmail.com\"\n}",
+							"raw": "{\n    \"email\":\"makavanaromik1214+2@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -623,7 +623,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"otp\":\"159851\"\n}",
+							"raw": "{\n    \"otp\":\"968272\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -811,6 +811,105 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Add Cart Items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cart_items\": [\n        {\n                \"unique_id\": \"20.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"20\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"1inch \",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/1inch.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 781.1939287121521,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/cart-items",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"cart-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/cart-items",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"cart-items"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -860,7 +959,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list",
+					"raw": "{{host}}cover-list?company=insurace",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -873,8 +972,7 @@
 						{
 							"key": "company",
 							"value": "insurace",
-							"description": "insurace, nexus, nsur, unore",
-							"disabled": true
+							"description": "insurace, nexus, nsur, unore"
 						},
 						{
 							"key": "type",
