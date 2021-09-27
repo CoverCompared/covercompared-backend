@@ -7,16 +7,36 @@ const utils = require("../utils");
 let mailer = {};
 if (process.env.MAIL_SERVICE == "aws") {
     mailer.sendMail = (to, subject, html, attachments = []) => {
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
+
+            // Creating Transport
+            // const transport = nodemailer.createTransport({
+            //     service: "gmail",
+            //     auth: {
+            //         user: '',
+            //         pass: ""
+            //     }
+            // });
+            // const transport = nodemailer.createTransport({
+            //     host: process.env.MAIL_HOST,
+            //     port: process.env.MAIL_PORT,
+            //     auth: {
+            //         user: process.env.MAIL_USERNAME,
+            //         pass: process.env.MAIL_PASSWORD
+            //     },
+            //     tls: {
+            //         ciphers: 'SSLv3'
+            //     }
+            // });
 
             // configure AWS SDK
             process.env.AWS_ACCESS_KEY_ID = process.env.MAIL_USERNAME;
             process.env.AWS_SECRET_ACCESS_KEY = process.env.MAIL_PASSWORD;
             const ses = new aws.SES({
                 apiVersion: "2010-12-01",
-                region: "eu-west-1"
+                region: "eu-west-1",
             });
-            console.log("ses", ses);
+
             // create Nodemailer SES transporter
             let transporter = nodemailer.createTransport({
                 SES: { ses, aws },
@@ -27,23 +47,60 @@ if (process.env.MAIL_SERVICE == "aws") {
                 from: `"Cover Compared" no-replay@polkacover.com`,
                 to,
                 subject,
-                html
+                html,
+                attachments
             }
 
             try {
                 // Sending Mail
                 transporter.sendMail(options, (mErr, mRes) => {
-                    console.log("ERROR", mErr, mRes);
-                    if (mErr)
+                    console.log(mErr, mRes);
+                    if (mErr) {
                         resolve(false);
-                    else
-                        resolve(true);
+                    } else { resolve(true); }
                 });
             } catch (error) {
                 console.log(error);
             }
 
         })
+        // return new Promise((resolve) => {
+
+        //     // configure AWS SDK
+        //     process.env.AWS_ACCESS_KEY_ID = process.env.MAIL_USERNAME;
+        //     process.env.AWS_SECRET_ACCESS_KEY = process.env.MAIL_PASSWORD;
+        //     const ses = new aws.SES({
+        //         apiVersion: "2010-12-01",
+        //         region: "eu-west-1"
+        //     });
+        //     console.log("ses", ses);
+        //     // create Nodemailer SES transporter
+        //     let transporter = nodemailer.createTransport({
+        //         SES: { ses, aws },
+        //     });
+
+        //     // Mail Options
+        //     const options = {
+        //         from: `"Cover Compared" no-replay@polkacover.com`,
+        //         to,
+        //         subject,
+        //         html
+        //     }
+
+        //     try {
+        //         // Sending Mail
+        //         transporter.sendMail(options, (mErr, mRes) => {
+        //             console.log("ERROR", mErr, mRes);
+        //             if (mErr)
+        //                 resolve(false);
+        //             else
+        //                 resolve(true);
+        //         });
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+
+        // })
     }
 } else {
     mailer.sendMail = (to, subject, html, attachments) => {
