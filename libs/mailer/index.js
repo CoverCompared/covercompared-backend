@@ -34,7 +34,7 @@ if (process.env.MAIL_SERVICE == "aws") {
             process.env.AWS_SECRET_ACCESS_KEY = process.env.MAIL_PASSWORD;
             const ses = new aws.SES({
                 apiVersion: "2010-12-01",
-                region: "eu-west-1",
+                region: process.env.AWS_REGION ? process.env.AWS_REGION : "eu-west-1",
             });
 
             // create Nodemailer SES transporter
@@ -44,7 +44,7 @@ if (process.env.MAIL_SERVICE == "aws") {
 
             // Mail Options
             const options = {
-                from: `"Cover Compared" no-replay@polkacover.com`,
+                from: config.noreplay,
                 to,
                 subject,
                 html,
@@ -129,7 +129,7 @@ if (process.env.MAIL_SERVICE == "aws") {
 
             // Mail Options
             const options = {
-                from: `"Cover Compared" no-replay@polkacover.com`,
+                from: config.noreplay,
                 to,
                 subject,
                 html,

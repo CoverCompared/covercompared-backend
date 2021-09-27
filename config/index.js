@@ -4,6 +4,7 @@ let config = {
     api_url: "http://localhost:3006/api/",
     db: `${process.env.MONGODB_URL}${process.env.DATABASE_NAME}`,
     dbName: process.env.DATABASE_NAME,
+    noreplay: `"Cover Compared" no-replay@polkacover.com`,
     JWT_TOKEN_EXPIRY: 86400 // 24h
 }
 
