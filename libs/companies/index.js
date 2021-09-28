@@ -138,9 +138,9 @@ exports.coverList = async (options = {}) => {
         })
     }
 
-    if (options.type) {
+    if (Array.isArray(options.type) && options.type.length) {
         list = await list.filter((object) => {
-            return options.type == object.type
+            return options.type.includes(object.type)
         })
     }
     if (Array.isArray(options.supported_chains) && options.supported_chains.length) {

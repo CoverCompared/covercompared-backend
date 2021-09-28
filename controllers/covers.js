@@ -9,7 +9,7 @@ exports.list = async (req, res, next) => {
 
     let search = _.get(req.query, "search", false);
     let company = _.get(req.query, "company", "").split(",");
-    let type = _.get(req.query, "type", "");
+    let type = _.filter(_.get(req.query, "type", "").split(","));
     let supported_chains = _.filter(_.get(req.query, "supported_chain", "").split(","));
     let currency = _.get(req.query, "currency", "").split(",");
     let current_page = +_.get(req.query, "page", 1);
