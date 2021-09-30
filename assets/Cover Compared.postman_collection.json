@@ -527,7 +527,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\":\"makavanaromik1214+2@gmail.com\"\n}",
+							"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"{{email}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -914,6 +914,52 @@
 			]
 		},
 		{
+			"name": "Blogs",
+			"item": [
+				{
+					"name": "Blogs List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}blogs/table?range=[0,9]",
+							"host": [
+								"{{host}}blogs"
+							],
+							"path": [
+								"table"
+							],
+							"query": [
+								{
+									"key": "range",
+									"value": "[0,9]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}blogs/show/nsure-network-the-first-insurance-protocol-to-integrate-with-cover-compared",
+							"host": [
+								"{{host}}blogs"
+							],
+							"path": [
+								"show",
+								"nsure-network-the-first-insurance-protocol-to-integrate-with-cover-compared"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Cover list",
 			"event": [
 				{
@@ -959,7 +1005,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?company=insurace",
+					"raw": "{{host}}cover-list?type=protocol",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -972,12 +1018,13 @@
 						{
 							"key": "company",
 							"value": "insurace",
-							"description": "insurace, nexus, nsur, unore"
+							"description": "insurace, nexus, nsur, unore",
+							"disabled": true
 						},
 						{
 							"key": "type",
-							"value": "custodian",
-							"disabled": true
+							"value": "protocol",
+							"description": "protocol | custodian"
 						},
 						{
 							"key": "supported_chain",
@@ -1984,6 +2031,10 @@
 		},
 		{
 			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "email",
 			"value": ""
 		}
 	]
