@@ -17,8 +17,8 @@ exports.addProfileDetails = async (req, res, next) => {
     try {
         // Check Exist Already
         let rules = {
-            "first_name": ["required"],
-            "last_name": ["required"],
+            "first_name": ["nullable"],
+            "last_name": ["nullable"],
             "email": ["nullable", "email"]
         }
 
