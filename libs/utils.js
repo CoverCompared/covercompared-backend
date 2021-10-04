@@ -60,6 +60,8 @@ utils.convertSupportedChain = (supportedChain) => {
         ethereum: "Ethereum",
         bsc: "BSC",
         polygon: "Polygon",
+        fantom: "Fantom",
+        xdai: "xDai",
         terra: "Terra"
     }
 
