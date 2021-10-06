@@ -1,6 +1,9 @@
 var axios = require('axios');
 
-exports.forward = (req, res, next) => {
+const mongoose = require('mongoose');
+const P4LToken = mongoose.model('P4LToken');
+
+exports.forward = async (req, res, next) => {
 
     let allowdEnpoints = [
         "device-details"
@@ -13,7 +16,7 @@ exports.forward = (req, res, next) => {
         method: 'post',
         url: `https://dev.protect4less.com/app-api/${endpoint}/`,
         headers: {
-            'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA',
+            'Authorization': await P4LToken.getToken(),
             'Content-Type': 'application/json'
         },
         data: req.body
@@ -28,6 +31,7 @@ exports.forward = (req, res, next) => {
                 .send(response.data)
         })
         .catch(function (error) {
+            console.log("Error", error);
             res.status(error.response.status).send(error.response.data)
         });
 }

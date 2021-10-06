@@ -5,6 +5,7 @@ let config = {
     db: `${process.env.MONGODB_URL}${process.env.DATABASE_NAME}`,
     dbName: process.env.DATABASE_NAME,
     noreplay: `"Cover Compared" no-reply@polkacover.com`,
+    p4l_secret: process.env.P4L_SECRET,
     JWT_TOKEN_EXPIRY: 86400 // 24h
 }
 
