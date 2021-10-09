@@ -27,6 +27,10 @@ router.get('/blogs/show/:slug', blogController.show);
 router.get('/blogs/latest-blog', blogController.latest);
 router.get('/blogs/table', blogController.table);
 
+router.get('/products', coverController.products);
+router.get('/partners', coverController.partners);
+
+
 router.post('/user/add-profile-details',  authVerify, userController.addProfileDetails);
 router.post('/user/resend-verification-email',  authVerify, userController.resendVerificationEmail);
 router.post('/user/verify-otp',  authVerify, userController.verifyOtp);

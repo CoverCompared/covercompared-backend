@@ -5,6 +5,129 @@ const config_companies = require("../config/companies");
 const config = require("../config");
 const niv = require("./../libs/nivValidations");
 
+exports.products = async (req, res, next) => {
+    res.send(utils.apiResponseData(true, {
+        "products": [
+            {
+                "id": "smart_contract",
+                "name": "Smart Contract",
+                "type" : "defi",
+                "icon": `${config.api_url}images/products/contract1.svg`,
+                "details_section" : [
+                    {
+                        "title" : "address",
+                        "provider" : "",
+                        "capacity" :""
+                    }
+                ],
+                "partners": [
+                    {
+                        "partner_id": "nsure",
+                        "name": config_companies.nsure.name,
+                        "logo": config_companies.nsure.icon,
+                    },
+                    {
+                        "partner_id": "unore",
+                        "name": config_companies.unore.name,
+                        "logo": config_companies.unore.icon,
+                    },
+                    {
+                        "partner_id": "nexus",
+                        "name": config_companies.nexus.name,
+                        "logo": config_companies.nexus.icon,
+                    },
+                    {
+                        "partner_id": "insurace",
+                        "name": config_companies.insurace.name,
+                        "logo": config_companies.insurace.icon,
+                    }
+                ]
+            },
+            {
+                "id": "crypto_exchange",
+                "name": "Crypto Exchange",
+                "type" : "defi",
+                "icon": `${config.api_url}images/products/cryptocurrency1.svg`,
+                "details_section" : [
+                    {
+                        "title" : "address",
+                        "provider" : "",
+                        "capacity" :""
+                    }
+                ],
+                "partners": [
+                    {
+                        "partner_id": "insurace",
+                        "name": config_companies.insurace.name,
+                        "logo": config_companies.insurace.icon,
+                    }
+                ]
+            },
+            {
+                "id": "device_insurance",
+                "name": "Device Insurance",
+                "type" : "defi",
+                "icon": `${config.api_url}images/products/device1.svg`,
+                "details_section" : [
+                    {
+                        "title" : "address",
+                        "provider" : "",
+                        "capacity" :""
+                    }
+                ],
+                "partners": []
+            },
+            {
+                "id": "mso_plans",
+                "name": "Medical Second Opinion",
+                "type" : "defi",
+                "icon": `${config.api_url}images/products/mso-icon.svg`,
+                "details_section" : [
+                    {
+                        "title" : "address",
+                        "provider" : "",
+                        "capacity" :""
+                    }
+                ],
+                "partners": []
+            },
+        ]
+    }))
+}
+
+exports.partners = async (req, res, next) => {
+    res.send(utils.apiResponseData(true, {
+        "partner_details": [
+            {
+                "id": "nsure",
+                "name": config_companies.nsure.name,
+                "integration_contract_address" : "",
+                "apis" : [
+                    {
+                        "network": "ethereum_mainnet",
+                        "api" : [
+                            {
+                                "name" : "product_list",
+                                "link" : config_companies.nsure.apis.cover_list.url,
+                                "function" : "Provides list of all products availabe on Nexus Mutual",
+                                "type" : "GET",
+                                "keys" : config_companies.nsure.apis.cover_list.keys
+                            },
+                            {
+                                "name" : "cover_quote",
+                                "link" : config_companies.nsure.apis.cover_quote.url,
+                                "function" : "Provides list of all products availabe on Nexus Mutual",
+                                "type" : "GET",
+                                "keys" : config_companies.nsure.apis.cover_quote.keys
+                            },
+                        ]
+                    }
+                ]
+            }
+        ]
+    }))
+}
+
 exports.list = async (req, res, next) => {
 
     let search = _.get(req.query, "search", false);

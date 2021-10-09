@@ -1,0 +1,171 @@
+// JSON document to store reviews submitted by users on a per product basis
+// @romik - API's required for both POST and GET operations
+
+    {
+        "reviews": [
+            {
+                "id" :"",
+                "user_id" : "",
+                "rating" :"",
+                "review" :"",
+                "timestamp" :""
+            }
+        ]
+    }
+
+
+// JSON document to get protocol details - this is used as the data provided from our partner API's (like NXM, NSURE, etc) are insufficient to populate our frontend
+// @romik - API to GET these details have to be built
+// Same protocol could have 
+
+    {
+        "protocols" : [
+            {
+                "id" : "",
+                "partner_id" : "",
+                "logo" : "",
+                "protocol_name":"",
+                "address" : "",
+                "description":"",
+                "additional_details":"",
+                "terms_and_conditions" : "",
+                "overall_rating" : "",
+                "review_id" : []
+            }
+        ] 
+    }
+
+
+// Main JSON document which containts all the different types of products which we are offering namely smart_contract
+// @wang pls hardcode the mapping logic for protocol ids () based on API response for nxm and nsure separately
+// types will be defi and traditional
+// type defi should redirect to product product listing instead of traditional product configuration page
+
+    {
+        "products": [
+            {
+                "id": "1",
+                "name": "smart_contract",
+                "type" : "defi",
+                "icon": "link",
+                "details_section" : [
+                    {
+                        "title" : "address",
+                        "provider" : "",
+                        "capacity" :""
+                    }
+                ],
+                "partners": [
+                    {
+                        "partner_id": "1",
+                        "name": "nexus_mutual",
+                        "logo": "link"
+                    }
+                ]
+            }
+        ]
+    }
+
+
+// JSON document which stores information about partners who supply insurance products
+
+    {
+        "partner_details": [
+            {
+                "id": "1",
+                "name": "nexus_mutual",
+                "integration_contract_address" : "",
+                "apis" : [
+                    {
+                        "network": "ethereum_mainnet",
+                        "api" : [
+                            {
+                                "name" : "product_list",
+                                "link" : "https://api.nexusmutual.io/coverables/contracts.json",
+                                "function" : "Provides list of all products availabe on Nexus Mutual",
+                                "type" : "GET",
+                                "keys" : [
+                                    {
+                                        "key" : "",
+                                        "description" : ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+
+// JSON document which stores information about policies 
+// @romik please create CRUD API's for the same
+// @wang - please note that there will be some elements here that could be used to show onchain acticity 
+
+    {
+        "policies": [
+            {
+                "id" : ""
+                "txn_hash" : "",
+                "block_timestamp" : "",
+                "user_id" : "",
+                "partner_id" : "",
+                "product_id" : "",
+                "amount_paid" : "",
+                "currency" : "",
+                "amount_covered" : "",
+                "cover_duration" : "",
+                "txn_type" : "onchain",
+                "blockchain" : "ethereum"
+            }
+        ]
+    }
+
+// JSON document that contains the complete list of Users, their details and 
+// @romik please build CRUD API's for the same
+
+    {
+        "user_details": [
+            {
+                "id" : "",
+                "name" : "",
+                "email" : "",
+                "dob":"",
+                "country_residence" : ""
+                "kyc" : [
+                    {
+                        "identity_type" : "passport",
+                        "id" : "xxx-xxx-xxx"
+                    }
+                ],
+                "family_details" : [
+                    {
+                        "id" : "",
+                        "relationship" : "child"
+                    }
+                ],
+                "policies_purchased" : [
+                    {
+                        "policy_id" : ""
+                    }
+                ]
+            }
+        ]
+    }
+
+
+// JSON document that contains a list of whitelisted users who will be able to access the app during beta testing phase
+// @romik please build GET api to check if a user is whitelisted or not 
+
+    {
+        "whitelisted_users": [
+            {
+                "id" : "",
+                "whitelist_status": "",
+                "username" : "",
+                "email": "",
+                "wallet_address": "",
+            }
+        ]
+    }

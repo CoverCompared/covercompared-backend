@@ -9,10 +9,23 @@ module.exports = {
         "min_eth": 0.1,
         "apis": {
             "cover_list": {
-                "url": "https://napi.nsure.network/v1/cover/list"
+                "url": "https://napi.nsure.network/v1/cover/list",
+                "type": "GET",
+                "details": "Provides list of all products available on Nsure Network",
+                "keys": [
+                    { "key" : "uid", "description": "product_id" },
+                    { "key" : "uid", "description": "uid" },
+                    { "key" : "address", "description": "address" },
+                    { "key" : "name", "description": "name" },
+                    { "key" : "type", "description": "type" },
+                    { "key" : "website", "description": "website" },
+                ]
             },
             "cover_quote": {
-                "url": `https://napi.nsure.network/v1/get_quote`
+                "url": `https://napi.nsure.network/v1/get_quote`,
+                "type": "POST",
+                "details": "Get Quote of specific product.",
+                "keys": []
             }
         }
     },
