@@ -21,7 +21,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
+										"value": "E7E8B2816D62CDEA98B24E69272D3",
 										"type": "text"
 									}
 								],
@@ -420,6 +420,522 @@
 		{
 			"name": "User APIs",
 			"item": [
+				{
+					"name": "Policies",
+					"item": [
+						{
+							"name": "Add Policy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        ",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"{{email}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "867"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"363-VKpdCM3QyEqRX06bMOo7EuFFUa4\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 09 Oct 2021 14:14:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"txn_hash\": {\n            \"message\": \"The txn hash field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"block_timestamp\": {\n            \"message\": \"The block timestamp field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"partner_id\": {\n            \"message\": \"The partner id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"product_id\": {\n            \"message\": \"The product id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_paid\": {\n            \"message\": \"The amount paid field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_covered\": {\n            \"message\": \"The amount covered field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"cover_duration\": {\n            \"message\": \"The cover duration field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"txn_type\": {\n            \"message\": \"The txn type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"blockchain\": {\n            \"message\": \"The blockchain field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Add Policy",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "109"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"6d-wVzMGN8EdUeYc73raoAHKGMOODI\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 09 Oct 2021 14:19:45 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"6161a501a40f63bd994afa10\"\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "List Policy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Policy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies/6161a457c1b48d774bd01fe4",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies",
+										"6161a457c1b48d774bd01fe4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Policy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies/6161a457c1b48d774bd01fe4",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies",
+										"6161a457c1b48d774bd01fe4"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"{{email}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "867"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"363-VKpdCM3QyEqRX06bMOo7EuFFUa4\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 09 Oct 2021 14:14:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"txn_hash\": {\n            \"message\": \"The txn hash field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"block_timestamp\": {\n            \"message\": \"The block timestamp field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"partner_id\": {\n            \"message\": \"The partner id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"product_id\": {\n            \"message\": \"The product id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_paid\": {\n            \"message\": \"The amount paid field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_covered\": {\n            \"message\": \"The amount covered field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"cover_duration\": {\n            \"message\": \"The cover duration field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"txn_type\": {\n            \"message\": \"The txn type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"blockchain\": {\n            \"message\": \"The blockchain field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Update Policy",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "109"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"6d-wVzMGN8EdUeYc73raoAHKGMOODI\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 09 Oct 2021 14:19:45 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy updated successfully.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Policy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies/6161a457c1b48d774bd01fe4",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies",
+										"6161a457c1b48d774bd01fe4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "Login",
 					"event": [
@@ -945,19 +1461,127 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}blogs/show/nsure-network-the-first-insurance-protocol-to-integrate-with-cover-compared",
+							"raw": "{{host}}blogs/show/the-traditional-insurers-are-here",
 							"host": [
 								"{{host}}blogs"
 							],
 							"path": [
 								"show",
-								"nsure-network-the-first-insurance-protocol-to-integrate-with-cover-compared"
+								"the-traditional-insurers-are-here"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    let quoteFalse = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"            if(value.quote === false){",
+							"                quoteFalse.push(value)",
+							"            }",
+							"        })",
+							"        console.log(\"Current Page Length \", jsonData.data.list.length)",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"        console.log(\"False Quote : \", JSON.stringify(quoteFalse))",
+							"        console.log(\"Current PAge : \", jsonData.data.current_page);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}products",
+					"host": [
+						"{{host}}products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partners",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    let quoteFalse = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"            if(value.quote === false){",
+							"                quoteFalse.push(value)",
+							"            }",
+							"        })",
+							"        console.log(\"Current Page Length \", jsonData.data.list.length)",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"        console.log(\"False Quote : \", JSON.stringify(quoteFalse))",
+							"        console.log(\"Current PAge : \", jsonData.data.current_page);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}partners",
+					"host": [
+						"{{host}}partners"
+					]
+				}
+			},
+			"response": []
 		},
 		{
 			"name": "Cover list",
@@ -1005,7 +1629,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?type=protocol",
+					"raw": "{{host}}cover-list?company=insurace&type=custodian",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -1018,12 +1642,11 @@
 						{
 							"key": "company",
 							"value": "insurace",
-							"description": "insurace, nexus, nsur, unore",
-							"disabled": true
+							"description": "insurace, nexus, nsur, unore"
 						},
 						{
 							"key": "type",
-							"value": "protocol",
+							"value": "custodian",
 							"description": "protocol | custodian"
 						},
 						{
@@ -1943,15 +2566,9 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3006/api/p4l-forward",
-					"protocol": "http",
+					"raw": "{{host}}p4l-forward",
 					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"p4l-forward"
+						"{{host}}p4l-forward"
 					]
 				}
 			},

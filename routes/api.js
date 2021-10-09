@@ -6,6 +6,8 @@ const msoController = require("./../controllers/mso");
 const p4lController = require("./../controllers/p4l");
 const mainController = require("./../controllers/main");
 const userController = require("./../controllers/user");
+const reviewController = require("./../controllers/review");
+const policiesController = require("./../controllers/policies");
 const blogController = require("../controllers/blogs");
 const authVerify = require('../libs/middlewares/authVerify');
 
@@ -38,6 +40,11 @@ router.get('/user/profile',  authVerify, userController.profile);
 router.post('/user/add-wallet-address',  authVerify, userController.addWalletAddress);
 router.get('/user/cart-items',  authVerify, userController.getCartItems);
 router.post('/user/cart-items',  authVerify, userController.addCartItems);
+router.post('/user/policies',  authVerify, policiesController.store);
+router.get('/user/policies',  authVerify, policiesController.get);
+router.get('/user/policies/:id',  authVerify, policiesController.show);
+router.put('/user/policies/:id',  authVerify, policiesController.update);
+router.delete('/user/policies/:id',  authVerify, policiesController.delete);
 
 var adminApis = require("./admin");
 router.use('/admin', adminApis);
