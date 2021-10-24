@@ -7,6 +7,7 @@ const p4lController = require("./../controllers/p4l");
 const mainController = require("./../controllers/main");
 const userController = require("./../controllers/user");
 const reviewController = require("./../controllers/review");
+const policyRequestController = require("./../controllers/policy-requests");
 const policiesController = require("./../controllers/policies");
 const blogController = require("../controllers/blogs");
 const authVerify = require('../libs/middlewares/authVerify');
@@ -33,6 +34,9 @@ router.get('/products', coverController.products);
 router.get('/partners', coverController.partners);
 
 
+router.post('/policy-request',  policyRequestController.store);
+router.get('/review', reviewController.get);
+
 router.post('/user/add-profile-details',  authVerify, userController.addProfileDetails);
 router.post('/user/resend-verification-email',  authVerify, userController.resendVerificationEmail);
 router.post('/user/verify-otp',  authVerify, userController.verifyOtp);
@@ -40,11 +44,18 @@ router.get('/user/profile',  authVerify, userController.profile);
 router.post('/user/add-wallet-address',  authVerify, userController.addWalletAddress);
 router.get('/user/cart-items',  authVerify, userController.getCartItems);
 router.post('/user/cart-items',  authVerify, userController.addCartItems);
-router.post('/user/policies',  authVerify, policiesController.store);
 router.get('/user/policies',  authVerify, policiesController.get);
 router.get('/user/policies/:id',  authVerify, policiesController.show);
-router.put('/user/policies/:id',  authVerify, policiesController.update);
-router.delete('/user/policies/:id',  authVerify, policiesController.delete);
+router.post('/user/policies-mso',  authVerify, policiesController.storeMso);
+router.post('/user/policies-device-insurance',  authVerify, policiesController.storeDeviceInsurance);
+router.post('/user/policies-mso/:id/confirm-payment',  authVerify, policiesController.msoConfirmPayment);
+router.post('/users/policies-device-insurance/:id/confirm-payment',  authVerify, policiesController.deviceConfirmPayment);
+router.post('/users/policy/:id/add-review',  authVerify, policiesController.policyReview);
+
+router.get('/admin/policy-reqeusts', policyRequestController.show);
+router.get('/admin/policy-requests/:id', policyRequestController.view);
+
+
 
 var adminApis = require("./admin");
 router.use('/admin', adminApis);

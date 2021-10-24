@@ -112,4 +112,13 @@ utils.getUniqueCoverID = (product_id, address, company_code) => {
 utils.getEmailOtp = () => {
     return Math.ceil(Math.random() * 1000000)
 }
+
+/**
+ * If you pass "1" => "001"
+ * @param {Number} number 
+ * @returns 
+ */
+utils.getPadNumber = (number) => {
+    return `${_.padStart((number), 3, '0')}`
+}
 module.exports = utils;

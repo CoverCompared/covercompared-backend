@@ -169,3 +169,70 @@
             }
         ]
     }
+
+
+POST - /users/policy-mso
+POST - /users/policy/:policy_id/confirm-payment
+- status : 
+- txn_type
+- blockchain
+- wallet_address
+- payment_hash
+- block_timestamp
+
+POST - /users/policy-device-insurance
+{
+    "device_type": "Mobile Phone",
+    "brand": "ACER",
+    "value": "USD 300",
+    "purchase_month": "Less than 12 months",
+    "model": "Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow",
+    "plan_type": "monthly",
+    "first_name": "Romik",
+    "last_name": "Makavana",
+    "email": "makavanaromik1214@gmail.com",
+    "phone": "1234567890",
+    "currency": "USD",
+    "amount": "30.38",
+    "discount_amount": "7.595",
+    "tax": "5",
+    "total_amount": "27.78"
+}
+
+POST - /users/policies-device-insurance/:id/confirm-payment
+{
+    "payment_status": "cancelled",
+    "blockchain": "ethereum",
+    "wallet_address": "123",
+    "block_timestamp": "1634829441",
+    "txn_type": "onchain",
+    "payment_hash": "ASFAS654321ASDF",
+    "currency": "USD",
+    "paid_amount": 53.75
+}
+
+POST - /users/policies/:id/add-review
+    {
+        "rating": 4.5
+        "review": "Good..."
+    }
+
+GET - /users/policies/:id
+    - check list policy
+    - send response same, add review if user added review
+    
+POST - /policy-request
+    - {
+        country, 
+        email, 
+        user_id: nullable
+    }
+
+GET - /review?product_type=mso_policy&plan_type=BASIC_PLAN
+    - return list of all the reviews
+
+
+
+product_type - mso_policy, device_insurance
+plan_type - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN
+    

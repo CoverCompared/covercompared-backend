@@ -6,52 +6,52 @@ const config = require("../config");
 
 const mongoose = require("mongoose");
 const Users = mongoose.model('Users');
-const WalletAddresses = mongoose.model('WalletAddresses');
+const Reviews = mongoose.model('Reviews');
 const UnverifiedEmails = mongoose.model('UnverifiedEmails');
 const niv = require("./../libs/nivValidations");
 const mailer = require("../libs/mailer");
 const moment = require("moment");
+const { request } = require("express");
 
-exports.store = async (req, res, next) => {
-
+exports.get = async (req, res, next) => {
+    
     try {
+        let reviews = [];
+       
+        if(req.query.product_type){
+            var product_type = req.query.product_type;
+            let policy = await Policies.find({ product_type: product_type });
+            if(product_type == "mso_policy")
+            {
+                let mso;
+                if(req.query.plan_type){
+                    var plan_type = req.query.plan_type;
+                    mso = await MSOPolicies.find({ plan_type : plan_type });
+                    
+                }else{
+                    mso = await MSOPolicies.find();
+                }
+                console.log(mso);
+            }else{
+                let device_insurance = await DeviceInsurance.find();
+                console.log(device_insurance);
+            }
+            
 
-        // Check Exist Already
-        let rules = {
-            "rating": ["required", "numeric", "between:0,1"],
-            "review": ["required"]
+        }else{
+             reviews = await Reviews.find();
+    
+        }
+        if(reviews)
+        {
+            
         }
 
-        let v = new niv.Validator(req.body, rules);
-        let validation = await v.check();
-
-        if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, v.errors))
-            return;
-        }
-
-        // // Find Email Exist
-        // let walletAddress = await WalletAddresses.findOne({ wallet_address: req.body.wallet_address });
-
-        // if(walletAddress && walletAddress.user_id.toString() != req.user._id.toString()){
-        //     return res.status(200).send(utils.apiResponseMessage(false, "Wallet Address is already attached with another user."));
-        // }
-
-        // if(!walletAddress){
-
-        //     wallet = new WalletAddresses;
-        //     wallet.wallet_address = req.body.wallet_address;
-        //     wallet.user_id = req.user._id;
-        //     await wallet.save();
-
-        // }
-
-        // return res.status(200).send(utils.apiResponseMessage(true, "Wallet Address added successfully."));
         
-        
-
+        return res.status(200).send(utils.apiResponseData(true, reviews));
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 }
+

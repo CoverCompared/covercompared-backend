@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const loadFormDataMiddleware = require('./../middlewares/loadFormData')
-
 const blogController = require('./../controllers/admin/blogs')
 
 router.param('blogId', blogController.load);
@@ -17,5 +16,7 @@ router.put('/blogs/:blogId',
     loadFormDataMiddleware,
     blogController.validate("update"),
     blogController.update);
+
+
 
 module.exports = router;

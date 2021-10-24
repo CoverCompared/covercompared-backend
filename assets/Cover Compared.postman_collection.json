@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "c45a7062-2f61-4f76-a322-d058a0d2815b",
+		"_postman_id": "f66a1f5c-ba1c-4e12-829a-e87692fb1e4a",
 		"name": "Cover Compared",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -34,20 +34,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "https://dev.protect4less.com/app-api/device-details/",
-									"protocol": "https",
-									"host": [
-										"dev",
-										"protect4less",
-										"com"
-									],
-									"path": [
-										"app-api",
-										"device-details",
-										""
-									]
-								}
+								"url": "https://dev.protect4less.com/app-api/device-details/"
 							},
 							"response": []
 						},
@@ -74,20 +61,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "https://dev.protect4less.com/app-api/plan-details/",
-									"protocol": "https",
-									"host": [
-										"dev",
-										"protect4less",
-										"com"
-									],
-									"path": [
-										"app-api",
-										"plan-details",
-										""
-									]
-								}
+								"url": "https://dev.protect4less.com/app-api/plan-details/"
 							},
 							"response": []
 						}
@@ -124,7 +98,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"chain\": \"BSC\"\n}",
+									"raw": "{\n    \"chain\": \"BSC\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -285,19 +259,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "https://api.nsure.network/v1/get_quote",
-									"protocol": "https",
-									"host": [
-										"api",
-										"nsure",
-										"network"
-									],
-									"path": [
-										"v1",
-										"get_quote"
-									]
-								}
+								"url": "https://api.nsure.network/v1/get_quote"
 							},
 							"response": []
 						},
@@ -306,20 +268,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "https://napi.nsure.network/v1/cover/list",
-									"protocol": "https",
-									"host": [
-										"napi",
-										"nsure",
-										"network"
-									],
-									"path": [
-										"v1",
-										"cover",
-										"list"
-									]
-								}
+								"url": "https://napi.nsure.network/v1/cover/list"
 							},
 							"response": []
 						}
@@ -333,22 +282,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity",
-									"protocol": "https",
-									"host": [
-										"api",
-										"staging",
-										"nexusmutual",
-										"io"
-									],
-									"path": [
-										"v1",
-										"contracts",
-										"0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
-										"capacity"
-									]
-								}
+								"url": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity"
 							},
 							"response": []
 						},
@@ -397,19 +331,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "https://api.nexusmutual.io/coverables/contracts.json",
-									"protocol": "https",
-									"host": [
-										"api",
-										"nexusmutual",
-										"io"
-									],
-									"path": [
-										"coverables",
-										"contracts.json"
-									]
-								}
+								"url": "https://api.nexusmutual.io/coverables/contracts.json"
 							},
 							"response": []
 						}
@@ -424,7 +346,339 @@
 					"name": "Policies",
 					"item": [
 						{
-							"name": "Add Policy",
+							"name": "Add MSO",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"country\": \"UAE\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Makavana\",\n    \"mso_cover_user\": \"1\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Makavana\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}user/policies-mso",
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}user/policies-mso"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "903"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"387-nwAUtT/i8DzPE64qlxMzIGIi7y4\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 14:13:23 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"plan_type\": {\n            \"message\": \"The plan type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"country\": {\n            \"message\": \"The country field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"quote\": {\n            \"message\": \"The quote field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"name\": {\n            \"message\": \"The name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"mso_addon_service\": {\n            \"message\": \"The mso addon service field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount\": {\n            \"message\": \"The amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"discount_amount\": {\n            \"message\": \"The discount amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"tax\": {\n            \"message\": \"The tax field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"total_amount\": {\n            \"message\": \"The total amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"MSOMembers\": {\n            \"message\": \"The msomembers field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"country\": \"UAE\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Makavana\",\n    \"mso_cover_user\": \"1\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Makavana\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}user/policies-mso"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "130"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"82-x6OzH1bV6DOOPOiifEEdu+m8ygU\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 14:14:06 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"617175aeb4ce73768634ecc7\",\n        \"txn_hash\": \"MSO-006\"\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Add Device Insurance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"device_type\": \"Mobile Phone\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}user/policies-device-insurance",
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"device_type\": \"Mobile Phone\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}user/policy-device-insurance"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "135"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"87-clvbDWqFcYsA/osAhF5JFFbThLE\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 18:38:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"6171b3b75732f9ffa2359191\",\n        \"txn_hash\": \"DEVICE-00103\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}user/policy-device-insurance"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1195"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4ab-ZjLLjVpZRTtXSBIZf8F01xZz0Y4\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 18:40:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"device_type\": {\n            \"message\": \"The device type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"brand\": {\n            \"message\": \"The brand field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"value\": {\n            \"message\": \"The value field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"purchase_month\": {\n            \"message\": \"The purchase month field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"model\": {\n            \"message\": \"The model field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"plan_type\": {\n            \"message\": \"The plan type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"first_name\": {\n            \"message\": \"The first name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"last_name\": {\n            \"message\": \"The last name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"email\": {\n            \"message\": \"The email field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"phone\": {\n            \"message\": \"The phone field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount\": {\n            \"message\": \"The amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"discount_amount\": {\n            \"message\": \"The discount amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"tax\": {\n            \"message\": \"The tax field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"total_amount\": {\n            \"message\": \"The total amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "MSO Confirm Payment",
 							"event": [
 								{
 									"listen": "test",
@@ -452,26 +706,19 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
+									"raw": "{\n    \"payment_status\": \"cancelled\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 53.75\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies"
-									]
-								}
+								"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment",
+								"description": "- call after payment success or fail, need to call every time when you generate new payment_hash from provider, with whatever response success or fail\n\n## Other Details\n```\npayment_status  - paid, cancelled\n```"
 							},
 							"response": [
 								{
-									"name": "Error",
+									"name": "Paid Response",
 									"originalRequest": {
 										"method": "POST",
 										"header": [
@@ -483,22 +730,14 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"{{email}}\"\n}",
+											"raw": "{\n    \"payment_status\": \"paid\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 53.75\n}",
 											"options": {
 												"raw": {
 													"language": "json"
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies"
-											]
-										}
+										"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -518,15 +757,15 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "867"
+											"value": "190"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"363-VKpdCM3QyEqRX06bMOo7EuFFUa4\""
+											"value": "W/\"be-Ilpdiggkvkvr8j4itiD36/N/528\""
 										},
 										{
 											"key": "Date",
-											"value": "Sat, 09 Oct 2021 14:14:22 GMT"
+											"value": "Thu, 21 Oct 2021 15:17:51 GMT"
 										},
 										{
 											"key": "Connection",
@@ -538,10 +777,10 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"txn_hash\": {\n            \"message\": \"The txn hash field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"block_timestamp\": {\n            \"message\": \"The block timestamp field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"partner_id\": {\n            \"message\": \"The partner id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"product_id\": {\n            \"message\": \"The product id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_paid\": {\n            \"message\": \"The amount paid field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_covered\": {\n            \"message\": \"The amount covered field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"cover_duration\": {\n            \"message\": \"The cover duration field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"txn_type\": {\n            \"message\": \"The txn type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"blockchain\": {\n            \"message\": \"The blockchain field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Payment detail updated successfully.\",\n    \"data\": {\n        \"policy_id\": \"61717de5442ae2458e462a45\",\n        \"txn_hash\": \"MSO-00701\",\n        \"payment_status\": \"paid\",\n        \"status\": \"active\"\n    },\n    \"errors\": {}\n}"
 								},
 								{
-									"name": "Add Policy",
+									"name": "Cancelled response",
 									"originalRequest": {
 										"method": "POST",
 										"header": [
@@ -553,22 +792,488 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
+											"raw": "{\n    \"payment_status\": \"cancelled\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 53.75\n}",
 											"options": {
 												"raw": {
 													"language": "json"
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies"
-											]
+										"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "195"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"c3-xXlw6ZwG+w4RvF0IaphhOkz0R68\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 15:18:20 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
 										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Payment detail updated successfully.\",\n    \"data\": {\n        \"policy_id\": \"61717de5442ae2458e462a45\",\n        \"txn_hash\": \"MSO-00701\",\n        \"payment_status\": \"cancelled\",\n        \"status\": \"active\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "715"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2cb-zlWROL4XTUnRePL3FOpjt5Sn300\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 15:18:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"payment_status\": {\n            \"message\": \"The payment status field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"blockchain\": {\n            \"message\": \"The blockchain field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"wallet_address\": {\n            \"message\": \"The wallet address field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"block_timestamp\": {\n            \"message\": \"The block timestamp field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"txn_type\": {\n            \"message\": \"The txn type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"payment_hash\": {\n            \"message\": \"The payment hash field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"paid_amount\": {\n            \"message\": \"The paid amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Device Confirm Payment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        ",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"payment_status\": \"paid\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment",
+								"description": "- call after payment success or fail, need to call every time when you generate new payment_hash from provider, with whatever response success or fail\n\n## Other Details\n```\npayment_status  - paid, cancelled\n```"
+							},
+							"response": [
+								{
+									"name": "Paid response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"payment_status\": \"paid\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "193"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"c1-tutTMVyqXo9bUJ9sS830nqCNBxE\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Oct 2021 04:33:47 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Payment detail updated successfully.\",\n    \"data\": {\n        \"policy_id\": \"6171bae7b1fb80f209bca787\",\n        \"txn_hash\": \"DEVICE-00406\",\n        \"payment_status\": \"paid\",\n        \"status\": \"active\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Cancelled response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"payment_status\": \"cancelled\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "198"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"c6-1WpSZEsqLfnpuyMxvbO7pzdWn3c\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Oct 2021 04:35:41 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Payment detail updated successfully.\",\n    \"data\": {\n        \"policy_id\": \"6171bae7b1fb80f209bca787\",\n        \"txn_hash\": \"DEVICE-00406\",\n        \"payment_status\": \"cancelled\",\n        \"status\": \"active\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "715"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2cb-zlWROL4XTUnRePL3FOpjt5Sn300\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Oct 2021 04:36:32 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"payment_status\": {\n            \"message\": \"The payment status field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"blockchain\": {\n            \"message\": \"The blockchain field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"wallet_address\": {\n            \"message\": \"The wallet address field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"block_timestamp\": {\n            \"message\": \"The block timestamp field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"txn_type\": {\n            \"message\": \"The txn type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"payment_hash\": {\n            \"message\": \"The payment hash field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"paid_amount\": {\n            \"message\": \"The paid amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Policy Review",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"good\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}users/policy/{{policy_id}}/add-review"
+							},
+							"response": [
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}users/policy/{{policy_id}}/add-review"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "195"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"c3-NrT+yFGBOdb/FPNYN+HwPoeY3jc\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Oct 2021 16:16:40 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"rating\": {\n            \"message\": \"The rating field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"review\": {\n            \"message\": \"The review field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"good\"\n    \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}users/policy/{{policy_id}}/add-review"
 									},
 									"status": "OK",
 									"code": 200,
@@ -592,11 +1297,11 @@
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"6d-wVzMGN8EdUeYc73raoAHKGMOODI\""
+											"value": "W/\"6d-dDNSZQfG4zpKe7CO8AscbfcmYis\""
 										},
 										{
 											"key": "Date",
-											"value": "Sat, 09 Oct 2021 14:19:45 GMT"
+											"value": "Fri, 22 Oct 2021 18:39:49 GMT"
 										},
 										{
 											"key": "Connection",
@@ -608,7 +1313,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"6161a501a40f63bd994afa10\"\n    },\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Review added successfully.\",\n    \"data\": {\n        \"_id\": \"6173057591fcc860b56fbf3c\"\n    },\n    \"errors\": {}\n}"
 								}
 							]
 						},
@@ -646,15 +1351,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies"
-									]
-								}
+								"url": "{{host}}user/policies"
 							},
 							"response": []
 						},
@@ -692,66 +1389,13 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies/6161a457c1b48d774bd01fe4",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies",
-										"6161a457c1b48d774bd01fe4"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Policy",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}user/policies/6161a457c1b48d774bd01fe4",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies",
-										"6161a457c1b48d774bd01fe4"
-									]
-								}
+								"url": "{{host}}user/policies/{{policy_id}}"
 							},
 							"response": [
 								{
 									"name": "Error",
 									"originalRequest": {
-										"method": "POST",
+										"method": "GET",
 										"header": [
 											{
 												"key": "Authorization",
@@ -759,24 +1403,7 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"{{email}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}user/policies",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -796,15 +1423,15 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "867"
+											"value": "69"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"363-VKpdCM3QyEqRX06bMOo7EuFFUa4\""
+											"value": "W/\"45-FKjCk0x+P381O+W6rVTEUtSpgy8\""
 										},
 										{
 											"key": "Date",
-											"value": "Sat, 09 Oct 2021 14:14:22 GMT"
+											"value": "Fri, 22 Oct 2021 18:52:01 GMT"
 										},
 										{
 											"key": "Connection",
@@ -816,12 +1443,12 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"txn_hash\": {\n            \"message\": \"The txn hash field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"block_timestamp\": {\n            \"message\": \"The block timestamp field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"partner_id\": {\n            \"message\": \"The partner id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"product_id\": {\n            \"message\": \"The product id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_paid\": {\n            \"message\": \"The amount paid field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount_covered\": {\n            \"message\": \"The amount covered field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"cover_duration\": {\n            \"message\": \"The cover duration field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"txn_type\": {\n            \"message\": \"The txn type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"blockchain\": {\n            \"message\": \"The blockchain field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 								},
 								{
-									"name": "Update Policy",
+									"name": "Success",
 									"originalRequest": {
-										"method": "POST",
+										"method": "GET",
 										"header": [
 											{
 												"key": "Authorization",
@@ -829,24 +1456,7 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"txn_hash\": \"ASD1346532\",\n    \"block_timestamp\": \"2007-11-09 T 11:20 UTC\",\n    \"partner_id\":\"nsure\",\n    \"product_id\": \"1\",\n    \"amount_paid\": \"100\",\n    \"currency\": \"USD\",\n    \"amount_covered\": \"1000\",\n    \"cover_duration\": \"1\",\n    \"txn_type\": \"onchain\",\n    \"blockchain\": \"ethereum\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}user/policies",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -866,15 +1476,15 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "109"
+											"value": "964"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"6d-wVzMGN8EdUeYc73raoAHKGMOODI\""
+											"value": "W/\"3c4-bM6Vc2lu5kqA2IZAcLDVp30wMMA\""
 										},
 										{
 											"key": "Date",
-											"value": "Sat, 09 Oct 2021 14:19:45 GMT"
+											"value": "Fri, 22 Oct 2021 19:06:30 GMT"
 										},
 										{
 											"key": "Connection",
@@ -886,12 +1496,12 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Policy updated successfully.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
 								}
 							]
 						},
 						{
-							"name": "Delete Policy",
+							"name": "List review",
 							"event": [
 								{
 									"listen": "test",
@@ -903,8 +1513,11 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
-								"method": "DELETE",
+								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
@@ -922,17 +1535,130 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}user/policies/6161a457c1b48d774bd01fe4",
+									"raw": "{{host}}review?product_type=mso_policy&plan_type=BASIC_PLAN",
 									"host": [
-										"{{host}}user"
+										"{{host}}review"
 									],
-									"path": [
-										"policies",
-										"6161a457c1b48d774bd01fe4"
+									"query": [
+										{
+											"key": "product_type",
+											"value": "mso_policy"
+										},
+										{
+											"key": "plan_type",
+											"value": "BASIC_PLAN"
+										}
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{host}}user/policies/{{policy_id}}"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "69"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"45-FKjCk0x+P381O+W6rVTEUtSpgy8\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Oct 2021 18:52:01 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{host}}user/policies/{{policy_id}}"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "964"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"3c4-bM6Vc2lu5kqA2IZAcLDVp30wMMA\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Oct 2021 19:06:30 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+								}
+							]
 						}
 					]
 				},
@@ -959,19 +1685,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da362\"\n}",
+							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}login",
-							"host": [
-								"{{host}}login"
-							]
-						}
+						"url": "{{host}}login"
 					},
 					"response": []
 				},
@@ -1005,12 +1726,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}check-email-exist",
-							"host": [
-								"{{host}}check-email-exist"
-							]
-						}
+						"url": "{{host}}check-email-exist"
 					},
 					"response": []
 				},
@@ -1050,15 +1766,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/add-profile-details",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"add-profile-details"
-							]
-						}
+						"url": "{{host}}user/add-profile-details"
 					},
 					"response": []
 				},
@@ -1098,15 +1806,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/resend-verification-email",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"resend-verification-email"
-							]
-						}
+						"url": "{{host}}user/resend-verification-email"
 					},
 					"response": []
 				},
@@ -1146,15 +1846,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/verify-otp",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"verify-otp"
-							]
-						}
+						"url": "{{host}}user/verify-otp"
 					},
 					"response": []
 				},
@@ -1197,15 +1889,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/profile",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"profile"
-							]
-						}
+						"url": "{{host}}user/profile"
 					},
 					"response": [
 						{
@@ -1219,24 +1903,7 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"otp\":\"159851\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}user/profile",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"profile"
-									]
-								}
+								"url": "{{host}}user/profile"
 							},
 							"status": "OK",
 							"code": 200,
@@ -1276,7 +1943,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"first_name\": \"Romik\",\n        \"last_name\": \"Makavana\",\n        \"email\": \"makavanaromik1214+1@gmail.com\",\n        \"is_verified\": true,\n        \"wallet_addresses\": [\n            \"0xC789300309520F5dDFa95C59571aB809aB1Da362\",\n            \"0xC789300309520F5dDFa95C59571aB809aB1Da363\"\n        ]\n    },\n    \"errors\": {}\n}"
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"_id\": \"614b0b603f9334caf7e6903b\",\n        \"first_name\": \"Romik\",\n        \"last_name\": \"Makavana\",\n        \"email\": \"makavanaromik1214@gmail.com\",\n        \"is_verified\": true,\n        \"wallet_addresses\": [\n            \"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n        ]\n    },\n    \"errors\": {}\n}"
 						}
 					]
 				},
@@ -1316,15 +1983,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/add-wallet-address",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"add-wallet-address"
-							]
-						}
+						"url": "{{host}}user/add-wallet-address"
 					},
 					"response": []
 				},
@@ -1364,15 +2023,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/cart-items",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"cart-items"
-							]
-						}
+						"url": "{{host}}user/cart-items"
 					},
 					"response": []
 				},
@@ -1415,17 +2066,101 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/cart-items",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"cart-items"
-							]
-						}
+						"url": "{{host}}user/cart-items"
 					},
 					"response": []
+				},
+				{
+					"name": "Policy Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        ",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_type\": \"device_insurance\",\n    \"country\": \"UAE\",\n    \"email\": \"TEST@gmail.com\",\n    \"user_id\": \"614b0b603f9334caf7e6903c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}policy-request",
+						"description": "## Other Details\n```\nplan_type       - mso_policy, device_insurance, smart_contract, crypto_exchange\n```"
+					},
+					"response": [
+						{
+							"name": "Policy Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product_type\": \"mso_policy\",\n    \"country\": \"UAE\",\n    \"email\": \"TEST@gmail.com\",\n    \"user_id\": \"614b0b603f9334caf7e6903b\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}policy-request"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"55-YSUcTWDWVDI2fkvGssSpN60RU3U\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 23 Oct 2021 05:42:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Policy Request added successfully.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+						}
+					]
 				}
 			]
 		},
@@ -1460,18 +2195,128 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{host}}blogs/show/the-traditional-insurers-are-here",
-							"host": [
-								"{{host}}blogs"
-							],
-							"path": [
-								"show",
-								"the-traditional-insurers-are-here"
-							]
-						}
+						"url": "{{host}}blogs/show/the-traditional-insurers-are-here"
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin APIs",
+			"item": [
+				{
+					"name": "Policy requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}admin/policy-reqeusts"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{host}}admin/policy-reqeusts"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "947"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3b3-8XNpsjtbJb1xqkihfujErzZbtZE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 23 Oct 2021 19:48:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173049a91fcc860b56fbf2e\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 3,\n            \"review\": \"Beter\",\n            \"createdAt\": \"2021-10-22T18:36:10.456Z\",\n            \"updatedAt\": \"2021-10-22T18:36:10.456Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173051b91fcc860b56fbf35\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:38:19.293Z\",\n            \"updatedAt\": \"2021-10-22T18:38:19.293Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173057591fcc860b56fbf3c\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:39:49.056Z\",\n            \"updatedAt\": \"2021-10-22T18:39:49.056Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61730a12738bc11223ad74d0\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"61730744de0311f97d14587c\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n            \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "FInd Policy request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}admin/policy-reqeusts/614b0b603f9334caf7e6903b"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{host}}admin/policy-reqeusts"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "947"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3b3-8XNpsjtbJb1xqkihfujErzZbtZE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 23 Oct 2021 19:48:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173049a91fcc860b56fbf2e\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 3,\n            \"review\": \"Beter\",\n            \"createdAt\": \"2021-10-22T18:36:10.456Z\",\n            \"updatedAt\": \"2021-10-22T18:36:10.456Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173051b91fcc860b56fbf35\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:38:19.293Z\",\n            \"updatedAt\": \"2021-10-22T18:38:19.293Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173057591fcc860b56fbf3c\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:39:49.056Z\",\n            \"updatedAt\": \"2021-10-22T18:39:49.056Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61730a12738bc11223ad74d0\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"61730744de0311f97d14587c\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n            \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+						}
+					]
 				}
 			]
 		},
@@ -1520,12 +2365,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}products",
-					"host": [
-						"{{host}}products"
-					]
-				}
+				"url": "{{host}}products"
 			},
 			"response": []
 		},
@@ -1574,12 +2414,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}partners",
-					"host": [
-						"{{host}}partners"
-					]
-				}
+				"url": "{{host}}partners"
 			},
 			"response": []
 		},
@@ -1629,7 +2464,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?company=insurace&type=custodian",
+					"raw": "{{host}}cover-list?company=insurace&type=protocol",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -1646,7 +2481,7 @@
 						},
 						{
 							"key": "type",
-							"value": "custodian",
+							"value": "protocol",
 							"description": "protocol | custodian"
 						},
 						{
@@ -1692,7 +2527,117 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Cover list",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}cover-list?company=insurace&type=protocol",
+							"host": [
+								"{{host}}cover-list"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "0x0000000000000000000000000000000000000009",
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": "insurace",
+									"description": "insurace, nexus, nsur, unore"
+								},
+								{
+									"key": "type",
+									"value": "protocol",
+									"description": "protocol | custodian"
+								},
+								{
+									"key": "supported_chain",
+									"value": "Polygon",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "duration_min_day",
+									"value": "365",
+									"disabled": true
+								},
+								{
+									"key": "get_quote",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "DAI",
+									"disabled": true
+								},
+								{
+									"key": "duration_max_day",
+									"value": "600",
+									"disabled": true
+								},
+								{
+									"key": "amount_min",
+									"value": "0.1",
+									"disabled": true
+								},
+								{
+									"key": "amount_max",
+									"value": "100",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 19 Oct 2021 11:08:30 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "7218"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1c32-aVWrLo3r+i+bFVLE+9vM8bSvNk0\""
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15724800; includeSubDomains"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"total\": 57,\n        \"total_page\": 6,\n        \"current_page\": 1,\n        \"list\": [\n            {\n                \"unique_id\": \"20.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"20\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"1inch \",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/1inch.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"43.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"43\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"1inch \",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/1inch.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"BSC\"\n                ],\n                \"currency\": [\n                    \"BNB\",\n                    \"BUSD-T\",\n                    \"BUSD\",\n                    \"USDC\"\n                ],\n                \"currency_limit\": {\n                    \"BNB\": {\n                        \"min\": 3,\n                        \"max\": 60000\n                    },\n                    \"BUSD-T\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"BUSD\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"26.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"26\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"88mph V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/88mph.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 568.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"8.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"8\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Aave V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AaveV2.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 618.0610215316264,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"46.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"46\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Aave V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AaveV2.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Polygon\"\n                ],\n                \"currency\": [\n                    \"MATIC\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"MATIC\": {\n                        \"min\": 500,\n                        \"max\": 15000000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"66.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"66\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alchemix V1\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlchemixV1.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"75.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"75\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpaca Finance\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlpacaFinance.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"BSC\"\n                ],\n                \"currency\": [\n                    \"BNB\",\n                    \"BUSD-T\",\n                    \"BUSD\",\n                    \"USDC\"\n                ],\n                \"currency_limit\": {\n                    \"BNB\": {\n                        \"min\": 3,\n                        \"max\": 60000\n                    },\n                    \"BUSD-T\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"BUSD\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"1.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"1\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpha Homora V1\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlphaHomora.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"42.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"42\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpha Homora V1\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlphaHomora.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"BSC\"\n                ],\n                \"currency\": [\n                    \"BNB\",\n                    \"BUSD-T\",\n                    \"BUSD\",\n                    \"USDC\"\n                ],\n                \"currency_limit\": {\n                    \"BNB\": {\n                        \"min\": 3,\n                        \"max\": 60000\n                    },\n                    \"BUSD-T\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"BUSD\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"51.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"51\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpha Homora V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlphaHomora.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
 		},
 		{
 			"name": "MSO List",
@@ -1833,12 +2778,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}cover-options",
-					"host": [
-						"{{host}}cover-options"
-					]
-				}
+				"url": "{{host}}cover-options"
 			},
 			"response": []
 		},
@@ -1889,18 +2829,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/cover-capacity",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-capacity"
-					]
-				}
+				"url": "http://localhost:3006/api/cover-capacity"
 			},
 			"response": [
 				{
@@ -1917,18 +2846,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-capacity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-capacity"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-capacity"
 					},
 					"status": "OK",
 					"code": 200,
@@ -1980,18 +2898,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-capacity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-capacity"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-capacity"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2043,18 +2950,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-capacity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-capacity"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-capacity"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2119,18 +3015,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/cover-quote",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-quote"
-					]
-				},
+				"url": "http://localhost:3006/api/cover-quote",
 				"description": "currency : ETH,DAI"
 			},
 			"response": [
@@ -2148,18 +3033,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2207,18 +3081,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2266,18 +3129,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2342,18 +3194,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/cover-min-quote",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-min-quote"
-					]
-				},
+				"url": "http://localhost:3006/api/cover-min-quote",
 				"description": "currency : ETH,DAI"
 			},
 			"response": [
@@ -2371,18 +3212,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-min-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-min-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-min-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2434,18 +3264,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-min-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-min-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-min-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2497,18 +3316,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-min-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-min-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-min-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -2565,12 +3373,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{host}}p4l-forward",
-					"host": [
-						"{{host}}p4l-forward"
-					]
-				}
+				"url": "{{host}}p4l-forward"
 			},
 			"response": []
 		},
@@ -2597,18 +3400,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/p4l-forward",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"p4l-forward"
-					]
-				}
+				"url": "http://localhost:3006/api/p4l-forward"
 			},
 			"response": []
 		}
@@ -2652,6 +3444,10 @@
 		},
 		{
 			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "policy_id",
 			"value": ""
 		}
 	]

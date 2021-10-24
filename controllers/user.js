@@ -172,6 +172,7 @@ exports.profile = async (req, res, next) => {
             walletAddress = walletAddress.map(address => address.wallet_address);
         }
         let response = {
+            _id: req.user._id,
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
@@ -254,6 +255,7 @@ exports.addCartItems = async (req, res, next) => {
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 }
+
 exports.getCartItems = async (req, res, next) => {
 
     try {
