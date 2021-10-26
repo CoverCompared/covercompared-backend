@@ -2093,7 +2093,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"product_type\": \"device_insurance\",\n    \"country\": \"UAE\",\n    \"email\": \"TEST@gmail.com\",\n    \"user_id\": \"614b0b603f9334caf7e6903c\"\n}",
+							"raw": "{\n    \"product_type\": \"device_insurance\",\n    \"country\": \"UAE\",\n    \"email\": \"TEST1@gmail.com\",\n    \"user_id\": \"614b0b603f9334caf7e6903b\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2209,15 +2209,51 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}admin/policy-reqeusts"
+						"url": {
+							"raw": "{{host}}admin/policy-reqeusts?filter={\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}&range=[0,3]",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policy-reqeusts"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}"
+								},
+								{
+									"key": "range",
+									"value": "[0,3]"
+								}
+							]
+						}
 					},
 					"response": [
 						{
-							"name": "Success",
+							"name": "Success Response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"url": "{{host}}admin/policy-reqeusts"
+								"url": {
+									"raw": "{{host}}admin/policy-reqeusts?filter={\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}&range=[0,3]",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policy-reqeusts"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}"
+										},
+										{
+											"key": "range",
+											"value": "[0,3]"
+										}
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2237,15 +2273,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "947"
+									"value": "319"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"3b3-8XNpsjtbJb1xqkihfujErzZbtZE\""
+									"value": "W/\"13f-kUV0H+jjtuJ49DFdwkOzHjzW6uk\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 23 Oct 2021 19:48:05 GMT"
+									"value": "Sun, 24 Oct 2021 07:59:58 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2257,16 +2293,56 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173049a91fcc860b56fbf2e\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 3,\n            \"review\": \"Beter\",\n            \"createdAt\": \"2021-10-22T18:36:10.456Z\",\n            \"updatedAt\": \"2021-10-22T18:36:10.456Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173051b91fcc860b56fbf35\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:38:19.293Z\",\n            \"updatedAt\": \"2021-10-22T18:38:19.293Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173057591fcc860b56fbf3c\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:39:49.056Z\",\n            \"updatedAt\": \"2021-10-22T18:39:49.056Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61730a12738bc11223ad74d0\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"61730744de0311f97d14587c\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n            \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-3/3\",\n        \"policy_request\": [\n            {\n                \"_id\": \"6174f2832c012333efc51ab5\",\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"product_type\": \"device_insurance\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST1@gmail.com\",\n                \"createdAt\": \"2021-10-24T05:43:31.200Z\",\n                \"updatedAt\": \"2021-10-24T05:43:31.200Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
 						}
 					]
+				},
+				{
+					"name": "Policy List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/policies?product_type=\"device_insurance\"&filter={\"txn_hash\":\"DEVICE-00608\"}&range=[0,10]",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policies"
+							],
+							"query": [
+								{
+									"key": "product_type",
+									"value": "\"device_insurance\""
+								},
+								{
+									"key": "filter",
+									"value": "{\"txn_hash\":\"DEVICE-00608\"}"
+								},
+								{
+									"key": "range",
+									"value": "[0,10]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Policy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}admin/policies/61730316295b99caaeb99e19"
+					},
+					"response": []
 				},
 				{
 					"name": "FInd Policy request",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}admin/policy-reqeusts/614b0b603f9334caf7e6903b"
+						"url": "{{host}}/admin/policy-request/61746a517339a823dbeca0a4"
 					},
 					"response": [
 						{
@@ -2274,7 +2350,7 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"url": "{{host}}admin/policy-reqeusts"
+								"url": "{{host}}/admin/policy-request/61746a517339a823dbeca0a4"
 							},
 							"status": "OK",
 							"code": 200,
@@ -2294,15 +2370,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "947"
+									"value": "283"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"3b3-8XNpsjtbJb1xqkihfujErzZbtZE\""
+									"value": "W/\"11b-hy3VvvIqpAQRDMIYXsTP5zH5Ra4\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 23 Oct 2021 19:48:05 GMT"
+									"value": "Sun, 24 Oct 2021 05:55:35 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2314,7 +2390,54 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173049a91fcc860b56fbf2e\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 3,\n            \"review\": \"Beter\",\n            \"createdAt\": \"2021-10-22T18:36:10.456Z\",\n            \"updatedAt\": \"2021-10-22T18:36:10.456Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173051b91fcc860b56fbf35\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:38:19.293Z\",\n            \"updatedAt\": \"2021-10-22T18:38:19.293Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173057591fcc860b56fbf3c\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:39:49.056Z\",\n            \"updatedAt\": \"2021-10-22T18:39:49.056Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61730a12738bc11223ad74d0\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"61730744de0311f97d14587c\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n            \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"61746a517339a823dbeca0a4\",\n            \"user_id\": \"614b0b603f9334caf7e6903c\",\n            \"product_type\": \"device_insurance\",\n            \"country\": \"UAE\",\n            \"email\": \"TEST@gmail.com\",\n            \"createdAt\": \"2021-10-23T20:02:25.510Z\",\n            \"updatedAt\": \"2021-10-23T20:02:25.510Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{host}}/admin/policy-request/61746a517339a823dbeca0a2"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "77"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4d-ZXzZQUSscAZQioHKqJaF0KGSKvs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 24 Oct 2021 05:58:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"Policy Request not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 						}
 					]
 				}
@@ -3448,6 +3571,10 @@
 		},
 		{
 			"key": "policy_id",
+			"value": ""
+		},
+		{
+			"key": "_id",
 			"value": ""
 		}
 	]

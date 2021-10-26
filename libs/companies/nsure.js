@@ -80,7 +80,7 @@ exports.coverList = async () => {
             duration_days_max: _.get(data, "maxDuration", 365),
         }
     })
-    console.log("list", list[0]);
+    
 
     return list
 }

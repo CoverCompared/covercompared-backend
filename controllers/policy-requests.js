@@ -43,36 +43,3 @@ exports.store = async (req, res, next) => {
     }
 }
 
-
-exports.show = async (req, res, next) => {
-    try {
-        
-        let policy_request = await PolicyRequests.find();
-        
-        return res.status(200).send(utils.apiResponseData(true, policy_request));
-    } catch (error) {
-        console.log("ERR", error);
-        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
-    }
-}
-
-
-exports.view = async (req, res, next) => {
-    try {
-        let user = await Users.findOne({ _id: req.params.id });
-        if (!user) {
-            /**
-             * TODO:
-             * Error Report
-             * If user or device_insurance record not found in database
-             */
-            return res.status(200).send(utils.apiResponseMessage(false, "User not found."));
-        }
-
-        let policy_request = await PolicyRequests.find({ user_id: req.params.id });
-        return res.status(200).send(utils.apiResponseData(true, policy_request));
-    } catch (error) {
-        console.log("ERR", error);
-        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
-    }
-}

@@ -52,8 +52,7 @@ router.post('/user/policies-mso/:id/confirm-payment',  authVerify, policiesContr
 router.post('/users/policies-device-insurance/:id/confirm-payment',  authVerify, policiesController.deviceConfirmPayment);
 router.post('/users/policy/:id/add-review',  authVerify, policiesController.policyReview);
 
-router.get('/admin/policy-reqeusts', policyRequestController.show);
-router.get('/admin/policy-requests/:id', policyRequestController.view);
+
 
 
 

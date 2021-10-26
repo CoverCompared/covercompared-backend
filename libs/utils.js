@@ -121,4 +121,15 @@ utils.getEmailOtp = () => {
 utils.getPadNumber = (number) => {
     return `${_.padStart((number), 3, '0')}`
 }
+
+
+utils.getFormattedAmount = (amount) => {
+    amount = parseFloat(amount).toFixed(3);
+    amount = amount === "NaN" ? "0.000" : amount
+    amount = amount.split(".");
+    amount[0] = parseInt(amount[0]).toLocaleString()
+    return amount.join(".");
+}
+
+
 module.exports = utils;

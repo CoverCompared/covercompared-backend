@@ -47,11 +47,11 @@ exports.storeMso = async (req, res, next) => {
             return;
         }
 
-        if (parseFloat(req.body.amount) != (parseFloat(req.body.quote) + parseFloat(req.body.mso_addon_service))) {
+        if (utils.getFormattedAmount(parseFloat(req.body.amount)) != utils.getFormattedAmount(parseFloat(req.body.quote) + parseFloat(req.body.mso_addon_service))) {
             return res.status(200).send(utils.apiResponseMessage(false, "Amount does not match of Quote and Addon Service"));
         }
 
-        if (parseFloat(req.body.total_amount) != ((parseFloat(req.body.amount) - parseFloat(req.body.discount_amount)) + parseFloat(req.body.tax))) {
+        if (utils.getFormattedAmount(parseFloat(req.body.total_amount)) != utils.getFormattedAmount((parseFloat(req.body.amount) - parseFloat(req.body.discount_amount)) + parseFloat(req.body.tax))) {
             return res.status(200).send(utils.apiResponseMessage(false, "Total Amount is invalid."));
         }
 
@@ -246,7 +246,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             return;
         }
 
-        if (parseFloat(req.body.total_amount) != ((parseFloat(req.body.amount) - parseFloat(req.body.discount_amount)) + parseFloat(req.body.tax))) {
+        if (utils.getFormattedAmount(parseFloat(req.body.total_amount)) != utils.getFormattedAmount((parseFloat(req.body.amount) - parseFloat(req.body.discount_amount)) + parseFloat(req.body.tax))) {
             return res.status(200).send(utils.apiResponseMessage(false, "Total Amount is invalid."));
         }
 
