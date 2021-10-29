@@ -23,6 +23,7 @@ router.post('/p4l-forward', p4lController.forward);
 
 router.post('/check-email-exist', mainController.checkEmailExist);
 router.post('/login', mainController.login);
+router.post('/landing-app-subscribe', mainController.landingAppSubscribe);
 
 router.get('/blogs/image/:slug', blogController.image);
 router.get('/blogs/show/:slug', blogController.show);

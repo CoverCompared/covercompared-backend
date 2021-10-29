@@ -167,5 +167,21 @@ mailer.emailVerification = async (to, data, attachments = []) => {
         .sendMail(to, subject, html, attachments);
 }
 
+/**
+ * 
+ * @param {string} to 
+ * @param {Object} data 
+ * @param {string} data.email 
+ */
+mailer.landingAppSubscription = async (to, data, attachments = []) => {
+
+    data = { ...data, config: config }
+    const html = await ejs.renderFile(__dirname + "/templates/landing-app-subscription.ejs", data);
+    const subject = "Enquiry @ polkacover.";
+
+    return mailer
+        .sendMail(to, subject, html, attachments);
+}
+
 
 module.exports = mailer;

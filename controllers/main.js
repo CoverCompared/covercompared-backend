@@ -8,6 +8,7 @@ const ObjectId = require("mongodb").ObjectId;
 const Users = mongoose.model('Users');
 const WalletAddresses = mongoose.model('WalletAddresses');
 const niv = require("./../libs/nivValidations");
+const mailer = require("./../libs/mailer");
 
 exports.checkEmailExist = async (req, res, next) => {
 
@@ -94,5 +95,30 @@ exports.login = async (req, res, next) => {
     } catch (error) {
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
+
+}
+
+exports.landingAppSubscribe = async (req, res, next) => {
+    // Check Exist Already
+    let rules = {
+        "email": ["required", "email"]
+    }
+
+    let v = new niv.Validator(req.body, rules);
+    let validation = await v.check();
+
+    if (!validation) {
+        res.status(200).send(utils.apiResponseData(false, v.errors))
+        return;
+    }
+
+    let response = await mailer.landingAppSubscription(
+        "ksadani@gmail.com",
+        { email: req.body.email });
+
+    if (response)
+        return res.send(utils.apiResponseMessage(true, "Subscription sent successfully."));
+    else
+        return res.send(utils.apiResponseMessage(false, "Something went wrong."));
 
 }
