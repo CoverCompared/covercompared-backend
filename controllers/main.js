@@ -113,7 +113,7 @@ exports.landingAppSubscribe = async (req, res, next) => {
     }
 
     let response = await mailer.landingAppSubscription(
-        "ksadani@gmail.com",
+        "makavanaromik1214@gmail.com",
         { email: req.body.email });
 
     if (response)
