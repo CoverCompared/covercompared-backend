@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const mongoose = require("mongoose");
-const utils = require("../utils");
+const utils = require("../libs/utils");
 const Users = mongoose.model('Users');
 
 

@@ -10,7 +10,8 @@ const reviewController = require("./../controllers/review");
 const policyRequestController = require("./../controllers/policy-requests");
 const policiesController = require("./../controllers/policies");
 const blogController = require("../controllers/blogs");
-const authVerify = require('../libs/middlewares/authVerify');
+const authVerify = require('../middlewares/authVerify');
+const authVerifyIfExist = require('../middlewares/authVerifyIfExist');
 
 router.get('/cover-list', coverController.list);
 router.get('/cover-options', coverController.options);
@@ -35,7 +36,7 @@ router.get('/products', coverController.products);
 router.get('/partners', coverController.partners);
 
 
-router.post('/policy-request',  policyRequestController.store);
+router.post('/policy-request', authVerifyIfExist, policyRequestController.store);
 router.get('/review', reviewController.get);
 
 router.post('/user/add-profile-details',  authVerify, userController.addProfileDetails);

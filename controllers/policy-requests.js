@@ -9,6 +9,7 @@ const PolicyRequests = mongoose.model('PolicyRequests');
 const Users = mongoose.model('Users');
 const niv = require("./../libs/nivValidations");
 const constant = require("../libs/constants");
+const { response } = require("express");
 
 exports.store = async (req, res, next) => {
 
@@ -16,8 +17,7 @@ exports.store = async (req, res, next) => {
         let rules = {
             "product_type": ["required", `in:${Object.values(constant.ProductTypes).join(",")}`],
             "country": ["required"],
-            "email": ["required", "email"],
-            "user_id": ["nullable", "ObjectId"]
+            "email": ["required", "email"]
         }
 
         let v = new niv.Validator(req.body, rules);
@@ -27,9 +27,11 @@ exports.store = async (req, res, next) => {
             res.status(200).send(utils.apiResponseData(false, v.errors))
             return;
         }
+        
+        let user_id = _.get(req, "user._id", null);
 
         let policy_request = new PolicyRequests;
-        policy_request.user_id = req.body.user_id;
+        policy_request.user_id = user_id;
         policy_request.product_type = req.body.product_type;
         policy_request.country = req.body.country;
         policy_request.email = req.body.email;
