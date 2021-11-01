@@ -16,4 +16,4 @@ const WalletAddressesSchema = new Schema({
     timestamps: true
 });
 
-mongoose.model('WalletAddresses', WalletAddressesSchema);
+mongoose.model('WalletAddresses', WalletAddressesSchema, "walletaddresses");

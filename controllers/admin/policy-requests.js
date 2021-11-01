@@ -5,7 +5,7 @@ const PolicyRequests = mongoose.model('PolicyRequests');
 const Policies = mongoose.model('Policies');
 
 
-exports.show = async (req, res, next) => {
+exports.index = async (req, res, next) => {
     try {
 
         let range = JSON.parse(_.get(req.query, "range", "[0, 10]"));
@@ -30,6 +30,12 @@ exports.show = async (req, res, next) => {
         if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
 
         let policy_request = await PolicyRequests.find(findObj)
+            .select(["product_type", "country", "email", "createdAt"])
+            .populate({
+                path: "user_id",
+                select: ["first_name", "last_name"]
+            })
+            .sort({ "_id": -1 })
             .limit(limit)
             .skip(skip).lean();
 
@@ -46,10 +52,16 @@ exports.show = async (req, res, next) => {
     }
 }
 
-exports.viewPolicyRequest = async (req, res, next) => {
+exports.show = async (req, res, next) => {
 
     try {
-        let policy_request = await PolicyRequests.find({ _id: req.params.id });
+        let policy_request = await PolicyRequests.find({ _id: req.params.id })
+            .select(["product_type", "country", "email", "createdAt"])
+            .populate({
+                path: "user_id",
+                select: ["first_name", "last_name"]
+            });
+
         if (policy_request == "") {
             /**
              * TODO:

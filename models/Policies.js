@@ -4,7 +4,7 @@ const _ = require('lodash');
 const mongoose = require('mongoose');
 const constant = require('../libs/constants');
 const Schema = mongoose.Schema;
-
+const moment = require('moment');
 
 /**
  * Policies Schema
@@ -79,8 +79,9 @@ PoliciesSchema.statics = {
                         "MSOMembers"
                     ],
                     model: MSOPolicies
-                }).lean();
-                
+                })
+                .lean();
+
             policies = [...policies, ...mso_policies];
 
         }
@@ -109,8 +110,13 @@ PoliciesSchema.statics = {
             delete policy.reference_id;
             return policy;
         })
+
+        if (Array.isArray(policies) && policies.length) {
+            policies.sort((a, b) => { return moment(b.createdAt).format("X") - moment(a.createdAt).format("X") })
+        }
+
         return policies;
     }
 }
 
-mongoose.model('Policies', PoliciesSchema);
+mongoose.model('Policies', PoliciesSchema, "policies");

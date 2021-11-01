@@ -16,9 +16,11 @@ const UsersSchema = new Schema({
     email_verified_at: { type: Date, default: null },
     otp: { type: String, default: null },
     otp_expire_at: { type: Date, default: null },
-    cart_items: { type : Schema.Types.Mixed }
+    cart_items: { type : Schema.Types.Mixed },
+    status: { type: Boolean, default: null },
+    roles: [{ type: String, default: null }]
 }, {
     timestamps: true
 });
 
-mongoose.model('Users', UsersSchema);
+mongoose.model('Users', UsersSchema, "users");

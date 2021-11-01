@@ -1,0 +1,1 @@
+exports.JWT_TOKEN_EXPIRY = 86400; // 24h

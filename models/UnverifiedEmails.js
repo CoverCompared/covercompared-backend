@@ -19,4 +19,4 @@ const UnverifiedEmailsSchema = new Schema({
     timestamps: true
 });
 
-mongoose.model('UnverifiedEmails', UnverifiedEmailsSchema);
+mongoose.model('UnverifiedEmails', UnverifiedEmailsSchema, "unverifiedemails");

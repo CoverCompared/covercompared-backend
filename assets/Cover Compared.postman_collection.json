@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d62984fe-a0bb-4db8-848b-a15517f1aa9b",
+		"_postman_id": "cb879ecf-9266-4da7-a72f-47dd4249634f",
 		"name": "Cover Compared",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -452,7 +452,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"country\": \"UAE\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Makavana\",\n    \"mso_cover_user\": \"1\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Makavana\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"country\": \"UAE\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Patel\",\n    \"mso_cover_user\": \"1\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -642,7 +642,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"device_type\": \"Mobile Phone\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\"\n}",
+									"raw": "{\n    \"device_type\": \"tablet\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -832,7 +832,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"payment_status\": \"cancelled\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 53.75\n}",
+									"raw": "{\n    \"payment_status\": \"paid\",\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 53.75\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1113,12 +1113,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment",
+									"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
 									"host": [
-										"{{host}}users"
+										"{{host}}user"
 									],
 									"path": [
-										"policy-device-insurance",
+										"policies-device-insurance",
 										"{{policy_id}}",
 										"confirm-payment"
 									]
@@ -1152,12 +1152,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment",
+											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
 											"host": [
-												"{{host}}users"
+												"{{host}}user"
 											],
 											"path": [
-												"policy-device-insurance",
+												"policies-device-insurance",
 												"{{policy_id}}",
 												"confirm-payment"
 											]
@@ -1229,12 +1229,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment",
+											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
 											"host": [
-												"{{host}}users"
+												"{{host}}user"
 											],
 											"path": [
-												"policy-device-insurance",
+												"policies-device-insurance",
 												"{{policy_id}}",
 												"confirm-payment"
 											]
@@ -1306,12 +1306,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}users/policy-device-insurance/{{policy_id}}/confirm-payment",
+											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
 											"host": [
-												"{{host}}users"
+												"{{host}}user"
 											],
 											"path": [
-												"policy-device-insurance",
+												"policies-device-insurance",
 												"{{policy_id}}",
 												"confirm-payment"
 											]
@@ -1387,7 +1387,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"good\"\n}",
+									"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"goodgood\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1395,12 +1395,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}users/policy/{{policy_id}}/add-review",
+									"raw": "{{host}}user/policies/{{policy_id}}/add-review",
 									"host": [
-										"{{host}}users"
+										"{{host}}user"
 									],
 									"path": [
-										"policy",
+										"policies",
 										"{{policy_id}}",
 										"add-review"
 									]
@@ -1408,7 +1408,7 @@
 							},
 							"response": [
 								{
-									"name": "Error",
+									"name": "Error : Not Found",
 									"originalRequest": {
 										"method": "POST",
 										"header": [
@@ -1428,12 +1428,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}users/policy/{{policy_id}}/add-review",
+											"raw": "{{host}}user/policies/{{policy_id}}/add-review",
 											"host": [
-												"{{host}}users"
+												"{{host}}user"
 											],
 											"path": [
-												"policy",
+												"policies",
 												"{{policy_id}}",
 												"add-review"
 											]
@@ -1500,12 +1500,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}users/policy/{{policy_id}}/add-review",
+											"raw": "{{host}}user/policies/{{policy_id}}/add-review",
 											"host": [
-												"{{host}}users"
+												"{{host}}user"
 											],
 											"path": [
-												"policy",
+												"policies",
 												"{{policy_id}}",
 												"add-review"
 											]
@@ -1550,6 +1550,78 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"success\": true,\n    \"message\": \"Review added successfully.\",\n    \"data\": {\n        \"_id\": \"6173057591fcc860b56fbf3c\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error : Status not Activated",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"goodgood\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies/{{policy_id}}/add-review",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies",
+												"{{policy_id}}",
+												"add-review"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "83"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"53-5CuAniYZNXcc9UY/rYyAG5Yb0OQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 01 Nov 2021 06:22:08 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"Policy status is not activated.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 								}
 							]
 						},
@@ -1708,7 +1780,7 @@
 									"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 								},
 								{
-									"name": "Success",
+									"name": "MSO Policy Success",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -1767,64 +1839,10 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
-								}
-							]
-						},
-						{
-							"name": "List review",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"_id\": \"61717de5442ae2458e462a45\",\n        \"txn_hash\": \"MSO-00701\",\n        \"product_type\": \"mso_policy\",\n        \"status\": \"active\",\n        \"payment_status\": \"paid\",\n        \"blockchain\": \"ethereum\",\n        \"wallet_address\": \"123\",\n        \"block_timestamp\": \"1634829441\",\n        \"txn_type\": \"onchain\",\n        \"payment_hash\": \"ASFAS654321ASDF\",\n        \"currency\": \"USD\",\n        \"amount\": 65,\n        \"discount_amount\": 16.25,\n        \"tax\": 5,\n        \"total_amount\": 53.75,\n        \"createdAt\": \"2021-10-21T14:49:09.139Z\",\n        \"updatedAt\": \"2021-11-01T05:44:03.713Z\",\n        \"__v\": 4,\n        \"details\": {\n            \"_id\": \"61717de5442ae2458e462a4a\",\n            \"plan_type\": \"BASIC_PLAN\",\n            \"quote\": \"50\",\n            \"name\": \"Romik Makavana\",\n            \"country\": \"UAE\",\n            \"mso_cover_user\": \"1\",\n            \"currency\": \"USD\",\n            \"policy_price\": 50,\n            \"mso_addon_service\": 15,\n            \"MSOMembers\": [\n                {\n                    \"user_type\": \"Main Member\",\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"country\": \"IND\",\n                    \"dob\": \"1998-12-13T18:30:00.000Z\",\n                    \"identity_type\": \"passport\",\n                    \"identity\": \"123456\",\n                    \"_id\": \"61717de5442ae2458e462a4b\"\n                }\n            ]\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"617389cec00894ad1843b1d5\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"updatedAt\": \"2021-10-23T04:04:30.111Z\"\n            },\n            {\n                \"_id\": \"61738b2a3d347e65e2bc5a73\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"updatedAt\": \"2021-10-23T04:10:18.103Z\"\n            }\n        ]\n    },\n    \"errors\": {}\n}"
 								},
-								"url": {
-									"raw": "{{host}}review?product_type=mso_policy&plan_type=BASIC_PLAN",
-									"host": [
-										"{{host}}review"
-									],
-									"query": [
-										{
-											"key": "product_type",
-											"value": "mso_policy"
-										},
-										{
-											"key": "plan_type",
-											"value": "BASIC_PLAN"
-										}
-									]
-								}
-							},
-							"response": [
 								{
-									"name": "Error",
+									"name": "Device Insurance Success",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -1834,6 +1852,15 @@
 												"type": "text"
 											}
 										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
 											"raw": "{{host}}user/policies/{{policy_id}}",
 											"host": [
@@ -1863,15 +1890,15 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "69"
+											"value": "881"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"45-FKjCk0x+P381O+W6rVTEUtSpgy8\""
+											"value": "W/\"371-r1uHw65LfW0WI4tCsBeeDFc+TCY\""
 										},
 										{
 											"key": "Date",
-											"value": "Fri, 22 Oct 2021 18:52:01 GMT"
+											"value": "Mon, 01 Nov 2021 06:06:19 GMT"
 										},
 										{
 											"key": "Connection",
@@ -1883,69 +1910,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
-								},
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "{{token}}",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "X-Powered-By",
-											"value": "Express"
-										},
-										{
-											"key": "Access-Control-Allow-Origin",
-											"value": "*"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "964"
-										},
-										{
-											"key": "ETag",
-											"value": "W/\"3c4-bM6Vc2lu5kqA2IZAcLDVp30wMMA\""
-										},
-										{
-											"key": "Date",
-											"value": "Fri, 22 Oct 2021 19:06:30 GMT"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "Keep-Alive",
-											"value": "timeout=5"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"_id\": \"617788e7e802498c981a5fd1\",\n        \"txn_hash\": \"DEVICE-00203\",\n        \"product_type\": \"device_insurance\",\n        \"status\": \"active\",\n        \"payment_status\": \"paid\",\n        \"blockchain\": \"ethereum\",\n        \"wallet_address\": \"123\",\n        \"block_timestamp\": \"1634829441\",\n        \"txn_type\": \"onchain\",\n        \"payment_hash\": \"ASFAS654321ASDF\",\n        \"currency\": \"USD\",\n        \"amount\": 30.38,\n        \"discount_amount\": 0,\n        \"tax\": 5,\n        \"total_amount\": 35.38,\n        \"createdAt\": \"2021-10-26T04:49:43.131Z\",\n        \"updatedAt\": \"2021-11-01T06:05:32.177Z\",\n        \"__v\": 1,\n        \"details\": {\n            \"_id\": \"617788e7e802498c981a5fd6\",\n            \"device_type\": \"Mobile Phone\",\n            \"brand\": \"ACER\",\n            \"value\": \"below_300\",\n            \"purchase_month\": \"Less than 12 months\",\n            \"model\": \"ACER_2\",\n            \"plan_type\": \"monthly\",\n            \"first_name\": \"Danish\",\n            \"last_name\": \"Mehmood\",\n            \"email\": \"danishejaz80@gmail.com\",\n            \"phone\": 3246180414,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 0,\n            \"tax\": 5,\n            \"total_amount\": 35.38,\n            \"payment_hash\": null\n        },\n        \"reviews\": []\n    },\n    \"errors\": {}\n}"
 								}
 							]
 						}
@@ -2456,7 +2421,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"product_type\": \"device_insurance\",\n    \"country\": \"UAE\",\n    \"email\": \"TEST@gmail.com\",\n    \"user_id\": \"614b0b603f9334caf7e6903c\"\n}",
+							"raw": "{\n    \"product_type\": \"device_insurance\",\n    \"country\": \"UAE\",\n    \"email\": \"TEST1@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2592,28 +2557,50 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}admin/policy-reqeusts",
+							"raw": "{{host}}admin/policy-requests",
 							"host": [
 								"{{host}}admin"
 							],
 							"path": [
-								"policy-reqeusts"
+								"policy-requests"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "[0,3]",
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "Success",
+							"name": "Success Response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}admin/policy-reqeusts",
+									"raw": "{{host}}admin/policy-requests?filter={\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}&range=[0,3]",
 									"host": [
 										"{{host}}admin"
 									],
 									"path": [
-										"policy-reqeusts"
+										"policy-requests"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}"
+										},
+										{
+											"key": "range",
+											"value": "[0,3]"
+										}
 									]
 								}
 							},
@@ -2635,15 +2622,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "947"
+									"value": "319"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"3b3-8XNpsjtbJb1xqkihfujErzZbtZE\""
+									"value": "W/\"13f-kUV0H+jjtuJ49DFdwkOzHjzW6uk\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 23 Oct 2021 19:48:05 GMT"
+									"value": "Sun, 24 Oct 2021 07:59:58 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2655,7 +2642,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173049a91fcc860b56fbf2e\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 3,\n            \"review\": \"Beter\",\n            \"createdAt\": \"2021-10-22T18:36:10.456Z\",\n            \"updatedAt\": \"2021-10-22T18:36:10.456Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173051b91fcc860b56fbf35\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:38:19.293Z\",\n            \"updatedAt\": \"2021-10-22T18:38:19.293Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173057591fcc860b56fbf3c\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:39:49.056Z\",\n            \"updatedAt\": \"2021-10-22T18:39:49.056Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61730a12738bc11223ad74d0\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"61730744de0311f97d14587c\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n            \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-10/3\",\n        \"policy_request\": [\n            {\n                \"_id\": \"617fd62d43d492ae4c585900\",\n                \"user_id\": null,\n                \"product_type\": \"device_insurance\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST1@gmail.com\",\n                \"createdAt\": \"2021-11-01T11:57:33.203Z\"\n            },\n            {\n                \"_id\": \"617cc61c86a2df0d340cb6f0\",\n                \"user_id\": {\n                    \"_id\": \"614b0b603f9334caf7e6903b\",\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\"\n                },\n                \"product_type\": \"device_insurance\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST@gmail.com\",\n                \"createdAt\": \"2021-10-30T04:12:12.643Z\"\n            },\n            {\n                \"_id\": \"6173a0b457e72205ec98e67c\",\n                \"user_id\": {\n                    \"_id\": \"614b0b603f9334caf7e6903b\",\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\"\n                },\n                \"product_type\": \"mso_policy\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST@gmail.com\",\n                \"createdAt\": \"2021-10-23T05:42:12.431Z\"\n            }\n        ]\n    },\n    \"errors\": {}\n}"
 						}
 					]
 				},
@@ -2665,13 +2652,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}admin/policy-reqeusts/614b0b603f9334caf7e6903b",
+							"raw": "{{host}}/admin/policy-requests/6173a0b457e72205ec98e67c",
 							"host": [
-								"{{host}}admin"
+								"{{host}}"
 							],
 							"path": [
-								"policy-reqeusts",
-								"614b0b603f9334caf7e6903b"
+								"admin",
+								"policy-requests",
+								"6173a0b457e72205ec98e67c"
 							]
 						}
 					},
@@ -2682,12 +2670,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}admin/policy-reqeusts",
+									"raw": "{{host}}/admin/policy-request/61746a517339a823dbeca0a4",
 									"host": [
-										"{{host}}admin"
+										"{{host}}"
 									],
 									"path": [
-										"policy-reqeusts"
+										"admin",
+										"policy-request",
+										"61746a517339a823dbeca0a4"
 									]
 								}
 							},
@@ -2709,15 +2699,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "947"
+									"value": "283"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"3b3-8XNpsjtbJb1xqkihfujErzZbtZE\""
+									"value": "W/\"11b-hy3VvvIqpAQRDMIYXsTP5zH5Ra4\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 23 Oct 2021 19:48:05 GMT"
+									"value": "Sun, 24 Oct 2021 05:55:35 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2729,9 +2719,199 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173049a91fcc860b56fbf2e\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 3,\n            \"review\": \"Beter\",\n            \"createdAt\": \"2021-10-22T18:36:10.456Z\",\n            \"updatedAt\": \"2021-10-22T18:36:10.456Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173051b91fcc860b56fbf35\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:38:19.293Z\",\n            \"updatedAt\": \"2021-10-22T18:38:19.293Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6173057591fcc860b56fbf3c\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"6173048e91fcc860b56fbf23\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:39:49.056Z\",\n            \"updatedAt\": \"2021-10-22T18:39:49.056Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61730a12738bc11223ad74d0\",\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"policy_id\": \"61730744de0311f97d14587c\",\n            \"rating\": 2,\n            \"review\": \"good\",\n            \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n            \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n            \"__v\": 0\n        }\n    ],\n    \"errors\": {}\n}"
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173a0b457e72205ec98e67c\",\n            \"user_id\": {\n                \"_id\": \"614b0b603f9334caf7e6903b\",\n                \"first_name\": \"Romik\",\n                \"last_name\": \"Makavana\"\n            },\n            \"product_type\": \"mso_policy\",\n            \"country\": \"UAE\",\n            \"email\": \"TEST@gmail.com\",\n            \"createdAt\": \"2021-10-23T05:42:12.431Z\"\n        }\n    ],\n    \"errors\": {}\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/policy-request/61746a517339a823dbeca0a2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"policy-request",
+										"61746a517339a823dbeca0a2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "77"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4d-ZXzZQUSscAZQioHKqJaF0KGSKvs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 24 Oct 2021 05:58:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"Policy Request not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 						}
 					]
+				},
+				{
+					"name": "Policy List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/policies?range=[0,10]",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policies"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "[0,10]"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}admin/policies?filter={\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}&range=[0,10]",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policies"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}"
+										},
+										{
+											"key": "range",
+											"value": "[0,10]"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "273"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"111-5r4u0PPHjlqCR0siukop9Sm9c3s\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 26 Oct 2021 17:39:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-10/12\",\n        \"policy\": [\n            {\n                \"_id\": \"61730316295b99caaeb99e19\",\n                \"txn_hash\": \"DEVICE-00608\",\n                \"product_type\": \"device_insurance\",\n                \"status\": \"pending\",\n                \"user_id\": {\n                    \"_id\": \"61719bd481b9ca0558e19b6f\",\n                    \"first_name\": null,\n                    \"last_name\": null\n                }\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "View Policy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/policy/617788e7e802498c981a5fd1",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policy",
+								"617788e7e802498c981a5fd1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"superadmin@cover-compared-local.com\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}admin/login",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2889,7 +3069,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?company=nsure",
+					"raw": "{{host}}cover-list?company=insurace&type=protocol",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -2901,14 +3081,13 @@
 						},
 						{
 							"key": "company",
-							"value": "nsure",
-							"description": "insurace, nexus, nsure, unore"
+							"value": "insurace",
+							"description": "insurace, nexus, nsur, unore"
 						},
 						{
 							"key": "type",
 							"value": "protocol",
-							"description": "protocol | custodian",
-							"disabled": true
+							"description": "protocol | custodian"
 						},
 						{
 							"key": "supported_chain",
@@ -3984,22 +4163,33 @@
 			"response": []
 		},
 		{
-			"name": "Landing App Subscription",
+			"name": "List review",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYzMTE3NjE3NSwiaWF0IjoxNjMxMTc2MTc1fQ.y7lJdzWHIAyWLapDT_JiJUXr7N9w95PotYKYUxxD8KA",
+						"value": "{{token}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"makavanaromik1214@gmail.com\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -4007,13 +4197,149 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}landing-app-subscribe",
+					"raw": "{{host}}review?plan_type=SILVER_PLAN&product_type=mso_policy",
 					"host": [
-						"{{host}}landing-app-subscribe"
+						"{{host}}review"
+					],
+					"query": [
+						{
+							"key": "plan_type",
+							"value": "SILVER_PLAN"
+						},
+						{
+							"key": "product_type",
+							"value": "mso_policy"
+						}
 					]
-				}
+				},
+				"description": "```\nproduct_type    - mso_policy | device_insurance\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\n```"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}user/policies/{{policy_id}}",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"policies",
+								"{{policy_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "69"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"45-FKjCk0x+P381O+W6rVTEUtSpgy8\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 22 Oct 2021 18:52:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}user/policies/{{policy_id}}",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"policies",
+								"{{policy_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "964"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3c4-bM6Vc2lu5kqA2IZAcLDVp30wMMA\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 22 Oct 2021 19:06:30 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
 		}
 	],
 	"event": [
@@ -4059,6 +4385,10 @@
 		},
 		{
 			"key": "policy_id",
+			"value": ""
+		},
+		{
+			"key": "_id",
 			"value": ""
 		}
 	]

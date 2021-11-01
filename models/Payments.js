@@ -24,4 +24,4 @@ const PaymentsSchema = new Schema({
     timestamps: true
 });
 
-mongoose.model('Payments', PaymentsSchema);
+mongoose.model('Payments', PaymentsSchema, "payments");

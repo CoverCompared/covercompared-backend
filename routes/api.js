@@ -35,10 +35,10 @@ router.get('/blogs/table', blogController.table);
 router.get('/products', coverController.products);
 router.get('/partners', coverController.partners);
 
-
 router.post('/policy-request', authVerifyIfExist, policyRequestController.store);
 router.get('/review', reviewController.get);
 
+// Routes under Auth
 router.post('/user/add-profile-details',  authVerify, userController.addProfileDetails);
 router.post('/user/resend-verification-email',  authVerify, userController.resendVerificationEmail);
 router.post('/user/verify-otp',  authVerify, userController.verifyOtp);
@@ -51,12 +51,8 @@ router.get('/user/policies/:id',  authVerify, policiesController.show);
 router.post('/user/policies-mso',  authVerify, policiesController.storeMso);
 router.post('/user/policies-device-insurance',  authVerify, policiesController.storeDeviceInsurance);
 router.post('/user/policies-mso/:id/confirm-payment',  authVerify, policiesController.msoConfirmPayment);
-router.post('/users/policies-device-insurance/:id/confirm-payment',  authVerify, policiesController.deviceConfirmPayment);
-router.post('/users/policy/:id/add-review',  authVerify, policiesController.policyReview);
-
-
-
-
+router.post('/user/policies-device-insurance/:id/confirm-payment',  authVerify, policiesController.deviceConfirmPayment);
+router.post('/user/policies/:id/add-review',  authVerify, policiesController.policyReview);
 
 var adminApis = require("./admin");
 router.use('/admin', adminApis);

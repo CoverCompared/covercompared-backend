@@ -38,4 +38,4 @@ const DeviceInsuranceSchema = new Schema({
         timestamps: true
     });
 
-mongoose.model('DeviceInsurance', DeviceInsuranceSchema);
+mongoose.model('DeviceInsurance', DeviceInsuranceSchema, "deviceinsurances");

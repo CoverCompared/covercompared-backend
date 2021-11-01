@@ -8,7 +8,8 @@ const constant = {
     PolicyStatus: {
         pending: "pending", 
         active: "active", 
-        cancelled: "cancelled"
+        cancelled: "cancelled",
+        complete: "complete"
     },
     PolicyPaymentStatus: {
         unpaid: "unpaid", 

@@ -43,4 +43,4 @@ const MSOPoliciesSchema = new Schema({
         timestamps: true
     });
 
-mongoose.model('MSOPolicies', MSOPoliciesSchema);
+mongoose.model('MSOPolicies', MSOPoliciesSchema, "msopolicies");

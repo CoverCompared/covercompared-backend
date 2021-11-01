@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -21,4 +20,4 @@ const ReviewsSchema = new Schema({
         timestamps: true
     });
 
-mongoose.model('Reviews', ReviewsSchema);
+mongoose.model('Reviews', ReviewsSchema, "reviews");

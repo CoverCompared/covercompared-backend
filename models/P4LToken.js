@@ -61,4 +61,4 @@ P4LTokenSchema.statics = {
 
 }
 
-mongoose.model('P4LToken', P4LTokenSchema);
+mongoose.model('P4LToken', P4LTokenSchema, "p4ltokens");

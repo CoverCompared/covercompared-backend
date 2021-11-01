@@ -83,4 +83,4 @@ PolicyTxnHashCountSchema.statics = {
 
 }
 
-mongoose.model('PolicyTxnHashCount', PolicyTxnHashCountSchema);
+mongoose.model('PolicyTxnHashCount', PolicyTxnHashCountSchema, "policytxnhashcounts");

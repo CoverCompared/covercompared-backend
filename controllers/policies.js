@@ -417,10 +417,12 @@ exports.policyReview = async (req, res, next) => {
              * If policy or device_insurance record not found in database
              */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
+        }else if( ![constant.PolicyStatus.active, constant.PolicyStatus.complete].includes(policy.status) ){
+            return res.status(200).send(utils.apiResponseMessage(false, "Policy status is not activated."));
         }
-        
+
         let rules = {
-            "rating": ["required","numeric"],
+            "rating": ["required", "numeric"],
             "review": ["required"],
         }
 
@@ -432,14 +434,20 @@ exports.policyReview = async (req, res, next) => {
             return;
         }
 
-        let review = new Reviews;
-        review.user_id = req.user._id;  
-        review.policy_id = req.params.id;
+        let review = await Reviews.findOne({ 
+            user_id: req.user._id,
+            policy_id: req.params.id
+        });
+
+        if(!review){
+            review = new Reviews;
+            review.user_id = req.user._id;
+            review.policy_id = req.params.id;
+        }
+
         review.rating = req.body.rating;
         review.review = req.body.review;
         await review.save();
-
-        
 
         return res.status(200).send(utils.apiResponse(true, "Review added successfully.", {
             _id: review._id,
@@ -481,10 +489,12 @@ exports.show = async (req, res, next) => {
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }
 
-        let reviews = await Reviews.find({ policy_id: req.params.id }).lean();
+        let reviews = await Reviews.find({ policy_id: req.params.id })
+            .select(["rating", "review", "updatedAt"])
+            .lean();
         policy = await Policies.getPolicies(policy.product_type, { user_id: req.user._id, _id: req.params.id });
-        
-        return res.status(200).send(utils.apiResponseData(true, {...policy[0], reviews}));
+
+        return res.status(200).send(utils.apiResponseData(true, { ...policy[0], reviews }));
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));

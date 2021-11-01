@@ -147,4 +147,4 @@ BlogsSchema.statics = {
     getImage: slug => `${config.api_url}blogs/image/${slug}`
 }
 
-mongoose.model('Blogs', BlogsSchema);
+mongoose.model('Blogs', BlogsSchema, 'blogs');

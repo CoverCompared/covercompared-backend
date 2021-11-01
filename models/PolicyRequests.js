@@ -16,4 +16,4 @@ const PolicyRequestsSchema = new Schema({
     email: { type: String, default: null },
 }, { timestamps: true });
 
-mongoose.model('PolicyRequests', PolicyRequestsSchema);
+mongoose.model('PolicyRequests', PolicyRequestsSchema, "policyrequests");

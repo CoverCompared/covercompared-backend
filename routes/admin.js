@@ -3,10 +3,15 @@ var router = express.Router();
 const loadFormDataMiddleware = require('./../middlewares/loadFormData')
 const blogController = require('./../controllers/admin/blogs')
 const policyRequestController = require('./../controllers/admin/policy-requests')
-const policies = require('./../controllers/admin/policies')
+const policiesController = require('./../controllers/admin/policies')
+const AdminAuthController = require("./../controllers/admin/auth")
+
+router.post("/login", AdminAuthController.login)
+// router.get("/profile", adminVerifyPassword, AdminAuthController.profile)
+
+
 
 router.param('blogId', blogController.load);
-
 router.get('/blogs/', blogController.index);
 router.post('/blogs/',
     loadFormDataMiddleware,
@@ -20,9 +25,9 @@ router.put('/blogs/:blogId',
     blogController.update);
 
 // policy-request routes 
-router.get('/policy-reqeusts', policyRequestController.show);
-router.get('/policy-request/:id', policyRequestController.viewPolicyRequest);
-router.get('/policies', policies.policyList);
-router.get('/policies/:id', policies.viewPolicy);
+router.get('/policy-requests', policyRequestController.index);
+router.get('/policy-requests/:id', policyRequestController.show);
+router.get('/policies', policiesController.index);
+router.get('/policy/:id', policiesController.show);
 
 module.exports = router;
