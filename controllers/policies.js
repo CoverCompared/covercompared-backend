@@ -465,8 +465,6 @@ exports.get = async (req, res, next) => {
         let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy], { user_id: req.user._id });
 
         policies = policies.map(policy => {
-            policy.details = policy.reference_id;
-            delete policy.reference_id;
             return policy;
         })
 

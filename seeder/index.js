@@ -7,7 +7,6 @@ let seeder = async () => {
 
     const users = require("./users");
 
-
     console.log("User Seeding.");
     await users();
 

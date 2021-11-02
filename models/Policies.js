@@ -81,7 +81,7 @@ PoliciesSchema.statics = {
                     model: MSOPolicies
                 })
                 .lean();
-
+                console.log(mso_policies);
             policies = [...policies, ...mso_policies];
 
         }

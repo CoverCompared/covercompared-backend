@@ -19,9 +19,9 @@ module.exports = async () => {
         }
     }
 
-    let superadminEmail = "superadmin@cover-compared-local.com";
-    if(process.env.NODE_ENV == "production"){
-        superadminEmail = "superadmin@cover-compared.com";
+    let superadminEmail = "superadmin@cover-compared.com";
+    if(process.env.NODE_ENV == "local"){
+        superadminEmail = "superadmin@cover-compared-local.com";
     }
 
     user = await Users.findOne({ email: superadminEmail });
