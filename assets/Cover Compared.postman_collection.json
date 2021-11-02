@@ -452,7 +452,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"country\": \"UAE\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Patel\",\n    \"mso_cover_user\": \"1\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Patel\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1669,7 +1669,78 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "List Policy",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "3702"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"e76-FtZGVJbwIV00KMGHW0FkZ66jEY8\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Nov 2021 12:31:54 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policies\": [\n            {\n                \"_id\": \"617788e7e802498c981a5fd1\",\n                \"txn_hash\": \"DEVICE-00203\",\n                \"product_type\": \"device_insurance\",\n                \"status\": \"active\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": \"ethereum\",\n                \"wallet_address\": \"123\",\n                \"block_timestamp\": \"1634829441\",\n                \"txn_type\": \"onchain\",\n                \"payment_hash\": \"ASFAS654321ASDF\",\n                \"currency\": \"USD\",\n                \"amount\": 30.38,\n                \"discount_amount\": 0,\n                \"tax\": 5,\n                \"total_amount\": 35.38,\n                \"createdAt\": \"2021-10-26T04:49:43.131Z\",\n                \"updatedAt\": \"2021-11-01T06:05:32.177Z\",\n                \"__v\": 1\n            },\n            {\n                \"_id\": \"6172819656f0d08064106d71\",\n                \"txn_hash\": \"DEVICE-00102\",\n                \"product_type\": \"device_insurance\",\n                \"status\": \"pending\",\n                \"payment_status\": \"unpaid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 30.38,\n                \"discount_amount\": 7.595,\n                \"tax\": 5,\n                \"total_amount\": 27.785,\n                \"createdAt\": \"2021-10-22T09:17:10.376Z\",\n                \"updatedAt\": \"2021-10-22T09:17:10.415Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"61717de5442ae2458e462a45\",\n                \"txn_hash\": \"MSO-00701\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"active\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": \"ethereum\",\n                \"wallet_address\": \"123\",\n                \"block_timestamp\": \"1634829441\",\n                \"txn_type\": \"onchain\",\n                \"payment_hash\": \"ASFAS654321ASDF\",\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T14:49:09.139Z\",\n                \"updatedAt\": \"2021-11-01T05:44:03.713Z\",\n                \"__v\": 4\n            },\n            {\n                \"_id\": \"617175aeb4ce73768634ecc7\",\n                \"txn_hash\": \"MSO-006\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T14:14:06.041Z\",\n                \"updatedAt\": \"2021-10-21T14:14:06.083Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"6171758fdec395fa30737a0a\",\n                \"txn_hash\": \"MSO-005\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T14:13:35.873Z\",\n                \"updatedAt\": \"2021-10-21T14:13:35.927Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"6171585efcc89db739a63604\",\n                \"txn_hash\": \"MSO-004\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T12:09:02.720Z\",\n                \"updatedAt\": \"2021-10-21T12:09:02.780Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"617157efc1cb906dd524b1d1\",\n                \"txn_hash\": \"MSO-003\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T12:07:11.590Z\",\n                \"updatedAt\": \"2021-10-21T12:07:11.657Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"6171556b63b83f7727591839\",\n                \"txn_hash\": \"MSO-002\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T11:56:27.165Z\",\n                \"updatedAt\": \"2021-10-21T11:56:27.165Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"6171556863b83f7727591834\",\n                \"txn_hash\": \"MSO-001\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"paid\",\n                \"blockchain\": null,\n                \"wallet_address\": null,\n                \"block_timestamp\": null,\n                \"txn_type\": null,\n                \"payment_hash\": null,\n                \"currency\": \"USD\",\n                \"amount\": 65,\n                \"discount_amount\": 16.25,\n                \"tax\": 5,\n                \"total_amount\": 53.75,\n                \"createdAt\": \"2021-10-21T11:56:24.204Z\",\n                \"updatedAt\": \"2021-10-21T11:56:24.204Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+								}
+							]
 						},
 						{
 							"name": "Show Policy",
@@ -4338,6 +4409,182 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Contact Us",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Romik Makavana\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"user_type\": \"Customer\",\n    \"message\" : \"Need to disscuss\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}contact-us",
+					"host": [
+						"{{host}}contact-us"
+					]
+				},
+				"description": "- Used to send Contact request or any query\n```\nuser_type   : Customer, Partner, Other\n```"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Romik Makavana\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"user_type\": \"Customer\",\n    \"message\" : \"Need to disscuss\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}contact-us",
+							"host": [
+								"{{host}}contact-us"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "90"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"5a-8y6QN+itufMDwAtUinEPH/LxbXI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 Nov 2021 11:55:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Contact request submitted successfully.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Romik Makavana\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"user_type\": \"Customer\",\n    \"message\" : \"Need to disscuss\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}contact-us",
+							"host": [
+								"{{host}}contact-us"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "341"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"155-7zlNgkYOYZjCXqxvWAUUGE/Rfq4\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 Nov 2021 11:56:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"name\": {\n            \"message\": \"The name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"email\": {\n            \"message\": \"The email field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"user_type\": {\n            \"message\": \"The user type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"message\": {\n            \"message\": \"The message field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
 				}
 			]
 		}

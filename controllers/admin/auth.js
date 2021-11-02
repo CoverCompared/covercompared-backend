@@ -14,7 +14,8 @@ exports.login = async (req, res, next) => {
     try {
 
         //check details 
-        if(_.get(req.body,"email",false) && _.get(req.body,"password",false)){
+        console.log(req.body);
+        if (_.get(req.body, "email", false) && _.get(req.body, "password", false)) {
             //check if normal login 
             super_admin = await Users.findOne({email : req.body.email ,roles: { "$in": ["super-admin"] } });
 
@@ -38,13 +39,13 @@ exports.login = async (req, res, next) => {
             res.status(200).json({ status: true, token: token });
 
         }else{
-            return res.send(200).send({ status: false , message: `Invalid request.` });
+            return res.status(422).send({ status: false , message: `Invalid request.` });
         }
 
     } catch (error) {
         console.log("error", error);
-        return res.send(500).send({ status: false , message: `wrong` });
-        // return res.status(error.statuscode || 500).json(utils.generateErrorResponse(error.statuscode || 500, (error && error.metadata) || {}, {}));
+        // return res.send(500).send({ status: false , message: `wrong` });
+        return res.status(error.statuscode || 500).json(utils.generateErrorResponse(error.statuscode || 500, (error && error.metadata) || {}, {}));
     }
 
 }

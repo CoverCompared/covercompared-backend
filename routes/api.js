@@ -36,6 +36,7 @@ router.get('/products', coverController.products);
 router.get('/partners', coverController.partners);
 
 router.post('/policy-request', authVerifyIfExist, policyRequestController.store);
+router.post('/contact-us', mainController.contactUs);
 router.get('/review', reviewController.get);
 
 // Routes under Auth

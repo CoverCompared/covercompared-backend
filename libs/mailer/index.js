@@ -183,5 +183,24 @@ mailer.landingAppSubscription = async (to, data, attachments = []) => {
         .sendMail(to, subject, html, attachments);
 }
 
+/**
+ * 
+ * It will send mail to support team.
+ * 
+ * @param {Object} data
+ * @param {String} data.name  
+ * @param {String} data.email
+ * @param {String} data.user_type
+ * @param {String} data.message
+ * 
+ * @returns 
+ */
+mailer.sendContactUsMail = async (data) => {
+    data = { ...data, config: config };
+    const html = await ejs.renderFile(__dirname + "/templates/contact-us.ejs", data);
+    const subject = "Contact Us Enquiry @ polkacover. ";
+
+    return mailer.sendMail(config.subscribe_mail, subject, html);
+}
 
 module.exports = mailer;

@@ -238,3 +238,22 @@ policy_id   - Policies._id
     ]
 }
 ```
+
+## ContactUsRequests
+```
+user_type   : Customer, Partner, Other
+```
+```
+{
+    "ContactUsRequests": [
+        {
+            "_id": "",
+            "name": "",
+            "email": "",
+            "user_type": "",
+            "message": "",
+            "createdAt": ""
+        }
+    ]
+}
+```

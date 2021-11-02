@@ -18,7 +18,7 @@ exports.storeMso = async (req, res, next) => {
     try {
         let rules = {
             "plan_type": ["required", "in:BASIC_PLAN,SILVER_PLAN,GOLD_PLAN,PLATINUM_PLAN"],
-            "country": ["required"],
+            "country": ["nullable"],
             "quote": ["required"],
             "name": ["required"],
             "mso_cover_user": ["nullable"],
