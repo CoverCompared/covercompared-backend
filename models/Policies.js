@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const constant = require('../libs/constants');
 const Schema = mongoose.Schema;
 const moment = require('moment');
+const msoPlans = require("./../libs/mso-plans");
 
 /**
  * Policies Schema
@@ -81,7 +82,16 @@ PoliciesSchema.statics = {
                     model: MSOPolicies
                 })
                 .lean();
-                console.log(mso_policies);
+            
+            if(Array.isArray(mso_policies)){
+                mso_policies = mso_policies.map((policy) => {
+                    let plan = msoPlans.find(plan => plan.unique_id == _.get(policy, "reference_id.plan_type"));
+                    policy.plan_details = _.get(policy, "plan_details", {});
+                    policy.plan_details = {...policy.plan_details, ...plan};
+                    return policy;
+                })
+            }
+
             policies = [...policies, ...mso_policies];
 
         }

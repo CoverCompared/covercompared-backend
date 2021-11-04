@@ -13,6 +13,7 @@ const Payments = mongoose.model("Payments");
 const niv = require("./../libs/nivValidations");
 const constant = require("../libs/constants");
 const moment = require('moment');
+const msoPlans = require("../libs/mso-plans");
 
 exports.storeMso = async (req, res, next) => {
     try {
@@ -72,6 +73,20 @@ exports.storeMso = async (req, res, next) => {
         policy.total_amount = req.body.total_amount;
         await policy.save();
 
+        let plan = msoPlans.find(plan => plan.unique_id == req.body.plan_type);
+
+        let plan_details = {
+            type: _.get(plan, "type", ""),
+            MSOPlanDuration: _.get(plan, "MSOPlanDuration", ""),
+            MSOCoverUser: _.get(plan, "MSOCoverUser", ""),
+            MSOCoverUserLimit: _.get(plan, "MSOCoverUserLimit", ""),
+            noOfSpouse: _.get(plan, "noOfSpouse", ""),
+            noOfDependent: _.get(plan, "noOfDependent", ""),
+            mainMemberParents: _.get(plan, "mainMemberParents", ""),
+            spouseParents: _.get(plan, "spouseParents", ""),
+            totalUsers: _.get(plan, "totalUsers", ""),
+        };
+
         let mso_policy = new MSOPolicies;
         mso_policy.user_id = req.user._id;
         mso_policy.txn_hash = policy.txn_hash;
@@ -89,6 +104,7 @@ exports.storeMso = async (req, res, next) => {
         mso_policy.tax = req.body.tax;
         mso_policy.total_amount = req.body.total_amount;
         mso_policy.status = policy.status;
+        mso_policy.plan_details = plan_details;
 
         for (const key in req.body.MSOMembers) {
             mso_policy.MSOMembers.push({

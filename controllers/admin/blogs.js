@@ -144,7 +144,6 @@ exports.store = async (req, res, next) => {
 
 }
 
-
 exports.update = async (req, res, next) => {
 
     let blog = req.blog;

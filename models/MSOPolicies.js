@@ -37,7 +37,8 @@ const MSOPoliciesSchema = new Schema({
         dob: { type: Date, default: null },
         identity_type: { type: String, default: null },
         identity: { type: String, default: null }
-    }]
+    }],
+    plan_details: { type: Schema.Types.Mixed, default : null }
 },
     {
         timestamps: true
