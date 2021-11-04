@@ -21,7 +21,7 @@ exports.storeMso = async (req, res, next) => {
             "plan_type": ["required", "in:BASIC_PLAN,SILVER_PLAN,GOLD_PLAN,PLATINUM_PLAN"],
             "country": ["nullable"],
             "quote": ["required"],
-            "name": ["required"],
+            "name": ["nullable"],
             "mso_cover_user": ["nullable"],
             "currency": ["required"],
             "quote": ["required", "numeric"],
@@ -35,7 +35,7 @@ exports.storeMso = async (req, res, next) => {
             "MSOMembers.*.first_name": ["required"],
             "MSOMembers.*.last_name": ["required"],
             "MSOMembers.*.country": ["required"],
-            "MSOMembers.*.dob": ["required", "dateFormat:DD-MM-YYYY"],
+            "MSOMembers.*.dob": ["required", "dateFormat:YYYY-MM-DD"],
             "MSOMembers.*.identity_type": ["nullable"],
             "MSOMembers.*.identity": ["required"]
         }
@@ -112,7 +112,7 @@ exports.storeMso = async (req, res, next) => {
                 first_name: req.body.MSOMembers[key].first_name,
                 last_name: req.body.MSOMembers[key].last_name,
                 country: req.body.MSOMembers[key].country,
-                dob: new Date(moment(req.body.MSOMembers[key].dob, "DD-MM-YYYY")),
+                dob: new Date(moment(req.body.MSOMembers[key].dob, "YYYY-MM-DD")),
                 identity_type: req.body.MSOMembers[key].identity_type,
                 identity: req.body.MSOMembers[key].identity
             })

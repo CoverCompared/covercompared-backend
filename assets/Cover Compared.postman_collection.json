@@ -236,7 +236,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\n    \"productIds\": [\n        \"20\"\n    ],\n    \"coverDays\": [\n        \"15\"\n    ],\n    \"coverAmounts\": [\n        \"1000000000000000000000\"\n    ],\n    \"owner\": \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n    \"referralCode\": \"\"\n}",
+									"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"productIds\": [\n        \"1\"\n    ],\n    \"coverDays\": [\n        \"30\"\n    ],\n    \"coverAmounts\": [\n        10000000000000000\n    ],\n    \"owner\": \"0x6C641CE6A7216F12d28692f9d8b2BDcdE812eD2b\",\n    \"referralCode\": null\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -452,7 +452,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Patel\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"quote\": \"50\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3521,7 +3521,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3006/api/mso-list?plan_type=Single cover",
+					"raw": "http://localhost:3006/api/mso-list",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -3544,7 +3544,8 @@
 						},
 						{
 							"key": "plan_type",
-							"value": "Single cover"
+							"value": "Single cover",
+							"disabled": true
 						},
 						{
 							"key": "amount_min",
