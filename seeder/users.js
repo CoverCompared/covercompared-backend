@@ -24,14 +24,13 @@ module.exports = async () => {
                 let firebaseUser = await firebase_admin.auth().getUser(users[key]);
                 if (firebaseUser) {
                     user = await Users.findOne({ firebase_uid: users[key] });
-                    if (!user) {
-                        user = new Users();
-                        user.email = firebaseUser.email;
-                        user.firebase_uid = users[key];
-                        user.status = true;
-                        user.roles = ["super-admin"]
-                        user = await user.save();
-                    }
+                    user = !user ? new Users(): user;
+                    user.email = firebaseUser.email;
+                    user.firebase_uid = users[key];
+                    user.status = true;
+                    user.email_verified_at = new Date();
+                    user.roles = ["super-admin"]
+                    user = await user.save();
                 }
             } catch (error) { }
 
