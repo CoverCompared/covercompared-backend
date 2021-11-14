@@ -1,38 +1,41 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 const Users = mongoose.model('Users');
+const { firebase_admin } = require("../config/firebase");
 
 module.exports = async () => {
 
-    if (config.super_admin_firebase_uids) {
-        let users = config.super_admin_firebase_uids;
+    let super_admin_firebase_uids = [];
+    if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
+        super_admin_firebase_uids.push("dYGraCTsNOYbR8f2ot32pUGymIG2");
+    } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
+        super_admin_firebase_uids.push("7Q0cLEMxp6WE7HrHwaL8RR18MAx1");
+    } else {
+        super_admin_firebase_uids.push("xRDL5ZYHDaPBEcqYv2OKioovltN2");
+    }
+
+    if (super_admin_firebase_uids) {
+
+
+        let users = super_admin_firebase_uids;
         let user;
         for (const key in users) {
-            user = await Users.findOne({ firebase_uid: users[key] });
-            if (!user) {
-                user = new Users();
-                user.firebase_uid = users[key];
-                user.status = true;
-                user.roles = ["super-admin"]
-                user = await user.save();
-            }
+            try {
+                let firebaseUser = await firebase_admin.auth().getUser(users[key]);
+                if (firebaseUser) {
+                    user = await Users.findOne({ firebase_uid: users[key] });
+                    if (!user) {
+                        user = new Users();
+                        user.email = firebaseUser.email;
+                        user.firebase_uid = users[key];
+                        user.status = true;
+                        user.roles = ["super-admin"]
+                        user = await user.save();
+                    }
+                }
+            } catch (error) { }
+
         }
     }
-
-    let superadminEmail = "superadmin@cover-compared.com";
-    if(process.env.NODE_ENV == "local"){
-        superadminEmail = "superadmin@cover-compared-local.com";
-    }
-
-    user = await Users.findOne({ email: superadminEmail });
-    if (!user) {
-        user = new Users();
-        user.email = superadminEmail;
-        user.password = "123456";
-        user.status = true;
-        user.roles = ["super-admin"]
-        user = await user.save();
-    }
-
     return true;
 }

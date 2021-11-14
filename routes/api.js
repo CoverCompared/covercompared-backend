@@ -56,6 +56,11 @@ router.post('/user/policies-device-insurance/:id/confirm-payment',  authVerify, 
 router.post('/user/policies/:id/add-review',  authVerify, policiesController.policyReview);
 
 var adminApis = require("./admin");
+const utils = require('../libs/utils');
 router.use('/admin', adminApis);
+router.use('/seed', async (req, res, next) => {
+    await require("./../seeder/users")();
+    res.send(utils.apiResponseMessage(true, "success"));
+});
 
 module.exports = router;

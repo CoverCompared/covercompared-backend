@@ -1,6 +1,8 @@
 'use strict';
 
 const _ = require('lodash');
+var mime = require('mime-types')
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -15,6 +17,7 @@ const UsersSchema = new Schema({
     email: { type: String, default: null },
     email_verified_at: { type: Date, default: null },
     hashed_password: { type: String, default: null },
+    firebase_uid: { type: String, default: null },
     otp: { type: String, default: null },
     otp_expire_at: { type: Date, default: null },
     cart_items: { type : Schema.Types.Mixed },
@@ -101,4 +104,4 @@ UsersSchema.methods = {
         }
     }
 }
-mongoose.model('Users', UsersSchema, "users");
+mongoose.model('Users', UsersSchema);

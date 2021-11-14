@@ -2965,12 +2965,28 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        pm.collectionVariables.set(\"admin_token\", jsonData.data.token)",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"superadmin@cover-compared-local.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"authToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImY1NWUyOTRlZWRjMTY3Y2Q5N2JiNWE4MTliYmY3OTA2MzZmMTIzN2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY292ZXItY29tcGFyZWQtbG9jYWwiLCJhdWQiOiJjb3Zlci1jb21wYXJlZC1sb2NhbCIsImF1dGhfdGltZSI6MTYzNjg4OTE3MiwidXNlcl9pZCI6InhSREw1WllIRGFQQkVjcVl2Mk9LaW9vdmx0TjIiLCJzdWIiOiJ4UkRMNVpZSERhUEJFY3FZdjJPS2lvb3ZsdE4yIiwiaWF0IjoxNjM2ODg5MTcyLCJleHAiOjE2MzY4OTI3NzIsImVtYWlsIjoic3VwZXJhZG1pbkBjb3Zlci1jb21wYXJlZC1sb2NhbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VwZXJhZG1pbkBjb3Zlci1jb21wYXJlZC1sb2NhbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.NuE_Tz4CzSxZHsdJEY24yU49h_pORPJ-MxzjNbBoTavtniFC10rjc6I0aW-YMzDcSbf5ZjbEO7wAfhUdr7Tjv2f5IA2GARBudZZ_W6BaScpYT1K679Ts2Yb1zGlcyKo5czckoeen35ciO9g2Wfq9UoFQdBAc0SZ1woiyj0KLS6O_JzvzimfxJbMCsemARCBiTbp_uwUleyH7pX_h4EWWLCpui1X6i-t4Ufdq4d0PRa5G_-6NQRCg8OFuj53QkzQUqMWc2pMCeEx7Xmb4AqEM-qSf89fddw2LtK4SvfH1cUq2QP4z-4Xo5ACACfYl8CINu6_Sf6rzBUdlvcfWMuqXYg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3117,6 +3133,41 @@
 							"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"email\": {\n            \"message\": \"The email field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"password\": {\n            \"message\": \"The password field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
 						}
 					]
+				},
+				{
+					"name": "Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"superadmin@cover-compared-local.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}admin/profile",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
 				},
 				{
 					"name": "Change Password",
@@ -4973,6 +5024,10 @@
 		},
 		{
 			"key": "_id",
+			"value": ""
+		},
+		{
+			"key": "admin_token",
 			"value": ""
 		}
 	]

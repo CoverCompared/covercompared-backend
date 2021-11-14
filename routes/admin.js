@@ -5,9 +5,10 @@ const blogController = require('./../controllers/admin/blogs')
 const policyRequestController = require('./../controllers/admin/policy-requests')
 const policiesController = require('./../controllers/admin/policies')
 const AdminAuthController = require("./../controllers/admin/auth")
+const adminVerifyPassword = require('../libs/middlewares/adminVerifyPassword');
 
 router.post("/login", AdminAuthController.login)
-// router.get("/profile", adminVerifyPassword, AdminAuthController.profile)
+router.get("/profile", adminVerifyPassword, AdminAuthController.profile)
 
 
 
