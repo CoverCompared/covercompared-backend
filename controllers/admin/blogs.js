@@ -2,6 +2,7 @@ const niv = require("./../../libs/nivValidations");
 const _ = require("lodash");
 
 const mongoose = require('mongoose');
+const utils = require("../../libs/utils");
 const Blogs = mongoose.model('Blogs');
 
 exports.load = async (req, res, next, _id) => {
@@ -58,7 +59,7 @@ exports.validate = (validateFor) => {
 
         let v = new niv.Validator(req.fields, rules); v.check().then((matched) => {
             if (!matched) {
-                res.status(422).send(v.errors);
+                res.status(200).send(utils.apiResponseData(false, v.errors));
             } else { next(); }
         });
     }
@@ -94,29 +95,17 @@ exports.index = async (req, res, next) => {
         .limit(limit)
         .skip(skip).lean();
 
-    res.send({
+    res.send(utils.apiResponseData(true, {
         range: `${range[0]}-${range[1]}/${total}`,
         data: blogs
-    })
+    }))
 
 }
 
 
 exports.show = async (req, res, next) => {
 
-    res.send({
-        status: true,
-        message: "",
-        data: {
-            _id: req.blog._id,
-            slug: req.blog.slug,
-            title: req.blog.title,
-            description: req.blog.description,
-            content: req.blog.content,
-            status: req.blog.status,
-            image: Blogs.getImage(req.blog.slug)
-        }
-    })
+    res.send(utils.apiResponseData(true, req.blog.getResponse()));
 
 }
 
@@ -136,11 +125,7 @@ exports.store = async (req, res, next) => {
     // Upload Document
     await blogs.uploadImage(req.files)
 
-    res.send({
-        status: true,
-        message: "Blog created successfully.",
-        data: blogs
-    })
+    res.send(utils.apiResponse(true, "Blog created successfully.", blogs.getResponse()))
 
 }
 
@@ -183,11 +168,7 @@ exports.update = async (req, res, next) => {
         }
     }
 
-    res.send({
-        status: true,
-        message: "Blog updated successfully.",
-        data: blog
-    })
+    res.send(utils.apiResponse(true, "Blog updated successfully.", blog))
 
 }
 
@@ -199,9 +180,6 @@ exports.destroy = async (req, res, next) => {
     await blogs.removeImage();
     await Blogs.findOneAndDelete({ _id: mongoose.Types.ObjectId(req.blog._id) })
 
-    res.send({
-        status: true,
-        message: "Blog deleted successfully."
-    })
+    res.send(utils.apiResponseMessage(true, "Blog deleted successfully."))
 
 }

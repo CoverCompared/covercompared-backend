@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const Users = mongoose.model('Users');
 const WalletAddresses = mongoose.model('WalletAddresses');
 const ContactUsRequests = mongoose.model("ContactUsRequests");
+const Subscriptions = mongoose.model("Subscriptions");
 
 exports.checkEmailExist = async (req, res, next) => {
 
@@ -118,15 +119,30 @@ exports.landingAppSubscribe = async (req, res, next) => {
         config.subscribe_mail,
         { email: req.body.email });
 
-    if (response)
-        return res.send(utils.apiResponseMessage(true, "Subscription sent successfully."));
+    let find = await Subscriptions.find({ email: req.body.email });
+    if (find == "") {
+        var subscription = new Subscriptions;
+        subscription.name = req.body.name;
+        subscription.email = req.body.email;
+        await subscription.save();
+        // console.log(subscription);
+    }
+    else {
+        return res.send(utils.apiResponseMessage(false, "Email already exists"));
+    }
+
+
+    // if (response)
+    if (subscription) {
+        return res.send(utils.apiResponse(true, "Subscription added successfully", subscription))
+    }
     else
         return res.send(utils.apiResponseMessage(false, "Something went wrong."));
 
 }
 
 exports.contactUs = async (req, res) => {
-    
+
     // Validate All Details
     let rules = {
         name: ["required"],
@@ -158,6 +174,8 @@ exports.contactUs = async (req, res) => {
         user_type: req.body.user_type,
         message: req.body.message
     });
+
+
 
     // Send response
     if (response)

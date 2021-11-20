@@ -152,3 +152,27 @@ exports.profile = async (req, res, next) => {
         email: req.user.email
     }))
 }
+
+exports.updateEmail = async (req, res, next) => {
+
+    if(!req.user.firebase_uid){
+        return res.send(utils.apiResponseMessage(false, "User does not exist."));
+    }
+
+    let user = await Users.findOne({ firebase_uid: req.user.firebase_uid });
+
+    try {
+        let firebaseUser = await firebase_admin.auth().getUser(req.user.firebase_uid);
+
+        user.email = firebaseUser.email;    
+        await user.save();
+        
+        return res.send(utils.apiResponseMessage(true, "Email updated successfully."));
+
+    } catch (error) {
+        return res.send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+
+    
+    
+}

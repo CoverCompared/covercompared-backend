@@ -103,9 +103,22 @@ BlogsSchema.methods = {
                 link: Blogs.getBlogUrl(this.slug),
                 title: this.title,
                 description: this.description,
-                image_file:  Blogs.getImage(this.slug),
+                image_file: Blogs.getImage(this.slug),
                 unsubscribe_token
             });
+    },
+
+    getResponse: function () {
+
+        return {
+            _id: this._id,
+            slug: this.slug,
+            title: this.title,
+            description: this.description,
+            content: this.content,
+            status: this.status,
+            image: this.constructor.getImage(this.slug)
+        };
     }
 }
 

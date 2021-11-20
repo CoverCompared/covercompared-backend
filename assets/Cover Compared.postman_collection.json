@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "cb879ecf-9266-4da7-a72f-47dd4249634f",
+		"_postman_id": "deb42ac7-e2b8-47f2-8a51-b74006d16027",
 		"name": "Cover Compared",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -34,20 +34,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "https://dev.protect4less.com/app-api/device-details/",
-									"protocol": "https",
-									"host": [
-										"dev",
-										"protect4less",
-										"com"
-									],
-									"path": [
-										"app-api",
-										"device-details",
-										""
-									]
-								}
+								"url": "https://dev.protect4less.com/app-api/device-details/"
 							},
 							"response": []
 						},
@@ -74,20 +61,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "https://dev.protect4less.com/app-api/plan-details/",
-									"protocol": "https",
-									"host": [
-										"dev",
-										"protect4less",
-										"com"
-									],
-									"path": [
-										"app-api",
-										"plan-details",
-										""
-									]
-								}
+								"url": "https://dev.protect4less.com/app-api/plan-details/"
 							},
 							"response": []
 						}
@@ -285,19 +259,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "https://api.nsure.network/v1/get_quote",
-									"protocol": "https",
-									"host": [
-										"api",
-										"nsure",
-										"network"
-									],
-									"path": [
-										"v1",
-										"get_quote"
-									]
-								}
+								"url": "https://api.nsure.network/v1/get_quote"
 							},
 							"response": []
 						},
@@ -306,20 +268,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "https://napi.nsure.network/v1/cover/list",
-									"protocol": "https",
-									"host": [
-										"napi",
-										"nsure",
-										"network"
-									],
-									"path": [
-										"v1",
-										"cover",
-										"list"
-									]
-								}
+								"url": "https://napi.nsure.network/v1/cover/list"
 							},
 							"response": []
 						}
@@ -333,22 +282,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity",
-									"protocol": "https",
-									"host": [
-										"api",
-										"staging",
-										"nexusmutual",
-										"io"
-									],
-									"path": [
-										"v1",
-										"contracts",
-										"0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
-										"capacity"
-									]
-								}
+								"url": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity"
 							},
 							"response": []
 						},
@@ -397,19 +331,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "https://api.nexusmutual.io/coverables/contracts.json",
-									"protocol": "https",
-									"host": [
-										"api",
-										"nexusmutual",
-										"io"
-									],
-									"path": [
-										"coverables",
-										"contracts.json"
-									]
-								}
+								"url": "https://api.nexusmutual.io/coverables/contracts.json"
 							},
 							"response": []
 						}
@@ -459,15 +381,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies-mso",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies-mso"
-									]
-								},
+								"url": "{{host}}user/policies-mso",
 								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
 							},
 							"response": [
@@ -491,15 +405,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-mso",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-mso"
-											]
-										}
+										"url": "{{host}}user/policies-mso"
 									},
 									"status": "OK",
 									"code": 200,
@@ -561,15 +467,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-mso",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-mso"
-											]
-										}
+										"url": "{{host}}user/policies-mso"
 									},
 									"status": "OK",
 									"code": 200,
@@ -649,15 +547,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies-device-insurance",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies-device-insurance"
-									]
-								},
+								"url": "{{host}}user/policies-device-insurance",
 								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
 							},
 							"response": [
@@ -681,15 +571,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policy-device-insurance",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policy-device-insurance"
-											]
-										}
+										"url": "{{host}}user/policy-device-insurance"
 									},
 									"status": "OK",
 									"code": 200,
@@ -751,15 +633,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policy-device-insurance",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policy-device-insurance"
-											]
-										}
+										"url": "{{host}}user/policy-device-insurance"
 									},
 									"status": "OK",
 									"code": 200,
@@ -839,17 +713,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies-mso",
-										"{{policy_id}}",
-										"confirm-payment"
-									]
-								},
+								"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment",
 								"description": "- call after payment success or fail, need to call every time when you generate new payment_hash from provider, with whatever response success or fail\n\n## Other Details\n```\npayment_status  - paid, cancelled\n```"
 							},
 							"response": [
@@ -873,17 +737,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-mso",
-												"{{policy_id}}",
-												"confirm-payment"
-											]
-										}
+										"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -945,17 +799,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-mso",
-												"{{policy_id}}",
-												"confirm-payment"
-											]
-										}
+										"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1017,17 +861,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-mso",
-												"{{policy_id}}",
-												"confirm-payment"
-											]
-										}
+										"url": "{{host}}user/policies-mso/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1112,17 +946,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies-device-insurance",
-										"{{policy_id}}",
-										"confirm-payment"
-									]
-								},
+								"url": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
 								"description": "- call after payment success or fail, need to call every time when you generate new payment_hash from provider, with whatever response success or fail\n\n## Other Details\n```\npayment_status  - paid, cancelled\n```"
 							},
 							"response": [
@@ -1151,17 +975,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-device-insurance",
-												"{{policy_id}}",
-												"confirm-payment"
-											]
-										}
+										"url": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1228,17 +1042,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-device-insurance",
-												"{{policy_id}}",
-												"confirm-payment"
-											]
-										}
+										"url": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1305,17 +1109,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies-device-insurance",
-												"{{policy_id}}",
-												"confirm-payment"
-											]
-										}
+										"url": "{{host}}user/policies-device-insurance/{{policy_id}}/confirm-payment"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1394,17 +1188,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies/{{policy_id}}/add-review",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies",
-										"{{policy_id}}",
-										"add-review"
-									]
-								}
+								"url": "{{host}}user/policies/{{policy_id}}/add-review"
 							},
 							"response": [
 								{
@@ -1427,17 +1211,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}/add-review",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}",
-												"add-review"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}/add-review"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1499,17 +1273,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}/add-review",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}",
-												"add-review"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}/add-review"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1571,17 +1335,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}/add-review",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}",
-												"add-review"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}/add-review"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1659,15 +1413,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies"
-									]
-								}
+								"url": "{{host}}user/policies"
 							},
 							"response": [
 								{
@@ -1681,24 +1427,7 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}user/policies",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies"
-											]
-										}
+										"url": "{{host}}user/policies"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1776,16 +1505,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}user/policies/{{policy_id}}",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"policies",
-										"{{policy_id}}"
-									]
-								}
+								"url": "{{host}}user/policies/{{policy_id}}"
 							},
 							"response": [
 								{
@@ -1799,16 +1519,7 @@
 												"type": "text"
 											}
 										],
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1861,16 +1572,7 @@
 												"type": "text"
 											}
 										],
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -1923,25 +1625,7 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}user/policies/{{policy_id}}",
-											"host": [
-												"{{host}}user"
-											],
-											"path": [
-												"policies",
-												"{{policy_id}}"
-											]
-										}
+										"url": "{{host}}user/policies/{{policy_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -2017,12 +1701,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}login",
-							"host": [
-								"{{host}}login"
-							]
-						}
+						"url": "{{host}}login"
 					},
 					"response": []
 				},
@@ -2049,19 +1728,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"romik@gmail.com\"\n}",
+							"raw": "{\n    \"email\":\"superadmin@cover-compared-staging.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}check-email-exist",
-							"host": [
-								"{{host}}check-email-exist"
-							]
-						}
+						"url": "{{host}}check-email-exist"
 					},
 					"response": []
 				},
@@ -2101,15 +1775,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/add-profile-details",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"add-profile-details"
-							]
-						}
+						"url": "{{host}}user/add-profile-details"
 					},
 					"response": []
 				},
@@ -2149,15 +1815,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/resend-verification-email",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"resend-verification-email"
-							]
-						}
+						"url": "{{host}}user/resend-verification-email"
 					},
 					"response": []
 				},
@@ -2197,15 +1855,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/verify-otp",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"verify-otp"
-							]
-						}
+						"url": "{{host}}user/verify-otp"
 					},
 					"response": []
 				},
@@ -2248,15 +1898,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/profile",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"profile"
-							]
-						}
+						"url": "{{host}}user/profile"
 					},
 					"response": [
 						{
@@ -2270,15 +1912,7 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{host}}user/profile",
-									"host": [
-										"{{host}}user"
-									],
-									"path": [
-										"profile"
-									]
-								}
+								"url": "{{host}}user/profile"
 							},
 							"status": "OK",
 							"code": 200,
@@ -2358,15 +1992,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/add-wallet-address",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"add-wallet-address"
-							]
-						}
+						"url": "{{host}}user/add-wallet-address"
 					},
 					"response": []
 				},
@@ -2406,15 +2032,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/cart-items",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"cart-items"
-							]
-						}
+						"url": "{{host}}user/cart-items"
 					},
 					"response": []
 				},
@@ -2457,15 +2075,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}user/cart-items",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"cart-items"
-							]
-						}
+						"url": "{{host}}user/cart-items"
 					},
 					"response": []
 				},
@@ -2499,12 +2109,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}policy-request",
-							"host": [
-								"{{host}}policy-request"
-							]
-						},
+						"url": "{{host}}policy-request",
 						"description": "## Other Details\n```\nplan_type       - mso_policy, device_insurance, smart_contract, crypto_exchange\n```"
 					},
 					"response": [
@@ -2522,12 +2127,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}policy-request",
-									"host": [
-										"{{host}}policy-request"
-									]
-								}
+								"url": "{{host}}policy-request"
 							},
 							"status": "OK",
 							"code": 200,
@@ -2604,16 +2204,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{host}}blogs/show/the-traditional-insurers-are-here",
-							"host": [
-								"{{host}}blogs"
-							],
-							"path": [
-								"show",
-								"the-traditional-insurers-are-here"
-							]
-						}
+						"url": "{{host}}blogs/show/the-traditional-insurers-are-here"
 					},
 					"response": []
 				}
@@ -2722,17 +2313,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{host}}/admin/policy-requests/6173a0b457e72205ec98e67c",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"admin",
-								"policy-requests",
-								"6173a0b457e72205ec98e67c"
-							]
-						}
+						"url": "{{host}}/admin/policy-requests/6173a0b457e72205ec98e67c"
 					},
 					"response": [
 						{
@@ -2740,17 +2321,7 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/admin/policy-request/61746a517339a823dbeca0a4",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"admin",
-										"policy-request",
-										"61746a517339a823dbeca0a4"
-									]
-								}
+								"url": "{{host}}/admin/policy-request/61746a517339a823dbeca0a4"
 							},
 							"status": "OK",
 							"code": 200,
@@ -2797,17 +2368,7 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/admin/policy-request/61746a517339a823dbeca0a2",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"admin",
-										"policy-request",
-										"61746a517339a823dbeca0a2"
-									]
-								}
+								"url": "{{host}}/admin/policy-request/61746a517339a823dbeca0a2"
 							},
 							"status": "OK",
 							"code": 200,
@@ -2950,16 +2511,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{host}}admin/policy/617788e7e802498c981a5fd1",
-							"host": [
-								"{{host}}admin"
-							],
-							"path": [
-								"policy",
-								"617788e7e802498c981a5fd1"
-							]
-						}
+						"url": "{{host}}admin/policy/617788e7e802498c981a5fd1"
 					},
 					"response": []
 				},
@@ -2993,15 +2545,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}admin/login",
-							"host": [
-								"{{host}}admin"
-							],
-							"path": [
-								"login"
-							]
-						}
+						"url": "{{host}}admin/login"
 					},
 					"response": [
 						{
@@ -3018,15 +2562,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}admin/login",
-									"host": [
-										"{{host}}admin"
-									],
-									"path": [
-										"login"
-									]
-								}
+								"url": "{{host}}admin/login"
 							},
 							"status": "OK",
 							"code": 200,
@@ -3082,15 +2618,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}admin/login",
-									"host": [
-										"{{host}}admin"
-									],
-									"path": [
-										"login"
-									]
-								}
+								"url": "{{host}}admin/login"
 							},
 							"status": "OK",
 							"code": 200,
@@ -3157,15 +2685,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}admin/profile",
-							"host": [
-								"{{host}}admin"
-							],
-							"path": [
-								"profile"
-							]
-						}
+						"url": "{{host}}admin/profile"
 					},
 					"response": []
 				},
@@ -3183,15 +2703,59 @@
 								}
 							}
 						},
+						"url": "{{host}}admin/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Contact Us Table",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{host}}admin/login",
+							"raw": "{{host}}/admin/contact-us/table?range=[0,2]",
 							"host": [
-								"{{host}}admin"
+								"{{host}}"
 							],
 							"path": [
-								"login"
+								"admin",
+								"contact-us",
+								"table"
+							],
+							"query": [
+								{
+									"key": "range",
+									"value": "[0,2]"
+								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contact Us Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}admin/contact-us/show/6193e5e63b72ca9edf553ade"
+					},
+					"response": []
+				},
+				{
+					"name": "Subscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"test\",\r\n    \"email\":\"simulatestudy+11@gmail.com\"   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/landing-app-subscribe"
 					},
 					"response": []
 				}
@@ -3242,12 +2806,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}products",
-					"host": [
-						"{{host}}products"
-					]
-				}
+				"url": "{{host}}seed"
 			},
 			"response": []
 		},
@@ -3296,12 +2855,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}partners",
-					"host": [
-						"{{host}}partners"
-					]
-				}
+				"url": "{{host}}partners"
 			},
 			"response": []
 		},
@@ -3666,12 +3220,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}cover-options",
-					"host": [
-						"{{host}}cover-options"
-					]
-				}
+				"url": "{{host}}cover-options"
 			},
 			"response": []
 		},
@@ -3722,18 +3271,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/cover-capacity",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-capacity"
-					]
-				}
+				"url": "http://localhost:3006/api/cover-capacity"
 			},
 			"response": [
 				{
@@ -3750,18 +3288,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-capacity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-capacity"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-capacity"
 					},
 					"status": "OK",
 					"code": 200,
@@ -3813,18 +3340,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-capacity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-capacity"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-capacity"
 					},
 					"status": "OK",
 					"code": 200,
@@ -3876,18 +3392,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-capacity",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-capacity"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-capacity"
 					},
 					"status": "OK",
 					"code": 200,
@@ -3952,18 +3457,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/cover-quote",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-quote"
-					]
-				},
+				"url": "http://localhost:3006/api/cover-quote",
 				"description": "currency : ETH,DAI"
 			},
 			"response": [
@@ -3981,18 +3475,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4040,18 +3523,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4099,18 +3571,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4175,18 +3636,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/cover-min-quote",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-min-quote"
-					]
-				},
+				"url": "http://localhost:3006/api/cover-min-quote",
 				"description": "currency : ETH,DAI"
 			},
 			"response": [
@@ -4204,18 +3654,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-min-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-min-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-min-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4267,18 +3706,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-min-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-min-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-min-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4330,18 +3758,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:3006/api/cover-min-quote",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3006",
-							"path": [
-								"api",
-								"cover-min-quote"
-							]
-						}
+						"url": "http://localhost:3006/api/cover-min-quote"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4398,12 +3815,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{host}}p4l-forward",
-					"host": [
-						"{{host}}p4l-forward"
-					]
-				}
+				"url": "{{host}}p4l-forward"
 			},
 			"response": []
 		},
@@ -4430,18 +3842,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:3006/api/p4l-forward",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"p4l-forward"
-					]
-				}
+				"url": "http://localhost:3006/api/p4l-forward"
 			},
 			"response": []
 		},
@@ -4509,16 +3910,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "{{host}}user/policies/{{policy_id}}",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"policies",
-								"{{policy_id}}"
-							]
-						}
+						"url": "{{host}}user/policies/{{policy_id}}"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4571,16 +3963,7 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "{{host}}user/policies/{{policy_id}}",
-							"host": [
-								"{{host}}user"
-							],
-							"path": [
-								"policies",
-								"{{policy_id}}"
-							]
-						}
+						"url": "{{host}}user/policies/{{policy_id}}"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4655,12 +4038,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{host}}contact-us",
-					"host": [
-						"{{host}}contact-us"
-					]
-				},
+				"url": "{{host}}contact-us",
 				"description": "- Used to send Contact request or any query\n```\nuser_type   : Customer, Partner, Other\n```"
 			},
 			"response": [
@@ -4684,12 +4062,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}contact-us",
-							"host": [
-								"{{host}}contact-us"
-							]
-						}
+						"url": "{{host}}contact-us"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4751,12 +4124,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}contact-us",
-							"host": [
-								"{{host}}contact-us"
-							]
-						}
+						"url": "{{host}}contact-us"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4831,12 +4199,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{host}}landing-app-subscribe",
-					"host": [
-						"{{host}}landing-app-subscribe"
-					]
-				},
+				"url": "{{host}}landing-app-subscribe",
 				"description": "- Used to send Contact request or any query\n```\nuser_type   : Customer, Partner, Other\n```"
 			},
 			"response": [
@@ -4860,12 +4223,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}landing-app-subscribe",
-							"host": [
-								"{{host}}landing-app-subscribe"
-							]
-						}
+						"url": "{{host}}landing-app-subscribe"
 					},
 					"status": "OK",
 					"code": 200,
@@ -4927,12 +4285,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{host}}landing-app-subscribe",
-							"host": [
-								"{{host}}landing-app-subscribe"
-							]
-						}
+						"url": "{{host}}landing-app-subscribe"
 					},
 					"status": "OK",
 					"code": 200,
