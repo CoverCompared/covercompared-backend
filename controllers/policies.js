@@ -242,6 +242,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             "value": ["required"],
             "purchase_month": ["required"],
             "model": ["required"],
+            "model_name": ["nullable"],
             "plan_type": ["required", "in:monthly,yearly"],
             "first_name": ["required"],
             "last_name": ["required"],
@@ -292,6 +293,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         device_insurance.value = req.body.value;
         device_insurance.purchase_month = req.body.purchase_month;
         device_insurance.model = req.body.model;
+        device_insurance.model_name = req.body.model_name;
         device_insurance.plan_type = req.body.plan_type;
         device_insurance.first_name = req.body.first_name;
         device_insurance.last_name = req.body.last_name;

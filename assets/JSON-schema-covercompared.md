@@ -183,6 +183,7 @@ plan_type   - monthly, yearly
             "value": "",
             "purchase_month": "",
             "model": "",
+            "model_name": "",
             "plan_type": "",
             "first_name": "",
             "last_name": "",

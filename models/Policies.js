@@ -105,7 +105,7 @@ PoliciesSchema.statics = {
                 .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"]).sort({ _id: -1 }).populate({
                     path: "reference_id",
                     select: [
-                        "_id", "device_type", "brand", "value", "purchase_month", "model",
+                        "_id", "device_type", "brand", "value", "purchase_month", "model", "model_name",
                         "plan_type", "first_name", "last_name", "email", "phone", "currency",
                         "amount", "discount_amount", "tax", "total_amount", "payment_hash",
                     ],

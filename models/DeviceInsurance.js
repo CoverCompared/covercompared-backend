@@ -20,6 +20,7 @@ const DeviceInsuranceSchema = new Schema({
     value: { type: String, default: null },
     purchase_month: { type: String, default: null },
     model: { type: String, default: null },
+    model_name: { type: String, default: null },
     plan_type: { type: String, default: null },
     first_name: { type: String, default: null },
     last_name: { type: String, default: null },
