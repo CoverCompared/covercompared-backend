@@ -6,8 +6,6 @@ const config = require("../config");
 
 const mongoose = require("mongoose");
 const Policies = mongoose.model('Policies');
-const MSOPolicies = mongoose.model('MSOPolicies');
-const DeviceInsurance = mongoose.model('DeviceInsurance');
 const Reviews = mongoose.model('Reviews');
 const Payments = mongoose.model("Payments");
 const niv = require("./../libs/nivValidations");
@@ -17,8 +15,10 @@ const msoPlans = require("../libs/mso-plans");
 
 exports.storeMso = async (req, res, next) => {
     try {
+        let plan_types = msoPlans.map(plan => (plan.unique_id));
+
         let rules = {
-            "plan_type": ["required", "in:BASIC_PLAN,SILVER_PLAN,GOLD_PLAN,PLATINUM_PLAN"],
+            "plan_type": ["required", `in:${plan_types.join(",")}`],
             "country": ["nullable"],
             "quote": ["required"],
             "name": ["nullable"],
@@ -56,6 +56,20 @@ exports.storeMso = async (req, res, next) => {
             return res.status(200).send(utils.apiResponseMessage(false, "Total Amount is invalid."));
         }
 
+        let plan = msoPlans.find(plan => plan.unique_id == req.body.plan_type);
+
+        let plan_details = {
+            type: _.get(plan, "type", ""),
+            MSOPlanDuration: _.get(plan, "MSOPlanDuration", ""),
+            MSOCoverUser: _.get(plan, "MSOCoverUser", ""),
+            MSOCoverUserLimit: _.get(plan, "MSOCoverUserLimit", ""),
+            noOfSpouse: _.get(plan, "noOfSpouse", ""),
+            noOfDependent: _.get(plan, "noOfDependent", ""),
+            mainMemberParents: _.get(plan, "mainMemberParents", ""),
+            spouseParents: _.get(plan, "spouseParents", ""),
+            totalUsers: _.get(plan, "totalUsers", ""),
+        };
+
         let policy = new Policies;
         policy.user_id = req.user._id;
         policy.product_type = constant.ProductTypes.mso_policy;
@@ -71,43 +85,20 @@ exports.storeMso = async (req, res, next) => {
         policy.discount_amount = req.body.discount_amount;
         policy.tax = req.body.tax;
         policy.total_amount = req.body.total_amount;
-        await policy.save();
-
-        let plan = msoPlans.find(plan => plan.unique_id == req.body.plan_type);
-
-        let plan_details = {
-            type: _.get(plan, "type", ""),
-            MSOPlanDuration: _.get(plan, "MSOPlanDuration", ""),
-            MSOCoverUser: _.get(plan, "MSOCoverUser", ""),
-            MSOCoverUserLimit: _.get(plan, "MSOCoverUserLimit", ""),
-            noOfSpouse: _.get(plan, "noOfSpouse", ""),
-            noOfDependent: _.get(plan, "noOfDependent", ""),
-            mainMemberParents: _.get(plan, "mainMemberParents", ""),
-            spouseParents: _.get(plan, "spouseParents", ""),
-            totalUsers: _.get(plan, "totalUsers", ""),
-        };
-
-        let mso_policy = new MSOPolicies;
-        mso_policy.user_id = req.user._id;
-        mso_policy.txn_hash = policy.txn_hash;
-        mso_policy.policy_id = policy._id;
-        mso_policy.plan_type = req.body.plan_type;
-        mso_policy.country = req.body.country;
-        mso_policy.quote = req.body.quote;
-        mso_policy.name = req.body.name;
-        mso_policy.mso_cover_user = req.body.mso_cover_user;
-        mso_policy.currency = req.body.currency;
-        mso_policy.policy_price = req.body.quote;
-        mso_policy.mso_addon_service = req.body.mso_addon_service;
-        mso_policy.amount = req.body.amount;
-        mso_policy.discount_amount = req.body.discount_amount;
-        mso_policy.tax = req.body.tax;
-        mso_policy.total_amount = req.body.total_amount;
-        mso_policy.status = policy.status;
-        mso_policy.plan_details = plan_details;
-
+        policy.MSOPolicy = {
+            plan_type : req.body.plan_type,
+            name : req.body.name,
+            country : req.body.country,
+            mso_cover_user : req.body.mso_cover_user,
+            policy_price : req.body.quote,
+            quote : req.body.quote,
+            mso_addon_service : req.body.mso_addon_service,
+            amount : req.body.amount,
+            plan_details : plan_details,
+            MSOMembers :[]
+        }
         for (const key in req.body.MSOMembers) {
-            mso_policy.MSOMembers.push({
+            policy.MSOPolicy.MSOMembers.push({
                 user_type: req.body.MSOMembers[key].user_type,
                 first_name: req.body.MSOMembers[key].first_name,
                 last_name: req.body.MSOMembers[key].last_name,
@@ -118,11 +109,8 @@ exports.storeMso = async (req, res, next) => {
             })
         }
 
-        mso_policy.status = policy.status;
-        await mso_policy.save();
+        await policy.save();
 
-        policy.reference_id = mso_policy._id;
-        policy.save();
 
         return res.status(200).send(utils.apiResponse(true, "Policy added successfully.", {
             _id: policy._id,
@@ -144,15 +132,11 @@ exports.msoConfirmPayment = async (req, res, next) => {
             product_type: constant.ProductTypes.mso_policy
         });
 
-        let mso_policy = await MSOPolicies.findOne({
-            _id: policy.reference_id
-        });
-
-        if (!policy || !mso_policy) {
+        if (!policy) {
             /**
              * TODO:
              * Error Report
-             * If policy or mso_policy record not found in database
+             * If policy record not found in database
              */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }
@@ -214,10 +198,6 @@ exports.msoConfirmPayment = async (req, res, next) => {
                 updated_at: new Date(moment()),
                 updated_by: req.user._id
             });
-
-            // Update payment to MSO Policies
-            mso_policy.status = policy.status;
-            await mso_policy.save();
         }
 
         await policy.save();
@@ -282,34 +262,20 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         policy.discount_amount = req.body.discount_amount;
         policy.tax = req.body.tax;
         policy.total_amount = req.body.total_amount;
+        policy.DeviceInsurance = {
+            device_type : req.body.device_type,
+            brand : req.body.brand,
+            value : req.body.value,
+            purchase_month : req.body.purchase_month,
+            model : req.body.model,
+            model_name : req.body.model_name,
+            plan_type : req.body.plan_type,
+            first_name : req.body.first_name,
+            last_name : req.body.last_name,
+            email : req.body.email,
+            phone : req.body.phone
+        }
         await policy.save();
-
-        let device_insurance = new DeviceInsurance;
-        device_insurance.user_id = req.user._id;
-        device_insurance.txn_hash = policy.txn_hash;
-        device_insurance.policy_id = policy._id;
-        device_insurance.device_type = req.body.device_type;
-        device_insurance.brand = req.body.brand;
-        device_insurance.value = req.body.value;
-        device_insurance.purchase_month = req.body.purchase_month;
-        device_insurance.model = req.body.model;
-        device_insurance.model_name = req.body.model_name;
-        device_insurance.plan_type = req.body.plan_type;
-        device_insurance.first_name = req.body.first_name;
-        device_insurance.last_name = req.body.last_name;
-        device_insurance.email = req.body.email;
-        device_insurance.phone = req.body.phone;
-        device_insurance.currency = req.body.currency;
-        device_insurance.amount = req.body.amount;
-        device_insurance.discount_amount = req.body.discount_amount;
-        device_insurance.tax = req.body.tax;
-        device_insurance.total_amount = req.body.total_amount;
-
-        device_insurance.status = policy.status;
-        await device_insurance.save();
-
-        policy.reference_id = device_insurance._id;
-        policy.save();
 
         return res.status(200).send(utils.apiResponse(true, "Policy added successfully.", {
             _id: policy._id,
@@ -331,15 +297,11 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             product_type: constant.ProductTypes.device_insurance
         });
 
-        let device_insurance = await DeviceInsurance.findOne({
-            _id: policy.reference_id
-        });
-
-        if (!policy || !device_insurance) {
+        if (!policy) {
             /**
              * TODO:
              * Error Report
-             * If policy or device_insurance record not found in database
+             * If policy record not found in database
              */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }
@@ -401,10 +363,6 @@ exports.deviceConfirmPayment = async (req, res, next) => {
                 updated_at: new Date(moment()),
                 updated_by: req.user._id
             });
-
-            // Update payment to MSO Policies
-            device_insurance.status = policy.status;
-            await device_insurance.save();
         }
 
         await policy.save();
@@ -432,7 +390,7 @@ exports.policyReview = async (req, res, next) => {
             /**
              * TODO:
              * Error Report
-             * If policy or device_insurance record not found in database
+             * If policy record not found in database
              */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }else if( ![constant.PolicyStatus.active, constant.PolicyStatus.complete].includes(policy.status) ){
@@ -482,9 +440,9 @@ exports.get = async (req, res, next) => {
 
         let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy], { user_id: req.user._id });
 
-        policies = policies.map(policy => {
-            return policy;
-        })
+        // policies = policies.map(policy => {
+        //     return policy;
+        // })
 
         return res.status(200).send(utils.apiResponseData(true, { policies }));
     } catch (error) {
@@ -500,7 +458,7 @@ exports.show = async (req, res, next) => {
             /**
              * TODO:
              * Error Report
-             * If policy or device_insurance record not found in database
+             * If policy record not found in database
              */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }
@@ -508,6 +466,7 @@ exports.show = async (req, res, next) => {
         let reviews = await Reviews.find({ policy_id: req.params.id })
             .select(["rating", "review", "updatedAt"])
             .lean();
+            
         policy = await Policies.getPolicies(policy.product_type, { user_id: req.user._id, _id: req.params.id });
 
         return res.status(200).send(utils.apiResponseData(true, { ...policy[0], reviews }));

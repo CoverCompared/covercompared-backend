@@ -28,14 +28,10 @@ const msoPlans = [
         MSOAddOnService: "24",
         type: "Single cover",
         MSOPlanDuration: "Annual Plan",
-        MSOCoverUser: "User - 1",
+        MSOCoverUser: "Single cover",
         MSOCoverUserLimit: "1",
         EHR: "EHR & PORTAL",
         userTypeOptions: ["Main Member"],
-        noOfSpouse: 0,
-        noOfDependent: 0,
-        mainMemberParents: 0,
-        spouseParents: 0,
         totalUsers: 1,
         "logo": `${config.api_url}images/mso.png`
     },
@@ -47,14 +43,10 @@ const msoPlans = [
         MSOAddOnService: "14",
         type: "Family cover",
         MSOPlanDuration: "Annual Plan",
-        MSOCoverUser: "3 plus 3: Husband, two wives, and 3 children",
-        MSOCoverUserLimit: "3",
+        MSOCoverUser: "3 plus 3: Husband, wives, and children",
+        MSOCoverUserLimit: "6",
         EHR: "EHR & PORTAL",
         userTypeOptions: ["Main Member", "Spouse", "Dependent"],
-        noOfSpouse: 2,
-        noOfDependent: 3,
-        mainMemberParents: 0,
-        spouseParents: 0,
         totalUsers: 6,
         "logo": `${config.api_url}images/mso.png`
     },
@@ -67,7 +59,7 @@ const msoPlans = [
         type: "Family cover",
         MSOPlanDuration: "Annual Plan",
         MSOCoverUser:
-            "unlimited: Husband, all wives, all children, parents on husband& wives’ side",
+            "unlimited: Husband, wives, children, parents on husband& wives’ side",
         MSOCoverUserLimit: "unlimited",
         EHR: "EHR & PORTAL",
         userTypeOptions: [
@@ -77,10 +69,6 @@ const msoPlans = [
             "Main Member Parent",
             "Spouse Parent",
         ],
-        noOfSpouse: -1,        // -1 is for unlimited
-        noOfDependent: -1,     // -1 is for unlimited
-        mainMemberParents: -1, // -1 is for unlimited
-        spouseParents: -1,     // -1 is for unlimited
         totalUsers: -1,        // -1 is for unlimited
         "logo": `${config.api_url}images/mso.png`
     },

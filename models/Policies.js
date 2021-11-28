@@ -9,13 +9,25 @@ const msoPlans = require("./../libs/mso-plans");
 
 /**
  * Policies Schema
+ * user_id         - Users._id
+ * payment_id      - Payments._id
+ * product_type    - mso-policy, device-insurance
+ * status          - pending, active, cancelled
+ * payment_status  - unpaid, paid, cancelled
+ * 
+ * MSOPolicy.plan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN
+ * MSOPolicy.amount          - policy_price + mso_addon_service
+ * MSOPolicy.user_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent
+ * MSOPolicy.identity_type   - passport, adhar
+ * 
+ * DeviceInsurance.plan_type   - monthly, yearly
+ * 
  */
 
 const PoliciesSchema = new Schema({
     user_id: { type: Schema.ObjectId, ref: "Users" },
     txn_hash: { type: String, default: null },
     product_type: { type: String, default: null },
-    reference_id: { type: Schema.ObjectId, default: null },
     status: { type: String, default: null },
     StatusHistory: [{
         status: { type: String, default: null },
@@ -37,7 +49,40 @@ const PoliciesSchema = new Schema({
     amount: { type: Number, default: null },
     discount_amount: { type: Number, default: null },
     tax: { type: Number, default: null },
-    total_amount: { type: Number, default: null }
+    total_amount: { type: Number, default: null },
+    MSOPolicy: {
+        plan_type: { type: String, default: null },
+        name: { type: String, default: null },
+        country: { type: String, default: null },
+        mso_cover_user: { type: String, default: null },
+        policy_price: { type: Number, default: null },
+        quote: { type: String, default: null },
+        mso_addon_service: { type: Number, default: null },
+        amount: { type: Number, default: null },
+        MSOMembers: [{
+            user_type: { type: String, default: null },
+            first_name: { type: String, default: null },
+            last_name: { type: String, default: null },
+            country: { type: String, default: null },
+            dob: { type: Date, default: null },
+            identity_type: { type: String, default: null },
+            identity: { type: String, default: null }
+        }],
+        plan_details: { type: Schema.Types.Mixed, default: null }
+    },
+    DeviceInsurance: {
+        device_type: { type: String, default: null },
+        brand: { type: String, default: null },
+        value: { type: String, default: null },
+        purchase_month: { type: String, default: null },
+        model: { type: String, default: null },
+        model_name: { type: String, default: null },
+        plan_type: { type: String, default: null },
+        first_name: { type: String, default: null },
+        last_name: { type: String, default: null },
+        email: { type: String, default: null },
+        phone: { type: Number, default: null },
+    }
 }, {
     timestamps: true
 });
@@ -64,62 +109,32 @@ PoliciesSchema.statics = {
     getPolicies: async function (product_type, find = {}) {
 
         const Policies = mongoose.model("Policies");
-        let policies = [];
 
-        if (
-            product_type == "mso_policy" ||
-            (Array.isArray(product_type) && product_type.includes("mso_policy"))
-        ) {
-            const MSOPolicies = mongoose.model("MSOPolicies");
-            let mso_policies = await Policies.find({ ...find, product_type: constant.ProductTypes.mso_policy })
-                .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"]).sort({ _id: -1 }).populate({
-                    path: "reference_id",
-                    select: [
-                        "_id", "plan_type", "quote", "name", "country",
-                        "mso_cover_user", "currency", "policy_price", "mso_addon_service",
-                        "MSOMembers"
-                    ],
-                    model: MSOPolicies
-                })
-                .lean();
-            
-            if(Array.isArray(mso_policies)){
-                mso_policies = mso_policies.map((policy) => {
+        let policies = await Policies.find({ ...find, product_type })
+            .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"])
+            .sort({ _id: -1 })
+            .lean();
+
+        if (Array.isArray(policies)) {
+            policies = policies.map((policy) => {
+                if(policy.product_type == constant.ProductTypes.mso_policy){
                     let plan = msoPlans.find(plan => plan.unique_id == _.get(policy, "reference_id.plan_type"));
                     policy.plan_details = _.get(policy, "plan_details", {});
-                    policy.plan_details = {...policy.plan_details, ...plan};
-                    return policy;
-                })
-            }
+                    policy.plan_details = { ...policy.plan_details, ...plan };
+                }
 
-            policies = [...policies, ...mso_policies];
+                if(policy.product_type == constant.ProductTypes.mso_policy){
+                    policy.details = policy.MSOPolicy;
+                }else if(policy.product_type == constant.ProductTypes.device_insurance){
+                    policy.details = policy.DeviceInsurance;
+                }
 
+                delete policy.MSOPolicy;
+                delete policy.DeviceInsurance;
+                
+                return policy;
+            })
         }
-
-        if (
-            product_type == "device_insurance" ||
-            (Array.isArray(product_type) && product_type.includes("device_insurance"))
-        ) {
-            const DeviceInsurance = mongoose.model("DeviceInsurance");
-            let device_insurances = await Policies.find({ ...find, product_type: constant.ProductTypes.device_insurance })
-                .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"]).sort({ _id: -1 }).populate({
-                    path: "reference_id",
-                    select: [
-                        "_id", "device_type", "brand", "value", "purchase_month", "model", "model_name",
-                        "plan_type", "first_name", "last_name", "email", "phone", "currency",
-                        "amount", "discount_amount", "tax", "total_amount", "payment_hash",
-                    ],
-                    model: DeviceInsurance
-                }).lean();
-
-            policies = [...policies, ...device_insurances];
-        }
-
-        policies = policies.map(policy => {
-            policy.details = policy.reference_id;
-            delete policy.reference_id;
-            return policy;
-        })
 
         if (Array.isArray(policies) && policies.length) {
             policies.sort((a, b) => { return moment(b.createdAt).format("X") - moment(a.createdAt).format("X") })
