@@ -48,6 +48,14 @@ payment_id      - Payments._id
 product_type    - mso-policy, device-insurance
 status          - pending, active, cancelled
 payment_status  - unpaid, paid, cancelled
+
+MSOPolicy.plan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN
+MSOPolicy.amount          - policy_price + mso_addon_service
+MSOPolicy.user_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent
+MSOPolicy.identity_type   - passport, adhar
+
+DeviceInsurance.plan_type   - monthly, yearly
+
 ```
 ```
 {
@@ -84,6 +92,42 @@ payment_status  - unpaid, paid, cancelled
             "discount_amount": "",
             "tax": "",
             "total_amount": "",
+            "MSOPolicy": {
+                "plan_type": "",
+                "name": "",
+                "quote": "",
+                "country": "",
+                "mso_cover_user": "",
+                "currency": "",
+                "policy_price": "",
+                "mso_addon_service": "",
+                "amount": "",
+                "MSOMembers": [
+                    {
+                        "_id": "",
+                        "user_type": "",
+                        "first_name": "",
+                        "last_name": "",
+                        "country": "",
+                        "dob": "",
+                        "identity_type" : "passport",
+                        "identity": "xxx-xxx-xxx"
+                    }
+                ]
+            },
+            "DeviceInsurance": {
+                "device_type": "",
+                "brand": "",
+                "value": "",
+                "purchase_month": "",
+                "model": "",
+                "model_name": "",
+                "plan_type": "",
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+                "phone": ""
+            },
             "created_at": "",
             "updated_at": ""
         }
@@ -107,97 +151,6 @@ payment_status  - unpaid, paid, cancelled
             "currency": "",
             "paid_amount": "",
             "payment_status": ""
-        }
-    ]
-}
-```
-
-## MSOPolicies
-```
-plan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN
-user_id         - Users._id
-policy_id       - Policies._id
-amount          - policy_price + mso_addon_service
-user_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent
-identity_type   - passport, adhar
-```
-```
-{
-    "MSOPolicies": [
-        {
-            "_id": "",
-            "user_id": "",
-            "txn_hash": "",
-            "policy_id": "",
-            "plan_type": "",
-            "quote": "",
-            "name": "",
-            "email": "",
-            "country": "",
-            "logo": "",
-            "logo_aws_key": "",
-            "mso_cover_user": "",
-            "currency": "",
-            "policy_price": "",
-            "mso_addon_service": "",
-            "amount": "",
-            "discount_amount": "",
-            "tax": "",
-            "total_amount": "",
-            "MSOMembers": [
-                {
-                    "_id": "",
-                    "user_type": "",
-                    "first_name": "",
-                    "last_name": "",
-                    "country": "",
-                    "dob": "",
-                    "identity_type" : "passport",
-                    "identity": "xxx-xxx-xxx"
-                }
-            ],
-            "status": "",
-            "created_at": "",
-            "updated_at": "",
-        }
-    ]
-}
-```
-
-## DeviceInsurances
-```
-user_id     - Users._id
-policy_id   - Policies._id
-plan_type   - monthly, yearly
-```
-```
-{
-    "DeviceInsurances": [
-        {
-            "_id": "",
-            "user_id": "",
-            "txn_hash": "",
-            "policy_id": "",
-            "device_type": "",
-            "brand": "",
-            "value": "",
-            "purchase_month": "",
-            "model": "",
-            "model_name": "",
-            "plan_type": "",
-            "first_name": "",
-            "last_name": "",
-            "email": "",
-            "phone": "",
-            "currency": "",
-            "amount": "",
-            "discount_amount": "",
-            "tax": "",
-            "total_amount": "",
-            "payment_hash": "",
-            "status": "",
-            "created_at": "",
-            "updated_at": ""
         }
     ]
 }
