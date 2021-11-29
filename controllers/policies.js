@@ -59,14 +59,11 @@ exports.storeMso = async (req, res, next) => {
         let plan = msoPlans.find(plan => plan.unique_id == req.body.plan_type);
 
         let plan_details = {
+            name: _.get(plan, "name", ""),
             type: _.get(plan, "type", ""),
             MSOPlanDuration: _.get(plan, "MSOPlanDuration", ""),
             MSOCoverUser: _.get(plan, "MSOCoverUser", ""),
             MSOCoverUserLimit: _.get(plan, "MSOCoverUserLimit", ""),
-            noOfSpouse: _.get(plan, "noOfSpouse", ""),
-            noOfDependent: _.get(plan, "noOfDependent", ""),
-            mainMemberParents: _.get(plan, "mainMemberParents", ""),
-            spouseParents: _.get(plan, "spouseParents", ""),
             totalUsers: _.get(plan, "totalUsers", ""),
         };
 
@@ -87,7 +84,7 @@ exports.storeMso = async (req, res, next) => {
         policy.total_amount = req.body.total_amount;
         policy.MSOPolicy = {
             plan_type : req.body.plan_type,
-            name : req.body.name,
+            name : req.body.name ? req.body.name: plan_details.name,
             country : req.body.country,
             mso_cover_user : req.body.mso_cover_user,
             policy_price : req.body.quote,
