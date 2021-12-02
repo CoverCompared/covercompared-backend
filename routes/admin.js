@@ -9,31 +9,32 @@ const AdminAuthController = require("./../controllers/admin/auth")
 const adminVerifyPassword = require('../libs/middlewares/adminVerifyPassword');
 
 router.post("/login", AdminAuthController.login)
-router.get("/profile", adminVerifyPassword, AdminAuthController.profile)
-router.get("/update-email", adminVerifyPassword, AdminAuthController.updateEmail)
 
-router.param('blogId', blogController.load);
-router.get('/blogs/', blogController.index);
-router.post('/blogs/',
-    loadFormDataMiddleware,
-    blogController.validate("store"),
-    blogController.store);
-router.get('/blogs/:blogId', blogController.show);
-router.delete('/blogs/:blogId', blogController.destroy);
-router.put('/blogs/:blogId',
-    loadFormDataMiddleware,
-    blogController.validate("update"),
-    blogController.update);
+let authRoutes = express.Router();
+
+authRoutes.get("/profile", adminVerifyPassword, AdminAuthController.profile)
+authRoutes.get("/update-email", adminVerifyPassword, AdminAuthController.updateEmail)
+
+// Blog module routes
+authRoutes.param('blogId', blogController.load);
+authRoutes.get('/blogs/', blogController.index);
+authRoutes.post('/blogs/', loadFormDataMiddleware, blogController.validate("store"), blogController.store);
+authRoutes.get('/blogs/:blogId', blogController.show);
+authRoutes.delete('/blogs/:blogId', blogController.destroy);
+authRoutes.put('/blogs/:blogId', loadFormDataMiddleware, blogController.validate("update"), blogController.update);
 
 // policy-request routes 
-router.get('/policy-requests', policyRequestController.index);
-router.get('/policy-requests/:id', policyRequestController.show);
-router.get('/policies', policiesController.index);
-router.get('/policies/:id', policiesController.show);
+authRoutes.get('/policy-requests', policyRequestController.index);
+authRoutes.get('/policy-requests/:id', policyRequestController.show);
+authRoutes.get('/policies', policiesController.index);
+authRoutes.get('/policies/:id', policiesController.show);
 
 
 // contact-us
-router.get('/contact-us/table', adminVerifyPassword , contactController.table);
-router.get('/contact-us/show/:id', adminVerifyPassword ,contactController.show);
+authRoutes.get('/contact-us/table', adminVerifyPassword , contactController.table);
+authRoutes.get('/contact-us/show/:id', adminVerifyPassword ,contactController.show);
+
+router.use("/", adminVerifyPassword, authRoutes);
+
 
 module.exports = router;

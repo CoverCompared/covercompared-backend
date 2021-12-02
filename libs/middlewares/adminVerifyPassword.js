@@ -20,7 +20,10 @@ module.exports = async function (req, res, next) {
             return res.status(401).json(utils.apiResponseMessage(false, "Unauthorized."));
         }
     } catch (error) {
-        if (error instanceof jwt.TokenExpiredError) {
+        if (
+            error instanceof jwt.TokenExpiredError ||
+            error instanceof jwt.JsonWebTokenError
+        ) {
             return res.status(401).json(utils.apiResponseMessage(false, "Unauthorized."));
         }
         return res.status(500).json({ status: false });
