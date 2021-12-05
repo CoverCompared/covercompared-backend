@@ -182,7 +182,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"chain\": \"BSC\"\n}",
+									"raw": "{\n  \"chain\": \"Ethereum\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -236,7 +236,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"productIds\": [\n        \"1\"\n    ],\n    \"coverDays\": [\n        \"30\"\n    ],\n    \"coverAmounts\": [\n        10000000000000000\n    ],\n    \"owner\": \"0x6C641CE6A7216F12d28692f9d8b2BDcdE812eD2b\",\n    \"referralCode\": null\n}",
+									"raw": "{\n    \"chain\": \"Ethereum\",\n    \"coverCurrency\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"productIds\": [\n        \"20\"\n    ],\n    \"coverDays\": [\n        \"30\"\n    ],\n    \"coverAmounts\": [\n        \"1000000000000000042420637374017961984\"\n    ],\n    \"owner\": \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n    \"referralCode\": \"\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -334,7 +334,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://api.staging.nexusmutual.io/v1/contracts/0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633/capacity",
+									"raw": "https://api.staging.nexusmutual.io/v1/contracts/0xe80d347DF1209a76DD9d2319d62912ba98C54DDD/capacity",
 									"protocol": "https",
 									"host": [
 										"api",
@@ -345,7 +345,7 @@
 									"path": [
 										"v1",
 										"contracts",
-										"0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+										"0xe80d347DF1209a76DD9d2319d62912ba98C54DDD",
 										"capacity"
 									]
 								}
@@ -398,10 +398,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://api.nexusmutual.io/coverables/contracts.json",
+									"raw": "https://api.staging.nexusmutual.io/coverables/contracts.json",
 									"protocol": "https",
 									"host": [
 										"api",
+										"staging",
 										"nexusmutual",
 										"io"
 									],
@@ -452,7 +453,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"quote\": \"50\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+									"raw": "{\n    \"plan_type\": \"SILVER_PLAN\",\n    \"name\": \"Silver Plan\",\n    \"quote\": \"50\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"mso_cover_user\": 1,\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1387,7 +1388,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"goodgood\"\n}",
+									"raw": "{\n    \"rating\": \"2.0\",\n    \"review\": \"good good\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2172,7 +2173,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"otp\":\"968272\"\n}",
+							"raw": "{\n    \"otp\":\"765254\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3349,7 +3350,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20\n}",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3357,18 +3358,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3006/api/cover-quote",
-					"protocol": "http",
+					"raw": "{{host}}cover-quote",
 					"host": [
-						"localhost"
-					],
-					"port": "3006",
-					"path": [
-						"api",
-						"cover-quote"
+						"{{host}}cover-quote"
 					]
 				},
-				"description": "currency : ETH,DAI"
+				"description": "currency : ETH,DAI\n\n# InsurAce\nsupported_chain is optional \ndefault value of supported_chain is \"Ethereum\""
 			},
 			"response": [
 				{
@@ -3496,7 +3491,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20\n}",
+							"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3572,7 +3567,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"currency\": \"DAI\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": null,\n    \"supported_chain\": \"BSC\"\n}",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"product_id\": 20,\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"supported_chain\": \"Ethereum\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3884,18 +3879,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}review?plan_type=SILVER_PLAN&product_type=mso_policy",
+					"raw": "{{host}}review",
 					"host": [
 						"{{host}}review"
 					],
 					"query": [
 						{
 							"key": "plan_type",
-							"value": "SILVER_PLAN"
+							"value": "SILVER_PLAN",
+							"disabled": true
 						},
 						{
 							"key": "product_type",
-							"value": "mso_policy"
+							"value": "device_insurance",
+							"disabled": true
 						}
 					]
 				},
@@ -4024,7 +4021,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"policy\": {\n            \"_id\": \"61730744de0311f97d14587c\",\n            \"txn_hash\": \"DEVICE-008010\",\n            \"product_type\": \"device_insurance\",\n            \"reference_id\": \"61730745de0311f97d145881\",\n            \"status\": \"pending\",\n            \"payment_status\": \"unpaid\",\n            \"blockchain\": null,\n            \"wallet_address\": null,\n            \"block_timestamp\": null,\n            \"txn_type\": null,\n            \"payment_hash\": null,\n            \"currency\": \"USD\",\n            \"amount\": 30.38,\n            \"discount_amount\": 7.595,\n            \"tax\": 5,\n            \"total_amount\": 27.785,\n            \"StatusHistory\": [\n                {\n                    \"status\": \"pending\",\n                    \"updated_at\": \"2021-10-22T18:47:32.380Z\",\n                    \"updated_by\": \"61719bd481b9ca0558e19b6f\",\n                    \"_id\": \"61730744de0311f97d14587d\"\n                }\n            ],\n            \"PaymentStatusHistory\": [],\n            \"user_id\": \"61719bd481b9ca0558e19b6f\",\n            \"createdAt\": \"2021-10-22T18:47:32.399Z\",\n            \"updatedAt\": \"2021-10-22T18:47:33.683Z\",\n            \"__v\": 0\n        },\n        \"reviews\": [\n            {\n                \"_id\": \"61730a12738bc11223ad74d0\",\n                \"user_id\": \"61719bd481b9ca0558e19b6f\",\n                \"policy_id\": \"61730744de0311f97d14587c\",\n                \"rating\": 2,\n                \"review\": \"good\",\n                \"createdAt\": \"2021-10-22T18:59:30.947Z\",\n                \"updatedAt\": \"2021-10-22T18:59:30.947Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"61a21b7c9ceabb9d4cb966cd\",\n            \"rating\": 2,\n            \"review\": \"goodgood\",\n            \"updatedAt\": \"2021-11-27T11:50:20.382Z\",\n            \"policy\": {\n                \"product_type\": \"device_insurance\"\n            },\n            \"user\": [\n                {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            ],\n            \"details\": {\n                \"device_type\": \"tablet\",\n                \"brand\": \"ACER\"\n            }\n        },\n        {\n            \"_id\": \"61a350caf1e2db37d54b416e\",\n            \"rating\": 2,\n            \"review\": \"good good\",\n            \"updatedAt\": \"2021-11-28T09:50:02.957Z\",\n            \"policy\": {\n                \"product_type\": \"mso_policy\"\n            },\n            \"user\": [\n                {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            ],\n            \"mso_policy\": {\n                \"plan_type\": \"SILVER_PLAN\"\n            }\n        }\n    ],\n    \"errors\": {}\n}"
 				}
 			]
 		},
