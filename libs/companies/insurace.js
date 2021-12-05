@@ -138,6 +138,7 @@ exports.coverList = async () => {
 exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH' }) => {
 
     let limits = await this.currencyList();
+    // console.log("limits", limits);
 
     if(!(limits[supported_chain] && Array.isArray(limits[supported_chain]) && limits[supported_chain].length && limits[supported_chain].find(v => v.name == currency))){ 
         console.log("ERROR REPORT");
@@ -157,6 +158,8 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
         "owner": this.company.owner_id,
         "referralCode": ""
     }
+    console.log(JSON.stringify(data));
+    
     var config = {
         url: utils.addQueryParams(this.company.apis.cover_quote.url, { code: encodeURIComponent(this.company.access_code) }),
         method: "post",
