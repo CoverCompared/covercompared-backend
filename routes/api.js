@@ -17,6 +17,7 @@ router.get('/cover-list', coverController.list);
 router.get('/cover-options', coverController.options);
 router.post('/cover-capacity', coverController.capacity);
 router.post('/cover-quote', coverController.quote);
+router.post('/company/insurace/confirm-premium', coverController.insuracAceConfirmPremium);
 router.post('/cover-min-quote', coverController.minQuote);
 
 router.get('/mso-list', msoController.list);

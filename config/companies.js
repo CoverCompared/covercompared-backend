@@ -73,6 +73,9 @@ module.exports = {
             "cover_quote": {
                 "url": `https://api.insurace.io/ops/v1/getCoverPremium`
             },
+            "confirm_premium": {
+                "url": `https://api.insurace.io/ops/v1/confirmCoverPremium`
+            },
             "currency_list": {
                 "url": `https://api.insurace.io/ops/v1/getCurrencyList`
             }

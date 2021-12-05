@@ -265,6 +265,60 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Confirm Premium",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"chain\": \"ETH\",\n    \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n            \"415876349625649217205108628878641030387073606180\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.insurace.io/ops/v1/confirmCoverPremium?code=BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D",
+									"protocol": "https",
+									"host": [
+										"api",
+										"insurace",
+										"io"
+									],
+									"path": [
+										"ops",
+										"v1",
+										"confirmCoverPremium"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA%3D%3D"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -3350,7 +3404,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\"\n}",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3546,6 +3600,111 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"chain\": \"ETH\",\n        \"premiumAmount\": \"2100000000000000\",\n        \"discountPercent\": \"10000\",\n        \"ownerInsurReward\": \"0\",\n        \"referrerInsurReward\": \"0\",\n        \"contractAddress\": \"0x88ef6f235a4790292068646e79ee563339c796a0\",\n        \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n            \"415876349625649217205108628878641030387073606180\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "InsurAce Confirm Premium",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"chain\": \"ETH\",\n    \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n            \"415876349625649217205108628878641030387073606180\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}company/insurace/confirm-premium",
+					"host": [
+						"{{host}}company"
+					],
+					"path": [
+						"insurace",
+						"confirm-premium"
+					]
+				},
+				"description": "currency : ETH,DAI\n\n# InsurAce\nsupported_chain is optional \ndefault value of supported_chain is \"Ethereum\""
+			},
+			"response": [
+				{
+					"name": "Success response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"chain\": \"ETH\",\n    \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n            \"415876349625649217205108628878641030387073606180\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}company/insurace/confirm-premium",
+							"host": [
+								"{{host}}company"
+							],
+							"path": [
+								"insurace",
+								"confirm-premium"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "480"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e0-HR2tgHLXTcuN4Rnj0G+yvhtP0cs\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Dec 2021 16:59:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        [\n            \"20\"\n        ],\n        [\n            \"30\"\n        ],\n        [\n            \"1000000000000000000\"\n        ],\n        \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n        \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n        \"415876349625649217205108628878641030387073606180\",\n        \"2100000000000000\",\n        [\n            \"1000000000000000000\",\n            \"30000000000000000000\",\n            \"500\",\n            \"500\"\n        ],\n        [\n            \"13747220\",\n            \"1638723541\"\n        ],\n        [\n            27\n        ],\n        [\n            \"0xa16f1475eaaad5dc40f36f9dc16ee2137899e40ee89096efa836f7cae80a1e8d\"\n        ],\n        [\n            \"0x442c138a9ecfb7a9572d8a73dd0649dd258d0036969853bc0a3148731a2d40e5\"\n        ]\n    ],\n    \"errors\": {}\n}"
 				}
 			]
 		},

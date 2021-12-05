@@ -11,13 +11,13 @@ exports.products = async (req, res, next) => {
             {
                 "id": "smart_contract",
                 "name": "Smart Contract",
-                "type" : "defi",
+                "type": "defi",
                 "icon": `${config.api_url}images/products/contract1.svg`,
-                "details_section" : [
+                "details_section": [
                     {
-                        "title" : "address",
-                        "provider" : "",
-                        "capacity" :""
+                        "title": "address",
+                        "provider": "",
+                        "capacity": ""
                     }
                 ],
                 "partners": [
@@ -46,13 +46,13 @@ exports.products = async (req, res, next) => {
             {
                 "id": "crypto_exchange",
                 "name": "Crypto Exchange",
-                "type" : "defi",
+                "type": "defi",
                 "icon": `${config.api_url}images/products/cryptocurrency1.svg`,
-                "details_section" : [
+                "details_section": [
                     {
-                        "title" : "address",
-                        "provider" : "",
-                        "capacity" :""
+                        "title": "address",
+                        "provider": "",
+                        "capacity": ""
                     }
                 ],
                 "partners": [
@@ -66,13 +66,13 @@ exports.products = async (req, res, next) => {
             {
                 "id": "device_insurance",
                 "name": "Device Insurance",
-                "type" : "defi",
+                "type": "defi",
                 "icon": `${config.api_url}images/products/device1.svg`,
-                "details_section" : [
+                "details_section": [
                     {
-                        "title" : "address",
-                        "provider" : "",
-                        "capacity" :""
+                        "title": "address",
+                        "provider": "",
+                        "capacity": ""
                     }
                 ],
                 "partners": []
@@ -80,13 +80,13 @@ exports.products = async (req, res, next) => {
             {
                 "id": "mso_plans",
                 "name": "Medical Second Opinion",
-                "type" : "defi",
+                "type": "defi",
                 "icon": `${config.api_url}images/products/mso-icon.svg`,
-                "details_section" : [
+                "details_section": [
                     {
-                        "title" : "address",
-                        "provider" : "",
-                        "capacity" :""
+                        "title": "address",
+                        "provider": "",
+                        "capacity": ""
                     }
                 ],
                 "partners": []
@@ -101,24 +101,24 @@ exports.partners = async (req, res, next) => {
             {
                 "id": "nsure",
                 "name": config_companies.nsure.name,
-                "integration_contract_address" : "",
-                "apis" : [
+                "integration_contract_address": "",
+                "apis": [
                     {
                         "network": "ethereum_mainnet",
-                        "api" : [
+                        "api": [
                             {
-                                "name" : "product_list",
-                                "link" : config_companies.nsure.apis.cover_list.url,
-                                "function" : "Provides list of all products availabe on Nexus Mutual",
-                                "type" : "GET",
-                                "keys" : config_companies.nsure.apis.cover_list.keys
+                                "name": "product_list",
+                                "link": config_companies.nsure.apis.cover_list.url,
+                                "function": "Provides list of all products availabe on Nexus Mutual",
+                                "type": "GET",
+                                "keys": config_companies.nsure.apis.cover_list.keys
                             },
                             {
-                                "name" : "cover_quote",
-                                "link" : config_companies.nsure.apis.cover_quote.url,
-                                "function" : "Provides list of all products availabe on Nexus Mutual",
-                                "type" : "GET",
-                                "keys" : config_companies.nsure.apis.cover_quote.keys
+                                "name": "cover_quote",
+                                "link": config_companies.nsure.apis.cover_quote.url,
+                                "function": "Provides list of all products availabe on Nexus Mutual",
+                                "type": "GET",
+                                "keys": config_companies.nsure.apis.cover_quote.keys
                             },
                         ]
                     }
@@ -174,13 +174,13 @@ exports.list = async (req, res, next) => {
                     continue;
                 }
                 amount = list[key].currency_limit[currency].min;
-                
+
                 let chains = [];
-                if(supported_chains.length){
+                if (supported_chains.length) {
                     chains = supported_chains.filter(value => list[key].supportedChains.includes(value));
                 }
                 chains = chains.length ? chains : list[key].supportedChains;
-                
+
                 list[key].quote = await companies.getQuote({
                     company_code: list[key].company_code,
                     address: list[key].address,
@@ -196,7 +196,7 @@ exports.list = async (req, res, next) => {
             }
         }
     }
-    
+
     res.send(utils.apiResponseData(true, {
         total: total,
         total_page,
@@ -364,8 +364,28 @@ exports.quote = async (req, res, next) => {
 
         }
     });
+}
 
+exports.insuracAceConfirmPremium = async (req, res, next) => {
+    let rules = {
+        'chain': ['required'],
+        'params': ["required"],
+    };
 
+    let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
+        if (!matched) {
+            res.status(422).send(v.errors);
+        } else {
 
+            let response = await companies.companies.insurace.confirmPremium(
+                {
+                    chain: req.body.chain,
+                    params: req.body.params
+                })
+
+            res.send(utils.apiResponseData(response.status, response.data))
+
+        }
+    });
 
 }

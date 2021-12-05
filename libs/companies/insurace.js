@@ -158,10 +158,33 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
         "owner": this.company.owner_id,
         "referralCode": ""
     }
-    console.log(JSON.stringify(data));
     
     var config = {
         url: utils.addQueryParams(this.company.apis.cover_quote.url, { code: encodeURIComponent(this.company.access_code) }),
+        method: "post",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: data
+    };
+    
+    let response = {};
+    try {
+        response = await axios(config)
+        response = _.get(response, "data", {})
+        response = { status: true, data: response };
+    } catch (error) {
+        console.log("// Send Error Report - Get quote response with Eror")
+        response = { status: false, data: error };
+    }
+
+    return response
+}
+
+exports.confirmPremium = async ({chain, params}) => {
+    data = { chain, params };
+    var config = {
+        url: utils.addQueryParams(this.company.apis.confirm_premium.url, { code: encodeURIComponent(this.company.access_code) }),
         method: "post",
         headers: {
             'Content-Type': 'application/json'
