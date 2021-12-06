@@ -47,13 +47,13 @@ module.exports = {
         "logo_url": "https://app.nexusmutual.io/logos/",
         "apis": {
             "cover_list": {
-                "url": "https://api.nexusmutual.io/coverables/contracts.json"
+                "url": `${config.nexus.base_url}coverables/contracts.json`
             },
             "cover_capacity": {
-                "url": (address) => `https://api.staging.nexusmutual.io/v1/contracts/${address}/capacity`
+                "url": (address) => `${config.nexus.base_url}v1/contracts/${address}/capacity`
             },
             "cover_quote": {
-                "url": `https://api.staging.nexusmutual.io/v1/quote`
+                "url": `${config.nexus.base_url}v1/quote`
             }
         }
     },

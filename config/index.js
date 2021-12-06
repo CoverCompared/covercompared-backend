@@ -20,10 +20,13 @@ config.insurace = {
     base_url: "https://insurace-sl-microservice.azurewebsites.net/",
     access_code: "VXS3K8XdLj1Gzr1xX2JtiQSi5fBphwBraEEMCmYbO26o2Ebv7lQUJQ=="
 }
+config.nexus = { base_url: "https://api.staging.nexusmutual.io/" }
 
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
     config.insurace.base_url = "https://api.insurace.io/ops/v1/";
     config.insurace.access_code = "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==";
+    
+    config.nexus.base_url = "https://api.nexusmutual.io/";
 }
 
 module.exports = config;
