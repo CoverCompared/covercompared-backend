@@ -64,20 +64,20 @@ module.exports = {
         "status": true,
         "min_eth": 0.5,
         "logo_url": "https://app.insurace.io/asset/product/",
-        "access_code": "BIJtkcwZVbqksdkGQphamIi6yXfUpd2cwIxeDs6jmT4uXYaWJwONIA==",
+        "access_code": config.insurace.access_code,
         "owner_id": "0x48D88a5D10595338E46C82256858BaCbcD38e224",
         "apis": {
             "cover_list": {
-                "url": "https://api.insurace.io/ops/v1/getProductList"
+                "url": `${config.insurace.base_url}getProductList`
             },
             "cover_quote": {
-                "url": `https://api.insurace.io/ops/v1/getCoverPremium`
+                "url": `${config.insurace.base_url}getCoverPremium`
             },
             "confirm_premium": {
-                "url": `https://api.insurace.io/ops/v1/confirmCoverPremium`
+                "url": `${config.insurace.base_url}confirmCoverPremium`
             },
             "currency_list": {
-                "url": `https://api.insurace.io/ops/v1/getCurrencyList`
+                "url": `${config.insurace.base_url}getCurrencyList`
             }
         }
     },
