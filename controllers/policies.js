@@ -140,6 +140,9 @@ exports.msoConfirmPayment = async (req, res, next) => {
 
         let rules = {
             "payment_status": ["required", "in:paid,cancelled"],
+            "network": ["nullable"],
+            "crypto_currency": ["nullable"],
+            "crypto_amount": ["nullable"],
             "blockchain": ["required"],
             "wallet_address": ["required"],
             "block_timestamp": ["required"],
@@ -172,9 +175,14 @@ exports.msoConfirmPayment = async (req, res, next) => {
         payment.payment_hash = req.body.payment_hash;
         payment.currency = req.body.currency;
         payment.paid_amount = req.body.paid_amount;
+        payment.network = _.get(req.body, "network", null);
+        payment.crypto_currency = _.get(req.body, "crypto_currency", null);
+        payment.crypto_amount = _.get(req.body, "crypto_amount", null);
         await payment.save();
 
         // Update payment to Policies
+        policy.crypto_currency = _.get(req.body, "crypto_currency", null);
+        policy.crypto_amount = _.get(req.body, "crypto_amount", null);
         policy.payment_status = req.body.payment_status;
         policy.PaymentStatusHistory.push({
             status: req.body.payment_status,
@@ -305,6 +313,9 @@ exports.deviceConfirmPayment = async (req, res, next) => {
 
         let rules = {
             "payment_status": ["required", "in:paid,cancelled"],
+            "network": ["nullable"],
+            "crypto_currency": ["nullable"],
+            "crypto_amount": ["nullable"],
             "blockchain": ["required"],
             "wallet_address": ["required"],
             "block_timestamp": ["required"],
@@ -337,9 +348,14 @@ exports.deviceConfirmPayment = async (req, res, next) => {
         payment.payment_hash = req.body.payment_hash;
         payment.currency = req.body.currency;
         payment.paid_amount = req.body.paid_amount;
+        payment.network = _.get(req.body, "network", null);
+        payment.crypto_currency = _.get(req.body, "crypto_currency", null);
+        payment.crypto_amount = _.get(req.body, "crypto_amount", null);
         await payment.save();
 
         // Update payment to Policies
+        policy.crypto_currency = _.get(req.body, "crypto_currency", null);
+        policy.crypto_amount = _.get(req.body, "crypto_amount", null);
         policy.payment_status = req.body.payment_status;
         policy.PaymentStatusHistory.push({
             status: req.body.payment_status,
@@ -473,6 +489,170 @@ exports.show = async (req, res, next) => {
     }
 }
 
+exports.storeSmartContract = async (req, res, next) => {
 
+    /**
+     * TODO: Create Error report if the (company_code|unique_id) is not in our list
+     */
 
+    /**
+     * TODO: For production environment if request does not pass validation therefor store the request data and then respond fail
+     */
+    
+    try {
+        let rules = {
+            "company_code": ["required"],
+            "product_id": ["nullable"],
+            "unique_id": ["required"],
+            "address": ["required"],
+            "name": ["required"],
+            "type": ["required"],
+            "duration_days": ["required", "numeric"],
+            "chain": ["required"],
+            "crypto_currency": ["required"],
+            "crypto_amount": ["required", "numeric"]
+        }
 
+        let v = new niv.Validator(req.body, rules);
+        let validation = await v.check();
+
+        if (!validation) {
+            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            return;
+        }
+
+        let policy = new Policies;
+        policy.user_id = req.user._id;
+        policy.product_type = constant.ProductTypes.smart_contract;
+        policy.status = constant.PolicyStatus.pending;
+        policy.StatusHistory.push({
+            status: policy.status,
+            updated_at: new Date(moment()),
+            updated_by: req.user._id
+        });
+        policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        policy.crypto_currency = req.body.crypto_currency;
+        policy.crypto_amount = req.body.crypto_amount;
+        policy.SmartContract = {
+            company_code: req.body.company_code,
+            product_id: req.body.product_id,
+            unique_id: req.body.unique_id,
+            address: req.body.address,
+            name: req.body.name,
+            type: req.body.type,
+            duration_days: req.body.duration_days,
+            chain: req.body.chain,
+            crypto_currency: req.body.crypto_currency,
+            crypto_amount: req.body.crypto_amount
+        }
+        await policy.save();
+
+        return res.status(200).send(utils.apiResponse(true, "Smart Contract added successfully.", {
+            _id: policy._id,
+            txn_hash: policy.txn_hash
+        }));
+
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
+
+exports.smartContractConfirmPayment = async (req, res, next) => {
+    try {
+
+        let policy = await Policies.findOne({
+            user_id: req.user._id,
+            _id: req.params.id,
+            product_type: constant.ProductTypes.smart_contract
+        });
+
+        if (!policy) {
+            /**
+             * TODO:
+             * Error Report
+             * If policy record not found in database
+             */
+            return res.status(200).send(utils.apiResponseMessage(false, "Cover not found."));
+        }
+
+        let rules = {
+            "payment_status": ["required", "in:paid,cancelled"],
+            "network": ["nullable"],
+            "crypto_currency": ["nullable"],
+            "crypto_amount": ["nullable"],
+            "blockchain": ["required"],
+            "wallet_address": ["required"],
+            "block_timestamp": ["required"],
+            "txn_type": ["required"],
+            "payment_hash": ["required"],
+            "currency": ["nullable"],
+            "paid_amount": ["nullable", "numeric"]
+        }
+
+        let v = new niv.Validator(req.body, rules);
+        let validation = await v.check();
+
+        if (!validation) {
+            return res.status(200).send(utils.apiResponseData(false, {}, v.errors));
+        }
+
+        /**
+         * TODO:
+         * Error Report
+         * if req.body.crypto_amount does not match with policy.crypto_amount
+         */
+
+        // Create Payment
+        let payment = new Payments;
+        payment.payment_status = req.body.payment_status;
+        payment.blockchain = req.body.blockchain;
+        payment.wallet_address = req.body.wallet_address;
+        payment.block_timestamp = req.body.block_timestamp;
+        payment.txn_type = req.body.txn_type;
+        payment.payment_hash = req.body.payment_hash;
+        payment.currency = _.get(req.body, "currency", null);
+        payment.paid_amount = _.get(req.body, "paid_amount", null);
+        payment.network = _.get(req.body, "network", null);
+        payment.crypto_currency = _.get(req.body, "crypto_currency", null);
+        payment.crypto_amount = _.get(req.body, "crypto_amount", null);
+        await payment.save();
+
+        // Update payment to Policies
+        policy.crypto_currency = _.get(req.body, "crypto_currency", null);
+        policy.crypto_amount = _.get(req.body, "crypto_amount", null);
+        policy.payment_status = req.body.payment_status;
+        policy.PaymentStatusHistory.push({
+            status: req.body.payment_status,
+            updated_at: new Date(moment())
+        });
+        policy.payment_id = payment._id;
+        policy.blockchain = req.body.blockchain;
+        policy.wallet_address = req.body.wallet_address;
+        policy.block_timestamp = req.body.block_timestamp;
+        policy.txn_type = req.body.txn_type;
+        policy.payment_hash = req.body.payment_hash;
+        policy.currency = _.get(req.body, "currency", null) ;
+
+        if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
+            policy.status = constant.PolicyStatus.active;
+            policy.StatusHistory.push({
+                status: policy.status,
+                updated_at: new Date(moment()),
+                updated_by: req.user._id
+            });
+        }
+
+        await policy.save();
+
+        return res.status(200).send(utils.apiResponse(true, "Cover detail updated successfully.", {
+            policy_id: policy._id,
+            txn_hash: policy.txn_hash,
+            payment_status: policy.payment_status,
+            status: policy.status
+        }));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}

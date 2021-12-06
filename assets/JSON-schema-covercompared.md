@@ -92,6 +92,8 @@ DeviceInsurance.plan_type   - monthly, yearly
             "discount_amount": "",
             "tax": "",
             "total_amount": "",
+            "crypto_currency": "",
+            "crypto_amount": "",
             "MSOPolicy": {
                 "plan_type": "",
                 "name": "",
@@ -127,6 +129,19 @@ DeviceInsurance.plan_type   - monthly, yearly
                 "last_name": "",
                 "email": "",
                 "phone": ""
+            },
+            "SmartContract": {
+                "network": "",
+                "company_code": "",
+                "product_id": "",
+                "unique_id": "",
+                "address": "",
+                "name": "",
+                "type": "",
+                "period": "",
+                "chain": "",
+                "crypto_currency": "",
+                "crypto_amount": ""
             },
             "created_at": "",
             "updated_at": ""

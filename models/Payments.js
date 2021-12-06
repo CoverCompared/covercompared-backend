@@ -12,6 +12,9 @@ const Schema = mongoose.Schema;
 const PaymentsSchema = new Schema({
     user_id: { type: Schema.ObjectId, ref: "Users" },
     policy_id: { type: Schema.ObjectId, ref: "Policies" },
+    network: { type: String, default: null },
+    crypto_currency: { type: String, default: null },
+    crypto_amount: { type: Number, default: null },
     blockchain: { type: String, default: null },
     wallet_address: { type: String, default: null },
     block_timestamp: { type: String, default: null },

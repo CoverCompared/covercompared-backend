@@ -51,8 +51,10 @@ router.post('/user/cart-items',  authVerify, userController.addCartItems);
 router.get('/user/policies',  authVerify, policiesController.get);
 router.get('/user/policies/:id',  authVerify, policiesController.show);
 router.post('/user/policies-mso',  authVerify, policiesController.storeMso);
+router.post('/user/policies-smart-contract',  authVerify, policiesController.storeSmartContract);
 router.post('/user/policies-device-insurance',  authVerify, policiesController.storeDeviceInsurance);
 router.post('/user/policies-mso/:id/confirm-payment',  authVerify, policiesController.msoConfirmPayment);
+router.post('/user/policies-smart-contract/:id/confirm-payment',  authVerify, policiesController.smartContractConfirmPayment);
 router.post('/user/policies-device-insurance/:id/confirm-payment',  authVerify, policiesController.deviceConfirmPayment);
 router.post('/user/policies/:id/add-review',  authVerify, policiesController.policyReview);
 
