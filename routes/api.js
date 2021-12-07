@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const _ = require('lodash');
 
 const coverController = require("./../controllers/covers");
 const msoController = require("./../controllers/mso");
@@ -12,55 +13,95 @@ const policiesController = require("./../controllers/policies");
 const blogController = require("../controllers/blogs");
 const authVerify = require('../middlewares/authVerify');
 const authVerifyIfExist = require('../middlewares/authVerifyIfExist');
+const logsHistory = require('../libs/middlewares/logsHistory');
 
-router.get('/cover-list', coverController.list);
-router.get('/cover-options', coverController.options);
-router.post('/cover-capacity', coverController.capacity);
-router.post('/cover-quote', coverController.quote);
-router.post('/company/insurace/confirm-premium', coverController.insuracAceConfirmPremium);
-router.post('/cover-min-quote', coverController.minQuote);
+const mongoose = require("mongoose");
+const RequestLogs = mongoose.model('RequestLogs');
 
-router.get('/mso-list', msoController.list);
-router.post('/p4l-forward', p4lController.forward);
+var express1 = require('express');
+var apiRoutes = express1.Router();
 
-router.post('/check-email-exist', mainController.checkEmailExist);
-router.post('/login', mainController.login);
-router.post('/landing-app-subscribe', mainController.landingAppSubscribe);
+apiRoutes.get('/cover-list', coverController.list);
+apiRoutes.get('/cover-options', coverController.options);
+apiRoutes.post('/cover-capacity',  coverController.capacity);
+apiRoutes.post('/cover-quote', coverController.quote);
+apiRoutes.post('/company/insurace/confirm-premium',  coverController.insuracAceConfirmPremium);
+apiRoutes.post('/cover-min-quote', coverController.minQuote);
 
-router.get('/blogs/image/:slug', blogController.image);
-router.get('/blogs/show/:slug', blogController.show);
+apiRoutes.get('/mso-list', msoController.list);
+apiRoutes.post('/p4l-forward', p4lController.forward);
 
-router.get('/blogs/latest-blog', blogController.latest);
-router.get('/blogs/table', blogController.table);
+apiRoutes.post('/check-email-exist', logsHistory, mainController.checkEmailExist);
+apiRoutes.post('/login', logsHistory, mainController.login);
+apiRoutes.post('/landing-app-subscribe', logsHistory, mainController.landingAppSubscribe);
 
-router.get('/products', coverController.products);
-router.get('/partners', coverController.partners);
+apiRoutes.get('/blogs/image/:slug', blogController.image);
+apiRoutes.get('/blogs/show/:slug', blogController.show);
 
-router.post('/policy-request', authVerifyIfExist, policyRequestController.store);
-router.post('/contact-us', mainController.contactUs);
-router.get('/review', reviewController.get);
+apiRoutes.get('/blogs/latest-blog', blogController.latest);
+apiRoutes.get('/blogs/table', blogController.table);
+
+apiRoutes.get('/products', coverController.products);
+apiRoutes.get('/partners', coverController.partners);
+
+apiRoutes.post('/policy-request', logsHistory, authVerifyIfExist, policyRequestController.store);
+apiRoutes.post('/contact-us', mainController.contactUs);
+apiRoutes.get('/review', reviewController.get);
 
 // Routes under Auth
-router.post('/user/add-profile-details',  authVerify, userController.addProfileDetails);
-router.post('/user/resend-verification-email',  authVerify, userController.resendVerificationEmail);
-router.post('/user/verify-otp',  authVerify, userController.verifyOtp);
-router.get('/user/profile',  authVerify, userController.profile);
-router.post('/user/add-wallet-address',  authVerify, userController.addWalletAddress);
-router.get('/user/cart-items',  authVerify, userController.getCartItems);
-router.post('/user/cart-items',  authVerify, userController.addCartItems);
-router.get('/user/policies',  authVerify, policiesController.get);
-router.get('/user/policies/:id',  authVerify, policiesController.show);
-router.post('/user/policies-mso',  authVerify, policiesController.storeMso);
-router.post('/user/policies-smart-contract',  authVerify, policiesController.storeSmartContract);
-router.post('/user/policies-device-insurance',  authVerify, policiesController.storeDeviceInsurance);
-router.post('/user/policies-mso/:id/confirm-payment',  authVerify, policiesController.msoConfirmPayment);
-router.post('/user/policies-smart-contract/:id/confirm-payment',  authVerify, policiesController.smartContractConfirmPayment);
-router.post('/user/policies-device-insurance/:id/confirm-payment',  authVerify, policiesController.deviceConfirmPayment);
-router.post('/user/policies/:id/add-review',  authVerify, policiesController.policyReview);
+apiRoutes.post('/user/add-profile-details', logsHistory, authVerify, userController.addProfileDetails);
+apiRoutes.post('/user/resend-verification-email', logsHistory, authVerify, userController.resendVerificationEmail);
+apiRoutes.post('/user/verify-otp', logsHistory, authVerify, userController.verifyOtp);
+apiRoutes.get('/user/profile', logsHistory, authVerify, userController.profile);
+apiRoutes.post('/user/add-wallet-address', logsHistory, authVerify, userController.addWalletAddress);
+apiRoutes.get('/user/cart-items', logsHistory, authVerify, userController.getCartItems);
+apiRoutes.post('/user/cart-items', logsHistory, authVerify, userController.addCartItems);
+apiRoutes.get('/user/policies', logsHistory, authVerify, policiesController.get);
+apiRoutes.get('/user/policies/:id', logsHistory, authVerify, policiesController.show);
+apiRoutes.post('/user/policies-mso', logsHistory, authVerify, policiesController.storeMso);
+apiRoutes.post('/user/policies-smart-contract', logsHistory, authVerify, policiesController.storeSmartContract);
+apiRoutes.post('/user/policies-device-insurance', logsHistory, authVerify, policiesController.storeDeviceInsurance);
+apiRoutes.post('/user/policies-mso/:id/confirm-payment', logsHistory, authVerify, policiesController.msoConfirmPayment);
+apiRoutes.post('/user/policies-smart-contract/:id/confirm-payment', logsHistory, authVerify, policiesController.smartContractConfirmPayment);
+apiRoutes.post('/user/policies-device-insurance/:id/confirm-payment', logsHistory, authVerify, policiesController.deviceConfirmPayment);
+apiRoutes.post('/user/policies/:id/add-review', logsHistory, authVerify, policiesController.policyReview);
 
 var adminApis = require("./admin");
 const utils = require('../libs/utils');
+router.use('/', apiRoutes);
+
+
 router.use('/admin', adminApis);
+router.get('/request-logs', async (req, res) => {
+    try {
+        let range = JSON.parse(_.get(req.query, "range", "[0, 10]"));
+        const skip = parseInt(range[0]);
+        const limit = parseInt(range[1]) - skip;
+
+        let findObj = {};
+        const search = JSON.parse(_.get(req.query, "filter", "{}"));
+
+        let total = await RequestLogs.countDocuments();
+
+        let aggregate = [];
+        // aggregate.push({ $match: findObj })
+        aggregate.push({ $sort: { _id: -1 } })
+        aggregate.push({ $skip: skip })
+        aggregate.push({ $limit: limit })
+
+        let request_logs = await RequestLogs.aggregate(aggregate);
+
+        let data = {
+            range: `${range[0]}-${range[1]}/${total}`,
+            data: request_logs
+        }
+
+        return res.status(200).send(utils.apiResponseData(true, data));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+});
 router.use('/seed', async (req, res, next) => {
     await require("./../seeder/users")();
     res.send(utils.apiResponseMessage(true, "success"));
