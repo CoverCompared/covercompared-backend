@@ -115,3 +115,34 @@ exports.show = async (req, res, next) => {
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 }
+
+exports.destroy = async (req, res, next) => {
+    try {
+
+        let policy = await Policies.findOne({ _id: req.params.id })
+            .populate({ 
+                path: "user_id", 
+                select: ["first_name", "last_name", "email"],
+                model: Users 
+            }).populate({
+                path: "payment_id", 
+                model: Payments 
+            })
+            .lean();
+
+        if (!policy) {
+            /**
+             * TODO:
+             * Error Report
+             * If policy or device_insurance record not found in database
+             */
+            return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
+        }
+
+        await Policies.findOneAndDelete({ _id: req.params.id});
+        return res.status(200).send(utils.apiResponseMessage(true, "Policy deleted successfully."));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
