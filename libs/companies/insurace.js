@@ -135,7 +135,7 @@ exports.coverList = async () => {
  * @param {*} param0 
  * @returns 
  */
-exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH' }) => {
+exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }) => {
 
     let limits = await this.currencyList();
     // console.log("limits", limits);
@@ -155,7 +155,7 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
         productIds: [product_id],
         coverDays: [period],
         coverAmounts: [coverAmounts.toString()],
-        "owner": this.company.owner_id,
+        "owner": owner_id ? owner_id : this.company.owner_id,
         "referralCode": ""
     }
     

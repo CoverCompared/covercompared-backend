@@ -314,6 +314,7 @@ exports.quote = async (req, res, next) => {
                 } else if (req.body.company == config_companies.insurace.code) {
                     let rules = {
                         'currency': ["required"],
+                        'owner_id': ["required"],
                         'supported_chain': ["nullable"],
                         'coverAmount': ["required", "integer"],
                         'period': ["required", `min:${cover.duration_days_min}`, `max:${cover.duration_days_max}`],
@@ -331,6 +332,7 @@ exports.quote = async (req, res, next) => {
                                     amount: req.body.coverAmount,
                                     period: req.body.period,
                                     currency: req.body.currency,
+                                    owner_id: req.body.owner_id,
                                     supported_chain: req.body.supported_chain ? req.body.supported_chain : "Ethereum"
                                 })
                             res.send(utils.apiResponseData(quote.status, quote.data))
