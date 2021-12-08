@@ -22,18 +22,18 @@ exports.table = async (req, res, next) => {
         }
     }
 
-    let total = await ContactUsRequests.countDocuments()
     if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
 
     if (sort[0] == "id") { sort[0] = "_id" }
 
+    let total = await ContactUsRequests.aggregate([{$match: findObj}, {$count: 'total'}]);
     let contact_us = await ContactUsRequests.find(findObj)
         .sort({ [sort[0]]: sort[1] })
         .limit(limit)
         .skip(skip).lean();
 
     res.send({
-        range: `${range[0]}-${range[1]}/${total}`,
+        range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
         data: contact_us
     })
    

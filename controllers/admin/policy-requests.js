@@ -26,9 +26,9 @@ exports.index = async (req, res, next) => {
         }
 
 
-        let total = await PolicyRequests.countDocuments();
         if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
 
+        let total = await PolicyRequests.aggregate([{$match: findObj}, {$count: 'total'}]);
         let policy_request = await PolicyRequests.find(findObj)
             .select(["product_type", "country", "email", "createdAt"])
             .populate({
@@ -41,7 +41,7 @@ exports.index = async (req, res, next) => {
 
 
         let data = {
-            range: `${range[0]}-${range[1]}/${total}`,
+            range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
             policy_request: policy_request
         }
 

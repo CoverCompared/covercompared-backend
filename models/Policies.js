@@ -142,10 +142,13 @@ PoliciesSchema.statics = {
                     policy.details = policy.MSOPolicy;
                 }else if(policy.product_type == constant.ProductTypes.device_insurance){
                     policy.details = policy.DeviceInsurance;
+                }else if(policy.product_type == constant.ProductTypes.smart_contract){
+                    policy.details = policy.SmartContract;
                 }
 
                 delete policy.MSOPolicy;
                 delete policy.DeviceInsurance;
+                delete policy.SmartContract;
                 
                 return policy;
             })

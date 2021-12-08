@@ -451,7 +451,7 @@ exports.policyReview = async (req, res, next) => {
 exports.get = async (req, res, next) => {
     try {
 
-        let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy], { user_id: req.user._id });
+        let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy, constant.ProductTypes.smart_contract], { user_id: req.user._id });
 
         // policies = policies.map(policy => {
         //     return policy;

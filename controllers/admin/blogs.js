@@ -84,10 +84,12 @@ exports.index = async (req, res, next) => {
         }
     }
 
-    let total = await Blogs.countDocuments()
+    // let total = await Blogs.countDocuments()
     if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
 
     if (sort[0] == "id") { sort[0] = "_id" }
+
+    let total = await Blogs.aggregate([ {$match: findObj}, {$count: "total"} ]);
 
     let blogs = await Blogs.find(findObj)
         .select(["_id", "title", "status", "createdAt"].join(" "))
@@ -96,7 +98,7 @@ exports.index = async (req, res, next) => {
         .skip(skip).lean();
 
     res.send(utils.apiResponseData(true, {
-        range: `${range[0]}-${range[1]}/${total}`,
+        range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
         data: blogs
     }))
 

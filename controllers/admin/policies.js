@@ -35,7 +35,6 @@ exports.index = async (req, res) => {
             }
         }
 
-        let total = await Policies.countDocuments();
         if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
 
         let aggregate = [];
@@ -57,6 +56,10 @@ exports.index = async (req, res) => {
             }
         });
         aggregate.push({ $match: findObj })
+
+
+        let total = await Policies.aggregate([...aggregate, {$count: "total"}]);
+
         aggregate.push({ $sort: { _id: -1 } })
         aggregate.push({ $skip: skip })
         aggregate.push({ $limit: limit })
@@ -64,7 +67,7 @@ exports.index = async (req, res) => {
         let policy = await Policies.aggregate(aggregate);
 
         let data = {
-            range: `${range[0]}-${range[1]}/${total}`,
+            range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
             data: policy
         }
 
