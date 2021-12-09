@@ -14,6 +14,10 @@ const blogController = require("../controllers/blogs");
 const authVerify = require('../middlewares/authVerify');
 const authVerifyIfExist = require('../middlewares/authVerifyIfExist');
 const logsHistory = require('../libs/middlewares/logsHistory');
+var adminApis = require("./admin");
+const utils = require('../libs/utils');
+const { companies } = require('../libs/companies');
+
 
 const mongoose = require("mongoose");
 const RequestLogs = mongoose.model('RequestLogs');
@@ -21,11 +25,14 @@ const RequestLogs = mongoose.model('RequestLogs');
 var express1 = require('express');
 var apiRoutes = express1.Router();
 
+apiRoutes.get('/save-image/:unique_id', async (req, res) => {
+    res.send({ data: await companies.getCoverImage(req.params.unique_id) })
+});
 apiRoutes.get('/cover-list', coverController.list);
 apiRoutes.get('/cover-options', coverController.options);
-apiRoutes.post('/cover-capacity',  coverController.capacity);
+apiRoutes.post('/cover-capacity', coverController.capacity);
 apiRoutes.post('/cover-quote', coverController.quote);
-apiRoutes.post('/company/insurace/confirm-premium',  coverController.insuracAceConfirmPremium);
+apiRoutes.post('/company/insurace/confirm-premium', coverController.insuracAceConfirmPremium);
 apiRoutes.post('/cover-min-quote', coverController.minQuote);
 
 apiRoutes.get('/mso-list', msoController.list);
@@ -66,8 +73,6 @@ apiRoutes.post('/user/policies-smart-contract/:id/confirm-payment', logsHistory,
 apiRoutes.post('/user/policies-device-insurance/:id/confirm-payment', logsHistory, authVerify, policiesController.deviceConfirmPayment);
 apiRoutes.post('/user/policies/:id/add-review', logsHistory, authVerify, policiesController.policyReview);
 
-var adminApis = require("./admin");
-const utils = require('../libs/utils');
 router.use('/', apiRoutes);
 
 

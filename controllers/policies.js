@@ -453,9 +453,16 @@ exports.get = async (req, res, next) => {
 
         let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy, constant.ProductTypes.smart_contract], { user_id: req.user._id });
 
-        // policies = policies.map(policy => {
-        //     return policy;
-        // })
+        policies = policies.map(policy => {
+            if(policy.product_type == constant.ProductTypes.smart_contract){
+                policy.logo = companies.getCoverImage(_.get(policy, "details.unique_id", ""))
+            }else if(policy.product_type == constant.ProductTypes.mso_policy){
+                policy.logo = `${config.api_url}images/mso.png`;
+            }else if(policy.product_type == constant.ProductTypes.device_insurance){
+                policy.logo = `${config.api_url}images/p4l.png`;
+            }
+            return policy;
+        })
 
         return res.status(200).send(utils.apiResponseData(true, { policies }));
     } catch (error) {

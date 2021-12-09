@@ -208,8 +208,10 @@ exports.list = async (req, res, next) => {
 exports.options = async (req, res, next) => {
     let { supported_chain_option, type_option, duration_days_option, currency_option, amount_option } = await companies.coverListOptions()
     let companies_option = _.map(config_companies, (company, code) => {
-        return { name: company.name, code: company.code, icon: company.icon }
+        return company.status ? { name: company.name, code: company.code, icon: company.icon } : false;
     })
+    
+    companies_option = _.filter(companies_option);
 
     res.send(utils.apiResponseData(true, {
         duration_days_option,
@@ -223,7 +225,7 @@ exports.options = async (req, res, next) => {
 
 exports.capacity = async (req, res, next) => {
     let rules = {
-        'company': ['required', `in:${Object.keys(config_companies).join(",")}`],
+        'company': ['required', `in:${companies.getCompanyCodes().join(",")}`],
         'address': ["required"],
         'product_id': ["nullable"],
     };
@@ -241,7 +243,7 @@ exports.capacity = async (req, res, next) => {
 
 exports.minQuote = async (req, res, next) => {
     let rules = {
-        'company': ['required', `in:${Object.keys(config_companies).join(",")}`],
+        'company': ['required', `in:${companies.getCompanyCodes().join(",")}`],
         'currency': ["required"],
         'supported_chain': ["required"],
         'address': ["required"],
@@ -283,7 +285,7 @@ exports.minQuote = async (req, res, next) => {
 
 exports.quote = async (req, res, next) => {
     let rules = {
-        'company': ['required', `in:${Object.keys(config_companies).join(",")}`],
+        'company': ['required', `in:${companies.getCompanyCodes().join(",")}`],
         'address': ["required"],
     };
 

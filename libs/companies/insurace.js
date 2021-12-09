@@ -3,6 +3,12 @@ const { insurace } = require("../../config/companies")
 const _ = require("lodash");
 const utils = require("../utils");
 const insureLogos = require("./insurace-logos.json");
+
+const mongoose = require('mongoose');
+const config = require("../../config");
+const SmartContractLogos = mongoose.model("SmartContractLogos");
+
+
 exports.code = insurace.code;
 exports.company = insurace
 exports.convertRiskType = (details) => {
@@ -57,7 +63,7 @@ exports.getLogoName = (name) => {
         return logo ? logo.logo : name.replaceAll(" ", "") + ".png";
     } catch (error) {
         console.log("name", name);
-        return "";        
+        return "";
     }
 }
 
@@ -101,17 +107,20 @@ exports.coverList = async () => {
             }
 
             let name = _.get(data, "name", "");
-            let product_id = _.get(data, "product_id", ""); 
-            let address = _.get(data, "capacity_currency", ""); 
+            let product_id = _.get(data, "product_id", "");
+            let address = _.get(data, "capacity_currency", "");
             let company_code = this.company.code;
+            let unique_id = utils.getUniqueCoverID(product_id, address, company_code);
+            let logo_endpoint = this.getLogoName(name);
+            let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
 
             return {
-                unique_id : utils.getUniqueCoverID(product_id, address, company_code),
+                unique_id,
                 product_id,
                 address,
                 name,
                 type: this.convertRiskType(data),
-                logo: `${this.company.logo_url}${this.getLogoName(name)}`,
+                logo: this.getImageUrl(logo_endpoint),
                 company: this.company.name,
                 company_icon: this.company.icon,
                 company_code,
@@ -140,10 +149,10 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
     let limits = await this.currencyList();
     // console.log("limits", limits);
 
-    if(!(limits[supported_chain] && Array.isArray(limits[supported_chain]) && limits[supported_chain].length && limits[supported_chain].find(v => v.name == currency))){ 
+    if (!(limits[supported_chain] && Array.isArray(limits[supported_chain]) && limits[supported_chain].length && limits[supported_chain].find(v => v.name == currency))) {
         console.log("ERROR REPORT");
         console.log("// Send Error Report - Get Quote has issue")
-        return {status : false, data : {message: "Currency not found."}};
+        return { status: false, data: { message: "Currency not found." } };
     }
     let limitCurrency = limits[supported_chain].find(v => v.name == currency);
     let coverCurrency = limitCurrency.address;
@@ -158,7 +167,7 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
         "owner": owner_id ? owner_id : this.company.owner_id,
         "referralCode": ""
     }
-    
+
     var config = {
         url: utils.addQueryParams(this.company.apis.cover_quote.url, { code: encodeURIComponent(this.company.access_code) }),
         method: "post",
@@ -167,7 +176,7 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
         },
         data: data
     };
-    
+
     let response = {};
     try {
         response = await axios(config)
@@ -181,7 +190,7 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
     return response
 }
 
-exports.confirmPremium = async ({chain, params}) => {
+exports.confirmPremium = async ({ chain, params }) => {
     data = { chain, params };
     var config = {
         url: utils.addQueryParams(this.company.apis.confirm_premium.url, { code: encodeURIComponent(this.company.access_code) }),
@@ -191,7 +200,7 @@ exports.confirmPremium = async ({chain, params}) => {
         },
         data: data
     };
-    
+
     let response = {};
     try {
         response = await axios(config)
@@ -203,4 +212,51 @@ exports.confirmPremium = async ({chain, params}) => {
     }
 
     return response
+}
+
+exports.getImageUrl = (logo_endpoint) => {
+    if (logo_endpoint) {
+        return `${this.company.logo_url}${logo_endpoint}`
+    } else {
+        return `${config.api_url}images/smart-contract-default.png`
+    }
+}
+
+exports.getCoverImage = async (unique_id) => {
+
+    // Find from database
+    let logo = await SmartContractLogos.findOne({ company_code: this.company.code, unique_id: unique_id });
+
+    if (logo) {
+        return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    }
+
+    // Check from cache
+    let logo_details = await utils.getSmartContractLogo(unique_id);
+    if (logo_details != undefined) {
+        logo = new SmartContractLogos;
+        logo.company_code = this.company.code;
+        logo.unique_id = unique_id;
+        logo.logo_details = logo_details;
+        await logo.save();
+
+        return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    }
+
+    // Sync Cover List
+    await this.coverList();
+
+    // Check from cache
+    logo_details = await utils.getSmartContractLogo(unique_id);
+    if (logo_details != undefined) {
+        logo = new SmartContractLogos;
+        logo.company_code = this.company.code;
+        logo.unique_id = unique_id;
+        logo.logo_details = logo_details;
+        await logo.save();
+        return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    }
+
+    // Send response
+    return `${config.api_url}images/smart-contract-default.png`
 }

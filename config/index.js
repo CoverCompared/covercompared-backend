@@ -1,6 +1,6 @@
 let config = {
     app_code: "cover-compared",
-    cache_time: 300,
+    cache_time: 300, // seconds
     api_url: "http://localhost:3006/api/",
     db: `${process.env.MONGODB_URL}${process.env.DATABASE_NAME}`,
     dbName: process.env.DATABASE_NAME,

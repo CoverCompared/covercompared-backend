@@ -3,9 +3,13 @@ const { default: axios } = require("axios");
 const { nsure } = require("../../config/companies")
 const _ = require("lodash");
 const utils = require("../utils");
+const config = require("../../config");
 
 exports.code = nsure.code;
 exports.company = nsure
+
+const mongoose = require('mongoose');
+const SmartContractLogos = mongoose.model('SmartContractLogos');
 
 /**
  * 
@@ -61,14 +65,19 @@ exports.coverList = async () => {
         let product_id = _.get(data, "uid", "");
         let address = _.get(data, "address", "");
         let company_code = this.company.code;
+        let unique_id = utils.getUniqueCoverID(product_id, address, company_code);
+        // let logo_endpoint = _.get(data, "logo.filename", false);
+        // let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
+
         return {
-            unique_id : utils.getUniqueCoverID(product_id, address, company_code),
+            unique_id,
             product_id,
             uid: _.get(data, "uid", ""),
             address,
             name: _.get(data, "name", ""),
             type: _.get(data, "type", "protocol"),
             website: _.get(data, "website", ""),
+            logo: this.getImageUrl(false),
             company: this.company.name,
             company_icon: this.company.icon,
             company_code,
@@ -107,4 +116,52 @@ exports.getQuote = async (product, amount, period, currency = 0) => {
     }
 
     return response
+}
+
+exports.getImageUrl = (logo_endpoint) => {
+    if (logo_endpoint) {
+        return `${this.company.logo_url}${logo_endpoint}`
+    } else {
+        return `${config.api_url}images/smart-contract-default.png`
+    }
+}
+
+
+exports.getCoverImage = async (unique_id) => {
+
+    // // Find from database
+    // let logo = await SmartContractLogos.findOne({ company_code: this.company.code, unique_id: unique_id });
+
+    // if (logo) {
+    //     return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    // }
+
+    // // Check from cache
+    // let logo_details = await utils.getSmartContractLogo(unique_id);
+    // if (logo_details != undefined) {
+    //     logo = new SmartContractLogos;
+    //     logo.company_code = this.company.code;
+    //     logo.unique_id = unique_id;
+    //     logo.logo_details = logo_details;
+    //     await logo.save();
+
+    //     return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    // }
+
+    // // Sync Cover List
+    // await this.coverList();
+
+    // // Check from cache
+    // logo_details = await utils.getSmartContractLogo(unique_id);
+    // if (logo_details != undefined) {
+    //     logo = new SmartContractLogos;
+    //     logo.company_code = this.company.code;
+    //     logo.unique_id = unique_id;
+    //     logo.logo_details = logo_details;
+    //     await logo.save();
+    //     return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    // }
+
+    // Send response
+    return `${config.api_url}images/smart-contract-default.png`
 }

@@ -84,6 +84,15 @@ utils.getCompanyCoverList = async (company) => {
     return coverList;
 }
 
+utils.getSmartContractLogo = async (unique_id, logo_details = undefined) => {
+    logo = myCache.get(`${unique_id}Logo`);
+    if (logo == undefined && logo_details != undefined) {
+        myCache.set(`${unique_id}Logo`, logo_details, 86400)
+        logo = logo_details
+    }
+    return logo;
+}
+
 utils.getCurrencyList = async (key, setValue) => {
     value = myCache.get(key);
     if (value == undefined) {

@@ -5,7 +5,8 @@ module.exports = {
         "name": "Nsure Network",
         "code": "nsure",
         "icon" : `${config.api_url}images/company-icons/Nsure Network.png`,
-        "status": true,
+        "logo_url" : "https://admin.nsure.network/public/avatars/",
+        "status": false,
         "min_eth": 0.1,
         "apis": {
             "cover_list": {

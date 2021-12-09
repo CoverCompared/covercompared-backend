@@ -34,6 +34,7 @@ exports.coverList = async (options = {}) => {
 
 
     let companies = Object.values(this.companies)
+    companies = companies.filter((company) => { return company.company.status; });
 
     if (options.companies.length) {
         companies = companies.filter(company => {
@@ -63,7 +64,7 @@ exports.coverList = async (options = {}) => {
                 })
             }
         })
-        
+
         list = [...list, ...coverList];
 
     }
@@ -169,6 +170,7 @@ exports.coverList = async (options = {}) => {
 exports.coverListOptions = async () => {
 
     let companies = Object.values(this.companies)
+    companies = companies.filter((company) => { return company.company.status; });
 
     let coverList;
 
@@ -299,9 +301,9 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
     let cacheKey = `quote-${company_code}-${address}-${amount}-${period}-${supported_chain}-${currency}-${product_id}`;
     quote = myCache.get(cacheKey);
     if (quote == undefined) {
-        if (company_code == this.companies.nexus.code) {
+        if (company_code == this.companies.nexus.code && this.companies.nexus.company.status) {
             quote = await this.companies.nexus.getQuote(address, amount, currency, period);
-        } else if (company_code == this.companies.insurace.code) {
+        } else if (company_code == this.companies.insurace.code && this.companies.insurace.company.status) {
             quote = await this.companies.insurace.getQuote({
                 supported_chain: supported_chain,
                 product_id: product_id,
@@ -311,9 +313,9 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
                 currency: currency
             })
 
-        } else if (company_code == this.companies.nsure.code) {
+        } else if (company_code == this.companies.nsure.code && this.companies.nsure.company.status) {
             quote = await this.companies.nsure.getQuote(product_id, utils.convertToCurrency(amount, 18), period)
-        } else if (company_code == this.companies.unore.code) {
+        } else if (company_code == this.companies.unore.code && this.companies.unore.company.status) {
             quote = await this.companies.unore.getQuote(product_id, utils.convertToCurrency(amount, 18), period)
         }
         if (quote.status == false) {
@@ -322,7 +324,7 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
         myCache.set(cacheKey, quote, config.cache_time)
     }
 
-    if (company_code == this.companies.nexus.code) {
+    if (company_code == this.companies.nexus.code && this.companies.nexus.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.price", false);
             if (quote !== false) {
@@ -331,7 +333,7 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
         } else {
             quote = false
         }
-    } else if (company_code == this.companies.insurace.code) {
+    } else if (company_code == this.companies.insurace.code && this.companies.insurace.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.premiumAmount", false);
             if (quote !== false) {
@@ -341,13 +343,13 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
             quote = false
         }
 
-    } else if (company_code == this.companies.nsure.code) {
+    } else if (company_code == this.companies.nsure.code && this.companies.nsure.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.list", false);
         } else {
             quote = false
         }
-    } else if (company_code == this.companies.unore.code) {
+    } else if (company_code == this.companies.unore.code && this.companies.unore.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.list", false);
         } else {
@@ -356,4 +358,33 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
     }
     return quote;
 
+}
+
+exports.getCoverImage = async (unique_id) => {
+    if (typeof unique_id === "string") {
+        let company_code = unique_id.split(".");
+        company_code = company_code[company_code.length - 1]
+
+        switch (company_code) {
+            case this.companies.nexus.code:
+                return await this.companies.nexus.getCoverImage(unique_id);
+                break;
+            case this.companies.insurace.code:
+                return await this.companies.insurace.getCoverImage(unique_id);
+                break;
+            case this.companies.nsure.code:
+                return await this.companies.nsure.getCoverImage(unique_id);
+                break;
+            case this.companies.unore.code:
+                return await this.companies.unore.getCoverImage(unique_id);
+                break;
+            default:
+                break;
+        }
+    }
+    return `${config.api_url}images/smart-contract-default.png`
+}
+
+exports.getCompanyCodes = () => {
+    return _.map(_.filter(Object.values(this.companies), "company.status"), "code");
 }
