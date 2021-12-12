@@ -52,6 +52,9 @@ exports.index = async (req, res) => {
                 "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1,
                 "total_amount": 1, "user_id": 1,
                 "currency": 1,
+                "createdAt": 1,
+                "crypto_currency": 1,
+                "crypto_amount": 1,
                 "user.first_name": 1, "user.last_name": 1, "user.email": 1
             }
         });

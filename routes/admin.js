@@ -6,14 +6,18 @@ const policyRequestController = require('./../controllers/admin/policy-requests'
 const policiesController = require('./../controllers/admin/policies')
 const contactController = require('./../controllers/admin/contact-us')
 const AdminAuthController = require("./../controllers/admin/auth")
+const AdminController = require("./../controllers/admin/admin");
+
 const adminVerifyPassword = require('../libs/middlewares/adminVerifyPassword');
 
 router.post("/login", AdminAuthController.login)
+router.get("/constants", AdminController.constants)
 
 let authRoutes = express.Router();
 
-authRoutes.get("/profile", adminVerifyPassword, AdminAuthController.profile)
-authRoutes.get("/update-email", adminVerifyPassword, AdminAuthController.updateEmail)
+authRoutes.get("/profile", AdminAuthController.profile)
+authRoutes.get("/dashboard", AdminController.dashboard)
+authRoutes.get("/update-email", AdminAuthController.updateEmail)
 
 // Blog module routes
 authRoutes.param('blogId', blogController.load);
@@ -28,7 +32,7 @@ authRoutes.get('/policy-requests', policyRequestController.index);
 authRoutes.get('/policy-requests/:id', policyRequestController.show);
 authRoutes.get('/policies', policiesController.index);
 authRoutes.get('/policies/:id', policiesController.show);
-authRoutes.delete('/policies/:id/delete', policiesController.destroy);
+// authRoutes.delete('/policies/:id/delete', policiesController.destroy);
 
 
 // contact-us
