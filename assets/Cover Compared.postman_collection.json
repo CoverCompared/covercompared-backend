@@ -405,9 +405,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{nexus_host}}v1/quote?coverAmount=1000000000000000000&currency=DAI&period=30&contractAddress=0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+									"raw": "{{nexus_staging}}v1/quote?coverAmount=1000000000000000000&currency=DAI&period=30&contractAddress=0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
 									"host": [
-										"{{nexus_host}}v1"
+										"{{nexus_staging}}v1"
 									],
 									"path": [
 										"quote"
@@ -843,6 +843,196 @@
 						},
 						{
 							"name": "Add Smart Contract",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"company_code\": \"nexus\",\n    \"product_id\": null,\n    \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"name\": \"0x V3\",\n    \"type\": \"protocol\",\n    \"duration_days\": 30,\n    \"chain\": \"Ethereum\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies-smart-contract",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies-smart-contract"
+									]
+								},
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"company_code\": \"nexus\",\n    \"product_id\": null,\n    \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"name\": \"0x V3\",\n    \"type\": \"protocol\",\n    \"duration_days\": 30,\n    \"chain\": \"Ethereum\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "140"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"8c-0rfACIYtdPG8I+yAHaT0qW+YznI\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 14:51:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Smart Contract added successfully.\",\n    \"data\": {\n        \"_id\": \"61ae236ab78ec3824be46ecd\",\n        \"txn_hash\": \"SC-001017\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "755"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2f3-k+mpuoZGErbdH7G42z9AFbcEvKk\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 14:52:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {},\n    \"errors\": {\n        \"company_code\": {\n            \"message\": \"The company code field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"unique_id\": {\n            \"message\": \"The unique id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"address\": {\n            \"message\": \"The address field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"name\": {\n            \"message\": \"The name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"type\": {\n            \"message\": \"The type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"duration_days\": {\n            \"message\": \"The duration days field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"chain\": {\n            \"message\": \"The chain field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"crypto_currency\": {\n            \"message\": \"The crypto currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"crypto_amount\": {\n            \"message\": \"The crypto amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Add Crypto Exchange",
 							"event": [
 								{
 									"listen": "test",
@@ -1589,6 +1779,140 @@
 						},
 						{
 							"name": "Smart Contract Confirm Payment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        ",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"payment_status\": \"paid\",\n    \"network\": \"Ethereum Mainnet\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1,\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies-smart-contract/{{policy_id}}/confirm-payment",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies-smart-contract",
+										"{{policy_id}}",
+										"confirm-payment"
+									]
+								},
+								"description": "- call after payment success or fail, need to call every time when you generate new payment_hash from provider, with whatever response success or fail\n\n## Other Details\n```\npayment_status  - paid, cancelled\n```"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"payment_status\": \"paid\",\n    \"network\": \"Ethereum Mainnet\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1,\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract/{{policy_id}}/confirm-payment",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract",
+												"{{policy_id}}",
+												"confirm-payment"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "188"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"bc-E1kVthuE4owQdn12MFYzT0RvsyI\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 15:02:45 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Cover detail updated successfully.\",\n    \"data\": {\n        \"policy_id\": \"61ae236ab78ec3824be46ecd\",\n        \"txn_hash\": \"SC-001017\",\n        \"payment_status\": \"paid\",\n        \"status\": \"active\"\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Crypto exchange Confirm Payment",
 							"event": [
 								{
 									"listen": "test",
@@ -3117,7 +3441,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?company=nexus",
+					"raw": "{{host}}cover-list?company=nsure&type=protocol",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -3129,14 +3453,13 @@
 						},
 						{
 							"key": "company",
-							"value": "nexus",
-							"description": "insurace, nexus, nsur, unore"
+							"value": "nsure",
+							"description": "insurace, nexus, nsure, unore"
 						},
 						{
 							"key": "type",
 							"value": "protocol",
-							"description": "protocol | custodian",
-							"disabled": true
+							"description": "protocol | custodian"
 						},
 						{
 							"key": "supported_chain",
