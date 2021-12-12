@@ -143,6 +143,19 @@ DeviceInsurance.plan_type   - monthly, yearly
                 "crypto_currency": "",
                 "crypto_amount": ""
             },
+            "CryptoExchange": {
+                "network": "",
+                "company_code": "",
+                "product_id": "",
+                "unique_id": "",
+                "address": "",
+                "name": "",
+                "type": "",
+                "period": "",
+                "chain": "",
+                "crypto_currency": "",
+                "crypto_amount": ""
+            },
             "created_at": "",
             "updated_at": ""
         }

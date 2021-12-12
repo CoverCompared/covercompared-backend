@@ -83,16 +83,16 @@ exports.storeMso = async (req, res, next) => {
         policy.tax = req.body.tax;
         policy.total_amount = req.body.total_amount;
         policy.MSOPolicy = {
-            plan_type : req.body.plan_type,
-            name : req.body.name ? req.body.name: plan_details.name,
-            country : req.body.country,
-            mso_cover_user : req.body.mso_cover_user,
-            policy_price : req.body.quote,
-            quote : req.body.quote,
-            mso_addon_service : req.body.mso_addon_service,
-            amount : req.body.amount,
-            plan_details : plan_details,
-            MSOMembers :[]
+            plan_type: req.body.plan_type,
+            name: req.body.name ? req.body.name : plan_details.name,
+            country: req.body.country,
+            mso_cover_user: req.body.mso_cover_user,
+            policy_price: req.body.quote,
+            quote: req.body.quote,
+            mso_addon_service: req.body.mso_addon_service,
+            amount: req.body.amount,
+            plan_details: plan_details,
+            MSOMembers: []
         }
         for (const key in req.body.MSOMembers) {
             policy.MSOPolicy.MSOMembers.push({
@@ -268,17 +268,17 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         policy.tax = req.body.tax;
         policy.total_amount = req.body.total_amount;
         policy.DeviceInsurance = {
-            device_type : req.body.device_type,
-            brand : req.body.brand,
-            value : req.body.value,
-            purchase_month : req.body.purchase_month,
-            model : req.body.model,
-            model_name : req.body.model_name,
-            plan_type : req.body.plan_type,
-            first_name : req.body.first_name,
-            last_name : req.body.last_name,
-            email : req.body.email,
-            phone : req.body.phone
+            device_type: req.body.device_type,
+            brand: req.body.brand,
+            value: req.body.value,
+            purchase_month: req.body.purchase_month,
+            model: req.body.model,
+            model_name: req.body.model_name,
+            plan_type: req.body.plan_type,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email,
+            phone: req.body.phone
         }
         await policy.save();
 
@@ -406,7 +406,7 @@ exports.policyReview = async (req, res, next) => {
              * If policy record not found in database
              */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
-        }else if( ![constant.PolicyStatus.active, constant.PolicyStatus.complete].includes(policy.status) ){
+        } else if (![constant.PolicyStatus.active, constant.PolicyStatus.complete].includes(policy.status)) {
             return res.status(200).send(utils.apiResponseMessage(false, "Policy status is not activated."));
         }
 
@@ -423,12 +423,12 @@ exports.policyReview = async (req, res, next) => {
             return;
         }
 
-        let review = await Reviews.findOne({ 
+        let review = await Reviews.findOne({
             user_id: req.user._id,
             policy_id: req.params.id
         });
 
-        if(!review){
+        if (!review) {
             review = new Reviews;
             review.user_id = req.user._id;
             review.policy_id = req.params.id;
@@ -451,18 +451,22 @@ exports.policyReview = async (req, res, next) => {
 exports.get = async (req, res, next) => {
     try {
 
-        let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy, constant.ProductTypes.smart_contract], { user_id: req.user._id });
+        let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy, constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange], { user_id: req.user._id });
 
-        policies = policies.map(policy => {
-            if(policy.product_type == constant.ProductTypes.smart_contract){
-                policy.logo = companies.getCoverImage(_.get(policy, "details.unique_id", ""))
-            }else if(policy.product_type == constant.ProductTypes.mso_policy){
+        let policy;
+        for (const key in policies) {
+            policy = policies[key];
+            if (policy.product_type == constant.ProductTypes.smart_contract) {
+                policy.logo = await companies.getCoverImage(_.get(policy, "details.unique_id", ""))
+            } else if (policy.product_type == constant.ProductTypes.crypto_exchange) {
+                policy.logo = await companies.getCoverImage(_.get(policy, "details.unique_id", ""))
+            } else if (policy.product_type == constant.ProductTypes.mso_policy) {
                 policy.logo = `${config.api_url}images/mso.png`;
-            }else if(policy.product_type == constant.ProductTypes.device_insurance){
+            } else if (policy.product_type == constant.ProductTypes.device_insurance) {
                 policy.logo = `${config.api_url}images/p4l.png`;
             }
-            return policy;
-        })
+            policies[key] = policy;
+        }
 
         return res.status(200).send(utils.apiResponseData(true, { policies }));
     } catch (error) {
@@ -486,7 +490,7 @@ exports.show = async (req, res, next) => {
         let reviews = await Reviews.find({ policy_id: req.params.id })
             .select(["rating", "review", "updatedAt"])
             .lean();
-            
+
         policy = await Policies.getPolicies(policy.product_type, { user_id: req.user._id, _id: req.params.id });
 
         return res.status(200).send(utils.apiResponseData(true, { ...policy[0], reviews }));
@@ -505,7 +509,7 @@ exports.storeSmartContract = async (req, res, next) => {
     /**
      * TODO: For production environment if request does not pass validation therefor store the request data and then respond fail
      */
-    
+
     try {
         let rules = {
             "company_code": ["required"],
@@ -530,7 +534,13 @@ exports.storeSmartContract = async (req, res, next) => {
 
         let policy = new Policies;
         policy.user_id = req.user._id;
-        policy.product_type = constant.ProductTypes.smart_contract;
+
+        if (req.body.type == "protocol") {
+            policy.product_type = constant.ProductTypes.crypto_exchange;
+        } else {
+            policy.product_type = constant.ProductTypes.smart_contract;
+        }
+
         policy.status = constant.PolicyStatus.pending;
         policy.StatusHistory.push({
             status: policy.status,
@@ -540,21 +550,37 @@ exports.storeSmartContract = async (req, res, next) => {
         policy.payment_status = constant.PolicyPaymentStatus.unpaid;
         policy.crypto_currency = req.body.crypto_currency;
         policy.crypto_amount = req.body.crypto_amount;
-        policy.SmartContract = {
-            company_code: req.body.company_code,
-            product_id: req.body.product_id,
-            unique_id: req.body.unique_id,
-            address: req.body.address,
-            name: req.body.name,
-            type: req.body.type,
-            duration_days: req.body.duration_days,
-            chain: req.body.chain,
-            crypto_currency: req.body.crypto_currency,
-            crypto_amount: req.body.crypto_amount
+        if (req.body.type == "protocol") {
+            policy.CryptoExchange = {
+                company_code: req.body.company_code,
+                product_id: req.body.product_id,
+                unique_id: req.body.unique_id,
+                address: req.body.address,
+                name: req.body.name,
+                type: req.body.type,
+                duration_days: req.body.duration_days,
+                chain: req.body.chain,
+                crypto_currency: req.body.crypto_currency,
+                crypto_amount: req.body.crypto_amount
+            }
+        } else {
+            policy.SmartContract = {
+                company_code: req.body.company_code,
+                product_id: req.body.product_id,
+                unique_id: req.body.unique_id,
+                address: req.body.address,
+                name: req.body.name,
+                type: req.body.type,
+                duration_days: req.body.duration_days,
+                chain: req.body.chain,
+                crypto_currency: req.body.crypto_currency,
+                crypto_amount: req.body.crypto_amount
+            }
         }
         await policy.save();
+        let product_type = req.body.type == "protocol" ? "Crypto Exchange" : "Smart Contract";
 
-        return res.status(200).send(utils.apiResponse(true, "Smart Contract added successfully.", {
+        return res.status(200).send(utils.apiResponse(true, `${product_type} added successfully.`, {
             _id: policy._id,
             txn_hash: policy.txn_hash
         }));
@@ -571,7 +597,7 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
         let policy = await Policies.findOne({
             user_id: req.user._id,
             _id: req.params.id,
-            product_type: constant.ProductTypes.smart_contract
+            product_type: { "$in": [constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange] }
         });
 
         if (!policy) {
@@ -639,7 +665,7 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
         policy.block_timestamp = req.body.block_timestamp;
         policy.txn_type = req.body.txn_type;
         policy.payment_hash = req.body.payment_hash;
-        policy.currency = _.get(req.body, "currency", null) ;
+        policy.currency = _.get(req.body, "currency", null);
 
         if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
             policy.status = constant.PolicyStatus.active;

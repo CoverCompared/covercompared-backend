@@ -97,6 +97,19 @@ const PoliciesSchema = new Schema({
         chain: { type: String, default:null },
         crypto_currency: { type: String, default:null },
         crypto_amount: { type: Number, default:null }
+    },
+    CryptoExchange: {
+        network: { type: String, default:null },
+        company_code: { type: String, default:null },
+        product_id: { type: String, default:null },
+        unique_id: { type: String, default:null },
+        address: { type: String, default:null },
+        name: { type: String, default:null },
+        type: { type: String, default:null },
+        duration_days: { type: String, default:null },
+        chain: { type: String, default:null },
+        crypto_currency: { type: String, default:null },
+        crypto_amount: { type: Number, default:null }
     }
 }, {
     timestamps: true
@@ -144,11 +157,14 @@ PoliciesSchema.statics = {
                     policy.details = policy.DeviceInsurance;
                 }else if(policy.product_type == constant.ProductTypes.smart_contract){
                     policy.details = policy.SmartContract;
+                }else if(policy.product_type == constant.ProductTypes.crypto_exchange){
+                    policy.details = policy.CryptoExchange;
                 }
 
                 delete policy.MSOPolicy;
                 delete policy.DeviceInsurance;
                 delete policy.SmartContract;
+                delete policy.CryptoExchange;
                 
                 return policy;
             })

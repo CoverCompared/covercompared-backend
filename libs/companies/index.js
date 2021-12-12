@@ -364,7 +364,7 @@ exports.getCoverImage = async (unique_id) => {
     if (typeof unique_id === "string") {
         let company_code = unique_id.split(".");
         company_code = company_code[company_code.length - 1]
-
+        console.log("Company Code", company_code);
         switch (company_code) {
             case this.companies.nexus.code:
                 return await this.companies.nexus.getCoverImage(unique_id);
