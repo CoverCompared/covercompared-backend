@@ -2,6 +2,7 @@ const _ = require("lodash");
 const NodeCache = require("node-cache");
 const config = require("../config");
 const myCache = new NodeCache();
+const moment = require('moment');
 
 let utils = {};
 
@@ -138,6 +139,25 @@ utils.getFormattedAmount = (amount) => {
     amount = amount.split(".");
     amount[0] = parseInt(amount[0]).toLocaleString()
     return amount.join(".");
+}
+
+utils.getFormattedDate = (timestamp) => {
+    try {
+        let time = moment(timestamp).format('LL')
+        return time;
+    } catch (error) {
+        console.log(error);
+        return "-";
+    }
+}
+
+utils.getFormattedDateTime = (timestamp) => {
+    try {
+        let time = moment(timestamp).format('LLL')
+        return time;
+    } catch (error) {
+        return "-";
+    }
 }
 
 

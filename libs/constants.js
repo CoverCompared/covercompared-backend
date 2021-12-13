@@ -1,4 +1,10 @@
 const constant = {
+    ProductTypesName : {
+        mso_policy: "MSO Policy",
+        device_insurance: "Device Insurance",
+        smart_contract: "Smart Contract",
+        crypto_exchange: "Crypto Exchange",
+    },
     ProductTypes: {
         mso_policy: "mso_policy",
         device_insurance: "device_insurance",

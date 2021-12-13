@@ -12,6 +12,7 @@ const adminVerifyPassword = require('../libs/middlewares/adminVerifyPassword');
 
 router.post("/login", AdminAuthController.login)
 router.get("/constants", AdminController.constants)
+router.get('/policies', policiesController.index);
 
 let authRoutes = express.Router();
 
@@ -30,7 +31,7 @@ authRoutes.put('/blogs/:blogId', loadFormDataMiddleware, blogController.validate
 // policy-request routes 
 authRoutes.get('/policy-requests', policyRequestController.index);
 authRoutes.get('/policy-requests/:id', policyRequestController.show);
-authRoutes.get('/policies', policiesController.index);
+// authRoutes.get('/policies', policiesController.index);
 authRoutes.get('/policies/:id', policiesController.show);
 // authRoutes.delete('/policies/:id/delete', policiesController.destroy);
 

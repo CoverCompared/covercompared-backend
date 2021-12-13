@@ -169,6 +169,9 @@ DeviceInsurance.plan_type   - monthly, yearly
     "Payments": [
         {
             "_id": "",
+            "network": "",
+            "crypto_currency": "",
+            "crypto_amount": "",
             "user_id": "",
             "policy_id": "",
             "blockchain": "",
