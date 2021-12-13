@@ -84,8 +84,10 @@ exports.index = async (req, res) => {
         let total = await Policies.aggregate([...aggregate, { $count: "total" }]);
 
         aggregate.push({ $sort: { _id: -1 } })
-        aggregate.push({ $skip: skip })
-        aggregate.push({ $limit: limit })
+        if(!req.query.export){
+            aggregate.push({ $skip: skip })
+            aggregate.push({ $limit: limit })
+        }
 
         let policy = await Policies.aggregate(aggregate);
 
