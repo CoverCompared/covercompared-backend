@@ -111,7 +111,8 @@ exports.landingAppSubscribe = async (req, res, next) => {
     let validation = await v.check();
 
     if (!validation) {
-        res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+        let message = utils.getErrorMessage(v.errors);
+        res.status(200).send(utils.apiResponse(false, message, {}, v.errors))
         return;
     }
 
@@ -135,9 +136,9 @@ exports.landingAppSubscribe = async (req, res, next) => {
     // if (response)
     if (subscription) {
         return res.send(utils.apiResponse(true, "Subscription added successfully", subscription))
-    }
-    else
+    } else {
         return res.send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
 
 }
 

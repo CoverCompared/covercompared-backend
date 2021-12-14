@@ -66,9 +66,9 @@ utils.convertSupportedChain = (supportedChain) => {
         terra: "Terra"
     }
 
-    if(typeof supportedChain == "string"){
+    if (typeof supportedChain == "string") {
         supportedChain = overrideValues[supportedChain] ? overrideValues[supportedChain] : supportedChain
-    }else{
+    } else {
         supportedChain = supportedChain.map(chain_type => {
             return overrideValues[chain_type] ? overrideValues[chain_type] : chain_type
         })
@@ -105,7 +105,7 @@ utils.getCurrencyList = async (key, setValue) => {
 
 
 utils.convertToCurrency = (amount, decimal) => {
-    return BigInt(amount * (10**decimal)).toString()
+    return BigInt(amount * (10 ** decimal)).toString()
 }
 
 /**
@@ -160,5 +160,9 @@ utils.getFormattedDateTime = (timestamp) => {
     }
 }
 
+
+utils.getErrorMessage = (errors) => {
+    return _.get(Object.values(errors), "0.message", "");
+}
 
 module.exports = utils;
