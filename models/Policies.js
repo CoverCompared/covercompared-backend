@@ -6,6 +6,7 @@ const constant = require('../libs/constants');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const msoPlans = require("./../libs/mso-plans");
+const utils = require('../libs/utils');
 
 /**
  * Policies Schema
@@ -53,6 +54,7 @@ const PoliciesSchema = new Schema({
     crypto_currency: { type: String, default: null },
     crypto_amount: { type: Number, default: null },
     MSOPolicy: {
+        membership_id: { type: String, default: null },
         plan_type: { type: String, default: null },
         name: { type: String, default: null },
         country: { type: String, default: null },
@@ -86,30 +88,30 @@ const PoliciesSchema = new Schema({
         phone: { type: Number, default: null },
     },
     SmartContract: {
-        network: { type: String, default:null },
-        company_code: { type: String, default:null },
-        product_id: { type: String, default:null },
-        unique_id: { type: String, default:null },
-        address: { type: String, default:null },
-        name: { type: String, default:null },
-        type: { type: String, default:null },
-        duration_days: { type: String, default:null },
-        chain: { type: String, default:null },
-        crypto_currency: { type: String, default:null },
-        crypto_amount: { type: Number, default:null }
+        network: { type: String, default: null },
+        company_code: { type: String, default: null },
+        product_id: { type: String, default: null },
+        unique_id: { type: String, default: null },
+        address: { type: String, default: null },
+        name: { type: String, default: null },
+        type: { type: String, default: null },
+        duration_days: { type: String, default: null },
+        chain: { type: String, default: null },
+        crypto_currency: { type: String, default: null },
+        crypto_amount: { type: Number, default: null }
     },
     CryptoExchange: {
-        network: { type: String, default:null },
-        company_code: { type: String, default:null },
-        product_id: { type: String, default:null },
-        unique_id: { type: String, default:null },
-        address: { type: String, default:null },
-        name: { type: String, default:null },
-        type: { type: String, default:null },
-        duration_days: { type: String, default:null },
-        chain: { type: String, default:null },
-        crypto_currency: { type: String, default:null },
-        crypto_amount: { type: Number, default:null }
+        network: { type: String, default: null },
+        company_code: { type: String, default: null },
+        product_id: { type: String, default: null },
+        unique_id: { type: String, default: null },
+        address: { type: String, default: null },
+        name: { type: String, default: null },
+        type: { type: String, default: null },
+        duration_days: { type: String, default: null },
+        chain: { type: String, default: null },
+        crypto_currency: { type: String, default: null },
+        crypto_amount: { type: Number, default: null }
     }
 }, {
     timestamps: true
@@ -145,19 +147,19 @@ PoliciesSchema.statics = {
 
         if (Array.isArray(policies)) {
             policies = policies.map((policy) => {
-                if(policy.product_type == constant.ProductTypes.mso_policy){
+                if (policy.product_type == constant.ProductTypes.mso_policy) {
                     let plan = msoPlans.find(plan => plan.unique_id == _.get(policy, "reference_id.plan_type"));
                     policy.plan_details = _.get(policy, "plan_details", {});
                     policy.plan_details = { ...policy.plan_details, ...plan };
                 }
 
-                if(policy.product_type == constant.ProductTypes.mso_policy){
+                if (policy.product_type == constant.ProductTypes.mso_policy) {
                     policy.details = policy.MSOPolicy;
-                }else if(policy.product_type == constant.ProductTypes.device_insurance){
+                } else if (policy.product_type == constant.ProductTypes.device_insurance) {
                     policy.details = policy.DeviceInsurance;
-                }else if(policy.product_type == constant.ProductTypes.smart_contract){
+                } else if (policy.product_type == constant.ProductTypes.smart_contract) {
                     policy.details = policy.SmartContract;
-                }else if(policy.product_type == constant.ProductTypes.crypto_exchange){
+                } else if (policy.product_type == constant.ProductTypes.crypto_exchange) {
                     policy.details = policy.CryptoExchange;
                 }
 
@@ -165,7 +167,7 @@ PoliciesSchema.statics = {
                 delete policy.DeviceInsurance;
                 delete policy.SmartContract;
                 delete policy.CryptoExchange;
-                
+
                 return policy;
             })
         }
@@ -175,6 +177,16 @@ PoliciesSchema.statics = {
         }
 
         return policies;
+    }
+}
+
+PoliciesSchema.methods = {
+    getMembershipID: function () {
+        if (this.product_type == constant.ProductTypes.mso_policy) {
+            return utils.getMsoPolicyMembershipId(this.createdAt, this.txn_hash);
+        } else {
+            return "-";
+        }
     }
 }
 

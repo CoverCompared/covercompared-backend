@@ -308,7 +308,11 @@ exports.msoPolicies = async (req, res) => {
 
         if (req.query.export == "csv") {
             let data = [];
+            let all_data = [];
             if (Array.isArray(policy) && policy.length) {
+
+                
+
                 data = policy.map(value => {
                     let val = {
                         product_type: value.product_type ? _.get(constant.ProductTypesName, value.product_type, "") : "",
@@ -323,17 +327,28 @@ exports.msoPolicies = async (req, res) => {
 
                     if(_.get(value, "MSOPolicy.MSOMembers", false) && Array.isArray(value.MSOPolicy.MSOMembers) && value.MSOPolicy.MSOMembers.length){
                         val.cover_user_count = value.MSOPolicy.MSOMembers.length;
-                        val.cover_user_details = "";
+                        
+                        
                         val.cover_user_details = value.MSOPolicy.MSOMembers.map((val, ind) => {
-                            let value = [];
-                            value.push(`No : ${ind + 1}`)
-                            value.push(`User Type : ${_.get(val, "user_type", "")}`)
-                            value.push(`First Name : ${_.get(val, "first_name", "")}`)
-                            value.push(`Last Name : ${_.get(val, "last_name", "")}`)
-                            value.push(`Country : ${_.get(val, "country", "")}`)
-                            value.push(`Date Of Birth : ${utils.getFormattedDate(_.get(val, "dob", ""))}`)
-                            value.push(`Identity : ${_.get(val, "identity", "")}`)
-                            return value.join("\n");
+                            all_data.push({
+                                member_id: utils.getMsoPolicyMembershipId(value.createdAt, value.txn_hash),
+                                date_of_membership: utils.getFormattedDate(value.createdAt, "MM/DD/YYYY"),
+                                first_name: _.get(val, "first_name", ""),
+                                last_name: _.get(val, "last_name", ""),
+                                dob: utils.getFormattedDate(_.get(val, "dob", ""), "MM/DD/YYYY"),
+                                user_type: _.get(val, "user_type", ""),
+                                identity: _.get(val, "identity", ""),
+                                country: _.get(val, "country", "")
+                            })
+                            let v = [];
+                            v.push(`No : ${ind + 1}`)
+                            v.push(`User Type : ${_.get(val, "user_type", "")}`)
+                            v.push(`First Name : ${_.get(val, "first_name", "")}`)
+                            v.push(`Last Name : ${_.get(val, "last_name", "")}`)
+                            v.push(`Country : ${_.get(val, "country", "")}`)
+                            v.push(`Date Of Birth : ${utils.getFormattedDate(_.get(val, "dob", ""))}`)
+                            v.push(`Identity : ${_.get(val, "identity", "")}`)
+                            return v.join("\n");
                         })
                         val.cover_user_details = val.cover_user_details.join("\n");
                     }else{
@@ -351,25 +366,19 @@ exports.msoPolicies = async (req, res) => {
             }
 
             const fields = [
-                { label: "Product Type", value: "product_type" },
-                { label: "Txn Hash", value: "txn_hash" },
-                { label: "Name", value: "name" },
-                { label: "Email", value: "email" },
-                { label: "Status", value: "status" },
-                { label: "Payment Status", value: "payment_status" },
-
-                { label: "Plan Type", value: "plan_type" },
-                { label: "Cover User Count", value: "cover_user_count" },
-                { label: "Cover User Details", value: "cover_user_details" },
-
-                { label: "Total Amount", value: "total_amount" },
-                { label: "Date", value: "date" },
+                { label: "MemberID", value: "member_id" },
+                { label: "Date of Membership", value: "date_of_membership" },
+                { label: "Fname_Mem", value: "first_name" },
+                { label: "Lname_Mem", value: "last_name" },
+                { label: "Date of Birth", value: "dob" },
+                { label: "UserType", value: "user_type" },
+                { label: "Identification Passport/local Id Number", value: "identity" },
+                { label: "Country", value: "country" },
             ];
             const json2csv = new Parser({ fields });
-            const csv = json2csv.parse(data);
+            const csv = json2csv.parse(all_data);
             res.header('Content-Type', 'text/csv');
 
-            let product_type_name = search.product_type ? constant.ProductTypes[search.product_type] : "";
             let from_date = search.from_date ? `-${utils.getFormattedDate(search.from_date)}` : "";
             let to_date = search.to_date ? `-${utils.getFormattedDate(search.to_date)}` : "";
             res.attachment(`MSO Policies(${from_date} - ${to_date}).csv`);

@@ -141,9 +141,9 @@ utils.getFormattedAmount = (amount) => {
     return amount.join(".");
 }
 
-utils.getFormattedDate = (timestamp) => {
+utils.getFormattedDate = (timestamp, format = "LL") => {
     try {
-        let time = moment(timestamp).format('LL')
+        let time = moment(timestamp).format(format)
         return time;
     } catch (error) {
         console.log(error);
@@ -163,6 +163,10 @@ utils.getFormattedDateTime = (timestamp) => {
 
 utils.getErrorMessage = (errors) => {
     return _.get(Object.values(errors), "0.message", "");
+}
+
+utils.getMsoPolicyMembershipId = (createdAt, txn_hash) => {
+    return `WW-Z-PK-${utils.getFormattedDate(createdAt, "MM/DD/YYYY")}-${txn_hash}`;
 }
 
 module.exports = utils;
