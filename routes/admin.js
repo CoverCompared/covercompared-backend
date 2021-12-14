@@ -31,6 +31,7 @@ authRoutes.put('/blogs/:blogId', loadFormDataMiddleware, blogController.validate
 authRoutes.get('/policy-requests', policyRequestController.index);
 authRoutes.get('/policy-requests/:id', policyRequestController.show);
 authRoutes.get('/policies', policiesController.index);
+authRoutes.get('/policies-mso', policiesController.msoPolicies);
 authRoutes.get('/policies/:id', policiesController.show);
 // authRoutes.delete('/policies/:id/delete', policiesController.destroy);
 

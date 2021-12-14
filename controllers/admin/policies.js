@@ -5,6 +5,7 @@ const moment = require('moment');
 
 const mongoose = require("mongoose");
 const constant = require("../../libs/constants");
+const { constants } = require("./admin");
 const Policies = mongoose.model('Policies');
 const Users = mongoose.model('Users');
 const Payments = mongoose.model('Payments');
@@ -19,10 +20,10 @@ exports.index = async (req, res) => {
         let findObj = {};
         const search = JSON.parse(_.get(req.query, "filter", "{}"));
 
-        if(
+        if (
             req.query.export == "csv" &&
-            (!search.from_date || !search.to_date) 
-        ){
+            (!search.from_date || !search.to_date)
+        ) {
             delete req.query.export;
         }
 
@@ -39,10 +40,10 @@ exports.index = async (req, res) => {
             }
             if (search.from_date || search.to_date) {
                 let createdAt = {};
-                if(search.from_date){
+                if (search.from_date) {
                     createdAt["$gte"] = new Date(`${moment(search.from_date).format('YYYY-MM-DD')}T00:00:00.000Z`)
                 }
-                if(search.to_date){
+                if (search.to_date) {
                     createdAt["$lte"] = new Date(`${moment(search.to_date).format('YYYY-MM-DD')}T23:59:59.000Z`)
                 }
                 findObj["$and"].push({ createdAt: createdAt });
@@ -84,7 +85,7 @@ exports.index = async (req, res) => {
         let total = await Policies.aggregate([...aggregate, { $count: "total" }]);
 
         aggregate.push({ $sort: { _id: -1 } })
-        if(!req.query.export){
+        if (!req.query.export) {
             aggregate.push({ $skip: skip })
             aggregate.push({ $limit: limit })
         }
@@ -96,25 +97,25 @@ exports.index = async (req, res) => {
             data: policy
         }
 
-        if(req.query.export == "csv"){
+        if (req.query.export == "csv") {
             let data = [];
-            if(Array.isArray(policy) && policy.length){
+            if (Array.isArray(policy) && policy.length) {
                 data = policy.map(value => {
                     let val = {
-                        product_type: value.product_type ? _.get(constant.ProductTypesName, value.product_type, "")  : "",
+                        product_type: value.product_type ? _.get(constant.ProductTypesName, value.product_type, "") : "",
                         txn_hash: value.txn_hash ? value.txn_hash : "",
                         name: `${_.get(value, "user.first_name", false) ? value.user.first_name : ""} ${_.get(value, "user.last_name", false) ? value.user.last_name : ""}`,
-                        email:_.get(value, "user.email", false) ? value.user.email : "",
-                        status:_.capitalize(value.status),
+                        email: _.get(value, "user.email", false) ? value.user.email : "",
+                        status: _.capitalize(value.status),
                         payment_status: _.capitalize(value.payment_status),
-                        date : utils.getFormattedDate(value.createdAt)
+                        date: utils.getFormattedDate(value.createdAt)
                     };
-                    
-                    if([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy].includes(value.product_type)){
-                        val.total_amount = `${value.total_amount ? value.total_amount : ""} ${value.currency ?  value.currency : ""}`    
+
+                    if ([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy].includes(value.product_type)) {
+                        val.total_amount = `${value.total_amount ? value.total_amount : ""} ${value.currency ? value.currency : ""}`
                     }
-                    if([constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange].includes(value.product_type)){
-                        val.total_amount = `${value.crypto_amount ? value.crypto_amount : ""} ${value.crypto_currency ?  value.crypto_currency : ""}`    
+                    if ([constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange].includes(value.product_type)) {
+                        val.total_amount = `${value.crypto_amount ? value.crypto_amount : ""} ${value.crypto_currency ? value.crypto_currency : ""}`
                     }
                     return val;
                 });
@@ -140,7 +141,7 @@ exports.index = async (req, res) => {
             res.attachment(`Cover Compared Policies${from_date}${to_date}${product_type_name}.csv`);
 
             return res.send(csv);
-        }else{
+        } else {
             return res.status(200).send(utils.apiResponseData(true, data));
         }
 
@@ -213,6 +214,171 @@ exports.destroy = async (req, res, next) => {
 
         await Policies.findOneAndDelete({ _id: req.params.id });
         return res.status(200).send(utils.apiResponseMessage(true, "Policy deleted successfully."));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}
+
+exports.msoPolicies = async (req, res) => {
+    try {
+        let range = JSON.parse(_.get(req.query, "range", "[0, 10]"));
+        const skip = parseInt(range[0]);
+        const limit = parseInt(range[1]) - skip;
+
+        let findObj = {};
+        const search = JSON.parse(_.get(req.query, "filter", "{}"));
+
+        if (
+            req.query.export == "csv" &&
+            (!search.from_date || !search.to_date)
+        ) {
+            delete req.query.export;
+        }
+
+        findObj["$and"] = [];
+        findObj["$and"].push({ product_type: constant.ProductTypes.mso_policy });
+
+        if (search) {
+            if (search.txn_hash) {
+                findObj["$and"].push({ txn_hash: { $regex: search.txn_hash, $options: "i" } });
+            }
+            if (search.status) {
+                findObj["$and"].push({ status: search.status });
+            }
+            if (search.from_date || search.to_date) {
+                let createdAt = {};
+                if (search.from_date) {
+                    createdAt["$gte"] = new Date(`${moment(search.from_date).format('YYYY-MM-DD')}T00:00:00.000Z`)
+                }
+                if (search.to_date) {
+                    createdAt["$lte"] = new Date(`${moment(search.to_date).format('YYYY-MM-DD')}T23:59:59.000Z`)
+                }
+                findObj["$and"].push({ createdAt: createdAt });
+            }
+            if (search.q) {
+                findObj["$or"] = [
+                    { "txn_hash": { $regex: search.q, $options: "i" } },
+                    { "user.email": { $regex: search.q, $options: "i" } }
+                ];
+            }
+        }
+
+        if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
+
+        let aggregate = [];
+        aggregate.push({
+            $lookup: {
+                from: Users.collection.collectionName,
+                localField: "user_id",
+                foreignField: "_id",
+                as: 'user'
+            }
+        });
+        aggregate.push({ $unwind: { path: "$user" } });
+        aggregate.push({
+            $project: {
+                "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1,
+                "total_amount": 1, "user_id": 1,
+                "currency": 1,
+                "createdAt": 1,
+                "crypto_currency": 1,
+                "crypto_amount": 1,
+                "user.first_name": 1, "user.last_name": 1, "user.email": 1,
+                "MSOPolicy": 1
+            }
+        });
+        aggregate.push({ $match: findObj })
+
+
+        let total = await Policies.aggregate([...aggregate, { $count: "total" }]);
+
+        aggregate.push({ $sort: { _id: -1 } })
+        if (!req.query.export) {
+            aggregate.push({ $skip: skip })
+            aggregate.push({ $limit: limit })
+        }
+
+        let policy = await Policies.aggregate(aggregate);
+
+        let data = {
+            range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
+            data: policy
+        }
+
+        if (req.query.export == "csv") {
+            let data = [];
+            if (Array.isArray(policy) && policy.length) {
+                data = policy.map(value => {
+                    let val = {
+                        product_type: value.product_type ? _.get(constant.ProductTypesName, value.product_type, "") : "",
+                        txn_hash: value.txn_hash ? value.txn_hash : "",
+                        name: `${_.get(value, "user.first_name", false) ? value.user.first_name : ""} ${_.get(value, "user.last_name", false) ? value.user.last_name : ""}`,
+                        email: _.get(value, "user.email", false) ? value.user.email : "",
+                        plan_type: _.get(value, "MSOPolicy.name", false) ? value.MSOPolicy.name : "",
+                        status: _.capitalize(value.status),
+                        payment_status: _.capitalize(value.payment_status),
+                        date: utils.getFormattedDate(value.createdAt)
+                    };
+
+                    if(_.get(value, "MSOPolicy.MSOMembers", false) && Array.isArray(value.MSOPolicy.MSOMembers) && value.MSOPolicy.MSOMembers.length){
+                        val.cover_user_count = value.MSOPolicy.MSOMembers.length;
+                        val.cover_user_details = "";
+                        val.cover_user_details = value.MSOPolicy.MSOMembers.map((val, ind) => {
+                            let value = [];
+                            value.push(`No : ${ind + 1}`)
+                            value.push(`User Type : ${_.get(val, "user_type", "")}`)
+                            value.push(`First Name : ${_.get(val, "first_name", "")}`)
+                            value.push(`Last Name : ${_.get(val, "last_name", "")}`)
+                            value.push(`Country : ${_.get(val, "country", "")}`)
+                            value.push(`Date Of Birth : ${utils.getFormattedDate(_.get(val, "dob", ""))}`)
+                            value.push(`Identity : ${_.get(val, "identity", "")}`)
+                            return value.join("\n");
+                        })
+                        val.cover_user_details = val.cover_user_details.join("\n");
+                    }else{
+                        val.cover_user_count = 0;
+                    }
+
+                    if ([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy].includes(value.product_type)) {
+                        val.total_amount = `${value.total_amount ? value.total_amount : ""} ${value.currency ? value.currency : ""}`
+                    }
+                    if ([constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange].includes(value.product_type)) {
+                        val.total_amount = `${value.crypto_amount ? value.crypto_amount : ""} ${value.crypto_currency ? value.crypto_currency : ""}`
+                    }
+                    return val;
+                });
+            }
+
+            const fields = [
+                { label: "Product Type", value: "product_type" },
+                { label: "Txn Hash", value: "txn_hash" },
+                { label: "Name", value: "name" },
+                { label: "Email", value: "email" },
+                { label: "Status", value: "status" },
+                { label: "Payment Status", value: "payment_status" },
+
+                { label: "Plan Type", value: "plan_type" },
+                { label: "Cover User Count", value: "cover_user_count" },
+                { label: "Cover User Details", value: "cover_user_details" },
+
+                { label: "Total Amount", value: "total_amount" },
+                { label: "Date", value: "date" },
+            ];
+            const json2csv = new Parser({ fields });
+            const csv = json2csv.parse(data);
+            res.header('Content-Type', 'text/csv');
+
+            let product_type_name = search.product_type ? constant.ProductTypes[search.product_type] : "";
+            let from_date = search.from_date ? `-${utils.getFormattedDate(search.from_date)}` : "";
+            let to_date = search.to_date ? `-${utils.getFormattedDate(search.to_date)}` : "";
+            res.attachment(`MSO Policies(${from_date} - ${to_date}).csv`);
+
+            return res.send(csv);
+        } else {
+            return res.status(200).send(utils.apiResponseData(true, data));
+        }
+
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
