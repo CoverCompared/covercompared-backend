@@ -615,6 +615,7 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
         let rules = {
             "payment_status": ["required", "in:paid,cancelled"],
             "network": ["nullable"],
+            "token_id": ["nullable"],
             "crypto_currency": ["nullable"],
             "crypto_amount": ["nullable"],
             "blockchain": ["required"],
@@ -677,6 +678,14 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
                 updated_at: new Date(moment()),
                 updated_by: req.user._id
             });
+        }
+
+        if(req.body.token_id){
+            if (policy.product_type == constant.ProductTypes.smart_contract) {
+                policy.SmartContract.token_id= req.body.token_id;
+            } else {
+                policy.CryptoExchange.token_id= req.body.token_id;
+            }
         }
 
         await policy.save();
