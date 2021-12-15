@@ -114,6 +114,11 @@ exports.coverList = async () => {
             let logo_endpoint = this.getLogoName(name);
             let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
 
+            let supportedChains = [supportedChain];
+            if(supportedChain == "CEX"){
+                supportedChains = [];
+            }
+
             return {
                 unique_id,
                 product_id,
@@ -126,7 +131,7 @@ exports.coverList = async () => {
                 company_code,
                 min_eth: this.company.min_eth,
                 capacity: (_.get(data, "capacity_remaining", 0) / (10 ** 18)),
-                supportedChains: [supportedChain],
+                supportedChains,
                 currency, currency_limit,
                 duration_days_min: _.get(data, "duration_days_min", 15),
                 duration_days_max: _.get(data, "duration_days_max", 365),
