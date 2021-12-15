@@ -514,6 +514,7 @@ exports.storeSmartContract = async (req, res, next) => {
         let rules = {
             "company_code": ["required"],
             "product_id": ["nullable"],
+            "token_id": ["nullable"],
             "unique_id": ["required"],
             "address": ["required"],
             "name": ["required"],
@@ -554,6 +555,7 @@ exports.storeSmartContract = async (req, res, next) => {
             policy.SmartContract = {
                 company_code: req.body.company_code,
                 product_id: req.body.product_id,
+                token_id: req.body.token_id,
                 unique_id: req.body.unique_id,
                 address: req.body.address,
                 name: req.body.name,
@@ -567,6 +569,7 @@ exports.storeSmartContract = async (req, res, next) => {
             policy.CryptoExchange = {
                 company_code: req.body.company_code,
                 product_id: req.body.product_id,
+                token_id: req.body.token_id,
                 unique_id: req.body.unique_id,
                 address: req.body.address,
                 name: req.body.name,
