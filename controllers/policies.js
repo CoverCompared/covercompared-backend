@@ -536,9 +536,9 @@ exports.storeSmartContract = async (req, res, next) => {
         policy.user_id = req.user._id;
 
         if (req.body.type == "protocol") {
-            policy.product_type = constant.ProductTypes.crypto_exchange;
-        } else {
             policy.product_type = constant.ProductTypes.smart_contract;
+        } else {
+            policy.product_type = constant.ProductTypes.crypto_exchange;
         }
 
         policy.status = constant.PolicyStatus.pending;
@@ -551,7 +551,7 @@ exports.storeSmartContract = async (req, res, next) => {
         policy.crypto_currency = req.body.crypto_currency;
         policy.crypto_amount = req.body.crypto_amount;
         if (req.body.type == "protocol") {
-            policy.CryptoExchange = {
+            policy.SmartContract = {
                 company_code: req.body.company_code,
                 product_id: req.body.product_id,
                 unique_id: req.body.unique_id,
@@ -564,7 +564,7 @@ exports.storeSmartContract = async (req, res, next) => {
                 crypto_amount: req.body.crypto_amount
             }
         } else {
-            policy.SmartContract = {
+            policy.CryptoExchange = {
                 company_code: req.body.company_code,
                 product_id: req.body.product_id,
                 unique_id: req.body.unique_id,
@@ -578,7 +578,7 @@ exports.storeSmartContract = async (req, res, next) => {
             }
         }
         await policy.save();
-        let product_type = req.body.type == "protocol" ? "Crypto Exchange" : "Smart Contract";
+        let product_type = req.body.type == "protocol" ? "Smart Contract" : "Crypto Exchange";
 
         return res.status(200).send(utils.apiResponse(true, `${product_type} added successfully.`, {
             _id: policy._id,

@@ -12,3 +12,8 @@
 # Other Configuration
     > Update config as per NODE_ENV if required
     > config/index.js
+
+
+# Cover type details
+    custodian - CryptoExchange
+    protocol - SmartContract
