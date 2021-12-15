@@ -187,29 +187,3 @@ exports.contactUs = async (req, res) => {
         res.send(utils.apiResponseMessage(false, "Something went wrong."));
 
 }
-
-exports.resetSmartContract = async (req, res) => {
-    let policies = await Policies.find({ product_type : { "$in": [constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange] } })
-
-    if(policies && policies.length){
-        for (const key in policies) {
-            if(policies[key].product_type == constant.ProductTypes.crypto_exchange && (policies[key].CryptoExchange.type == "protocol" || policies[key].SmartContract.type == "protocol")){
-                policies[key].txn_hash = "SC-" + policies[key].txn_hash.split("-")[1]
-                policies[key].product_type = constant.ProductTypes.smart_contract;
-                if(policies[key].CryptoExchange.type == "protocol"){
-                    policies[key].SmartContract = policies[key].CryptoExchange;
-                }
-                await policies[key].save();
-            }else if(policies[key].product_type == constant.ProductTypes.smart_contract && (policies[key].SmartContract.type == "custodian" || policies[key].CryptoExchange.type == "custodian")){
-                policies[key].txn_hash = "CE-" + policies[key].txn_hash.split("-")[1]
-                policies[key].product_type = constant.ProductTypes.crypto_exchange;
-                if(policies[key].SmartContract.type == "custodian"){
-                    policies[key].CryptoExchange = policies[key].SmartContract;
-                }
-                await policies[key].save();
-            }
-        }
-    }
-
-    res.send({values: policies})
-}

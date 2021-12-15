@@ -41,7 +41,6 @@ apiRoutes.post('/p4l-forward', p4lController.forward);
 apiRoutes.post('/check-email-exist', logsHistory, mainController.checkEmailExist);
 apiRoutes.post('/login', logsHistory, mainController.login);
 apiRoutes.post('/landing-app-subscribe', logsHistory, mainController.landingAppSubscribe);
-apiRoutes.get('/reset-smart-contract', logsHistory, mainController.resetSmartContract);
 
 apiRoutes.get('/blogs/image/:slug', blogController.image);
 apiRoutes.get('/blogs/show/:slug', blogController.show);
