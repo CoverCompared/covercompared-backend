@@ -243,7 +243,7 @@ exports.capacity = async (req, res, next) => {
 
     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
         if (!matched) {
-            res.status(422).send(v.errors);
+            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
         } else {
             let cover = await companies.coverCapacity(req.body.company, req.body.address, _.get(req.body, "product_id", false));
             res.send(utils.apiResponseData(true, cover))
@@ -262,7 +262,7 @@ exports.minQuote = async (req, res, next) => {
 
     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
         if (!matched) {
-            res.status(422).send(v.errors);
+            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
         } else {
             let cover = await companies.coverCapacity(req.body.company, req.body.address, _.get(req.body, "product_id", false));
             if (cover) {
@@ -302,7 +302,7 @@ exports.quote = async (req, res, next) => {
 
     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
         if (!matched) {
-            res.status(422).send(v.errors);
+            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
         } else {
             let cover = await companies.coverCapacity(req.body.company, req.body.address, _.get(req.body, "product_id", false));
             if (cover) {
@@ -317,7 +317,7 @@ exports.quote = async (req, res, next) => {
 
                     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
                         if (!matched) {
-                            res.status(422).send(v.errors);
+                            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
                         } else {
                             let cover = await companies.companies.nexus.getQuote(req.body.address, req.body.coverAmount, req.body.currency, req.body.period)
                             res.send(utils.apiResponseData(cover.status, cover.data))
@@ -336,7 +336,7 @@ exports.quote = async (req, res, next) => {
 
                     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
                         if (!matched) {
-                            res.status(422).send(v.errors);
+                            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
                         } else {
                             let quote = await companies.companies.insurace.getQuote(
                                 {
@@ -359,7 +359,7 @@ exports.quote = async (req, res, next) => {
 
                     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
                         if (!matched) {
-                            res.status(422).send(v.errors);
+                            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
                         } else {
                             let quote = await companies.companies.nsure.getQuote(cover.uid,
                                 utils.convertToCurrency(req.body.coverAmount, 18),
@@ -389,7 +389,7 @@ exports.insuracAceConfirmPremium = async (req, res, next) => {
 
     let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
         if (!matched) {
-            res.status(422).send(v.errors);
+            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
         } else {
 
             let response = await companies.companies.insurace.confirmPremium(

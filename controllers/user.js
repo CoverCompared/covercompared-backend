@@ -26,7 +26,7 @@ exports.addProfileDetails = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
         let otp;
@@ -84,7 +84,7 @@ exports.resendVerificationEmail = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -128,7 +128,7 @@ exports.verifyOtp = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -200,7 +200,7 @@ exports.addWalletAddress = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -241,7 +241,7 @@ exports.addCartItems = async (req, res, next) => {
     let validation = await v.check();
     
     if (!validation) {
-        res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+        res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
         return;
     }
     try {

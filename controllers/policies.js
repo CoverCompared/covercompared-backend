@@ -44,7 +44,7 @@ exports.storeMso = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -156,7 +156,7 @@ exports.msoConfirmPayment = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            return res.status(200).send(utils.apiResponseData(false, {}, v.errors));
+            return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
         /**
@@ -244,7 +244,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -329,7 +329,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            return res.status(200).send(utils.apiResponseData(false, {}, v.errors));
+            return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
         /**
@@ -419,7 +419,7 @@ exports.policyReview = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -529,7 +529,7 @@ exports.storeSmartContract = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
 
@@ -631,7 +631,7 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            return res.status(200).send(utils.apiResponseData(false, {}, v.errors));
+            return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
         /**

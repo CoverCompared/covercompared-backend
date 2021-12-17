@@ -24,7 +24,7 @@ exports.store = async (req, res, next) => {
         let validation = await v.check();
 
         if (!validation) {
-            res.status(200).send(utils.apiResponseData(false, {}, v.errors))
+            res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
             return;
         }
         
