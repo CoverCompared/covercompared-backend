@@ -82,7 +82,7 @@ exports.coverList = async (options = {}) => {
 
     if (options.duration_min_day) {
         list = await list.filter((object) => {
-            return object.duration_days_min <= options.duration_min_day
+            return object.duration_days_min <= options.duration_min_day && object.duration_days_min <= object.duration_days_max
         })
         list = await list.map((object) => {
             object.duration_days_min = options.duration_min_day
@@ -91,7 +91,8 @@ exports.coverList = async (options = {}) => {
     }
     if (options.duration_max_day) {
         list = await list.filter((object) => {
-            return object.duration_days_max <= options.duration_max_day
+            return options.duration_max_day >= object.duration_days_min
+            // return object.duration_days_max <= options.duration_max_day
         })
     }
 
@@ -101,7 +102,10 @@ exports.coverList = async (options = {}) => {
             let currency_limit = {};
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
-                    if (_.get(object.currency_limit, `${key}.min`, false) !== false && object.currency_limit[key].min >= options.amount_min) {
+                    if (
+                        _.get(object.currency_limit, `${key}.min`, false) !== false && (options.amount_min >= object.currency_limit[key].min) &&
+                        (object.currency_limit[key].max == undefined || (options.amount_min <= object.currency_limit[key].max))
+                    ) {
                         currency.push(key);
                         currency_limit[key] = object.currency_limit[key];
                     }
@@ -122,8 +126,8 @@ exports.coverList = async (options = {}) => {
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
                     if (
-                        object.currency_limit[key].max == undefined ||
-                        (object.currency_limit[key].max <= options.amount_max)
+                        _.get(object.currency_limit, `${key}.min`, false) !== false && (options.amount_max >= object.currency_limit[key].min) 
+                        // && (object.currency_limit[key].max == undefined || (object.currency_limit[key].max <= options.amount_max))
                     ) {
                         currency.push(key);
                         currency_limit[key] = object.currency_limit[key];

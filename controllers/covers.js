@@ -142,6 +142,17 @@ exports.list = async (req, res, next) => {
     let amount_max = _.get(req.query, "amount_max", false);
     let get_quote = _.get(req.query, "get_quote", false);
 
+    if(_.get(req.query, "amount", false)){
+        let amount = req.query.amount.split(",")
+        amount_min = new Number(_.get(amount, "0", 0));
+        amount_max = new Number(_.get(amount, "1", 0));
+    }
+    if(_.get(req.query, "duration", false)){
+        let duration = req.query.duration.split(",")
+        duration_min_day = new Number(_.get(duration, "0", 0));
+        duration_max_day = new Number(_.get(duration, "1", 0));
+    }
+
     let { list } = await companies.coverList({
         search,
         companies: _.filter(company),
