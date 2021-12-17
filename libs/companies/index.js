@@ -103,8 +103,11 @@ exports.coverList = async (options = {}) => {
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
                     if (
-                        _.get(object.currency_limit, `${key}.min`, false) !== false && (options.amount_min >= object.currency_limit[key].min) &&
-                        (object.currency_limit[key].max == undefined || (options.amount_min <= object.currency_limit[key].max))
+                        _.get(object.currency_limit, `${key}.min`, false) !== false && 
+                        (
+                            object.currency_limit[key].min >= options.amount_min || 
+                            (object.currency_limit[key].max == undefined || (object.currency_limit[key].max >= options.amount_min))
+                        )
                     ) {
                         currency.push(key);
                         currency_limit[key] = object.currency_limit[key];
