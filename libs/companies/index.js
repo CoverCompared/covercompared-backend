@@ -82,10 +82,10 @@ exports.coverList = async (options = {}) => {
 
     if (options.duration_min_day) {
         list = await list.filter((object) => {
-            return object.duration_days_min <= options.duration_min_day && object.duration_days_min <= object.duration_days_max
+            return object.duration_days_min >= options.duration_min_day || object.duration_days_max >= options.duration_min_day
         })
         list = await list.map((object) => {
-            object.duration_days_min = options.duration_min_day
+            object.duration_days_min = options.duration_min_day > object.duration_days_min ? options.duration_min_day : object.duration_days_min;
             return object;
         })
     }
