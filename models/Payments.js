@@ -22,7 +22,13 @@ const PaymentsSchema = new Schema({
     payment_hash: { type: String, default: null },
     currency: { type: String, default: null },
     paid_amount: { type: String, default: null },
-    payment_status: { type: String, default: null }
+    payment_status: { type: String, default: null },
+    TokenTransferred: [{
+        from: { type: String, default:null },
+        to: { type: String, defualt: null },
+        token_address: { type: String, default: null },
+        value: { type: String, default: null }
+    }]
 }, {
     timestamps: true
 });

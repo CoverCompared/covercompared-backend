@@ -78,6 +78,7 @@ const PoliciesSchema = new Schema({
         device_type: { type: String, default: null },
         brand: { type: String, default: null },
         value: { type: String, default: null },
+        month: { type: String, default: null },
         purchase_month: { type: String, default: null },
         model: { type: String, default: null },
         model_name: { type: String, default: null },
@@ -86,6 +87,7 @@ const PoliciesSchema = new Schema({
         last_name: { type: String, default: null },
         email: { type: String, default: null },
         phone: { type: Number, default: null },
+        contract_product_id: { type: String, default: null }
     },
     SmartContract: {
         network: { type: String, default: null },

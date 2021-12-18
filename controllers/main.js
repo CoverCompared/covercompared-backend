@@ -61,23 +61,9 @@ exports.login = async (req, res, next) => {
         }
 
         // Find Wallet Address
-        let wallet = await WalletAddresses.findOne({ wallet_address: req.body.wallet_address });
-        let user;
-        if (wallet) {
-            user = await Users.findOne({ _id: ObjectId(wallet.user_id) });
-
-            if (!user) {
-                return res.status(200).send(utils.apiResponseMessage(false, "User not found."));
-            }
-
-        } else {
-            user = new Users;
-            await user.save();
-
-            wallet = new WalletAddresses;
-            wallet.wallet_address = req.body.wallet_address;
-            wallet.user_id = user._id;
-            await wallet.save();
+        let user = Users.getUser(req.body.wallet_address);
+        if (!user) {
+            return res.status(200).send(utils.apiResponseMessage(false, "User not found."));
         }
 
         let tokenDetails = {

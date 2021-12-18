@@ -21,6 +21,10 @@ const constant = {
         unpaid: "unpaid", 
         paid: "paid", 
         cancelled: "cancelled"
+    },
+    p4lPurchaseMonth: {
+        1: "Less than 12 months",
+        2: "12 to 24 Months"
     }
 }
 

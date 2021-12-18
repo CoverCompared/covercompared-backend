@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
 
 
 /**
- * P4LToken Schema
+ * PolicyTxnHashCount Schema
  */
 
 const PolicyTxnHashCountSchema = new Schema({

@@ -8,6 +8,7 @@ var logger = require('morgan');
 
 const axios = require("axios");
 const { connect } = require("./connect");
+const web3Connection = require("./libs/web3");
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
@@ -33,6 +34,11 @@ app.use('/api', express.static(path.join(__dirname, 'public')));
 
 module.exports = async () => {
   let con = await connect();
+
+  // let web3 = await web3Connection.connect()
+  // let events = await web3Connection.p4lPolicySync();
+  // console.log(events);
+
 
   var indexRouter = require('./routes/index');
   var apiRouter = require('./routes/api');  

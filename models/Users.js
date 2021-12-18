@@ -3,6 +3,7 @@
 const _ = require('lodash');
 var mime = require('mime-types')
 const crypto = require('crypto');
+const ObjectId = require("mongodb").ObjectId;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -102,6 +103,39 @@ UsersSchema.methods = {
         } catch (err) {
             return '';
         }
+    }
+}
+
+UsersSchema.statics = {
+    
+    getUser: async function (wallet_address) {
+
+        const WalletAddresses = mongoose.model("WalletAddresses");
+        const Users = mongoose.model("Users");
+
+        // Find Wallet Address
+        let wallet = await WalletAddresses.findOne({ wallet_address });
+        let user;
+        if (wallet) {
+            user = await Users.findOne({ _id: ObjectId(wallet.user_id) });
+
+            if (!user) {
+                /**
+                 * TODO: Send Error Report : Wallet address exist but user not found
+                 */
+                return false;
+            }
+
+        } else {
+            user = new Users;
+            await user.save();
+
+            wallet = new WalletAddresses;
+            wallet.wallet_address = wallet_address;
+            wallet.user_id = user._id;
+            await wallet.save();
+        }
+       return user; 
     }
 }
 mongoose.model('Users', UsersSchema);

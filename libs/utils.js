@@ -3,6 +3,7 @@ const NodeCache = require("node-cache");
 const config = require("../config");
 const myCache = new NodeCache();
 const moment = require('moment');
+const ObjectID = require("mongodb").ObjectID
 
 let utils = {};
 
@@ -34,6 +35,19 @@ utils.apiResponseData = (status, data = {}, error = {}) => {
 
 utils.apiResponseMessage = (status, msg) => {
     return { 'success': status, 'message': msg, 'data': {}, 'errors': {} };
+}
+
+/**
+ * 
+ * @param {Object} abi 
+ * @param {String} abi.name 
+ * @param {"event"} abi.type 
+ * @param {Object[]} abi.inputs 
+ * @param {String} abi.inputs[].type
+ */
+utils.convertEventToSha3 = (abi) => {
+    let inputs = abi.inputs.map(input => input.type);
+    return `${abi.name}(${inputs.join()})`;
 }
 
 /**
@@ -167,6 +181,10 @@ utils.getErrorMessage = (errors) => {
 
 utils.getMsoPolicyMembershipId = (createdAt, txn_hash) => {
     return `WW-Z-PK-${utils.getFormattedDate(createdAt, "MM/DD/YYYY")}-${txn_hash}`;
+}
+
+utils.isValidObjectID = (_id) => {
+    return ObjectID.isValid(_id);
 }
 
 module.exports = utils;

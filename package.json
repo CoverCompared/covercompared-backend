@@ -27,7 +27,9 @@
     "mongoose": "^6.0.7",
     "morgan": "~1.9.1",
     "node-cache": "^5.1.2",
+    "node-cron": "^3.0.0",
     "node-input-validator": "^4.4.1",
-    "nodemailer": "^6.6.3"
+    "nodemailer": "^6.6.3",
+    "web3": "^1.6.1"
   }
 }

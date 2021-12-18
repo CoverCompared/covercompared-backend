@@ -17,12 +17,13 @@ const logsHistory = require('../libs/middlewares/logsHistory');
 var adminApis = require("./admin");
 const utils = require('../libs/utils');
 const { companies } = require('../libs/companies');
-
+const web3Connection = require("./../libs/web3");
 
 const mongoose = require("mongoose");
 const RequestLogs = mongoose.model('RequestLogs');
 
 var express1 = require('express');
+const config = require('../config');
 var apiRoutes = express1.Router();
 
 apiRoutes.get('/save-image/:unique_id', async (req, res) => {
@@ -75,6 +76,28 @@ apiRoutes.post('/user/policies/:id/add-review', logsHistory, authVerify, policie
 
 router.use('/', apiRoutes);
 
+router.get("/web3/connect", async (req, res) => {
+    let web3 = await web3Connection.connect()
+    let isListning = await web3Connection.isListening("p4l");
+    await web3Connection.p4lPolicySync();
+    return res.send({ web3: isListning });
+    // let events = await web3Connection.p4lPolicySync();
+    // console.log(events);
+
+})
+router.get("/web3/test", async (req, res) => {
+    
+    try {
+        let subscription = web3Connection.subscriptionStatus()
+        subscription.isListening()
+        return res.send({ web3: await  web3Connection.isListening("p4l") });
+    } catch (error) {
+    console.log("ERRR" , error);        
+    }
+    // let events = await web3Connection.p4lPolicySync();
+    // console.log(events);
+
+})
 
 router.use('/admin', adminApis);
 router.get('/request-logs', async (req, res) => {
