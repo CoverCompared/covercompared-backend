@@ -61,7 +61,7 @@ exports.login = async (req, res, next) => {
         }
 
         // Find Wallet Address
-        let user = Users.getUser(req.body.wallet_address);
+        let user = await Users.getUser(req.body.wallet_address);
         if (!user) {
             return res.status(200).send(utils.apiResponseMessage(false, "User not found."));
         }
