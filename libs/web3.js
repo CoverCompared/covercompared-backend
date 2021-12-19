@@ -11,6 +11,7 @@ const utils = require("./utils");
 const Policies = mongoose.model('Policies');
 const Users = mongoose.model('Users');
 const Payments = mongoose.model('Payments');
+const Settings = mongoose.model('Settings');
 
 let web3 = {
     [config.SupportedChainId.MAINNET]: undefined,
@@ -20,35 +21,28 @@ let web3 = {
 
 /**
  * Return web3 is connected
- * @param {"p4l"} smart_contract 
  */
-exports.isListening = async (smart_contract) => {
-    let web3Connect = this.getWeb3Connect(smart_contract);
+exports.isListening = async (web3Connect) => {
     if (!web3Connect) {
         return false;
     } else {
         try {
             return await web3Connect.eth.net.isListening();
         } catch (error) {
-            console.log("Error", error);
             return false;
         }
     }
+    return false;
 }
 
 exports.connect = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             if (config.is_mainnet) {
-                web3[config.SupportedChainId.MAINNET] = new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[config.SupportedChainId.MAINNET]));
+                web3[config.SupportedChainId.MAINNET] = await this.isListening(web3[config.SupportedChainId.MAINNET]) ? web3[config.SupportedChainId.MAINNET] : new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[config.SupportedChainId.MAINNET]));
             } else {
-                if (web3[config.SupportedChainId.RINKEBY]) {
-                    web3[config.SupportedChainId.RINKEBY].eth.clearSubscriptions()
-                }
-
-                web3[config.SupportedChainId.RINKEBY] = new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[config.SupportedChainId.RINKEBY]));
-                web3[config.SupportedChainId.KOVAN] = new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[config.SupportedChainId.KOVAN]));
-
+                web3[config.SupportedChainId.RINKEBY] = await this.isListening(web3[config.SupportedChainId.RINKEBY]) ? web3[config.SupportedChainId.RINKEBY] : new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[config.SupportedChainId.RINKEBY]));
+                web3[config.SupportedChainId.KOVAN] = await this.isListening(web3[config.SupportedChainId.KOVAN]) ? web3[config.SupportedChainId.KOVAN] : new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[config.SupportedChainId.KOVAN]));
                 // web3[config.SupportedChainId.RINKEBY].eth.clearSubscriptions()
             }
             resolve(web3);
@@ -141,9 +135,9 @@ exports.connectSmartContract = async (smart_contract) => {
     try {
         if (smart_contract == "p4l") {
             try {
-                if(P4LStartContract){
+                if (P4LStartContract) {
                     let productId = P4LStartContract.methods.productIds().call()
-                    if(productId){
+                    if (productId) {
                         return P4LStartContract;
                     }
                 }
@@ -165,6 +159,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
     // Find Policy
     let policy = await Policies.findOne({ payment_hash: transaction_hash });
+    // console.log("policy ", policy);
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
@@ -182,17 +177,17 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
         let BuyProductEventAbi = P4LSmartContractAbi.find(value => value.name == "BuyProduct" && value.type == "event");
         let hasBuyProductEvent = this.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyProductEventAbi);
 
-        if(hasBuyProductEvent || hasBuyP4LEvent){
-
+        if (hasBuyProductEvent || hasBuyP4LEvent) {
             // Get ProductId from Transaction
             let productId;
-            if(hasBuyProductEvent){ 
+            if (hasBuyProductEvent) {
                 productId = web3Connect.utils.toDecimal(hasBuyProductEvent.topics[1])
-            }else if(hasBuyP4LEvent){
+            } else if (hasBuyP4LEvent) {
                 productId = web3Connect.utils.toDecimal(hasBuyP4LEvent.topics[1])
             }
+            console.log("P4L  ::  Started ProductID : ", productId);
 
-            
+
             // Get Product Detail from ProductId
             let product = await this.p4lGetProductDetails(productId);
 
@@ -202,15 +197,15 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
             if (!policy) {
                 // Create policy
                 policy = new Policies;
-    
-    
+
+
                 if (!user) {
                     /**
                      * TODO: Send Error Report : Wallet address exist but user not found
                      */
                     return false;
                 }
-    
+
                 policy.user_id = user._id;
                 policy.product_type = constant.ProductTypes.device_insurance;
                 policy.currency = "USD";
@@ -232,9 +227,9 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                     email: null,
                     phone: null
                 }
-                
+
             }
-            
+
             policy.DeviceInsurance.contract_product_id = productId;
             policy.status = constant.PolicyStatus.active;
             policy.StatusHistory.push({
@@ -245,9 +240,9 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
             policy.payment_status = constant.PolicyPaymentStatus.paid;
             policy.payment_hash = transaction_hash;
             await policy.save();
-            
+
             payment = payment ? payment : new Payments;
-    
+
             let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
 
             payment.payment_status = constant.PolicyPaymentStatus.paid;
@@ -269,43 +264,44 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
     }
     return true;
 }
+let P4LTransactionPromises = [];
+let IsP4LTransactionRunning = false;
+
+exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
+    P4LTransactionPromises.push({transaction_hash, p4l_from_block});
+    if (IsP4LTransactionRunning == false) {
+        console.log("P4L  ::  Started.");
+        while (P4LTransactionPromises.length > 0) {
+            IsP4LTransactionRunning = true;
+            let promise = P4LTransactionPromises[0];
+            await this.p4lSyncTransaction(promise.transaction_hash);
+            console.log("P4L  ::  Completed ", promise.transaction_hash);
+            if(promise.p4l_from_block){
+                await Settings.setKey("p4l_from_block", promise.p4l_from_block)
+            }
+            P4LTransactionPromises.splice(0, 1);
+            console.log("P4L  ::  Rest ", P4LTransactionPromises.length);
+            if (P4LTransactionPromises.length == 0) {
+                IsP4LTransactionRunning = false;
+            }
+        }
+        console.log("P4L  ::  Completed.");
+    }else{
+        console.log("P4L  ::  Already running.....");
+    }
+}
 
 exports.p4lPolicySync = async () => {
 
-    const P4lProductIdCount = 0;
-    const P4LFromBlock = 0;
+
+    let P4LFromBlock = await Settings.getKey("p4l_from_block");
+    P4LFromBlock = P4LFromBlock ? P4LFromBlock : 0;
 
     try {
         let web3Connect = this.getWeb3Connect("p4l");
         await this.connectSmartContract("p4l");
 
         P4LEventSubscription = await P4LStartContract.events.allEvents({ fromBlock: P4LFromBlock })
-
-        // let LogSubscription = web3[config.SupportedChainId.RINKEBY].eth.subscribe("logs", { address: contracts.p4l[config.SupportedChainId.RINKEBY], fromBlock: "0" }, function (error, result) {
-        //     if (!error && result.transactionHash == "0x15aacd064e06c63f34e9da1db6fbff140a2fd7c73be5e2f9cb33ade84e0aabe8")
-        //         console.log("Log ", result);
-        // }).on("connected", function(subscriptionId){
-        //     console.log("Connected ", subscriptionId);
-        // })
-
-        // let transaction = await web3[config.SupportedChainId.RINKEBY].eth.getTransaction("0x15aacd064e06c63f34e9da1db6fbff140a2fd7c73be5e2f9cb33ade84e0aabe8")
-        // let TransactionReceipt = await web3[config.SupportedChainId.RINKEBY].eth.getTransactionReceipt("0x15aacd064e06c63f34e9da1db6fbff140a2fd7c73be5e2f9cb33ade84e0aabe8")
-        // console.log("Transaction Receipt ", TransactionReceipt.logs);
-        // let transferMethod = web3[config.SupportedChainId.RINKEBY].utils.sha3('Transfer(address,address,uint256)');
-        // let transferDetails = TransactionReceipt.logs.find(value => {
-        //     return value.topics.find(topic => topic == transferMethod)
-        // })
-        // console.log("transferDetails ", transferDetails);
-        // if (transferDetails) {
-        //     let data = web3[config.SupportedChainId.RINKEBY].eth.abi.decodeParameter("uint256", transferDetails.data);
-        //     console.log(data / (10 ** 18));
-        // }
-
-        // .on("data", function(log){
-        //     console.log("Data  ",log);
-        // })
-        // .on("changed", function(log){
-        // });
 
         /**
          * BuyP4L, BuyProduct 
@@ -315,16 +311,9 @@ exports.p4lPolicySync = async () => {
          * If there any new product found it will insert data to database
          */
         P4LEventSubscription.on('data', async (event) => {
-            
             if (["BuyP4L", "BuyProduct"].includes(event.event)) {
-
-            /**
-             * Get product details from _productId
-             */
-            //     let product = await P4LStartContract.methods.products(event.returnValues._productId).call()
-
-            // Find Policy
-                await this.p4lSyncTransaction(event.transactionHash);
+                // Find Policy
+                await this.p4lAddToSyncTransaction(event.transactionHash, event.blockNumber);
             }
 
         })
@@ -374,8 +363,8 @@ exports.subscriptionStatus = async () => {
  */
 exports.checkTransactionReceiptHasLog = (web3Connect, TransactionReceipt, abi) => {
     let methodSha3 = web3Connect.utils.sha3(utils.convertEventToSha3(abi));
-    
-    if(Array.isArray(TransactionReceipt.logs)){
+
+    if (Array.isArray(TransactionReceipt.logs)) {
         logEvent = TransactionReceipt.logs.find(log => {
             return log.topics.find(topic => topic == methodSha3)
         })

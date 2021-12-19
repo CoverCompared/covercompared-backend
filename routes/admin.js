@@ -37,8 +37,8 @@ authRoutes.get('/policies/:id', policiesController.show);
 
 
 // contact-us
-authRoutes.get('/contact-us/table', adminVerifyPassword , contactController.table);
-authRoutes.get('/contact-us/show/:id', adminVerifyPassword ,contactController.show);
+authRoutes.get('/contact-us/table', contactController.table);
+authRoutes.get('/contact-us/show/:id',contactController.show);
 
 router.use("/", adminVerifyPassword, authRoutes);
 

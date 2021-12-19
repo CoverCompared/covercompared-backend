@@ -8,7 +8,7 @@ var logger = require('morgan');
 
 const axios = require("axios");
 const { connect } = require("./connect");
-const web3Connection = require("./libs/web3");
+const { cron } = require("./libs/cron");
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
@@ -33,12 +33,11 @@ app.use(cookieParser());
 app.use('/api', express.static(path.join(__dirname, 'public')));
 
 module.exports = async () => {
+  /**Connect Database */
   let con = await connect();
-
-  // let web3 = await web3Connection.connect()
-  // let events = await web3Connection.p4lPolicySync();
-  // console.log(events);
-
+  
+  /** Start Cron job */
+  cron()
 
   var indexRouter = require('./routes/index');
   var apiRouter = require('./routes/api');  

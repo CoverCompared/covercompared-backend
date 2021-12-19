@@ -1,6 +1,6 @@
 const niv = require("./../../libs/nivValidations");
 const utils = require("../../libs/utils");
-const _ = require("lodash");    
+const _ = require("lodash");
 
 const mongoose = require('mongoose');
 const ContactUsRequests = mongoose.model('ContactUsRequests');
@@ -26,7 +26,7 @@ exports.table = async (req, res, next) => {
 
     if (sort[0] == "id") { sort[0] = "_id" }
 
-    let total = await ContactUsRequests.aggregate([{$match: findObj}, {$count: 'total'}]);
+    let total = await ContactUsRequests.aggregate([{ $match: findObj }, { $count: 'total' }]);
     let contact_us = await ContactUsRequests.find(findObj)
         .sort({ [sort[0]]: sort[1] })
         .limit(limit)
@@ -36,28 +36,21 @@ exports.table = async (req, res, next) => {
         range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
         data: contact_us
     })
-   
+
 }
 
 exports.show = async (req, res, next) => {
-    
+
     try {
         let contact = await ContactUsRequests.findOne({ _id: req.params.id });
         if (!contact) {
-            /**
-             * TODO:
-             * Error Report
-             * If contact record not found in database
-             */
             return res.status(200).send(utils.apiResponseMessage(false, "Contact-Request not found."));
         }
 
-        let contact_us = await ContactUsRequests.find({ _id: req.params.id });
-            
-        return res.status(200).send(utils.apiResponseData(true,contact_us ));
+        return res.status(200).send(utils.apiResponseData(true, contact));
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
-   
+
 }

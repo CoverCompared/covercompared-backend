@@ -4,6 +4,7 @@ const _ = require("lodash");
 const mongoose = require('mongoose');
 const utils = require("../../libs/utils");
 const Blogs = mongoose.model('Blogs');
+const Subscriptions = mongoose.model('Subscriptions');
 
 exports.load = async (req, res, next, _id) => {
     const criteria = { _id };
@@ -82,6 +83,11 @@ exports.index = async (req, res, next) => {
         if (search.status) {
             findObj["$and"].push({ status: search.status });
         }
+        if (search.q) {
+            findObj["$or"] = [
+                { "title": { $regex: search.q, $options: "i" } }
+            ];
+        }
     }
 
     // let total = await Blogs.countDocuments()
@@ -145,32 +151,32 @@ exports.update = async (req, res, next) => {
     // Upload Document
     await blog.uploadImage(req.files)
 
-    if (blog.status == Blogs.STATUS.PUBLISHED) {
+    // if (blog.status == Blogs.STATUS.PUBLISHED) {
 
-        if (blog.send_publish_mail != true) {
-            let subscriptions = await Subscriptions.find({ status: Subscriptions.STATUS.SUBSCRIBED }).lean();
-            if (subscriptions) {
-                let blogPublishMailJobs = subscriptions.map(subscription => ({ blog_id: blog._id, subscription_id: subscription._id, status: 1 }))
-                await BlogPublishMailJobs.create(blogPublishMailJobs);
-            }
-            blog.send_publish_mail = true;
-            await blog.save();
-        } else {
-            await BlogPublishMailJobs.updateMany(
-                { blog_id: blog._id },
-                { status: 1 }
-            )
-        }
-    } else {
-        if (blog.send_publish_mail == true) {
-            await BlogPublishMailJobs.updateMany(
-                { blog_id: blog._id },
-                { status: 0 }
-            )
-        }
-    }
+    //     if (blog.send_publish_mail != true) {
+    //         let subscriptions = await Subscriptions.find({ status: Subscriptions.STATUS.SUBSCRIBED }).lean();
+    //         if (subscriptions) {
+    //             let blogPublishMailJobs = subscriptions.map(subscription => ({ blog_id: blog._id, subscription_id: subscription._id, status: 1 }))
+    //             await BlogPublishMailJobs.create(blogPublishMailJobs);
+    //         }
+    //         blog.send_publish_mail = true;
+    //         await blog.save();
+    //     } else {
+    //         await BlogPublishMailJobs.updateMany(
+    //             { blog_id: blog._id },
+    //             { status: 1 }
+    //         )
+    //     }
+    // } else {
+    //     if (blog.send_publish_mail == true) {
+    //         await BlogPublishMailJobs.updateMany(
+    //             { blog_id: blog._id },
+    //             { status: 0 }
+    //         )
+    //     }
+    // }
 
-    res.send(utils.apiResponse(true, "Blog updated successfully.", blog))
+    res.send(utils.apiResponse(true, "Blog updated successfully.", blog.getResponse()))
 
 }
 
