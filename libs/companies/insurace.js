@@ -26,6 +26,17 @@ exports.convertRiskType = (details) => {
     }
     return _.get(details, "risk_type", "");
 }
+exports.convertChainType = (details) => {
+
+    let overrideValues = { 
+        CEX: "Ethereum"
+    }
+
+    if (overrideValues[_.get(details, "chain_type", "")]) {
+        return overrideValues[_.get(details, "chain_type", "")]
+    }
+    return _.get(details, "chain_type", "");
+}
 
 exports.currencyList = async () => {
 
@@ -92,10 +103,10 @@ exports.coverList = async () => {
         if (_.get(data, "status", false) != "Enabled" || (_.get(data, "capacity_remaining", 0) / (10 ** 18) <= 0)) {
             return false;
         } else {
-            let supportedChain = utils.convertSupportedChain(_.get(data, "chain_type", ""));
+            let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
+
             let currency = [];
             let currency_limit = {};
-
             if (limits[supportedChain] && Array.isArray(limits[supportedChain]) && limits[supportedChain].length) {
                 limits[supportedChain].forEach(value => {
                     currency.push(value.name);
@@ -115,9 +126,9 @@ exports.coverList = async () => {
             let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
 
             let supportedChains = [supportedChain];
-            if(supportedChain == "CEX"){
-                supportedChains = [];
-            }
+            // if(supportedChain == "CEX"){
+            //     supportedChains = [];
+            // }
 
             return {
                 unique_id,
