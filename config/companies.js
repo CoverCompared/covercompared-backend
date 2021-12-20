@@ -34,7 +34,7 @@ module.exports = {
         "name": "Uno Re",
         "code": "unore",
         "icon" : `${config.api_url}images/company-icons/UNORE.png`,
-        "status": true,
+        "status": false,
         "min_eth": 0.1,
         "logo_url": `${config.api_url}images/unore/`,
         "apis": {}
