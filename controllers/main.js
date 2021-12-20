@@ -139,9 +139,9 @@ exports.landingAppSubscribe = async (req, res, next) => {
     console.log("Send mail ", isNew);
     if (isNew) {
 
-        // await mailer.landingAppSubscription(
-        //     config.subscribe_mail,
-        //     { email: req.body.email });
+        await mailer.landingAppSubscription(
+            config.subscribe_mail,
+            { email: req.body.email });
         
         await mailer.subscribe(
             [{ name: subscription.name, address: subscription.email }],
