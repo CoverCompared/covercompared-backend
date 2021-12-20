@@ -187,4 +187,19 @@ utils.isValidObjectID = (_id) => {
     return ObjectID.isValid(_id);
 }
 
+/**
+ * 
+ * @param {Number} n 
+ * @returns 
+ */
+ utils.random = (n) => {
+    var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var token = '';
+    for (var i = 0; i < n; i++) {
+        token += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return token;
+}
+
+
 module.exports = utils;

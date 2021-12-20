@@ -2,6 +2,7 @@ let config = {
     app_code: "cover-compared",
     cache_time: 300, // seconds
     api_url: "http://localhost:3006/api/",
+    web_url: "http://localhost:3000/",
     db: `${process.env.MONGODB_URL}${process.env.DATABASE_NAME}`,
     dbName: process.env.DATABASE_NAME,
     noreplay: `"Cover Compared" no-reply@polkacover.com`,
@@ -14,6 +15,15 @@ let config = {
         RINKEBY: 4,
         KOVAN: 42,
     },
+    email_images: {
+        logo: "images/cover-compared.png"
+    },
+    social_links : {
+        twitter: "https://twitter.com/PolkaCover",
+        linkedin: "https://www.linkedin.com/company/PolkaCover",
+        telegram: "https://t.me/PolkaCover",
+        gitbook: "https://polkacover.gitbook.io"
+    },
 }
 
 const INFURA_KEY = "92a35c94033b48c6a8d248ac76e7650e";
@@ -25,8 +35,10 @@ config.NETWORK_URLS = {
 
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.api_url = "https://staging-covercompared.polkacover.com/api/";
+    config.web_url = "https://staging-covercompared.polkacover.com/";
 } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
     config.api_url = "https://covercompared.polkacover.com/api/";
+    config.web_url = "https://covercompared.polkacover.com/";
     config.is_mainnet = true;
 }
 

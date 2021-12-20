@@ -31,15 +31,15 @@ const SubscriptionsSchema = new Schema({
     timestamps: true
 });
 
-// SubscriptionsSchema.methods = {
+SubscriptionsSchema.methods = {
 
-// }
+}
 
-// SubscriptionsSchema.statics = {
-//     STATUS: {
-//         SUBSCRIBED : "subscribed",
-//         UNSUBSCRIBED: "unsubscribed"
-//     }
-// }
+SubscriptionsSchema.statics = {
+    STATUS: {
+        SUBSCRIBED : "subscribed",
+        UNSUBSCRIBED: "unsubscribed"
+    }
+}
 
 mongoose.model('Subscriptions', SubscriptionsSchema);

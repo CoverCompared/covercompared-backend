@@ -104,22 +104,54 @@ exports.landingAppSubscribe = async (req, res, next) => {
         return;
     }
 
-    let response = await mailer.landingAppSubscription(
-        config.subscribe_mail,
-        { email: req.body.email });
+    let subscription = await Subscriptions.findOne({ email: req.body.email });
+    let isNew = false;
+    
+    if (subscription) {
 
-    let find = await Subscriptions.find({ email: req.body.email });
-    if (find == "") {
-        var subscription = new Subscriptions;
+        if (subscription.status != Subscriptions.STATUS.SUBSCRIBED) {
+            isNew = true;
+            subscription.unsubscribe_token = utils.random(60);
+            subscription.status = Subscriptions.STATUS.SUBSCRIBED;
+            subscription.status_history = Array.isArray(subscription.status_history) ? subscription.status_history : [];
+            subscription.status_history.push({
+                status: Subscriptions.STATUS.SUBSCRIBED,
+                update_at: Date.now()
+            })
+            subscription.save();
+        }
+
+    } else {
+        subscription = new Subscriptions;
         subscription.name = req.body.name;
         subscription.email = req.body.email;
-        await subscription.save();
-        // console.log(subscription);
-    }
-    else {
-        return res.send(utils.apiResponseMessage(false, "Email already exists"));
+        subscription.unsubscribe_token = utils.random(60);
+        subscription.status = Subscriptions.STATUS.SUBSCRIBED;
+        subscription.status_history.push({
+            status: Subscriptions.STATUS.SUBSCRIBED,
+            update_at: Date.now()
+        })
+        subscription.save();
+        isNew = true;
     }
 
+    // Send Mail
+    console.log("Send mail ", isNew);
+    if (isNew) {
+
+        // await mailer.landingAppSubscription(
+        //     config.subscribe_mail,
+        //     { email: req.body.email });
+        
+        await mailer.subscribe(
+            [{ name: subscription.name, address: subscription.email }],
+            {
+                name: subscription.name ? subscription.name : subscription.email,
+                unsubscribe_token: subscription.unsubscribe_token
+            },
+            []
+        )
+    }
 
     // if (response)
     if (subscription) {

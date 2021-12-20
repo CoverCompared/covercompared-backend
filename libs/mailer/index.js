@@ -183,6 +183,59 @@ mailer.landingAppSubscription = async (to, data, attachments = []) => {
         .sendMail(to, subject, html, attachments);
 }
 
+
+/**
+ * 
+ * @param {Object} to 
+ * @param {string} to[].name 
+ * @param {string} to[].address 
+ * @param {Object} data 
+ * @param {string} data.name 
+ * @param {string} data.unsubscribe_token 
+ * @param {Array} attachments 
+ */
+ mailer.subscribe = async (to, data, attachments) => {
+
+    data = { ...data, config: config }
+    const html = await ejs.renderFile(__dirname + "/templates/subscribe.ejs", data);
+    const subject = "Welcome to Cover Compared, Thank for Subscription";
+
+    attachments = mailer.attachTemplateFiles(attachments);
+
+    return mailer
+        .sendMail(to, subject, html, attachments);
+}
+
+mailer.attachTemplateFiles = (attachments = []) => {
+    attachments.push({
+        filename: 'logo.png',
+        path: `${__dirname}/../../public/images/cover-compared.png`,
+        cid: 'covercomparedlogo@cid'
+    })
+    attachments.push({
+        filename: 'twitter.png',
+        path: `${__dirname}/../../public/images/twitter.png`,
+        cid: 'covercomparedtwitter@cid'
+    })
+    attachments.push({
+        filename: 'linkedin.png',
+        path: `${__dirname}/../../public/images/linkedin.png`,
+        cid: 'covercomparedlinkedin@cid'
+    })
+    attachments.push({
+        filename: 'telegram.png',
+        path: `${__dirname}/../../public/images/telegram.png`,
+        cid: 'covercomparedtelegram@cid'
+    })
+    attachments.push({
+        filename: 'gitbook.png',
+        path: `${__dirname}/../../public/images/gitbook.png`,
+        cid: 'covercomparedgitbook@cid'
+    })
+    return attachments;
+}
+
+
 /**
  * 
  * It will send mail to support team.
