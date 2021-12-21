@@ -140,14 +140,60 @@ PoliciesSchema.statics = {
      * @param {"mso_policy"|"device_insurance"|"smart_contract"|"crypto_exchange"|Array} product_type 
      * @param {Object} find
      */
-    getPolicies: async function (product_type, find = {}) {
+    getPolicies: async function (product_type, find = {}, review = false) {
 
         const Policies = mongoose.model("Policies");
+        const Reviews = mongoose.model('Reviews');
 
-        let policies = await Policies.find({ ...find, product_type })
-            .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"])
-            .sort({ _id: -1 })
-            .lean();
+        let findObj = { ...find, product_type: { $in: product_type } };
+        // let policies = Policies.find({ ...find, product_type })
+        //     .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"])
+        //     .sort({ _id: -1 })
+
+        let project = { 
+            StatusHistory: 0,
+            PaymentStatusHistory: 0, 
+            user_id : 0, 
+            payment_id: 0
+        };
+        let aggregates = [];
+        aggregates.push({ $match: findObj })
+        
+        if(review){
+            aggregates.push({
+                $lookup:
+                  {
+                    from: Reviews.collection.collectionName,
+                    localField: "_id",
+                    foreignField: "policy_id",
+                    as: "review"
+                  }
+             });
+            project["review._id"] = 0
+            project["review.user_id"] = 0
+            project["review.createdAt"] = 0
+            project["review.updatedAt"] = 0
+        }
+
+        aggregates.push({ $sort: { _id: -1 } });
+        aggregates.push({ $project: project });
+
+        let policies = await Policies.aggregate(aggregates);
+        console.log(policies);
+
+        // policies = policies.populate({
+        //     path: "policy_id",
+        //     match: { age: { $gte: 21 } },
+        //     select: [
+        //         "_id", "plan_type", "quote", "name", "country",
+        //         "mso_cover_user", "currency", "policy_price", "mso_addon_service",
+        //         "MSOMembers"
+        //     ],
+        //     model: MSOPolicies
+        // })
+
+        // policies = await policies.lean();
+
 
         if (Array.isArray(policies)) {
             policies = policies.map((policy) => {

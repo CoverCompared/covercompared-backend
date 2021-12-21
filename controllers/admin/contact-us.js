@@ -32,10 +32,10 @@ exports.table = async (req, res, next) => {
         .limit(limit)
         .skip(skip).lean();
 
-    res.send({
+    res.send(utils.apiResponseData(true, {
         range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
         data: contact_us
-    })
+    }))
 
 }
 

@@ -451,7 +451,16 @@ exports.policyReview = async (req, res, next) => {
 exports.get = async (req, res, next) => {
     try {
 
-        let policies = await Policies.getPolicies([constant.ProductTypes.device_insurance, constant.ProductTypes.mso_policy, constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange], { user_id: req.user._id });
+        let policies = await Policies.getPolicies(
+            [
+            constant.ProductTypes.device_insurance,
+            constant.ProductTypes.mso_policy,
+            constant.ProductTypes.smart_contract,
+            constant.ProductTypes.crypto_exchange
+            ], 
+            { user_id: req.user._id },
+            true 
+        );
 
         let policy;
         for (const key in policies) {
@@ -680,11 +689,11 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
             });
         }
 
-        if(req.body.token_id){
+        if (req.body.token_id) {
             if (policy.product_type == constant.ProductTypes.smart_contract) {
-                policy.SmartContract.token_id= req.body.token_id;
+                policy.SmartContract.token_id = req.body.token_id;
             } else {
-                policy.CryptoExchange.token_id= req.body.token_id;
+                policy.CryptoExchange.token_id = req.body.token_id;
             }
         }
 
