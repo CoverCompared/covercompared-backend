@@ -5,6 +5,7 @@ var mime = require('mime-types')
 const crypto = require('crypto');
 const ObjectId = require("mongodb").ObjectId;
 const mongoose = require('mongoose');
+const utils = require('../libs/utils');
 const Schema = mongoose.Schema;
 
 
@@ -103,6 +104,11 @@ UsersSchema.methods = {
         } catch (err) {
             return '';
         }
+    },
+    getWalletAddress : async function(wallet_address){
+        const WalletAddresses = mongoose.model("WalletAddresses");
+        let wallet = await WalletAddresses.findOne({ user_id : utils.getObjectID(this._id), wallet_address });
+        return wallet;
     }
 }
 
@@ -136,6 +142,6 @@ UsersSchema.statics = {
             await wallet.save();
         }
        return user; 
-    }
+    },
 }
 mongoose.model('Users', UsersSchema);

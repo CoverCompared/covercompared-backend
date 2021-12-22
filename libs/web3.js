@@ -12,6 +12,8 @@ const Policies = mongoose.model('Policies');
 const Users = mongoose.model('Users');
 const Payments = mongoose.model('Payments');
 const Settings = mongoose.model('Settings');
+const signMsg = require("./sign_message");
+
 
 let web3 = {
     [config.SupportedChainId.MAINNET]: undefined,
@@ -297,10 +299,22 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
     value =  utils.getBigNumber(value);
 
     try {
-        const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
-        const sign = web3Connect.eth.accounts.sign(dataToSign, config.signature_private_key);
-        return sign;
+        console.log("Message", signMsg.getSignMessage({
+            total_amount : value,
+            id : policyId,
+            durPlan
+         }));
+        return signMsg.getSignMessage({
+            total_amount : value,
+            id : policyId,
+            durPlan
+         })
+        // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
+        // // const sign = web3Connect.eth.accounts.sign(dataToSign, config.signature_private_key);
+        // const sign = web3Connect.eth.sign(dataToSign, wallet_address);
+        // return sign;
     } catch (error) {
+        console.log("ERRO ", error);
         /**
          * TODO: Send Error Report - Issue while sign p4l message
          * */        

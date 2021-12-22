@@ -310,6 +310,12 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             return;
         }
 
+        // let wallet_address = await req.user.getWalletAddress(req.body.wallet_address);
+        // if(!wallet_address){
+        //     res.status(200).send(utils.apiResponseMessage(false, "Wallet address is invalid."));
+        //     return;
+        // }
+
         if (utils.getFormattedAmount(parseFloat(req.body.total_amount)) != utils.getFormattedAmount((parseFloat(req.body.amount) - parseFloat(req.body.discount_amount)) + parseFloat(req.body.tax))) {
             return res.status(200).send(utils.apiResponseMessage(false, "Total Amount is invalid."));
         }
@@ -367,7 +373,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         return res.status(200).send(utils.apiResponse(true, "Policy added successfully.", {
             _id: policy._id,
             txn_hash: policy.txn_hash,
-            signature: signature.signature
+            signature: signature
         }));
 
     } catch (error) {
