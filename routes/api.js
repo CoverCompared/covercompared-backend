@@ -66,6 +66,7 @@ apiRoutes.get('/user/cart-items', logsHistory, authVerify, userController.getCar
 apiRoutes.post('/user/cart-items', logsHistory, authVerify, userController.addCartItems);
 apiRoutes.get('/user/policies', logsHistory, authVerify, policiesController.get);
 apiRoutes.get('/user/policies/:id', logsHistory, authVerify, policiesController.show);
+
 apiRoutes.post('/user/policies-mso', logsHistory, authVerify, policiesController.storeMso);
 apiRoutes.post('/user/policies-mso/:id', logsHistory, authVerify, policiesController.loadMsoPolicy, policiesController.storeMso);
 apiRoutes.post('/user/policies-mso/:id/confirm-payment', logsHistory, authVerify, policiesController.loadMsoPolicy, policiesController.msoConfirmPayment);

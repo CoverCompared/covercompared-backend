@@ -75,13 +75,15 @@ exports.storeMso = async (req, res, next) => {
         let policy = req.policy ? req.policy : new Policies;
         policy.user_id = req.user._id;
         policy.product_type = constant.ProductTypes.mso_policy;
-        policy.status = constant.PolicyStatus.pending;
-        policy.StatusHistory.push({
-            status: policy.status,
-            updated_at: new Date(moment()),
-            updated_by: req.user._id
-        });
-        policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        if(oldPolicy){
+            policy.status = constant.PolicyStatus.pending;
+            policy.StatusHistory.push({
+                status: policy.status,
+                updated_at: new Date(moment()),
+                updated_by: req.user._id
+            });
+            policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        }
         policy.currency = req.body.currency;
         policy.amount = req.body.amount;
         policy.discount_amount = req.body.discount_amount;
@@ -316,13 +318,15 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         let policy = req.policy ? req.policy : new Policies;
         policy.user_id = req.user._id;
         policy.product_type = constant.ProductTypes.device_insurance;
-        policy.status = constant.PolicyStatus.pending;
-        policy.StatusHistory.push({
-            status: policy.status,
-            updated_at: new Date(moment()),
-            updated_by: req.user._id
-        });
-        policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        if(oldPolicy){
+            policy.status = constant.PolicyStatus.pending;
+            policy.StatusHistory.push({
+                status: policy.status,
+                updated_at: new Date(moment()),
+                updated_by: req.user._id
+            });
+            policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        }
         policy.currency = req.body.currency;
         policy.amount = req.body.amount;
         policy.discount_amount = req.body.discount_amount;
@@ -617,13 +621,15 @@ exports.storeSmartContract = async (req, res, next) => {
             policy.product_type = constant.ProductTypes.crypto_exchange;
         }
 
-        policy.status = constant.PolicyStatus.pending;
-        policy.StatusHistory.push({
-            status: policy.status,
-            updated_at: new Date(moment()),
-            updated_by: req.user._id
-        });
-        policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        if(req.policy){
+            policy.status = constant.PolicyStatus.pending;
+            policy.StatusHistory.push({
+                status: policy.status,
+                updated_at: new Date(moment()),
+                updated_by: req.user._id
+            });
+            policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        }
         policy.crypto_currency = req.body.crypto_currency;
         policy.crypto_amount = req.body.crypto_amount;
         if (req.body.type == "protocol") {
