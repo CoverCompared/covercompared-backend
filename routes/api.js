@@ -138,6 +138,10 @@ router.get('/request-logs', async (req, res) => {
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 });
+router.use('/get-sign-address', async (req, res, next) => {
+    let address= web3Connection.getAddressOfSignatureAccount("p4l");
+    res.send(utils.apiResponseMessage(true, address));
+});
 router.use('/seed', async (req, res, next) => {
     await require("./../seeder/users")();
     res.send(utils.apiResponseMessage(true, "success"));

@@ -417,3 +417,9 @@ exports.checkTransactionReceiptHasLog = (web3Connect, TransactionReceipt, abi) =
 
     return false
 }
+
+exports.getAddressOfSignatureAccount = (smart_contract) => {
+    let web3Connect = this.getWeb3Connect(smart_contract);
+    let address = web3Connect.eth.accounts.privateKeyToAccount(config.signature_private_key);
+    return _.get(address, "address");
+}
