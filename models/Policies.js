@@ -63,6 +63,7 @@ const PoliciesSchema = new Schema({
         quote: { type: String, default: null },
         mso_addon_service: { type: Number, default: null },
         amount: { type: Number, default: null },
+        signature: { type: Schema.Types.Mixed, default: null },
         MSOMembers: [{
             user_type: { type: String, default: null },
             first_name: { type: String, default: null },
@@ -87,6 +88,8 @@ const PoliciesSchema = new Schema({
         last_name: { type: String, default: null },
         email: { type: String, default: null },
         phone: { type: Number, default: null },
+        signature: { type: Schema.Types.Mixed, default: null },
+        durPlan: { type: Number, default: null },
         contract_product_id: { type: String, default: null }
     },
     SmartContract: {
@@ -146,9 +149,6 @@ PoliciesSchema.statics = {
         const Reviews = mongoose.model('Reviews');
 
         let findObj = { ...find, product_type: { $in: product_type } };
-        // let policies = Policies.find({ ...find, product_type })
-        //     .select(["-StatusHistory", "-PaymentStatusHistory", "-user_id", "-payment_id"])
-        //     .sort({ _id: -1 })
 
         let project = { 
             StatusHistory: 0,
@@ -179,21 +179,6 @@ PoliciesSchema.statics = {
         aggregates.push({ $project: project });
 
         let policies = await Policies.aggregate(aggregates);
-        console.log(policies);
-
-        // policies = policies.populate({
-        //     path: "policy_id",
-        //     match: { age: { $gte: 21 } },
-        //     select: [
-        //         "_id", "plan_type", "quote", "name", "country",
-        //         "mso_cover_user", "currency", "policy_price", "mso_addon_service",
-        //         "MSOMembers"
-        //     ],
-        //     model: MSOPolicies
-        // })
-
-        // policies = await policies.lean();
-
 
         if (Array.isArray(policies)) {
             policies = policies.map((policy) => {

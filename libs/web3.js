@@ -58,14 +58,14 @@ exports.connect = () => {
 
 /**
  * Return web3 connect based on smart contract and network(mainnet or testnet)
- * @param {"p4l"} smart_contract 
+ * @param {"p4l"|"mso"} smart_contract 
  */
 exports.getWeb3Connect = (smart_contract) => {
     let web3Connect;
     if (config.is_mainnet) {
         web3Connect = web3[config.SupportedChainId.MAINNET];
     } else {
-        if (smart_contract == "p4l") {
+        if (["p4l", "mso"].includes(smart_contract)) {
             web3Connect = web3[config.SupportedChainId.RINKEBY];
         }
     }
@@ -218,6 +218,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                     brand: product.brand,
                     value: null,
                     month: product.purchMonth,
+                    durPlan: product.durPlan,
                     purchase_month: _.get(constant.p4lPurchaseMonth, product.durPlan, product.durPlan),
                     model: null,
                     model_name: null,
@@ -291,6 +292,39 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
     }
 }
 
+exports.p4lSignDetails = async (policyId, value, durPlan) => {
+    let web3Connect = this.getWeb3Connect("p4l");
+    value =  utils.getBigNumber(value);
+
+    try {
+        const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
+        const sign = web3Connect.eth.accounts.sign(dataToSign, config.signature_private_key);
+        return sign;
+    } catch (error) {
+        /**
+         * TODO: Send Error Report - Issue while sign p4l message
+         * */        
+    }
+    return false;
+}
+
+exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) => {
+    let web3Connect = this.getWeb3Connect("mso");
+    priceInUSD =  utils.getBigNumber(priceInUSD);
+    conciergePrice =  utils.getBigNumber(conciergePrice);
+    
+    try {
+        const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(["string", "uint256", "uint256", "uint256"], [policyId, priceInUSD, period, conciergePrice]));
+        const sign = web3Connect.eth.accounts.sign(dataToSign, config.signature_private_key);
+        return sign;
+    } catch (error) {
+        /**
+         * TODO: Send Error Report - Issue while sign mso details
+         */
+    }
+    return false;
+}
+
 exports.p4lPolicySync = async () => {
 
 
@@ -299,7 +333,17 @@ exports.p4lPolicySync = async () => {
 
     try {
         let web3Connect = this.getWeb3Connect("p4l");
+
+        // const policyId = 'P4L-000';
+        // const value = utils.getBigNumber(50);
+        // const durPlan = 6;
+
+        // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
+        // const sign = web3Connect.eth.accounts.sign(dataToSign, "77a0a80a9592ff11cf226329d858edad9a472e86f135145b230197dee83247cd");
+        // console.log("SIGN ", sign);
+
         await this.connectSmartContract("p4l");
+
 
         P4LEventSubscription = await P4LStartContract.events.allEvents({ fromBlock: P4LFromBlock })
 

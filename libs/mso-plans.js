@@ -1,4 +1,5 @@
 const config = require("../config");
+const constant = require("./constants");
 
 const msoPlans = [
     // {
@@ -23,6 +24,7 @@ const msoPlans = [
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
         unique_id: "SILVER_PLAN",
+        period: constant.MSO_PLAN_TYPE.SILVER_PLAN,
         name: "SILVER PLAN",
         quote: "60",
         MSOAddOnService: "24",
@@ -38,6 +40,7 @@ const msoPlans = [
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
         unique_id: "GOLD_PLAN",
+        period: constant.MSO_PLAN_TYPE.GOLD_PLAN,
         name: "GOLD PLAN",
         quote: "108",
         MSOAddOnService: "14",
@@ -53,6 +56,7 @@ const msoPlans = [
     {
         InsurancePlanType: "Medical Second Opinion (MSO)",
         unique_id: "PLATINUM_PLAN",
+        period: constant.MSO_PLAN_TYPE.PLATINUM_PLAN,
         name: "PLATINUM PLAN",
         quote: "168",
         MSOAddOnService: "48",

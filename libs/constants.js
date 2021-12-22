@@ -25,6 +25,12 @@ const constant = {
     p4lPurchaseMonth: {
         1: "Less than 12 months",
         2: "12 to 24 Months"
+    },
+    MSO_PLAN_TYPE : {
+        BASIC_PLAN: 1,
+        SILVER_PLAN: 2,
+        GOLD_PLAN: 3,
+        PLATINUM_PLAN: 4,
     }
 }
 

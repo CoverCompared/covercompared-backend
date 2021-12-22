@@ -201,5 +201,8 @@ utils.isValidObjectID = (_id) => {
     return token;
 }
 
+utils.getBigNumber = (value) => {
+    return BigInt(value * (10 ** 18));
+}
 
 module.exports = utils;

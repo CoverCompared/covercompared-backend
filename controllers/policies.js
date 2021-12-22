@@ -12,6 +12,8 @@ const niv = require("./../libs/nivValidations");
 const constant = require("../libs/constants");
 const moment = require('moment');
 const msoPlans = require("../libs/mso-plans");
+const web3Connect = require("./../libs/web3");
+
 
 exports.storeMso = async (req, res, next) => {
     try {
@@ -60,6 +62,7 @@ exports.storeMso = async (req, res, next) => {
 
         let plan_details = {
             name: _.get(plan, "name", ""),
+            period: _.get(plan, "period", ""),
             type: _.get(plan, "type", ""),
             MSOPlanDuration: _.get(plan, "MSOPlanDuration", ""),
             MSOCoverUser: _.get(plan, "MSOCoverUser", ""),
@@ -67,7 +70,9 @@ exports.storeMso = async (req, res, next) => {
             totalUsers: _.get(plan, "totalUsers", ""),
         };
 
-        let policy = new Policies;
+        let oldPolicy = req.policy ? Object.assign({}, req.policy) : false;
+
+        let policy = req.policy ? req.policy : new Policies;
         policy.user_id = req.user._id;
         policy.product_type = constant.ProductTypes.mso_policy;
         policy.status = constant.PolicyStatus.pending;
@@ -108,10 +113,36 @@ exports.storeMso = async (req, res, next) => {
 
         await policy.save();
 
+        let signature;
+
+        if(
+            !oldPolicy ||
+            (
+                oldPolicy && 
+                (
+                    oldPolicy.total_amount != policy.total_amount || 
+                    oldPolicy.mso_addon_service != policy.mso_addon_service || 
+                    oldPolicy.MSOPolicy.plan_details.period != policy.MSOPolicy.plan_details.period
+                )
+            )
+        ){
+            signature = await web3Connect.p4lSignDetails(
+                policy.txn_hash, 
+                policy.total_amount - policy.MSOPolicy.mso_addon_service, 
+                policy.MSOPolicy.plan_details.period,
+                policy.MSOPolicy.mso_addon_service
+            );
+            policy.MSOPolicy.signature = signature;
+            await policy.save();
+        }else{
+            signature = policy.MSOPolicy.signature;
+        }
+
 
         return res.status(200).send(utils.apiResponse(true, "Policy added successfully.", {
             _id: policy._id,
-            txn_hash: policy.txn_hash
+            txn_hash: policy.txn_hash,
+            signature: signature.signature
         }));
 
     } catch (error) {
@@ -120,23 +151,31 @@ exports.storeMso = async (req, res, next) => {
     }
 }
 
+exports.loadMsoPolicy = async (req, res, next) => {
+    let policy = await Policies.findOne({
+        user_id: req.user._id,
+        _id: req.params.id,
+        product_type: constant.ProductTypes.mso_policy
+    });
+
+    if (!policy) {
+        /**
+         * TODO:
+         * Error Report
+         * If policy record not found in database
+         */
+        return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
+    }else{
+        req.policy = policy;
+        next();
+        return;
+    }
+}
+
 exports.msoConfirmPayment = async (req, res, next) => {
     try {
 
-        let policy = await Policies.findOne({
-            user_id: req.user._id,
-            _id: req.params.id,
-            product_type: constant.ProductTypes.mso_policy
-        });
-
-        if (!policy) {
-            /**
-             * TODO:
-             * Error Report
-             * If policy record not found in database
-             */
-            return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
-        }
+       let policy = req.policy;
 
         let rules = {
             "payment_status": ["required", "in:paid,cancelled"],
@@ -219,6 +258,26 @@ exports.msoConfirmPayment = async (req, res, next) => {
     }
 }
 
+exports.loadDeviceInsurancePolicy = async (req, res, next) => {
+    let policy = await Policies.findOne({
+        user_id: req.user._id,
+        _id: req.params.id,
+        product_type: constant.ProductTypes.device_insurance
+    });
+
+    if (!policy) {
+        /**
+         * TODO:
+         * Error Report
+         * If policy record not found in database
+         */
+        return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
+    } else {
+        req.policy = policy;
+        next();
+    }
+}
+
 exports.storeDeviceInsurance = async (req, res, next) => {
     try {
         let rules = {
@@ -234,6 +293,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             "email": ["required", "email"],
             "phone": ["required"],
             "currency": ["required"],
+            "durPlan": ["required", "numeric"],
             "amount": ["required", "numeric"],
             "discount_amount": ["required", "numeric"],
             "tax": ["required", "numeric"],
@@ -251,8 +311,9 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         if (utils.getFormattedAmount(parseFloat(req.body.total_amount)) != utils.getFormattedAmount((parseFloat(req.body.amount) - parseFloat(req.body.discount_amount)) + parseFloat(req.body.tax))) {
             return res.status(200).send(utils.apiResponseMessage(false, "Total Amount is invalid."));
         }
+        let oldPolicy = req.policy ? Object.assign({}, req.policy) : false;
 
-        let policy = new Policies;
+        let policy = req.policy ? req.policy : new Policies;
         policy.user_id = req.user._id;
         policy.product_type = constant.ProductTypes.device_insurance;
         policy.status = constant.PolicyStatus.pending;
@@ -278,13 +339,31 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
-            phone: req.body.phone
+            phone: req.body.phone,
+            durPlan: req.body.durPlan
         }
         await policy.save();
 
+        let signature;
+        if(
+            !oldPolicy ||
+            (
+                oldPolicy && 
+                (oldPolicy.total_amount != policy.total_amount || oldPolicy.DeviceInsurance.durPlan != policy.DeviceInsurance.durPlan)
+            )
+        ){
+            signature = await web3Connect.p4lSignDetails(policy.txn_hash, policy.total_amount, policy.DeviceInsurance.durPlan);
+            policy.DeviceInsurance.signature = signature;
+            await policy.save();
+        }else{
+            signature = policy.DeviceInsurance.signature;
+        }
+
+
         return res.status(200).send(utils.apiResponse(true, "Policy added successfully.", {
             _id: policy._id,
-            txn_hash: policy.txn_hash
+            txn_hash: policy.txn_hash,
+            signature: signature.signature
         }));
 
     } catch (error) {
@@ -296,20 +375,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
 exports.deviceConfirmPayment = async (req, res, next) => {
     try {
 
-        let policy = await Policies.findOne({
-            user_id: req.user._id,
-            _id: req.params.id,
-            product_type: constant.ProductTypes.device_insurance
-        });
-
-        if (!policy) {
-            /**
-             * TODO:
-             * Error Report
-             * If policy record not found in database
-             */
-            return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
-        }
+        let policy = req.policy;
 
         let rules = {
             "payment_status": ["required", "in:paid,cancelled"],
@@ -453,13 +519,13 @@ exports.get = async (req, res, next) => {
 
         let policies = await Policies.getPolicies(
             [
-            constant.ProductTypes.device_insurance,
-            constant.ProductTypes.mso_policy,
-            constant.ProductTypes.smart_contract,
-            constant.ProductTypes.crypto_exchange
-            ], 
+                constant.ProductTypes.device_insurance,
+                constant.ProductTypes.mso_policy,
+                constant.ProductTypes.smart_contract,
+                constant.ProductTypes.crypto_exchange
+            ],
             { user_id: req.user._id },
-            true 
+            true
         );
 
         let policy;
@@ -542,7 +608,7 @@ exports.storeSmartContract = async (req, res, next) => {
             return;
         }
 
-        let policy = new Policies;
+        let policy = req.policy ? req.policy : new Policies;
         policy.user_id = req.user._id;
 
         if (req.body.type == "protocol") {
@@ -603,23 +669,31 @@ exports.storeSmartContract = async (req, res, next) => {
     }
 }
 
+exports.loadSmartContract = async (req, res, next) => {
+    let policy = await Policies.findOne({
+        user_id: req.user._id,
+        _id: req.params.id,
+        product_type: { "$in": [constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange] }
+    });
+
+    if (!policy) {
+        /**
+         * TODO:
+         * Error Report
+         * If policy record not found in database
+         */
+        return res.status(200).send(utils.apiResponseMessage(false, "Cover not found."));
+    }else{
+        req.policy = policy;
+        next();
+        return;
+    }
+}
+
 exports.smartContractConfirmPayment = async (req, res, next) => {
     try {
 
-        let policy = await Policies.findOne({
-            user_id: req.user._id,
-            _id: req.params.id,
-            product_type: { "$in": [constant.ProductTypes.smart_contract, constant.ProductTypes.crypto_exchange] }
-        });
-
-        if (!policy) {
-            /**
-             * TODO:
-             * Error Report
-             * If policy record not found in database
-             */
-            return res.status(200).send(utils.apiResponseMessage(false, "Cover not found."));
-        }
+        let policy = req.policy;
 
         let rules = {
             "payment_status": ["required", "in:paid,cancelled"],

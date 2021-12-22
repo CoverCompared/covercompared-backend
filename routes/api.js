@@ -67,11 +67,17 @@ apiRoutes.post('/user/cart-items', logsHistory, authVerify, userController.addCa
 apiRoutes.get('/user/policies', logsHistory, authVerify, policiesController.get);
 apiRoutes.get('/user/policies/:id', logsHistory, authVerify, policiesController.show);
 apiRoutes.post('/user/policies-mso', logsHistory, authVerify, policiesController.storeMso);
-apiRoutes.post('/user/policies-smart-contract', logsHistory, authVerify, policiesController.storeSmartContract);
+apiRoutes.post('/user/policies-mso/:id', logsHistory, authVerify, policiesController.loadMsoPolicy, policiesController.storeMso);
+apiRoutes.post('/user/policies-mso/:id/confirm-payment', logsHistory, authVerify, policiesController.loadMsoPolicy, policiesController.msoConfirmPayment);
+
 apiRoutes.post('/user/policies-device-insurance', logsHistory, authVerify, policiesController.storeDeviceInsurance);
-apiRoutes.post('/user/policies-mso/:id/confirm-payment', logsHistory, authVerify, policiesController.msoConfirmPayment);
-apiRoutes.post('/user/policies-smart-contract/:id/confirm-payment', logsHistory, authVerify, policiesController.smartContractConfirmPayment);
-apiRoutes.post('/user/policies-device-insurance/:id/confirm-payment', logsHistory, authVerify, policiesController.deviceConfirmPayment);
+apiRoutes.post('/user/policies-device-insurance/:id', logsHistory, authVerify, policiesController.loadDeviceInsurancePolicy, policiesController.storeDeviceInsurance);
+apiRoutes.post('/user/policies-device-insurance/:id/confirm-payment', logsHistory, authVerify, policiesController.loadDeviceInsurancePolicy, policiesController.deviceConfirmPayment);
+
+apiRoutes.post('/user/policies-smart-contract', logsHistory, authVerify, policiesController.storeSmartContract);
+apiRoutes.post('/user/policies-smart-contract/:id', logsHistory, authVerify, policiesController.loadSmartContract, policiesController.storeSmartContract);
+apiRoutes.post('/user/policies-smart-contract/:id/confirm-payment', logsHistory, authVerify, policiesController.loadSmartContract, policiesController.smartContractConfirmPayment);
+
 apiRoutes.post('/user/policies/:id/add-review', logsHistory, authVerify, policiesController.policyReview);
 
 router.use('/', apiRoutes);
@@ -86,13 +92,13 @@ router.get("/web3/connect", async (req, res) => {
 
 })
 router.get("/web3/test", async (req, res) => {
-    
+
     try {
         let subscription = web3Connection.subscriptionStatus()
         subscription.isListening()
-        return res.send({ web3: await  web3Connection.isListening("p4l") });
+        return res.send({ web3: await web3Connection.isListening("p4l") });
     } catch (error) {
-    console.log("ERRR" , error);        
+        console.log("ERRR", error);
     }
     // let events = await web3Connection.p4lPolicySync();
     // console.log(events);

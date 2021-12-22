@@ -8,6 +8,7 @@ let config = {
     noreplay: `"Cover Compared" no-reply@polkacover.com`,
     subscribe_mail: "contact@polkacover.com",
     p4l_secret: process.env.P4L_SECRET,
+    signature_private_key : process.env.SIGNATURE_PRIVATE_KEY,
     JWT_TOKEN_EXPIRY: 86400, // 24h
     is_mainnet: false,
     SupportedChainId: {

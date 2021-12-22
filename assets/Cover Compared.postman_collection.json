@@ -124,7 +124,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"chain\": \"BSC\"\n}",
+									"raw": "{\n    \"chain\": \"ETH\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -647,7 +647,271 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"617175aeb4ce73768634ecc7\",\n        \"txn_hash\": \"MSO-006\"\n    },\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"61c2ee9e3ac7d08425ce4da4\",\n        \"txn_hash\": \"MSO-016074\",\n        \"signature\": \"0xbce4e0051021f077350f3fa70a0725e607d564d1afad418aa535e2e53d19ac266d6b4b88868bf8ee1aa1f455feab358fe68e7b3196d3269bb63674950d6de4031c\"\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Update MSO",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"plan_type\": \"SILVER_PLAN\",\n    \"name\": \"Silver Plan\",\n    \"quote\": \"50\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"mso_cover_user\": 1,\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        },\n        {\n            \"user_type\": \"Child\",\n            \"first_name\": \"Prince\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies-mso/{{policy_id}}",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies-mso",
+										"{{policy_id}}"
+									]
+								},
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-mso/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-mso",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "903"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"387-nwAUtT/i8DzPE64qlxMzIGIi7y4\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 14:13:23 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"plan_type\": {\n            \"message\": \"The plan type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"country\": {\n            \"message\": \"The country field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"quote\": {\n            \"message\": \"The quote field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"name\": {\n            \"message\": \"The name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"mso_addon_service\": {\n            \"message\": \"The mso addon service field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount\": {\n            \"message\": \"The amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"discount_amount\": {\n            \"message\": \"The discount amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"tax\": {\n            \"message\": \"The tax field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"total_amount\": {\n            \"message\": \"The total amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"MSOMembers\": {\n            \"message\": \"The msomembers field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"plan_type\": \"BASIC_PLAN\",\n    \"country\": \"UAE\",\n    \"quote\": \"50\",\n    \"name\": \"Romik Makavana\",\n    \"mso_cover_user\": \"1\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Makavana\",\n            \"country\": \"IND\",\n            \"dob\": \"14-12-1998\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-mso/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-mso",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "130"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"82-x6OzH1bV6DOOPOiifEEdu+m8ygU\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 14:14:06 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"61c2ee9e3ac7d08425ce4da4\",\n        \"txn_hash\": \"MSO-016074\",\n        \"signature\": \"0xbce4e0051021f077350f3fa70a0725e607d564d1afad418aa535e2e53d19ac266d6b4b88868bf8ee1aa1f455feab358fe68e7b3196d3269bb63674950d6de4031c\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"plan_type\": \"SILVER_PLAN\",\n    \"name\": \"Silver Plan\",\n    \"quote\": \"50\",\n    \"currency\": \"USD\",\n    \"mso_addon_service\": \"15\",\n    \"amount\": \"65\",\n    \"discount_amount\": \"16.25\",\n    \"tax\": \"5\",\n    \"total_amount\": \"53.75\",\n    \"mso_cover_user\": 1,\n    \"MSOMembers\": [\n        {\n            \"user_type\": \"Main Member\",\n            \"first_name\": \"Romik\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        },\n        {\n            \"user_type\": \"Child\",\n            \"first_name\": \"Prince\",\n            \"last_name\": \"Patel\",\n            \"country\": \"IND\",\n            \"dob\": \"1998-12-14\",\n            \"identity_type\": \"passport\",\n            \"identity\": \"123456\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-mso/61c2ee9e3ac7d08425ce4da2",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-mso",
+												"61c2ee9e3ac7d08425ce4da2"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "69"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"45-FKjCk0x+P381O+W6rVTEUtSpgy8\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 22 Dec 2021 09:25:34 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 								}
 							]
 						},
@@ -680,7 +944,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"device_type\": \"tablet\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"model_name\": \"TEST\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\"\n}",
+									"raw": "{\n    \"device_type\": \"tablet\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"model_name\": \"TEST\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\",\n    \"durPlan\": 2\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -767,7 +1031,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"6171b3b75732f9ffa2359191\",\n        \"txn_hash\": \"DEVICE-00103\"\n    },\n    \"errors\": {}\n}"
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"61c2d003b97d83c603402cc7\",\n        \"txn_hash\": \"DEVICE-062073\",\n        \"signature\": \"0xfb16522ab0cbdf2d84842be711a2e20dd70b9c7eeca82513cbd90799552943ba195fad0cbb200110c974087363c58ecfe39b0c1e8b9fc35c7ff9fb579f4c57ff1c\"\n    },\n    \"errors\": {}\n}"
 								},
 								{
 									"name": "Error",
@@ -838,6 +1102,270 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"device_type\": {\n            \"message\": \"The device type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"brand\": {\n            \"message\": \"The brand field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"value\": {\n            \"message\": \"The value field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"purchase_month\": {\n            \"message\": \"The purchase month field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"model\": {\n            \"message\": \"The model field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"plan_type\": {\n            \"message\": \"The plan type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"first_name\": {\n            \"message\": \"The first name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"last_name\": {\n            \"message\": \"The last name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"email\": {\n            \"message\": \"The email field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"phone\": {\n            \"message\": \"The phone field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount\": {\n            \"message\": \"The amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"discount_amount\": {\n            \"message\": \"The discount amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"tax\": {\n            \"message\": \"The tax field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"total_amount\": {\n            \"message\": \"The total amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								}
+							]
+						},
+						{
+							"name": "Update Device Insurance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"device_type\": \"tablet\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"model_name\": \"TEST\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\",\n    \"durPlan\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies-device-insurance/{{policy_id}}",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies-device-insurance",
+										"{{policy_id}}"
+									]
+								},
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"device_type\": \"Mobile Phone\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"Romik\",\n    \"last_name\": \"Makavana\",\n    \"email\": \"makavanaromik1214@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-device-insurance",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "135"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"87-clvbDWqFcYsA/osAhF5JFFbThLE\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 18:38:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Policy added successfully.\",\n    \"data\": {\n        \"_id\": \"61c2d003b97d83c603402cc7\",\n        \"txn_hash\": \"DEVICE-062073\",\n        \"signature\": \"0xfb16522ab0cbdf2d84842be711a2e20dd70b9c7eeca82513cbd90799552943ba195fad0cbb200110c974087363c58ecfe39b0c1e8b9fc35c7ff9fb579f4c57ff1c\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-device-insurance/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-device-insurance",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1195"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4ab-ZjLLjVpZRTtXSBIZf8F01xZz0Y4\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Oct 2021 18:40:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"device_type\": {\n            \"message\": \"The device type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"brand\": {\n            \"message\": \"The brand field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"value\": {\n            \"message\": \"The value field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"purchase_month\": {\n            \"message\": \"The purchase month field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"model\": {\n            \"message\": \"The model field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"plan_type\": {\n            \"message\": \"The plan type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"first_name\": {\n            \"message\": \"The first name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"last_name\": {\n            \"message\": \"The last name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"email\": {\n            \"message\": \"The email field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"phone\": {\n            \"message\": \"The phone field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"currency\": {\n            \"message\": \"The currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"amount\": {\n            \"message\": \"The amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"discount_amount\": {\n            \"message\": \"The discount amount field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"tax\": {\n            \"message\": \"The tax field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"total_amount\": {\n            \"message\": \"The total amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"device_type\": \"tablet\",\n    \"brand\": \"ACER\",\n    \"value\": \"USD 300\",\n    \"purchase_month\": \"Less than 12 months\",\n    \"model\": \"Iconia Talk S, 2GB RAM, 32GB STORAGE Down Arrow\",\n    \"model_name\": \"TEST\",\n    \"plan_type\": \"monthly\",\n    \"first_name\": \"test\",\n    \"last_name\": \"test\",\n    \"email\": \"makavanaromik@gmail.com\",\n    \"phone\": \"1234567890\",\n    \"currency\": \"USD\",\n    \"amount\": \"30.38\",\n    \"discount_amount\": \"7.595\",\n    \"tax\": \"5\",\n    \"total_amount\": \"27.785\",\n    \"durPlan\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-device-insurance/61c2d003b97d83c603402cc8",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-device-insurance",
+												"61c2d003b97d83c603402cc8"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "69"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"45-FKjCk0x+P381O+W6rVTEUtSpgy8\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 22 Dec 2021 07:24:17 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"Policy not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 								}
 							]
 						},
@@ -1032,6 +1560,199 @@
 							]
 						},
 						{
+							"name": "Update Smart Contract",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"company_code\": \"nexus\",\n    \"token_id\": \"137\",\n    \"product_id\": null,\n    \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"name\": \"0x V3\",\n    \"type\": \"protocol\",\n    \"duration_days\": 30,\n    \"chain\": \"Ethereum\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies-smart-contract/{{policy_id}}",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies-smart-contract",
+										"{{policy_id}}"
+									]
+								},
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"company_code\": \"nexus\",\n    \"product_id\": null,\n    \"token_id\": \"137\",\n    \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"name\": \"0x V3\",\n    \"type\": \"protocol\",\n    \"duration_days\": 30,\n    \"chain\": \"Ethereum\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "140"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"8c-0rfACIYtdPG8I+yAHaT0qW+YznI\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 14:51:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Smart Contract added successfully.\",\n    \"data\": {\n        \"_id\": \"61ae236ab78ec3824be46ecd\",\n        \"txn_hash\": \"SC-001017\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "755"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2f3-k+mpuoZGErbdH7G42z9AFbcEvKk\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 14:52:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {},\n    \"errors\": {\n        \"company_code\": {\n            \"message\": \"The company code field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"unique_id\": {\n            \"message\": \"The unique id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"address\": {\n            \"message\": \"The address field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"name\": {\n            \"message\": \"The name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"type\": {\n            \"message\": \"The type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"duration_days\": {\n            \"message\": \"The duration days field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"chain\": {\n            \"message\": \"The chain field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"crypto_currency\": {\n            \"message\": \"The crypto currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"crypto_amount\": {\n            \"message\": \"The crypto amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
 							"name": "Add Crypto Exchange",
 							"event": [
 								{
@@ -1176,6 +1897,199 @@
 											],
 											"path": [
 												"policies-smart-contract"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "755"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2f3-k+mpuoZGErbdH7G42z9AFbcEvKk\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 14:52:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {},\n    \"errors\": {\n        \"company_code\": {\n            \"message\": \"The company code field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"unique_id\": {\n            \"message\": \"The unique id field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"address\": {\n            \"message\": \"The address field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"name\": {\n            \"message\": \"The name field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"type\": {\n            \"message\": \"The type field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"duration_days\": {\n            \"message\": \"The duration days field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"chain\": {\n            \"message\": \"The chain field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"crypto_currency\": {\n            \"message\": \"The crypto currency field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"crypto_amount\": {\n            \"message\": \"The crypto amount field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Update Crypto Exchange",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        pm.collectionVariables.set(\"policy_id\", jsonData.data._id);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"company_code\": \"nexus\",\n    \"product_id\": null,\n    \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"name\": \"0x V3\",\n    \"type\": \"protocol\",\n    \"duration_days\": 30,\n    \"chain\": \"Ethereum\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}user/policies-smart-contract/{{policy_id}}",
+									"host": [
+										"{{host}}user"
+									],
+									"path": [
+										"policies-smart-contract",
+										"{{policy_id}}"
+									]
+								},
+								"description": "## Details\n- Call before user pay for mso plan after filling all details\n- In response you will get txn_hash and policy_id, later used to call confirm-payment api\n\n## Other Details\n```\nplan_type       - BASIC_PLAN, SILVER_PLAN, GOLD_PLAN, PLATINUM_PLAN\namount          - quote + mso_addon_service\nuser_type       - Main Member, Spouse, Dependent, Main Member Parent, Spouse Parent\nMSOMembers\n.identity_type  - passport, adhar\n.dob            - format - DD-MM-YYYY\n```"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"company_code\": \"nexus\",\n    \"product_id\": null,\n    \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"name\": \"0x V3\",\n    \"type\": \"protocol\",\n    \"duration_days\": 30,\n    \"chain\": \"Ethereum\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract",
+												"{{policy_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "140"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"8c-0rfACIYtdPG8I+yAHaT0qW+YznI\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 06 Dec 2021 14:51:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"Smart Contract added successfully.\",\n    \"data\": {\n        \"_id\": \"61ae236ab78ec3824be46ecd\",\n        \"txn_hash\": \"SC-001017\"\n    },\n    \"errors\": {}\n}"
+								},
+								{
+									"name": "Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}user/policies-smart-contract/{{policy_id}}",
+											"host": [
+												"{{host}}user"
+											],
+											"path": [
+												"policies-smart-contract",
+												"{{policy_id}}"
 											]
 										}
 									},
@@ -1811,7 +2725,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"payment_status\": \"paid\",\n    \"network\": \"Ethereum Mainnet\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1,\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
+									"raw": "{\n    \"payment_status\": \"paid\",\n    \"token_id\": 123,\n    \"network\": \"Ethereum Mainnet\",\n    \"crypto_currency\": \"ETH\",\n    \"crypto_amount\": 1,\n    \"blockchain\": \"ethereum\",\n    \"wallet_address\": \"123\",\n    \"block_timestamp\": \"1634829441\",\n    \"txn_type\": \"onchain\",\n    \"payment_hash\": \"ASFAS654321ASDF\",\n    \"currency\": \"USD\",\n    \"paid_amount\": 27.785\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2749,7 +3663,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"wallet_address\":\"0xAB27B8ad1fCFC5b5b5B55f700CC718ef6A626131\"\n}",
+							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2763,7 +3677,69 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"wallet_address\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}login",
+									"host": [
+										"{{host}}login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "177"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b1-4nA0CnIzrDmmP4WkhUT2n0huILg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 17 Dec 2021 11:08:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"The wallet address field is mandatory.\",\n    \"data\": {},\n    \"errors\": {\n        \"wallet_address\": {\n            \"message\": \"The wallet address field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "Check Email Exist",
@@ -2833,7 +3809,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"{{email}}\"\n}",
+							"raw": "{\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\":\"makavanaromik1214@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3512,7 +4488,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?company=nexus&type=custodian",
+					"raw": "{{host}}cover-list?company=insurace&type=custodian&amount=2,3&duration=15,56",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -3524,7 +4500,7 @@
 						},
 						{
 							"key": "company",
-							"value": "nexus",
+							"value": "insurace",
 							"description": "insurace, nexus, nsure, unore"
 						},
 						{
@@ -3544,7 +4520,7 @@
 						},
 						{
 							"key": "duration_min_day",
-							"value": "365",
+							"value": "40",
 							"disabled": true
 						},
 						{
@@ -3559,18 +4535,26 @@
 						},
 						{
 							"key": "duration_max_day",
-							"value": "600",
+							"value": "500",
 							"disabled": true
 						},
 						{
 							"key": "amount_min",
-							"value": "0.1",
+							"value": "3",
 							"disabled": true
 						},
 						{
 							"key": "amount_max",
-							"value": "100",
+							"value": "3",
 							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "2,3"
+						},
+						{
+							"key": "duration",
+							"value": "15,56"
 						}
 					]
 				}
