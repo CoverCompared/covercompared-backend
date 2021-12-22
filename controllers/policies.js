@@ -128,7 +128,7 @@ exports.storeMso = async (req, res, next) => {
                 )
             )
         ){
-            signature = await web3Connect.p4lSignDetails(
+            signature = await web3Connect.msoSignDetails(
                 policy.txn_hash, 
                 policy.total_amount - policy.MSOPolicy.mso_addon_service, 
                 policy.MSOPolicy.plan_details.period,
