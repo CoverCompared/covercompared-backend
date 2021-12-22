@@ -25,7 +25,13 @@ exports.get = async (req, res, next) => {
             if (req.query.product_type == constant.ProductTypes.mso_policy && req.query.plan_type) {
                 find["policy.MSOPolicy.plan_type"] = req.query.plan_type;
             }
+
+            if (req.query.product_type == constant.ProductTypes.smart_contract && req.query.unique_id) {
+                find["policy.SmartContract.unique_id"] = req.query.unique_id;
+            }
+
         }
+
 
         let reviews = await Reviews.aggregate([{
             $lookup: {
@@ -50,6 +56,8 @@ exports.get = async (req, res, next) => {
                 "policy.product_type": 1,
                 "policy.MSOPolicy": 1,
                 "policy.DeviceInsurance": 1,
+                "policy.SmartContract": 1,
+                "policy.CryptoExchange": 1,
                 "rating": 1, "review": 1, "updatedAt": 1
             }
         }]);

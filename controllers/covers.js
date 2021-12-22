@@ -4,6 +4,13 @@ const _ = require("lodash");
 const config_companies = require("../config/companies");
 const config = require("../config");
 const niv = require("./../libs/nivValidations");
+const constant = require("../libs/constants");
+
+const mongoose = require('mongoose');
+const Reviews = mongoose.model('Reviews');
+const Policies = mongoose.model('Policies');
+const Users = mongoose.model('Users');
+
 
 exports.products = async (req, res, next) => {
     res.send(utils.apiResponseData(true, {
@@ -142,12 +149,12 @@ exports.list = async (req, res, next) => {
     let amount_max = _.get(req.query, "amount_max", false);
     let get_quote = _.get(req.query, "get_quote", false);
 
-    if(_.get(req.query, "amount", false)){
+    if (_.get(req.query, "amount", false)) {
         let amount = req.query.amount.split(",")
         amount_min = new Number(_.get(amount, "0", 0));
         amount_max = new Number(_.get(amount, "1", 0));
     }
-    if(_.get(req.query, "duration", false)){
+    if (_.get(req.query, "duration", false)) {
         let duration = req.query.duration.split(",")
         duration_min_day = new Number(_.get(duration, "0", 0));
         duration_max_day = new Number(_.get(duration, "1", 0));
@@ -221,7 +228,7 @@ exports.options = async (req, res, next) => {
     let companies_option = _.map(config_companies, (company, code) => {
         return company.status ? { name: company.name, code: company.code, icon: company.icon } : false;
     })
-    
+
     companies_option = _.filter(companies_option);
 
     res.send(utils.apiResponseData(true, {
@@ -403,4 +410,87 @@ exports.insuracAceConfirmPremium = async (req, res, next) => {
         }
     });
 
+}
+
+exports.coverDetails = async (req, res, next) => {
+
+    let details = {
+        reviews: [],
+        description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+        additional_details: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+        terms_and_conditions: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+    }
+
+    let findObj = {};
+    if (constant.SmartContractTypes.includes(req.params.type)) {
+        findObj["policy.product_type"] = constant.ProductTypes.smart_contract;
+    } else if (constant.CryptoExchangeTypes.includes(req.params.type)) {
+        findObj["policy.product_type"] = constant.ProductTypes.crypto_exchange;
+    }
+
+    let aggregate = [];
+
+    aggregate.push({
+        $lookup: {
+            from: Policies.collection.collectionName,
+            localField: "policy_id",
+            foreignField: "_id",
+            as: "policy"
+        }
+    })
+    aggregate.push({ $unwind: { path: "$policy" } });
+    aggregate.push({
+        $lookup: {
+            from: Users.collection.collectionName,
+            localField: "user_id",
+            foreignField: "_id",
+            as: "user"
+        }
+    })
+    aggregate.push({ $unwind: { path: "$user" } });
+    aggregate.push({ $match: findObj })
+    aggregate.push({ $sort: { _id: -1 } });
+    aggregate.push({
+        $project: {
+            "user.first_name": 1, "user.last_name": 1, "user.email": 1,
+            "policy.product_type": 1,
+            "policy.SmartContract": 1,
+            "policy.CryptoExchange": 1,
+            "rating": 1, "review": 1, "updatedAt": 1
+        }
+    })
+
+    let reviews = await Reviews.aggregate(aggregate);
+
+    if (Array.isArray(reviews)) {
+        reviews = reviews.map(review => {
+            return {
+                rating: review.rating,
+                review: review.review,
+                updatedAt: review.updatedAt,
+                first_name: _.get(review, "user.first_name", ""),
+                last_name: _.get(review, "user.last_name", ""),
+                email: _.get(review, "user.email", ""),
+            }
+        })
+    }
+
+    details.reviews = reviews;
+
+    return res.send(utils.apiResponseData(true, details));
 }

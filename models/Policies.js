@@ -148,6 +148,8 @@ PoliciesSchema.statics = {
         const Policies = mongoose.model("Policies");
         const Reviews = mongoose.model('Reviews');
 
+        product_type = typeof product_type == "string" ? [product_type] : product_type;
+
         let findObj = { ...find, product_type: { $in: product_type } };
 
         let project = { 
@@ -177,6 +179,7 @@ PoliciesSchema.statics = {
 
         aggregates.push({ $sort: { _id: -1 } });
         aggregates.push({ $project: project });
+        console.log(" aggregates ", JSON.stringify(aggregates));
 
         let policies = await Policies.aggregate(aggregates);
 

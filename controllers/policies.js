@@ -570,7 +570,7 @@ exports.show = async (req, res, next) => {
             .select(["rating", "review", "updatedAt"])
             .lean();
 
-        policy = await Policies.getPolicies(policy.product_type, { user_id: req.user._id, _id: req.params.id });
+        policy = await Policies.getPolicies(policy.product_type, { user_id: utils.getObjectID(req.user._id), _id: utils.getObjectID(req.params.id) });
 
         return res.status(200).send(utils.apiResponseData(true, { ...policy[0], reviews }));
     } catch (error) {

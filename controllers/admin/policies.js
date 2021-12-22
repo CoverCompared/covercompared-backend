@@ -180,7 +180,7 @@ exports.show = async (req, res, next) => {
 
         let user = policy.user_id;
         let payment = policy.payment_id;
-        policy = await Policies.getPolicies(policy.product_type, { _id: req.params.id });
+        policy = await Policies.getPolicies(policy.product_type, { _id: utils.getObjectID(req.params.id) });
 
         return res.status(200).send(utils.apiResponseData(true, { ...policy[0], reviews, user, payment }));
     } catch (error) {

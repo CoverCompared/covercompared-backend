@@ -35,6 +35,7 @@ apiRoutes.post('/cover-capacity', coverController.capacity);
 apiRoutes.post('/cover-quote', coverController.quote);
 apiRoutes.post('/company/insurace/confirm-premium', coverController.insuracAceConfirmPremium);
 apiRoutes.post('/cover-min-quote', coverController.minQuote);
+apiRoutes.get('/cover-details/:type/:unique_id', coverController.coverDetails);
 
 apiRoutes.get('/mso-list', msoController.list);
 apiRoutes.post('/p4l-forward', p4lController.forward);

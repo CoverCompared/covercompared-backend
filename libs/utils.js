@@ -187,6 +187,10 @@ utils.isValidObjectID = (_id) => {
     return ObjectID.isValid(_id);
 }
 
+utils.getObjectID = (_id) => {
+    return utils.isValidObjectID(_id) ? ObjectID(_id) : null;
+}
+
 /**
  * 
  * @param {Number} n 

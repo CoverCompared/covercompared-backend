@@ -136,9 +136,9 @@ exports.landingAppSubscribe = async (req, res, next) => {
     }
 
     // Send Mail
-    console.log("Send mail ", isNew);
+    let message ;
     if (isNew) {
-
+        message = "Subscription added successfully."
         await mailer.landingAppSubscription(
             config.subscribe_mail,
             { email: req.body.email });
@@ -151,11 +151,13 @@ exports.landingAppSubscribe = async (req, res, next) => {
             },
             []
         )
+    }else{
+        message = "User already subscribed."
     }
 
     // if (response)
     if (subscription) {
-        return res.send(utils.apiResponse(true, "Subscription added successfully", subscription))
+        return res.send(utils.apiResponse(true, message, subscription))
     } else {
         return res.send(utils.apiResponseMessage(false, "Something went wrong."));
     }

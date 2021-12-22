@@ -11,6 +11,8 @@ const constant = {
         smart_contract: "smart_contract",
         crypto_exchange: "crypto_exchange",
     },
+    SmartContractTypes: ["protocol", "token"],
+    CryptoExchangeTypes: ["custodian"],
     PolicyStatus: {
         pending: "pending", 
         active: "active", 
