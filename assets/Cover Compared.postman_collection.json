@@ -4488,7 +4488,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?company=insurace&type=custodian&amount=2,3&duration=15,56",
+					"raw": "{{host}}cover-list?type=custodian",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -4501,7 +4501,8 @@
 						{
 							"key": "company",
 							"value": "insurace",
-							"description": "insurace, nexus, nsure, unore"
+							"description": "insurace, nexus, nsure, unore",
+							"disabled": true
 						},
 						{
 							"key": "type",
@@ -4550,23 +4551,25 @@
 						},
 						{
 							"key": "amount",
-							"value": "2,3"
+							"value": "2,3",
+							"disabled": true
 						},
 						{
 							"key": "duration",
-							"value": "15,56"
+							"value": "15,56",
+							"disabled": true
 						}
 					]
 				}
 			},
 			"response": [
 				{
-					"name": "Cover list",
+					"name": "Smart Contract  list",
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}cover-list?company=insurace&type=protocol",
+							"raw": "{{host}}cover-list?type=protocol,token",
 							"host": [
 								"{{host}}cover-list"
 							],
@@ -4579,11 +4582,12 @@
 								{
 									"key": "company",
 									"value": "insurace",
-									"description": "insurace, nexus, nsur, unore"
+									"description": "insurace, nexus, nsur, unore",
+									"disabled": true
 								},
 								{
 									"key": "type",
-									"value": "protocol",
+									"value": "protocol,token",
 									"description": "protocol | custodian"
 								},
 								{
@@ -4668,6 +4672,297 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"total\": 57,\n        \"total_page\": 6,\n        \"current_page\": 1,\n        \"list\": [\n            {\n                \"unique_id\": \"20.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"20\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"1inch \",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/1inch.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"43.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"43\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"1inch \",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/1inch.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"BSC\"\n                ],\n                \"currency\": [\n                    \"BNB\",\n                    \"BUSD-T\",\n                    \"BUSD\",\n                    \"USDC\"\n                ],\n                \"currency_limit\": {\n                    \"BNB\": {\n                        \"min\": 3,\n                        \"max\": 60000\n                    },\n                    \"BUSD-T\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"BUSD\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"26.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"26\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"88mph V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/88mph.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 568.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"8.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"8\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Aave V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AaveV2.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 618.0610215316264,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"46.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"46\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Aave V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AaveV2.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Polygon\"\n                ],\n                \"currency\": [\n                    \"MATIC\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"MATIC\": {\n                        \"min\": 500,\n                        \"max\": 15000000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"66.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"66\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alchemix V1\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlchemixV1.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"75.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"75\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpaca Finance\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlpacaFinance.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"BSC\"\n                ],\n                \"currency\": [\n                    \"BNB\",\n                    \"BUSD-T\",\n                    \"BUSD\",\n                    \"USDC\"\n                ],\n                \"currency_limit\": {\n                    \"BNB\": {\n                        \"min\": 3,\n                        \"max\": 60000\n                    },\n                    \"BUSD-T\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"BUSD\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"1.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"1\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpha Homora V1\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlphaHomora.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"42.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"42\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpha Homora V1\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlphaHomora.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"BSC\"\n                ],\n                \"currency\": [\n                    \"BNB\",\n                    \"BUSD-T\",\n                    \"BUSD\",\n                    \"USDC\"\n                ],\n                \"currency_limit\": {\n                    \"BNB\": {\n                        \"min\": 3,\n                        \"max\": 60000\n                    },\n                    \"BUSD-T\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"BUSD\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"51.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"51\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Alpha Homora V2\",\n                \"type\": \"protocol\",\n                \"logo\": \"https://app.insurace.io/asset/product/AlphaHomora.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"https://staging-covercompared.polkacover.com/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 642.2110215316263,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Crypto Exchange List",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}cover-list?type=custodian",
+							"host": [
+								"{{host}}cover-list"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "0x0000000000000000000000000000000000000009",
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": "insurace",
+									"description": "insurace, nexus, nsure, unore",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "custodian",
+									"description": "protocol | custodian"
+								},
+								{
+									"key": "supported_chain",
+									"value": "Polygon",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "duration_min_day",
+									"value": "40",
+									"disabled": true
+								},
+								{
+									"key": "get_quote",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "DAI",
+									"disabled": true
+								},
+								{
+									"key": "duration_max_day",
+									"value": "500",
+									"disabled": true
+								},
+								{
+									"key": "amount_min",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "amount_max",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "amount",
+									"value": "2,3",
+									"disabled": true
+								},
+								{
+									"key": "duration",
+									"value": "15,56",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5808"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"16b0-eqH8XRNIEUISgVKTxWgY9qoAP80\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 22 Dec 2021 11:38:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"total\": 14,\n        \"total_page\": 2,\n        \"current_page\": 1,\n        \"list\": [\n            {\n                \"unique_id\": \"null.0xC57d000000000000000000000000000000000007.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xC57d000000000000000000000000000000000007\",\n                \"logo\": \"https://app.nexusmutual.io/logos/binance.png\",\n                \"name\": \"Binance\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            },\n            {\n                \"unique_id\": \"32.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"32\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Binance\",\n                \"type\": \"custodian\",\n                \"logo\": \"https://app.insurace.io/asset/product/Binance.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 210.74435993567062,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"null.0xC57D000000000000000000000000000000000002.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xC57D000000000000000000000000000000000002\",\n                \"logo\": \"https://app.nexusmutual.io/logos/blockFi.svg\",\n                \"name\": \"BlockFi\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            },\n            {\n                \"unique_id\": \"null.0xc57D000000000000000000000000000000000001.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xc57D000000000000000000000000000000000001\",\n                \"logo\": \"https://app.nexusmutual.io/logos/celsius.svg\",\n                \"name\": \"Celsius\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            },\n            {\n                \"unique_id\": \"null.0xc57D000000000000000000000000000000000008.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xc57D000000000000000000000000000000000008\",\n                \"logo\": \"https://app.nexusmutual.io/logos/coinbase.png\",\n                \"name\": \"Coinbase\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            },\n            {\n                \"unique_id\": \"33.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"33\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"Coinbase\",\n                \"type\": \"custodian\",\n                \"logo\": \"https://app.insurace.io/asset/product/Coinbase.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 329.3752451240163,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"null.0xC57d000000000000000000000000000000000011.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xC57d000000000000000000000000000000000011\",\n                \"logo\": \"https://app.nexusmutual.io/logos/ftx.svg\",\n                \"name\": \"FTX\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            },\n            {\n                \"unique_id\": \"31.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n                \"product_id\": \"31\",\n                \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n                \"name\": \"FTX\",\n                \"type\": \"custodian\",\n                \"logo\": \"https://app.insurace.io/asset/product/FTX.png\",\n                \"company\": \"InsurAce\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/insurace-icon.png\",\n                \"company_code\": \"insurace\",\n                \"min_eth\": 0.5,\n                \"capacity\": 340.97524512401634,\n                \"supportedChains\": [\n                    \"Ethereum\"\n                ],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\",\n                    \"USDC\",\n                    \"USDT\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 0.5,\n                        \"max\": 10000\n                    },\n                    \"DAI\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDC\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    },\n                    \"USDT\": {\n                        \"min\": 1000,\n                        \"max\": 20000000\n                    }\n                },\n                \"duration_days_min\": \"15\",\n                \"duration_days_max\": \"365\"\n            },\n            {\n                \"unique_id\": \"null.0xc57d000000000000000000000000000000000010.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xc57d000000000000000000000000000000000010\",\n                \"logo\": \"https://app.nexusmutual.io/logos/gemini.png\",\n                \"name\": \"Gemini\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            },\n            {\n                \"unique_id\": \"null.0xC57d000000000000000000000000000000000006.nexus\",\n                \"product_id\": null,\n                \"address\": \"0xC57d000000000000000000000000000000000006\",\n                \"logo\": \"https://app.nexusmutual.io/logos/hodlnaut.svg\",\n                \"name\": \"Hodlnaut\",\n                \"type\": \"custodian\",\n                \"company\": \"Nexus Mutual\",\n                \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n                \"company_code\": \"nexus\",\n                \"min_eth\": 1,\n                \"supportedChains\": [],\n                \"currency\": [\n                    \"ETH\",\n                    \"DAI\"\n                ],\n                \"currency_limit\": {\n                    \"ETH\": {\n                        \"min\": 1\n                    },\n                    \"DAI\": {\n                        \"min\": 1\n                    }\n                },\n                \"duration_days_min\": 30,\n                \"duration_days_max\": 365\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Cover Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    let type = [];",
+							"    let supportedChains = [];",
+							"    let quoteFalse = [];",
+							"    if (jsonData.data.list.length) {",
+							"        jsonData.data.list.map(value => {",
+							"",
+							"            if (value.supportedChains.length) {",
+							"                value.supportedChains.map(chain => {",
+							"                    if (!supportedChains.includes(chain)) {",
+							"                        supportedChains.push(chain)",
+							"                    }",
+							"                })",
+							"            }",
+							"",
+							"            if (!type.includes(value.type)) {",
+							"                type.push(value.type)",
+							"            }",
+							"            if(value.quote === false){",
+							"                quoteFalse.push(value)",
+							"            }",
+							"        })",
+							"        console.log(\"Current Page Length \", jsonData.data.list.length)",
+							"        console.log(\"Type \", type)",
+							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
+							"        console.log(\"False Quote : \", JSON.stringify(quoteFalse))",
+							"        console.log(\"Current PAge : \", jsonData.data.current_page);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}cover-details/{{type}}/{{unique_id}}",
+					"host": [
+						"{{host}}cover-details"
+					],
+					"path": [
+						"{{type}}",
+						"{{unique_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Cover Details",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}cover-details/protocol/null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus",
+							"host": [
+								"{{host}}cover-details"
+							],
+							"path": [
+								"protocol",
+								"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1677"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"68d-DoXWCLOcXPzHg5bV1lu1EFyFOuw\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 22 Dec 2021 12:24:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"reviews\": [\n            {\n                \"rating\": 2,\n                \"review\": \"good good\",\n                \"updatedAt\": \"2021-12-22T12:18:27.336Z\",\n                \"first_name\": \"Romik\",\n                \"last_name\": \"Makavana\",\n                \"email\": \"makavanaromik1214@gmail.com\"\n            }\n        ],\n        \"description\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\\n        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\\n        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\\n        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\\n        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\\n        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n        \"additional_details\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n        \"terms_and_conditions\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}cover-details/protocol/null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus",
+							"host": [
+								"{{host}}cover-details"
+							],
+							"path": [
+								"protocol",
+								"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"44-A7dHoSzqXyZhmh89sT3dC9NEIy0\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 22 Dec 2021 12:25:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Cover not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
 				}
 			]
 		},
@@ -5724,7 +6019,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}review",
+					"raw": "{{host}}review?product_type=smart_contract",
 					"host": [
 						"{{host}}review"
 					],
@@ -5736,8 +6031,7 @@
 						},
 						{
 							"key": "product_type",
-							"value": "device_insurance",
-							"disabled": true
+							"value": "smart_contract"
 						}
 					]
 				},
