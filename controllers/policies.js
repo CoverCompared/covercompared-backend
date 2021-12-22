@@ -373,7 +373,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
         return res.status(200).send(utils.apiResponse(true, "Policy added successfully.", {
             _id: policy._id,
             txn_hash: policy.txn_hash,
-            signature: signature
+            signature: signature.signature
         }));
 
     } catch (error) {

@@ -13,6 +13,7 @@ const Users = mongoose.model('Users');
 const Payments = mongoose.model('Payments');
 const Settings = mongoose.model('Settings');
 const signMsg = require("./sign_message");
+const { ethers } = require("ethers");
 
 
 let web3 = {
@@ -299,22 +300,15 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
     value =  utils.getBigNumber(value);
 
     try {
-        console.log("Message", signMsg.getSignMessage({
+        let message = signMsg.getSignMessage({
             total_amount : value,
             id : policyId,
             durPlan
-         }));
-        return signMsg.getSignMessage({
-            total_amount : value,
-            id : policyId,
-            durPlan
-         })
+        })
         // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
-        // // const sign = web3Connect.eth.accounts.sign(dataToSign, config.signature_private_key);
-        // const sign = web3Connect.eth.sign(dataToSign, wallet_address);
-        // return sign;
+        const sign = web3Connect.eth.accounts.sign(ethers.utils.keccak256(message), config.signature_private_key);
+        return sign;
     } catch (error) {
-        console.log("ERRO ", error);
         /**
          * TODO: Send Error Report - Issue while sign p4l message
          * */        
@@ -328,8 +322,9 @@ exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) =>
     conciergePrice =  utils.getBigNumber(conciergePrice);
     
     try {
-        const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(["string", "uint256", "uint256", "uint256"], [policyId, priceInUSD, period, conciergePrice]));
-        const sign = web3Connect.eth.accounts.sign(dataToSign, config.signature_private_key);
+        let message = signMsg.getSignMessageForMSO({policyId, value: priceInUSD, period, conciergePrice})
+        // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(["string", "uint256", "uint256", "uint256"], [policyId, priceInUSD, period, conciergePrice]));
+        const sign = web3Connect.eth.accounts.sign(ethers.utils.keccak256(message), config.signature_private_key);
         return sign;
     } catch (error) {
         /**
