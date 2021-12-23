@@ -89,6 +89,7 @@ const PoliciesSchema = new Schema({
         email: { type: String, default: null },
         phone: { type: Number, default: null },
         signature: { type: Schema.Types.Mixed, default: null },
+        start_time: { type: Schema.Types.Mixed, default: null },
         durPlan: { type: Number, default: null },
         contract_product_id: { type: String, default: null }
     },

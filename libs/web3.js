@@ -158,12 +158,16 @@ exports.connectSmartContract = async (smart_contract) => {
 }
 
 
+exports.p4lGetProductDetailsFromTransactionHash = (transaction_hash) => {
+
+}
+
 exports.p4lSyncTransaction = async (transaction_hash) => {
 
     // Find Policy
     let policy = await Policies.findOne({ payment_hash: transaction_hash });
-    // console.log("policy ", policy);
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
+
 
     if (
         !policy ||
@@ -193,77 +197,62 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
             // Get Product Detail from ProductId
             let product = await this.p4lGetProductDetails(productId);
-
-            // Save in database
-            let user = await Users.getUser(TransactionDetails.from);
-
-            if (!policy) {
-                // Create policy
-                policy = new Policies;
-
-
-                if (!user) {
-                    /**
-                     * TODO: Send Error Report : Wallet address exist but user not found
-                     */
-                    return false;
-                }
-
-                policy.user_id = user._id;
-                policy.product_type = constant.ProductTypes.device_insurance;
-                policy.currency = "USD";
-                policy.amount = null;
-                policy.discount_amount = null;
-                policy.tax = null;
-                policy.total_amount = product.priceInUSD / (10 ** 18);
-                policy.DeviceInsurance = {
-                    device_type: product.device,
-                    brand: product.brand,
-                    value: null,
-                    month: product.purchMonth,
-                    durPlan: product.durPlan,
-                    purchase_month: _.get(constant.p4lPurchaseMonth, product.durPlan, product.durPlan),
-                    model: null,
-                    model_name: null,
-                    plan_type: null,
-                    first_name: null,
-                    last_name: null,
-                    email: null,
-                    phone: null
-                }
-
+            if(policy && policy.txn_hash != product.policyId){
+                /**
+                 * TODO: Send Error Report : policy found but policy id not match with product
+                 * data : product_type : p4l, smart_contract_address, product, policy
+                 */
             }
 
-            policy.DeviceInsurance.contract_product_id = productId;
-            policy.status = constant.PolicyStatus.active;
-            policy.StatusHistory.push({
-                status: policy.status,
-                updated_at: new Date(moment()),
-                updated_by: user._id
-            });
-            policy.payment_status = constant.PolicyPaymentStatus.paid;
-            policy.payment_hash = transaction_hash;
-            await policy.save();
+            if(!policy){
+                policy = await Policies.findOne({ txn_hash: product.policyId });
+                payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
+            }
+            if(
+                policy &&
+                (
+                    policy.payment_status != constant.PolicyPaymentStatus.paid ||
+                    !policy.payment_id || !payment || !policy.DeviceInsurance.contract_product_id ||
+                    !policy.payment_hash
+                )
+            ){
+                policy.DeviceInsurance.contract_product_id = productId;
+                policy.DeviceInsurance.start_time = productId;
+                policy.DeviceInsurance.durPlan = product.durPlan;
+                policy.DeviceInsurance.purchase_month = _.get(constant.p4lPurchaseMonth, product.durPlan, product.durPlan);
+                policy.status = constant.PolicyStatus.active;
+                policy.StatusHistory.push({
+                    status: policy.status,
+                    updated_at: new Date(moment()),
+                    updated_by: policy.user_id
+                });
+                policy.payment_status = constant.PolicyPaymentStatus.paid;
+                policy.payment_hash = transaction_hash;
+                policy.total_amount = product.priceInUSD / (10 ** 18);
 
-            payment = payment ? payment : new Payments;
+                await policy.save();
 
-            let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
+                payment = payment ? payment : new Payments;
 
-            payment.payment_status = constant.PolicyPaymentStatus.paid;
-            payment.blockchain = "Ethereum";
-            payment.wallet_address = TransactionDetails.from;
-            payment.block_timestamp = product.startTime;
-            payment.txn_type = "onchain";
-            payment.payment_hash = transaction_hash;
-            payment.currency = "USD";
-            payment.paid_amount = policy.total_amount;
-            payment.network = chain;
-            payment.crypto_currency = "Ether";
-            payment.crypto_amount = TransactionDetails.value;
-            await payment.save();
+                let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
 
-            policy.payment_id = payment._id;
-            await policy.save();
+                payment.payment_status = constant.PolicyPaymentStatus.paid;
+                payment.blockchain = "Ethereum";
+                payment.wallet_address = TransactionDetails.from;
+                payment.block_timestamp = product.startTime;
+                payment.txn_type = "onchain";
+                payment.payment_hash = transaction_hash;
+                payment.currency = "USD";
+                payment.paid_amount = policy.total_amount;
+                payment.network = chain;
+                payment.crypto_currency = "Ether";
+                payment.crypto_amount = TransactionDetails.value;
+                await payment.save();
+
+                policy.payment_id = payment._id;
+                await policy.save();
+            }
+
         }
     }
     return true;
@@ -272,7 +261,7 @@ let P4LTransactionPromises = [];
 let IsP4LTransactionRunning = false;
 
 exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
-    P4LTransactionPromises.push({transaction_hash, p4l_from_block});
+    P4LTransactionPromises.push({ transaction_hash, p4l_from_block });
     if (IsP4LTransactionRunning == false) {
         console.log("P4L  ::  Started.");
         while (P4LTransactionPromises.length > 0) {
@@ -280,7 +269,7 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
             let promise = P4LTransactionPromises[0];
             await this.p4lSyncTransaction(promise.transaction_hash);
             console.log("P4L  ::  Completed ", promise.transaction_hash);
-            if(promise.p4l_from_block){
+            if (promise.p4l_from_block) {
                 await Settings.setKey("p4l_from_block", promise.p4l_from_block)
             }
             P4LTransactionPromises.splice(0, 1);
@@ -290,7 +279,7 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
             }
         }
         console.log("P4L  ::  Completed.");
-    }else{
+    } else {
         console.log("P4L  ::  Already running.....");
     }
 }
@@ -300,8 +289,8 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
 
     try {
         let message = signMsg.getSignMessage({
-            total_amount : value,
-            id : policyId,
+            total_amount: value,
+            id: policyId,
             durPlan
         })
         // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
@@ -310,18 +299,18 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
     } catch (error) {
         /**
          * TODO: Send Error Report - Issue while sign p4l message
-         * */        
+         * */
     }
     return false;
 }
 
 exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) => {
     let web3Connect = this.getWeb3Connect("mso");
-    priceInUSD =  utils.getBigNumber(priceInUSD);
-    conciergePrice =  utils.getBigNumber(conciergePrice);
-    
+    priceInUSD = utils.getBigNumber(priceInUSD);
+    conciergePrice = utils.getBigNumber(conciergePrice);
+
     try {
-        let message = signMsg.getSignMessageForMSO({policyId, value: priceInUSD, period, conciergePrice})
+        let message = signMsg.getSignMessageForMSO({ policyId, value: priceInUSD, period, conciergePrice })
         // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(["string", "uint256", "uint256", "uint256"], [policyId, priceInUSD, period, conciergePrice]));
         const sign = web3Connect.eth.accounts.sign(ethers.utils.keccak256(message), config.signature_private_key);
         return sign;
@@ -342,16 +331,7 @@ exports.p4lPolicySync = async () => {
     try {
         let web3Connect = this.getWeb3Connect("p4l");
 
-        // const policyId = 'P4L-000';
-        // const value = utils.getBigNumber(50);
-        // const durPlan = 6;
-
-        // const dataToSign = web3Connect.utils.keccak256(web3Connect.eth.abi.encodeParameters(['string', 'uint256', 'uint256'], [policyId, value, durPlan]));
-        // const sign = web3Connect.eth.accounts.sign(dataToSign, "77a0a80a9592ff11cf226329d858edad9a472e86f135145b230197dee83247cd");
-        // console.log("SIGN ", sign);
-
         await this.connectSmartContract("p4l");
-
 
         P4LEventSubscription = await P4LStartContract.events.allEvents({ fromBlock: P4LFromBlock })
 
@@ -367,7 +347,6 @@ exports.p4lPolicySync = async () => {
                 // Find Policy
                 await this.p4lAddToSyncTransaction(event.transactionHash, event.blockNumber);
             }
-
         })
 
         // P4LEventSubscription.on('changed', changed => console.log("CHANGED ", changed))

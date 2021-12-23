@@ -17,8 +17,8 @@ const web3Actions = async () => {
 
 const cron = () => {
     web3Actions();
-	console.log("Cron running a every 10 minute");
-	NodeCron.schedule('*/10 * * * *', async () => {
+	console.log("Cron running a every 30 minute");
+	NodeCron.schedule('*/30 * * * *', async () => {
         web3Actions();
 	    console.log('running a every 10 minute', `${moment().format('LTS')}`);
 	});
