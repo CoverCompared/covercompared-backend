@@ -297,7 +297,6 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
 
 exports.p4lSignDetails = async (policyId, value, durPlan) => {
     let web3Connect = this.getWeb3Connect("p4l");
-    value =  utils.getBigNumber(value);
 
     try {
         let message = signMsg.getSignMessage({
