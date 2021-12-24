@@ -12,7 +12,8 @@ const Schema = mongoose.Schema;
  */
 
 const SettingsSchema = new Schema({
-    p4l_from_block: { type: String, default: null }
+    p4l_from_block: { type: String, default: null },
+    mso_from_block: { type: String, default: null }
 }, {
     timestamps: true
 });
@@ -26,9 +27,9 @@ SettingsSchema.statics = {
 
         if (!setting) {
             setting = new Settings;
-            setting.p4l_from_block = 0;
         }
-
+        setting.p4l_from_block = setting.p4l_from_block ? setting.p4l_from_block : 0;
+        setting.mso_from_block = setting.mso_from_block ? setting.mso_from_block : 0;
         return key ? setting[key] : setting;
     },
 

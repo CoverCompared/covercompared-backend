@@ -64,6 +64,8 @@ const PoliciesSchema = new Schema({
         mso_addon_service: { type: Number, default: null },
         amount: { type: Number, default: null },
         signature: { type: Schema.Types.Mixed, default: null },
+        contract_product_id: { type: String, default: null },
+        start_time: { type: Schema.Types.Mixed, default: null },
         MSOMembers: [{
             user_type: { type: String, default: null },
             first_name: { type: String, default: null },

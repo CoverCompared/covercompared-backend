@@ -1,6 +1,7 @@
 const Web3 = require("web3");
 const config = require("../config");
 const P4LSmartContractAbi = require("./abi/p4l.json");
+const MSOSmartContractAbi = require("./abi/mso.json");
 const contracts = require("./contracts");
 
 const _ = require('lodash');
@@ -121,10 +122,12 @@ exports.getTransaction = async (smart_contract, transaction_hash) => {
 
 let P4LStartContract;
 let P4LEventSubscription;
+let MSOStartContract;
+let MSOEventSubscription;
 
 /**
  * It will return Web3 connected SmartContract  
- * @param {"p4l"} smart_contract 
+ * @param {"p4l"|"mso"} smart_contract 
  */
 exports.connectSmartContract = async (smart_contract) => {
     const web3Connect = this.getWeb3Connect(smart_contract);
@@ -133,6 +136,8 @@ exports.connectSmartContract = async (smart_contract) => {
 
     if (smart_contract == "p4l") {
         SmartContractAddress = config.is_mainnet ? contracts.p4l[config.SupportedChainId.MAINNET] : contracts.p4l[config.SupportedChainId.RINKEBY];
+    }else if (smart_contract == "mso") {
+        SmartContractAddress = config.is_mainnet ? contracts.mso[config.SupportedChainId.MAINNET] : contracts.mso[config.SupportedChainId.RINKEBY];
     }
 
     try {
@@ -148,6 +153,18 @@ exports.connectSmartContract = async (smart_contract) => {
             }
             P4LStartContract = new web3Connect.eth.Contract(P4LSmartContractAbi, SmartContractAddress);
             return P4LStartContract;
+        }else if (smart_contract == "mso") {
+            try {
+                if (MSOStartContract) {
+                    let productId = MSOStartContract.methods.productIds().call()
+                    if (productId) {
+                        return MSOStartContract;
+                    }
+                }
+            } catch (error) {
+            }
+            MSOStartContract = new web3Connect.eth.Contract(MSOSmartContractAbi, SmartContractAddress);
+            return MSOStartContract;
         }
     } catch (error) {
         /**
@@ -257,6 +274,103 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
     }
     return true;
 }
+
+exports.msoSyncTransaction = async (transaction_hash) => {
+
+    // Find Policy
+    let policy = await Policies.findOne({ payment_hash: transaction_hash });
+    let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
+
+
+    if (
+        !policy ||
+        policy.payment_status != constant.PolicyPaymentStatus.paid ||
+        !policy.payment_id || !payment || !policy.MSOPolicy.contract_product_id
+    ) {
+        let web3Connect = this.getWeb3Connect("p4l");
+
+        // Get Transaction details
+        let TransactionDetails = await this.getTransaction("p4l", transaction_hash);
+        let TransactionReceiptDetails = await this.getTransactionReceipt("p4l", transaction_hash);
+
+        // BuyProduct & BuyP4L Event Log
+        let BuyProductEventAbi = P4LSmartContractAbi.find(value => value.name == "BuyProduct" && value.type == "event");
+        let hasBuyProductEvent = this.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyProductEventAbi);
+
+        if (hasBuyProductEvent || hasBuyP4LEvent) {
+            // Get ProductId from Transaction
+            let productId;
+            if (hasBuyProductEvent) {
+                productId = web3Connect.utils.toDecimal(hasBuyProductEvent.topics[1])
+            } else if (hasBuyP4LEvent) {
+                productId = web3Connect.utils.toDecimal(hasBuyP4LEvent.topics[1])
+            }
+            console.log("P4L  ::  Started ProductID : ", productId);
+
+
+            // Get Product Detail from ProductId
+            let product = await this.p4lGetProductDetails(productId);
+            if(policy && policy.txn_hash != product.policyId){
+                /**
+                 * TODO: Send Error Report : policy found but policy id not match with product
+                 * data : product_type : p4l, smart_contract_address, product, policy
+                 */
+            }
+
+            if(!policy){
+                policy = await Policies.findOne({ txn_hash: product.policyId });
+                payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
+            }
+            if(
+                policy &&
+                (
+                    policy.payment_status != constant.PolicyPaymentStatus.paid ||
+                    !policy.payment_id || !payment || !policy.DeviceInsurance.contract_product_id ||
+                    !policy.payment_hash
+                )
+            ){
+                policy.DeviceInsurance.contract_product_id = productId;
+                policy.DeviceInsurance.start_time = productId;
+                policy.DeviceInsurance.durPlan = product.durPlan;
+                policy.DeviceInsurance.purchase_month = _.get(constant.p4lPurchaseMonth, product.durPlan, product.durPlan);
+                policy.status = constant.PolicyStatus.active;
+                policy.StatusHistory.push({
+                    status: policy.status,
+                    updated_at: new Date(moment()),
+                    updated_by: policy.user_id
+                });
+                policy.payment_status = constant.PolicyPaymentStatus.paid;
+                policy.payment_hash = transaction_hash;
+                policy.total_amount = product.priceInUSD / (10 ** 18);
+
+                await policy.save();
+
+                payment = payment ? payment : new Payments;
+
+                let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
+
+                payment.payment_status = constant.PolicyPaymentStatus.paid;
+                payment.blockchain = "Ethereum";
+                payment.wallet_address = TransactionDetails.from;
+                payment.block_timestamp = product.startTime;
+                payment.txn_type = "onchain";
+                payment.payment_hash = transaction_hash;
+                payment.currency = "USD";
+                payment.paid_amount = policy.total_amount;
+                payment.network = chain;
+                payment.crypto_currency = "Ether";
+                payment.crypto_amount = TransactionDetails.value;
+                await payment.save();
+
+                policy.payment_id = payment._id;
+                await policy.save();
+            }
+
+        }
+    }
+    return true;
+}
+
 let P4LTransactionPromises = [];
 let IsP4LTransactionRunning = false;
 
@@ -281,6 +395,33 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
         console.log("P4L  ::  Completed.");
     } else {
         console.log("P4L  ::  Already running.....");
+    }
+}
+
+let MSOTransactionPromises = [];
+let IsMSOTransactionRunning = false;
+
+exports.msoAddToSyncTransaction = async (transaction_hash, mso_from_block) => {
+    MSOTransactionPromises.push({ transaction_hash, mso_from_block });
+    if (IsMSOTransactionRunning == false) {
+        console.log("MSO  ::  Started.");
+        while (MSOTransactionPromises.length > 0) {
+            IsMSOTransactionRunning = true;
+            let promise = MSOTransactionPromises[0];
+            await this.p4lSyncTransaction(promise.transaction_hash);
+            console.log("MSO  ::  Completed ", promise.transaction_hash);
+            if (promise.mso_from_block) {
+                await Settings.setKey("mso_from_block", promise.mso_from_block)
+            }
+            MSOTransactionPromises.splice(0, 1);
+            console.log("MSO  ::  Rest ", MSOTransactionPromises.length);
+            if (MSOTransactionPromises.length == 0) {
+                IsMSOTransactionRunning = false;
+            }
+        }
+        console.log("MSO  ::  Completed.");
+    } else {
+        console.log("MSO  ::  Already running.....");
     }
 }
 
@@ -317,6 +458,19 @@ exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) =>
     } catch (error) {
         /**
          * TODO: Send Error Report - Issue while sign mso details
+         */
+    }
+    return false;
+}
+
+exports.p4lGetProductDetails = async (product_id) => {
+    await this.connectSmartContract("p4l");
+    try {
+        return await P4LStartContract.methods.products(product_id).call()
+    } catch (error) {
+        /**
+         * TODO: Send Error report : issue while getting product detail from smart contract
+         * data : mainnet or testnet, product_id, error
          */
     }
     return false;
@@ -365,17 +519,47 @@ exports.p4lPolicySync = async () => {
     }
 }
 
-exports.p4lGetProductDetails = async (product_id) => {
-    await this.connectSmartContract("p4l");
+exports.msoPolicySync = async () => {
+
+
+    let MSOFromBlock = await Settings.getKey("mso_from_block");
+    MSOFromBlock = MSOFromBlock ? MSOFromBlock : 0;
+
     try {
-        return await P4LStartContract.methods.products(product_id).call()
-    } catch (error) {
+        let web3Connect = this.getWeb3Connect("mso");
+
+        await this.connectSmartContract("mso");
+
+        MSOEventSubscription = await MSOStartContract.events.allEvents({ fromBlock: MSOFromBlock })
+
         /**
-         * TODO: Send Error report : issue while getting product detail from smart contract
-         * data : mainnet or testnet, product_id, error
+         * BuyP4L, BuyProduct 
+         * These event execute from P4L SmartContract 
+         * Only when any user purchase successfully p4l product
+         * This function will match event data with current database,
+         * If there any new product found it will insert data to database
+         */
+        MSOEventSubscription.on('data', async (event) => {
+            if (["BuyMSO", "BuyProduct"].includes(event.event)) {
+                // Find Policy
+                await this.msoAddToSyncTransaction(event.transactionHash, event
+            }
+        })
+
+        // MSOEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
+        // MSOEventSubscription.on('connected', str => console.log("CONNECTED ", str))
+        MSOEventSubscription.on('error', str => {
+            /**
+             * TODO: Send Error Report "P4L Start Contract issue on fetch all events."
+             */
+        })
+
+    } catch (error) {
+        console.log("Err", error);
+        /**
+         * TODO: Send Error Report "P4LContract is not connected"
          */
     }
-    return false;
 }
 
 exports.subscriptionStatus = async () => {
