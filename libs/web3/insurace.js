@@ -1,5 +1,5 @@
 const web3Connection = require('./index');
-const P4LSmartContractAbi = require("./../abi/p4l.json");
+const InsurAceSmartContractAbi = require("./../abi/insurace.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -13,31 +13,31 @@ const Payments = mongoose.model('Payments');
 
 
 exports.getWeb3Connect = async (check_is_connected = false) => {
-    return await web3Connection.getWeb3Connect("p4l", check_is_connected);
+    return await web3Connection.getWeb3Connect("insurace", check_is_connected);
 }
 
-let P4LStartContract;
-let P4LEventSubscription;
+let InsurAceStartContract;
+let InsurAceEventSubscription;
 
 exports.connectSmartContract = async () => {
     const web3Connect = await this.getWeb3Connect();
 
     let SmartContractAddress;
 
-    SmartContractAddress = config.is_mainnet ? contracts.p4l[config.SupportedChainId.MAINNET] : contracts.p4l[config.SupportedChainId.RINKEBY];
+    SmartContractAddress = config.is_mainnet ? contracts.insureAce[config.SupportedChainId.MAINNET] : contracts.insureAce[config.SupportedChainId.RINKEBY];
 
     try {
         try {
-            if (P4LStartContract) {
-                let productId = P4LStartContract.methods.productIds().call()
+            if (InsurAceStartContract) {
+                let productId = InsurAceStartContract.methods.productIds().call()
                 if (productId) {
-                    return P4LStartContract;
+                    return InsurAceStartContract;
                 }
             }
         } catch (error) {
         }
-        P4LStartContract = new web3Connect.eth.Contract(P4LSmartContractAbi, SmartContractAddress);
-        return P4LStartContract;
+        InsurAceStartContract = new web3Connect.eth.Contract(InsurAceSmartContractAbi, SmartContractAddress);
+        return InsurAceStartContract;
     } catch (error) {
         /**
          * TODO: Send Error Report: issue on connect smart contract
@@ -46,25 +46,25 @@ exports.connectSmartContract = async () => {
     }
 }
 
-let P4LTransactionPromises = [];
-let IsP4LTransactionRunning = false;
+let TransactionPromises = [];
+let IsTransactionRunning = false;
 
-exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
-    P4LTransactionPromises.push({ transaction_hash, p4l_from_block });
-    if (IsP4LTransactionRunning == false) {
+exports.addToSyncTransaction = async (transaction_hash, insurace_from_block) => {
+    TransactionPromises.push({ transaction_hash, insurace_from_block });
+    if (IsTransactionRunning == false) {
         console.log("P4L  ::  Started.");
-        while (P4LTransactionPromises.length > 0) {
-            IsP4LTransactionRunning = true;
-            let promise = P4LTransactionPromises[0];
-            await this.p4lSyncTransaction(promise.transaction_hash);
+        while (TransactionPromises.length > 0) {
+            IsTransactionRunning = true;
+            let promise = TransactionPromises[0];
+            await this.syncTransaction(promise.transaction_hash);
             console.log("P4L  ::  Completed ", promise.transaction_hash);
-            if (promise.p4l_from_block) {
-                await Settings.setKey("p4l_from_block", promise.p4l_from_block)
+            if (promise.insurace_from_block) {
+                await Settings.setKey("insurace_from_block", promise.insurace_from_block)
             }
-            P4LTransactionPromises.splice(0, 1);
-            console.log("P4L  ::  Rest ", P4LTransactionPromises.length);
-            if (P4LTransactionPromises.length == 0) {
-                IsP4LTransactionRunning = false;
+            TransactionPromises.splice(0, 1);
+            console.log("P4L  ::  Rest ", TransactionPromises.length);
+            if (TransactionPromises.length == 0) {
+                IsTransactionRunning = false;
             }
         }
         console.log("P4L  ::  Completed.");
@@ -73,17 +73,17 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
     }
 }
 
-exports.p4lPolicySync = async () => {
+exports.policySync = async () => {
 
-    let P4LFromBlock = await Settings.getKey("p4l_from_block");
-    P4LFromBlock = P4LFromBlock ? P4LFromBlock : 0;
+    let FromBlock = await Settings.getKey("insurace_from_block");
+    FromBlock = FromBlock ? FromBlock : 0;
 
     try {
         let web3Connect = await this.getWeb3Connect();
 
         await this.connectSmartContract();
 
-        P4LEventSubscription = await P4LStartContract.events.allEvents({ fromBlock: P4LFromBlock })
+        InsurAceEventSubscription = await InsurAceStartContract.events.allEvents({ fromBlock: FromBlock })
 
         /**
          * BuyP4L, BuyProduct 
@@ -92,16 +92,16 @@ exports.p4lPolicySync = async () => {
          * This function will match event data with current database,
          * If there any new product found it will insert data to database
          */
-        P4LEventSubscription.on('data', async (event) => {
-            if (["BuyP4L", "BuyProduct"].includes(event.event)) {
+        InsurAceEventSubscription.on('data', async (event) => {
+            if (["BuyInsureAce"].includes(event.event)) {
                 // Find Policy
-                await this.p4lAddToSyncTransaction(event.transactionHash, event.blockNumber);
+                await this.addToSyncTransaction(event.transactionHash, event.blockNumber);
             }
         })
 
-        // P4LEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
-        // P4LEventSubscription.on('connected', str => console.log("CONNECTED ", str))
-        P4LEventSubscription.on('error', str => {
+        // InsurAceEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
+        // InsurAceEventSubscription.on('connected', str => console.log("CONNECTED ", str))
+        InsurAceEventSubscription.on('error', str => {
             /**
              * TODO: Send Error Report "P4L Start Contract issue on fetch all events."
              */
@@ -126,7 +126,7 @@ exports.getTransactionReceipt = async (transaction_hash) => {
 exports.p4lGetProductDetails = async (product_id) => {
     await this.connectSmartContract();
     try {
-        return await P4LStartContract.methods.products(product_id).call()
+        return await InsurAceStartContract.methods.products(product_id).call()
     } catch (error) {
         /**
          * TODO: Send Error report : issue while getting product detail from smart contract
@@ -136,7 +136,7 @@ exports.p4lGetProductDetails = async (product_id) => {
     return false;
 }
 
-exports.p4lSyncTransaction = async (transaction_hash) => {
+exports.syncTransaction = async (transaction_hash) => {
 
     // Find Policy
     let policy = await Policies.findOne({ payment_hash: transaction_hash });
@@ -154,10 +154,10 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
         let TransactionReceiptDetails = await this.getTransactionReceipt(transaction_hash);
 
         // BuyProduct & BuyP4L Event Log
-        let BuyProductEventAbi = P4LSmartContractAbi.find(value => value.name == "BuyProduct" && value.type == "event");
+        let BuyProductEventAbi = InsurAceSmartContractAbi.find(value => value.name == "BuyProduct" && value.type == "event");
         let hasBuyProductEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyProductEventAbi);
 
-        let BuyP4LEventAbi = P4LSmartContractAbi.find(value => value.name == "BuyP4L" && value.type == "event");
+        let BuyP4LEventAbi = InsurAceSmartContractAbi.find(value => value.name == "BuyP4L" && value.type == "event");
         let hasBuyP4LEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyP4LEventAbi);
 
         if (hasBuyProductEvent || hasBuyP4LEvent) {
@@ -238,7 +238,7 @@ exports.p4lSyncTransactionForApi = async (transaction_hash) => {
     await this.getWeb3Connect(true);
     try {
         await this.connectSmartContract();
-        await this.p4lSyncTransaction(transaction_hash);   
+        await this.syncTransaction(transaction_hash);   
     } catch (error) {
         /**
          * TODO: Send Error Report : Issue on p4l Sync Transaction for api

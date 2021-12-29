@@ -17,7 +17,8 @@ const { ethers } = require("ethers");
 
 exports.smart_contracts = {
     p4l : require("./p4l"),
-    mso : require('./mso')
+    mso : require('./mso'),
+    insurace: require("./insurace")
 }
 
 
@@ -64,20 +65,44 @@ exports.connect = () => {
     })
 }
 
+
+// Get Web3Connect
+// Check Is Listening
+// Connect Web3
+// Return web3Connect
+
 /**
  * Return web3 connect based on smart contract and network(mainnet or testnet)
- * @param {"p4l"|"mso"} smart_contract 
+ * @param {"p4l"|"mso"|"insurace"} smart_contract 
  */
-exports.getWeb3Connect = (smart_contract) => {
+exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
     let web3Connect;
+    let chainId;
     if (config.is_mainnet) {
-        web3Connect = web3[config.SupportedChainId.MAINNET];
+        chainId = config.SupportedChainId.MAINNET;
     } else {
-        if (["p4l", "mso"].includes(smart_contract)) {
-            web3Connect = web3[config.SupportedChainId.RINKEBY];
+        if (["p4l", "mso", "insurace"].includes(smart_contract)) {
+            chainId = config.SupportedChainId.RINKEBY;
         }
     }
-    return web3Connect;
+
+    if(check_is_connected){
+        try {
+            let listening = await this.isListening(web3[chainId]);
+            if(!listening){
+                web3[chainId] = new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[chainId]));
+            }
+        } catch (error) {
+            /**
+             * TODO: Send Error Report : issue on web3 connect
+             * code: web3_connect, 
+             * chainId, config.NETWORK_URLS[chainId], error, error.toString()
+             */
+            
+        }
+    }
+    return web3[chainId];
+
 }
 
 /**
@@ -87,7 +112,7 @@ exports.getWeb3Connect = (smart_contract) => {
  */
 exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
 
-    const web3Connect = this.getWeb3Connect(smart_contract);
+    const web3Connect = await this.getWeb3Connect(smart_contract);
     let TransactionReceipt;
     try {
         TransactionReceipt = await web3Connect.eth.getTransactionReceipt(transaction_hash)
@@ -108,7 +133,7 @@ exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
  */
 exports.getTransaction = async (smart_contract, transaction_hash) => {
 
-    const web3Connect = this.getWeb3Connect(smart_contract);
+    const web3Connect = await this.getWeb3Connect(smart_contract);
 
     let TransactionDetails;
     try {
@@ -132,7 +157,7 @@ let P4LEventSubscription;
  * @param {"p4l"|"mso"} smart_contract 
  */
 exports.connectSmartContract = async (smart_contract) => {
-    const web3Connect = this.getWeb3Connect(smart_contract);
+    const web3Connect = await this.getWeb3Connect(smart_contract);
 
     let SmartContractAddress;
 
@@ -178,7 +203,7 @@ exports.connectSmartContract = async (smart_contract) => {
 
 
 exports.p4lSignDetails = async (policyId, value, durPlan) => {
-    let web3Connect = this.getWeb3Connect("p4l");
+    let web3Connect = await this.getWeb3Connect("p4l");
 
     try {
         let message = signMsg.getSignMessage({
@@ -198,7 +223,7 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
 }
 
 exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) => {
-    let web3Connect = this.getWeb3Connect("mso");
+    let web3Connect = await this.getWeb3Connect("mso");
     priceInUSD = utils.getBigNumber(priceInUSD);
     conciergePrice = utils.getBigNumber(conciergePrice);
 
@@ -242,8 +267,8 @@ exports.checkTransactionReceiptHasLog = (web3Connect, TransactionReceipt, abi) =
     return false
 }
 
-exports.getAddressOfSignatureAccount = (smart_contract) => {
-    let web3Connect = this.getWeb3Connect(smart_contract);
+exports.getAddressOfSignatureAccount = async (smart_contract) => {
+    let web3Connect = await this.getWeb3Connect(smart_contract);
     let address = web3Connect.eth.accounts.privateKeyToAccount(config.signature_private_key);
     return _.get(address, "address");
 }

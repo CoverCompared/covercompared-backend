@@ -42,7 +42,7 @@ exports.index = async (req, res, next) => {
 
         let data = {
             range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
-            policy_request: policy_request
+            data: policy_request
         }
 
         return res.status(200).send(utils.apiResponseData(true, data));

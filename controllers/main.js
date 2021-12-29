@@ -182,8 +182,18 @@ exports.contactUs = async (req, res) => {
         return;
     }
 
+    let contactRequest = await ContactUsRequests.findOne({
+        email: req.body.email,
+        user_type: req.body.user_type,
+        message: req.body.message
+    });
+
+    if(contactRequest){
+        return res.send(utils.apiResponseMessage(false, "Your Contact request already submitted."));
+    }
+
     // Store contact request to database
-    let contactRequest = new ContactUsRequests;
+    contactRequest = new ContactUsRequests;
     contactRequest.name = req.body.name;
     contactRequest.email = req.body.email;
     contactRequest.user_type = req.body.user_type;

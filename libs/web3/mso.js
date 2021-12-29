@@ -12,15 +12,15 @@ const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
 
 
-exports.getWeb3Connect = () => {
-    return web3Connection.getWeb3Connect("mso");
+exports.getWeb3Connect = async (check_is_connected = false) => {
+    return await web3Connection.getWeb3Connect("mso", check_is_connected);
 }
 
 let MSOStartContract;
 let MSOEventSubscription;
 
 exports.connectSmartContract = async () => {
-    const web3Connect = this.getWeb3Connect();
+    const web3Connect = await this.getWeb3Connect();
 
     let SmartContractAddress;
 
@@ -77,7 +77,7 @@ exports.msoPolicySync = async () => {
     MSOFromBlock = MSOFromBlock ? MSOFromBlock : 0;
 
     try {
-        let web3Connect = this.getWeb3Connect("mso");
+        let web3Connect = await this.getWeb3Connect("mso");
 
         await this.connectSmartContract("mso");
 
@@ -146,7 +146,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
         !policy.payment_id || !payment || !policy.MSOPolicy.contract_product_id
     ) {
-        let web3Connect = this.getWeb3Connect();
+        let web3Connect = await this.getWeb3Connect();
 
         // Get Transaction details
         let TransactionDetails = await this.getTransaction(transaction_hash);
@@ -258,4 +258,11 @@ exports.msoAddToSyncTransaction = async (transaction_hash, mso_from_block) => {
     } else {
         console.log("MSO  ::  Already running.....");
     }
+}
+
+exports.msoSyncTransactionForApi = async (transaction_hash) => {
+    // Confirm web3Connection is connected
+    await this.getWeb3Connect(true);
+    await this.connectSmartContract();
+    await this.msoSyncTransaction(transaction_hash);   
 }

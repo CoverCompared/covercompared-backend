@@ -139,7 +139,7 @@ router.get('/request-logs', async (req, res) => {
     }
 });
 router.use('/get-sign-address', async (req, res, next) => {
-    let address= web3Connection.getAddressOfSignatureAccount("p4l");
+    let address= await web3Connection.getAddressOfSignatureAccount("p4l");
     res.send(utils.apiResponseMessage(true, address));
 });
 router.use('/seed', async (req, res, next) => {

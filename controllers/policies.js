@@ -200,6 +200,16 @@ exports.msoConfirmPayment = async (req, res, next) => {
             return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
+        let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
+        if(payment && payment.payment_status == constant.PolicyPaymentStatus.paid && policy.MSOPolicy.contract_product_id){
+            return res.status(200).send(utils.apiResponse(true, "Payment detail updated successfully.", {
+                policy_id: policy._id,
+                txn_hash: policy.txn_hash,
+                payment_status: policy.payment_status,
+                status: policy.status
+            }));
+        }
+
         /**
          * TODO:
          * Error Report
@@ -207,7 +217,9 @@ exports.msoConfirmPayment = async (req, res, next) => {
          */
 
         // Create Payment
-        let payment = new Payments;
+        payment = (payment && payment.payment_hash == req.body.payment_hash) ? payment : new Payments;
+        req.body.payment_status = constant.PolicyPaymentStatus.unpaid;
+
         payment.payment_status = req.body.payment_status;
         payment.blockchain = req.body.blockchain;
         payment.wallet_address = req.body.wallet_address;
@@ -237,16 +249,21 @@ exports.msoConfirmPayment = async (req, res, next) => {
         policy.payment_hash = req.body.payment_hash;
         policy.currency = req.body.currency;
 
-        if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
-            policy.status = constant.PolicyStatus.active;
-            policy.StatusHistory.push({
-                status: policy.status,
-                updated_at: new Date(moment()),
-                updated_by: req.user._id
-            });
-        }
+        // if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
+        //     policy.status = constant.PolicyStatus.active;
+        //     policy.StatusHistory.push({
+        //         status: policy.status,
+        //         updated_at: new Date(moment()),
+        //         updated_by: req.user._id
+        //     });
+        // }
 
         await policy.save();
+
+        // Call MSO Transaction Sync
+        await web3Connect.smart_contracts.mso.msoSyncTransactionForApi(req.body.payment_hash);
+
+        policy = await Policies.findOne({ _id: policy._id });
 
         return res.status(200).send(utils.apiResponse(true, "Payment detail updated successfully.", {
             policy_id: policy._id,
@@ -408,6 +425,17 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
+        let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
+
+        if(payment && payment.payment_status == constant.PolicyPaymentStatus.paid && policy.DeviceInsurance.contract_product_id){
+            return res.status(200).send(utils.apiResponse(true, "Payment detail updated successfully.", {
+                policy_id: policy._id,
+                txn_hash: policy.txn_hash,
+                payment_status: policy.payment_status,
+                status: policy.status
+            }));
+        }
+
         /**
          * TODO:
          * Error Report
@@ -415,7 +443,9 @@ exports.deviceConfirmPayment = async (req, res, next) => {
          */
 
         // Create Payment
-        let payment = new Payments;
+        payment = (payment && payment.payment_hash == req.body.payment_hash) ? payment : new Payments;
+        req.body.payment_status = constant.PolicyPaymentStatus.unpaid;
+
         payment.payment_status = req.body.payment_status;
         payment.blockchain = req.body.blockchain;
         payment.wallet_address = req.body.wallet_address;
@@ -445,16 +475,21 @@ exports.deviceConfirmPayment = async (req, res, next) => {
         policy.payment_hash = req.body.payment_hash;
         policy.currency = req.body.currency;
 
-        if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
-            policy.status = constant.PolicyStatus.active;
-            policy.StatusHistory.push({
-                status: policy.status,
-                updated_at: new Date(moment()),
-                updated_by: req.user._id
-            });
-        }
+        // if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
+        //     policy.status = constant.PolicyStatus.active;
+        //     policy.StatusHistory.push({
+        //         status: policy.status,
+        //         updated_at: new Date(moment()),
+        //         updated_by: req.user._id
+        //     });
+        // }
 
         await policy.save();
+
+        // Call P4L Device Transaction Sync 
+        await web3Connect.smart_contracts.p4l.p4lSyncTransactionForApi(req.body.payment_hash)
+
+        policy = await Policies.findOne({ _id: policy._id });
 
         return res.status(200).send(utils.apiResponse(true, "Payment detail updated successfully.", {
             policy_id: policy._id,
@@ -462,6 +497,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             payment_status: policy.payment_status,
             status: policy.status
         }));
+
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
