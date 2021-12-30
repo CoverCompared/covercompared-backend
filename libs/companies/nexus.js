@@ -67,20 +67,24 @@ exports.coverList = async () => {
             let unique_id = utils.getUniqueCoverID(product_id, key, company_code);
             let logo_endpoint = _.get(data, "logo", false);
             let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
-
+            let type = _.get(data, "type", "");
+            let supportedChains = utils.convertSupportedChain(_.get(data, "supportedChains", [])); 
+            
+            console.log(type, supportedChains.length);
+            if(!supportedChains.length && type == "custodian"){
+                supportedChains = ["Ethereum"];
+            }
             return {
                 unique_id,
                 product_id,
                 address: key,
                 logo: this.getImageUrl(logo_endpoint),
                 name: _.get(data, "name", ""),
-                type: _.get(data, "type", ""),
-                company: this.company.name,
+                type, company: this.company.name,
                 company_icon: this.company.icon,
                 company_code,
                 min_eth: this.company.min_eth,
-                supportedChains: utils.convertSupportedChain(_.get(data, "supportedChains", [])),
-                currency, currency_limit,
+                supportedChains, currency, currency_limit,
                 duration_days_min: 30,
                 duration_days_max: 365,
             }
