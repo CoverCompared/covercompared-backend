@@ -76,7 +76,12 @@ exports.index = async (req, res) => {
                 "createdAt": 1,
                 "crypto_currency": 1,
                 "crypto_amount": 1,
-                "user.first_name": 1, "user.last_name": 1, "user.email": 1
+                "user.first_name": 1, "user.last_name": 1, "user.email": 1,
+                "MSOPolicy.MSOMembers.first_name" : 1,
+                "MSOPolicy.MSOMembers.last_name" : 1,
+                "MSOPolicy.MSOMembers.user_type" : 1,
+                "DeviceInsurance.first_name" : 1,
+                "DeviceInsurance.last_name" : 1
             }
         });
         aggregate.push({ $match: findObj })
@@ -91,6 +96,24 @@ exports.index = async (req, res) => {
         }
 
         let policy = await Policies.aggregate(aggregate);
+
+        if(Array.isArray(policy)){
+            policy = policy.map(value => {
+                if(value.product_type == constant.ProductTypes.mso_policy){
+                    let members = _.get(value.MSOPolicy, "MSOMembers", []);
+                    member = Array.isArray(members) ? members.find(m => m.user_type == "Main Member") : null;
+                    member = member ? member : _.get(members, 0, null);
+                    value.user.first_name = member ? _.get(member, "first_name", "") : _.get(value, "user.first_name", "") ;
+                    value.user.last_name = member ? _.get(member, "last_name", "") : _.get(value, "user.last_name", "") ;
+                }else if(value.product_type == constant.ProductTypes.device_insurance){
+                    value.user.first_name = value.DeviceInsurance ? _.get(value, "DeviceInsurance.first_name", "") : _.get(value, "user.first_name", "") ;
+                    value.user.last_name = value.DeviceInsurance ? _.get(value, "DeviceInsurance.last_name", "") : _.get(value, "user.last_name", "") ;
+                }
+                delete value.DeviceInsurance;
+                delete value.MSOPolicy;
+                return value;
+            })
+        }
 
         let data = {
             range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
@@ -181,8 +204,19 @@ exports.show = async (req, res, next) => {
         let user = policy.user_id;
         let payment = policy.payment_id;
         policy = await Policies.getPolicies(policy.product_type, { _id: utils.getObjectID(req.params.id) });
+        policy = policy[0];
+        if(policy.product_type == constant.ProductTypes.mso_policy){
+            let members = _.get(policy.details, "MSOMembers", []);
+            member = Array.isArray(members) ? members.find(m => m.user_type == "Main Member") : null;
+            member = member ? member : _.get(members, 0, null);
+            user.first_name = member ? _.get(member, "first_name", "") : _.get(user, "first_name", "") ;
+            user.last_name = member ? _.get(member, "last_name", "") : _.get(user, "last_name", "") ;
+        }else if(policy.product_type == constant.ProductTypes.device_insurance){
+            user.first_name = policy.details ? _.get(policy, "details.first_name", "") : _.get(user, "first_name", "") ;
+            user.last_name = policy.details ? _.get(policy, "details.last_name", "") : _.get(user, "last_name", "") ;
+        }
 
-        return res.status(200).send(utils.apiResponseData(true, { ...policy[0], reviews, user, payment }));
+        return res.status(200).send(utils.apiResponseData(true, { ...policy, reviews, user, payment }));
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));

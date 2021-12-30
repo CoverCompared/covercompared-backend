@@ -386,13 +386,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{nexus_host}}v1/contracts/0xe80d347DF1209a76DD9d2319d62912ba98C54DDD/capacity",
+									"raw": "{{nexus_staging}}v1/contracts/0x11111254369792b2Ca5d084aB5eEA397cA8fa48B/capacity",
 									"host": [
-										"{{nexus_host}}v1"
+										"{{nexus_staging}}v1"
 									],
 									"path": [
 										"contracts",
-										"0xe80d347DF1209a76DD9d2319d62912ba98C54DDD",
+										"0x11111254369792b2Ca5d084aB5eEA397cA8fa48B",
 										"capacity"
 									]
 								}
@@ -405,7 +405,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{nexus_staging}}v1/quote?coverAmount=1000000000000000000&currency=DAI&period=30&contractAddress=0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633",
+									"raw": "{{nexus_staging}}v1/quote?coverAmount=1&currency=ETH&period=30&contractAddress=0xB27F1DB0a7e473304A5a06E54bdf035F671400C0",
 									"host": [
 										"{{nexus_staging}}v1"
 									],
@@ -415,11 +415,11 @@
 									"query": [
 										{
 											"key": "coverAmount",
-											"value": "1000000000000000000"
+											"value": "1"
 										},
 										{
 											"key": "currency",
-											"value": "DAI"
+											"value": "ETH"
 										},
 										{
 											"key": "period",
@@ -427,7 +427,7 @@
 										},
 										{
 											"key": "contractAddress",
-											"value": "0x8B3d70d628Ebd30D4A2ea82DB95bA2e906c71633"
+											"value": "0xB27F1DB0a7e473304A5a06E54bdf035F671400C0"
 										}
 									]
 								}
@@ -3232,7 +3232,18 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if(jsonData.success){",
+											"        if(",
+											"            jsonData.data && ",
+											"            jsonData.data.policies && ",
+											"            Array.isArray(jsonData.data.policies)",
+											"        ) {",
+											"            console.log(\"Total Policices \", jsonData.data.policies.length)",
+											"        }",
+											"    }",
+											"});"
 										],
 										"type": "text/javascript"
 									}
@@ -3266,6 +3277,13 @@
 									],
 									"path": [
 										"policies"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "active",
+											"disabled": true
+										}
 									]
 								}
 							},
@@ -4488,19 +4506,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?type=custodian",
+					"raw": "{{host}}cover-list?type=custodian&supported_chain=Ethereum",
 					"host": [
 						"{{host}}cover-list"
 					],
 					"query": [
 						{
 							"key": "search",
-							"value": "0x0000000000000000000000000000000000000009",
+							"value": "0xC57d000000000000000000000000000000000007",
 							"disabled": true
 						},
 						{
 							"key": "company",
-							"value": "insurace",
+							"value": "nexus",
 							"description": "insurace, nexus, nsure, unore",
 							"disabled": true
 						},
@@ -4511,8 +4529,7 @@
 						},
 						{
 							"key": "supported_chain",
-							"value": "Polygon",
-							"disabled": true
+							"value": "Ethereum"
 						},
 						{
 							"key": "page",
@@ -5385,7 +5402,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\",\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+					"raw": "{\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"period\": 30,\n    \"product_id\": null,\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\",\n    \"company\": \"nexus\",\n    \"currency\": \"DAI\",\n    \"coverAmount\": \"1\",\n    \"supported_chain\": \"Ethereum\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -5707,7 +5724,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"product_id\": 20,\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"supported_chain\": \"Ethereum\"\n}",
+					"raw": "{\n    \"address\": \"0x11111254369792b2Ca5d084aB5eEA397cA8fa48B\",\n    \"period\": 30,\n    \"product_id\": null,\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\",\n    \"company\": \"nexus\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"supported_chain\": \"Ethereum\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

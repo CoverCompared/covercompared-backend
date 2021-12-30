@@ -563,6 +563,10 @@ exports.policyReview = async (req, res, next) => {
 exports.get = async (req, res, next) => {
     try {
 
+        let filter = { user_id: utils.getObjectID(req.user._id) };
+        if(req.query.status) filter["status"] = req.query.status;
+        else filter["status"] = "active";
+
         let policies = await Policies.getPolicies(
             [
                 constant.ProductTypes.device_insurance,
@@ -570,7 +574,7 @@ exports.get = async (req, res, next) => {
                 constant.ProductTypes.smart_contract,
                 constant.ProductTypes.crypto_exchange
             ],
-            { user_id: req.user._id },
+            filter,
             true
         );
 

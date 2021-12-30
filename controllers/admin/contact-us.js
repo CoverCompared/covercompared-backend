@@ -20,6 +20,13 @@ exports.table = async (req, res, next) => {
         if (search.email) {
             findObj["$and"].push({ email: { $regex: search.email, $options: "i" } });
         }
+
+        if(search.q){
+            findObj["$or"] = [
+                { email: { $regex: search.q, $options: "i" } },
+                { name: {$regex: search.q, $options: "i"} }
+            ]
+        }
     }
 
     if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
