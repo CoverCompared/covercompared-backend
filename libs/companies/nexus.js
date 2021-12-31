@@ -140,6 +140,11 @@ exports.getQuote = async (contractAddress, coverAmount, currency, period) => {
 
 exports.getImageUrl = (logo_endpoint) => {
     if (logo_endpoint) {
+        
+        let replaceValues = {
+            "alpha-homora.jpg": "alpha-homora.svg"
+        }
+        logo_endpoint = replaceValues[logo_endpoint] ? replaceValues[logo_endpoint] : logo_endpoint;
         return `${this.company.logo_url}${logo_endpoint}`
     } else {
         return `${config.api_url}images/smart-contract-default.png`
