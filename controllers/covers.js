@@ -442,6 +442,10 @@ exports.coverDetails = async (req, res, next) => {
     } else if (constant.CryptoExchangeTypes.includes(req.params.type)) {
         findObj["policy.product_type"] = constant.ProductTypes.crypto_exchange;
     }
+    findObj["$or"] = [
+        { "policy.SmartContract.unique_id": req.params.unique_id },
+        { "policy.CryptoExchange.unique_id": req.params.unique_id }
+    ]
 
     let aggregate = [];
 
