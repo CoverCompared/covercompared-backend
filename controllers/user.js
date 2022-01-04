@@ -3,6 +3,7 @@ const companies = require("./../libs/companies")
 const _ = require("lodash");
 const jwt = require('jsonwebtoken');
 const config = require("../config");
+const config_companies = require("../config/companies");
 
 const mongoose = require("mongoose");
 const Users = mongoose.model('Users');
@@ -265,4 +266,46 @@ exports.getCartItems = async (req, res, next) => {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
+}
+
+exports.quoteNexus = async (req, res, next) => {
+    let rules = {
+        'company': ['required', `in:${companies.getCompanyCodes().join(",")}`],
+        'address': ["required"],
+    };
+
+    let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
+        if (!matched) {
+            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
+        } else {
+            let cover = await companies.coverCapacity(req.body.company, req.body.address, _.get(req.body, "product_id", false));
+            if (cover) {
+
+                if (req.body.company == config_companies.nexus.code) {
+
+                    let rules = {
+                        'currency': ["required", "in:ETH,DAI"],
+                        'coverAmount': ["required", "integer"],
+                        'period': ["required", `min:${cover.duration_days_min}`, `max:${cover.duration_days_max}`],
+                    };
+
+                    let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
+                        if (!matched) {
+                            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
+                        } else {
+                            let cover = await companies.companies.nexus.getQuote(req.body.address, req.body.coverAmount, req.body.currency, req.body.period, false)
+                            res.send(utils.apiResponseData(cover.status, cover.data))
+                        }
+                    });
+
+                }else {
+                    res.send(utils.apiResponseMessage(false, 'something-went-wrong'))
+                }
+            } else {
+                res.send(utils.apiResponseMessage(false, "Product not found."))
+            }
+
+
+        }
+    });
 }

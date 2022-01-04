@@ -99,6 +99,16 @@ utils.getCompanyCoverList = async (company) => {
     return coverList;
 }
 
+utils.getNexusQuote = async (contractAddress, coverAmount, currency, period, responseCallback) => {
+    let cacheKey = `${contractAddress}.${coverAmount}.${currency}.${period}.NexusQuote`;
+    nexusQuote = myCache.get(cacheKey);
+    if (nexusQuote == undefined) {
+        nexusQuote = await responseCallback(contractAddress, coverAmount, currency, period);
+        if(nexusQuote) myCache.set(cacheKey, nexusQuote, config.cache_time)
+    }
+    return nexusQuote;
+}
+
 utils.getSmartContractLogo = async (unique_id, logo_details = undefined) => {
     logo = myCache.get(`${unique_id}Logo`);
     if (logo == undefined && logo_details != undefined) {

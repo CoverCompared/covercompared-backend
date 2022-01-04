@@ -3,7 +3,7 @@
 
 # Installation Steps
     > cp .env.example .env
-    > set NODE_ENV in .env file
+    > set NODE_ENV in .env file [local|staging|production]
     > set MAIL_SERVICE=aws
     
 # Seeder

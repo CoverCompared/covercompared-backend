@@ -120,7 +120,8 @@ exports.getCapacity = async (address) => {
 }
 
 
-exports.getQuote = async (contractAddress, coverAmount, currency, period) => {
+exports.getQuoteWithPromise = async (contractAddress, coverAmount, currency, period) => {
+
     var config = {
         url: utils.addQueryParams(this.company.apis.cover_quote.url, {
             contractAddress, coverAmount, currency, period
@@ -136,6 +137,14 @@ exports.getQuote = async (contractAddress, coverAmount, currency, period) => {
     }
 
     return response
+
+}
+
+exports.getQuote = async (contractAddress, coverAmount, currency, period, fromCache = true) => {
+    if(fromCache){
+        return await utils.getNexusQuote(contractAddress, coverAmount, currency, period, this.getQuoteWithPromise);
+    }
+    return await this.getQuoteWithPromise(contractAddress, coverAmount, currency, period, fromCache = true);
 }
 
 exports.getImageUrl = (logo_endpoint) => {

@@ -58,6 +58,7 @@ apiRoutes.post('/contact-us', mainController.contactUs);
 apiRoutes.get('/review', reviewController.get);
 
 // Routes under Auth
+apiRoutes.post('/user/get-quote-nexus', logsHistory, authVerify, userController.quoteNexus);
 apiRoutes.post('/user/add-profile-details', logsHistory, authVerify, userController.addProfileDetails);
 apiRoutes.post('/user/resend-verification-email', logsHistory, authVerify, userController.resendVerificationEmail);
 apiRoutes.post('/user/verify-otp', logsHistory, authVerify, userController.verifyOtp);
