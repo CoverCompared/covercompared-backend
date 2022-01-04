@@ -4506,7 +4506,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-list?type=custodian&supported_chain=Ethereum",
+					"raw": "{{host}}cover-list?company=nexus",
 					"host": [
 						"{{host}}cover-list"
 					],
@@ -4519,17 +4519,18 @@
 						{
 							"key": "company",
 							"value": "nexus",
-							"description": "insurace, nexus, nsure, unore",
-							"disabled": true
+							"description": "insurace, nexus, nsure, unore"
 						},
 						{
 							"key": "type",
 							"value": "custodian",
-							"description": "protocol | custodian"
+							"description": "protocol | custodian",
+							"disabled": true
 						},
 						{
 							"key": "supported_chain",
-							"value": "Ethereum"
+							"value": "Ethereum",
+							"disabled": true
 						},
 						{
 							"key": "page",
@@ -4819,36 +4820,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Your test name\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    let type = [];",
-							"    let supportedChains = [];",
-							"    let quoteFalse = [];",
-							"    if (jsonData.data.list.length) {",
-							"        jsonData.data.list.map(value => {",
-							"",
-							"            if (value.supportedChains.length) {",
-							"                value.supportedChains.map(chain => {",
-							"                    if (!supportedChains.includes(chain)) {",
-							"                        supportedChains.push(chain)",
-							"                    }",
-							"                })",
-							"            }",
-							"",
-							"            if (!type.includes(value.type)) {",
-							"                type.push(value.type)",
-							"            }",
-							"            if(value.quote === false){",
-							"                quoteFalse.push(value)",
-							"            }",
-							"        })",
-							"        console.log(\"Current Page Length \", jsonData.data.list.length)",
-							"        console.log(\"Type \", type)",
-							"        console.log(\"Supported Chains\", JSON.stringify(supportedChains))",
-							"        console.log(\"False Quote : \", JSON.stringify(quoteFalse))",
-							"        console.log(\"Current PAge : \", jsonData.data.current_page);",
-							"    }",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -4858,13 +4830,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-details/{{type}}/{{unique_id}}",
+					"raw": "{{host}}cover-details/protocol/null.0x11111254369792b2Ca5d084aB5eEA397cA8fa48B.nexus",
 					"host": [
 						"{{host}}cover-details"
 					],
 					"path": [
-						"{{type}}",
-						"{{unique_id}}"
+						"protocol",
+						"null.0x11111254369792b2Ca5d084aB5eEA397cA8fa48B.nexus"
 					]
 				}
 			},
@@ -5402,7 +5374,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n    \"period\": 30,\n    \"product_id\": null,\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\",\n    \"company\": \"nexus\",\n    \"currency\": \"DAI\",\n    \"coverAmount\": \"1\",\n    \"supported_chain\": \"Ethereum\"\n}",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\",\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -5598,6 +5570,180 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"chain\": \"ETH\",\n        \"premiumAmount\": \"2100000000000000\",\n        \"discountPercent\": \"10000\",\n        \"ownerInsurReward\": \"0\",\n        \"referrerInsurReward\": \"0\",\n        \"contractAddress\": \"0x88ef6f235a4790292068646e79ee563339c796a0\",\n        \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0x48D88a5D10595338E46C82256858BaCbcD38e224\",\n            \"415876349625649217205108628878641030387073606180\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Get User Quote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\",\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}user/cover-quote",
+					"host": [
+						"{{host}}user"
+					],
+					"path": [
+						"cover-quote"
+					]
+				},
+				"description": "currency : ETH,DAI\n\n# InsurAce\nsupported_chain is optional \ndefault value of supported_chain is \"Ethereum\""
+			},
+			"response": [
+				{
+					"name": "Nexus Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0x11111254369792b2Ca5d084aB5eEA397cA8fa48B\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/api/cover-quote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"api",
+								"cover-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "414"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"19e-8KTepeUpTNNgu1nBv1x+wW4hsjA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Sep 2021 13:28:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"currency\": \"ETH\",\n        \"period\": \"30\",\n        \"amount\": \"1\",\n        \"price\": \"2135523613963039\",\n        \"priceInNXM\": \"55846036413586696\",\n        \"expiresAt\": 1630852122,\n        \"generatedAt\": 1630848521961,\n        \"contract\": \"0x11111254369792b2ca5d084ab5eea397ca8fa48b\",\n        \"v\": 27,\n        \"r\": \"0x59c43c226cfbfdfd2ded2f36715dfd3b0db58267510f0ffc9aa95ad1ea9ce0ec\",\n        \"s\": \"0x0a60b4b8df34ddb9c8d00abb6cf8e955988b229f7a7a236ab6c865dff31a5847\"\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "InsureAce Quote",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\",\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}user/cover-quote",
+							"host": [
+								"{{host}}user"
+							],
+							"path": [
+								"cover-quote"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "529"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"211-02RyN6YXOM6DD5AcZlmnJa4kepo\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jan 2022 07:51:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"chain\": \"Ethereum\",\n        \"premiumAmount\": \"2100000000000000\",\n        \"discountPercent\": \"10000\",\n        \"ownerInsurReward\": \"0\",\n        \"referrerInsurReward\": \"0\",\n        \"contractAddress\": \"0x0921f628b8463227615d2199d0d3860e4fbcd411\",\n        \"params\": [\n            [\n                \"20\"\n            ],\n            [\n                \"30\"\n            ],\n            [\n                \"1000000000000000000\"\n            ],\n            \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"0xC789300309520F5dDFa95C59571aB809aB1Da365\",\n            \"1139148547909103717925487622505192418205968999269\",\n            \"2100000000000000\",\n            [\n                \"1000000000000000000\",\n                \"30000000000000000000\",\n                \"500\",\n                \"500\"\n            ],\n            \"10000\",\n            [\n                \"0\",\n                \"0\"\n            ]\n        ]\n    },\n    \"errors\": {}\n}"
 				}
 			]
 		},
