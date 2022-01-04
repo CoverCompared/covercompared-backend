@@ -145,12 +145,13 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
     if (
         !policy ||
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
-        !policy.payment_id || !payment || !policy.DeviceInsurance.contract_product_id
+        !policy.payment_id || !payment || !payment.network || !policy.DeviceInsurance.contract_product_id
     ) {
         let web3Connect = await this.getWeb3Connect();
 
         // Get Transaction details
         let TransactionDetails = await this.getTransaction(transaction_hash);
+        console.log("Transaction Details ", TransactionDetails);
         let TransactionReceiptDetails = await this.getTransactionReceipt(transaction_hash);
 
         // BuyProduct & BuyP4L Event Log
@@ -187,8 +188,8 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                 policy &&
                 (
                     policy.payment_status != constant.PolicyPaymentStatus.paid ||
-                    !policy.payment_id || !payment || !policy.DeviceInsurance.contract_product_id ||
-                    !policy.payment_hash
+                    !policy.payment_id || !payment || !payment.network ||
+                    !policy.DeviceInsurance.contract_product_id || !policy.payment_hash
                 )
             ){
                 policy.DeviceInsurance.contract_product_id = productId;

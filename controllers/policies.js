@@ -575,7 +575,7 @@ exports.get = async (req, res, next) => {
                 constant.ProductTypes.crypto_exchange
             ],
             filter,
-            true
+            true, true
         );
 
         let policy;
@@ -590,6 +590,14 @@ exports.get = async (req, res, next) => {
             } else if (policy.product_type == constant.ProductTypes.device_insurance) {
                 policy.logo = `${config.api_url}images/p4l.png`;
             }
+            if(policy.payment && Array.isArray(policy.payment) && policy.payment.length){
+                policy.payment = policy.payment[0]
+                policy.payment.transaction_link = utils.getTransactionLink(policy.payment, policy);
+                policy.payment.network_name = utils.getNetworkDetails(policy.payment, policy);
+            }else{
+                policy.payment = null;
+            }
+
             policies[key] = policy;
         }
 

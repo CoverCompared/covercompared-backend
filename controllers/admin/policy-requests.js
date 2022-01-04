@@ -8,7 +8,9 @@ const Policies = mongoose.model('Policies');
 exports.index = async (req, res, next) => {
     try {
 
+
         let range = JSON.parse(_.get(req.query, "range", "[0, 10]"));
+        const sort = JSON.parse(_.get(req.query, "sort", '["_id", "desc"]'));
         const skip = parseInt(range[0]);
         const limit = parseInt(range[1]) - skip;
 
@@ -23,12 +25,17 @@ exports.index = async (req, res, next) => {
             if (search.country) {
                 findObj["$and"].push({ country: search.country });
             }
+            if (search.q) {
+                findObj["$or"] = [
+                    { "product_type": { $regex: search.q, $options: "i" } }
+                ];
+            }
         }
 
 
         if (findObj["$and"] && !findObj["$and"].length) { delete findObj["$and"]; }
 
-        let total = await PolicyRequests.aggregate([{$match: findObj}, {$count: 'total'}]);
+        let total = await PolicyRequests.aggregate([{ $match: findObj }, { $count: 'total' }]);
         let policy_request = await PolicyRequests.find(findObj)
             .select(["product_type", "country", "email", "createdAt"])
             .populate({
@@ -39,13 +46,17 @@ exports.index = async (req, res, next) => {
             .limit(limit)
             .skip(skip).lean();
 
+        res.send(utils.apiResponseData(true, {
+            range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
+            data: policy_request
+        }))
 
         let data = {
             range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
             data: policy_request
         }
 
-        return res.status(200).send(utils.apiResponseData(true, data));
+        // return res.status(200).send(utils.apiResponseData(true, data));
     } catch (error) {
         console.log("ERR", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));

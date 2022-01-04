@@ -206,7 +206,7 @@ exports.addWalletAddress = async (req, res, next) => {
         }
 
         // Find Email Exist
-        let walletAddress = await WalletAddresses.findOne({ wallet_address: req.body.wallet_address });
+        let walletAddress = await WalletAddresses.findOne({ wallet_address: utils.getWalletAddressMatch(req.body.wallet_address) });
 
         if(walletAddress && walletAddress.user_id.toString() != req.user._id.toString()){
             return res.status(200).send(utils.apiResponseMessage(false, "Wallet Address is already attached with another user."));

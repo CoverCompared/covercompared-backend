@@ -107,7 +107,7 @@ UsersSchema.methods = {
     },
     getWalletAddress : async function(wallet_address){
         const WalletAddresses = mongoose.model("WalletAddresses");
-        let wallet = await WalletAddresses.findOne({ user_id : utils.getObjectID(this._id), wallet_address });
+        let wallet = await WalletAddresses.findOne({ user_id : utils.getObjectID(this._id), wallet_address: utils.getWalletAddressMatch(wallet_address) });
         return wallet;
     }
 }
@@ -120,7 +120,7 @@ UsersSchema.statics = {
         const Users = mongoose.model("Users");
 
         // Find Wallet Address
-        let wallet = await WalletAddresses.findOne({ wallet_address });
+        let wallet = await WalletAddresses.findOne({ wallet_address : utils.getWalletAddressMatch(wallet_address) });
         let user;
         if (wallet) {
             user = await Users.findOne({ _id: ObjectId(wallet.user_id) });

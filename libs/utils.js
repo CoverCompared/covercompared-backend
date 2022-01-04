@@ -3,7 +3,8 @@ const NodeCache = require("node-cache");
 const config = require("../config");
 const myCache = new NodeCache();
 const moment = require('moment');
-const ObjectID = require("mongodb").ObjectID
+const ObjectID = require("mongodb").ObjectID;
+const constant = require("./constants");
 
 let utils = {};
 
@@ -228,6 +229,63 @@ utils.getObjectID = (_id) => {
 
 utils.getBigNumber = (value) => {
     return BigInt(value * (10 ** 18));
+}
+
+utils.getWalletAddressMatch = (wallet_address) => {
+    return { $regex: `^${wallet_address}$`, $options: "i" }
+}
+
+utils.getTransactionLink = (payment, policy) => {
+    let transaction_link = "";
+    if(payment && payment.payment_hash){
+        if(payment.network){
+            if(payment.network == 1){
+                transaction_link = `https://etherscan.io/tx/${payment.payment_hash}`;
+            }else if(payment.network == 4){
+                transaction_link = `https://rinkeby.etherscan.io/tx/${payment.payment_hash}`;
+            }else if(payment.network == 42){
+                transaction_link = `https://kovan.etherscan.io/tx/${payment.payment_hash}`;
+            }
+        }
+        
+        if(transaction_link == "" && policy && policy.product_type){
+            if(config.is_mainnet){
+                return transaction_link = `https://etherscan.io/tx/${payment.payment_hash}`;
+            }else{
+                if([constant.ProductTypes.mso_policy, constant.ProductTypes.device_insurance].includes(policy.product_type)){
+                    transaction_link = `https://rinkeby.etherscan.io/tx/${payment.payment_hash}`;
+                }
+            }
+        }
+    }
+
+    return transaction_link
+}
+utils.getNetworkDetails = (payment, policy) => {
+    let network = "";
+    if(payment && payment.payment_hash){
+        if(payment.network){
+            if(payment.network == 1){
+                network = `Mainnet`;
+            }else if(payment.network == 4){
+                network = `Rinkeby`;
+            }else if(payment.network == 42){
+                network = `Kovan`;
+            }
+        }
+        
+        if(network == "" && policy && policy.product_type){
+            if(config.is_mainnet){
+                return network = `Mainnet`;
+            }else{
+                if([constant.ProductTypes.mso_policy, constant.ProductTypes.device_insurance].includes(policy.product_type)){
+                    network = `Rinkeby`;
+                }
+            }
+        }
+    }
+
+    return network
 }
 
 module.exports = utils;

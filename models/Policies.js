@@ -146,10 +146,11 @@ PoliciesSchema.statics = {
      * @param {"mso_policy"|"device_insurance"|"smart_contract"|"crypto_exchange"|Array} product_type 
      * @param {Object} find
      */
-    getPolicies: async function (product_type, find = {}, review = false) {
+    getPolicies: async function (product_type, find = {}, review = false, payment = false) {
 
         const Policies = mongoose.model("Policies");
         const Reviews = mongoose.model('Reviews');
+        const Payments = mongoose.model('Payments');
 
         product_type = typeof product_type == "string" ? [product_type] : product_type;
 
@@ -180,9 +181,24 @@ PoliciesSchema.statics = {
             project["review.updatedAt"] = 0
         }
 
+        if(payment){
+            aggregates.push({
+                $lookup:
+                  {
+                    from: Payments.collection.collectionName,
+                    localField: "payment_id",
+                    foreignField: "_id",
+                    as: "payment"
+                  }
+             });
+            project["payment._id"] = 0
+            project["payment.user_id"] = 0
+            project["payment.createdAt"] = 0
+            project["payment.updatedAt"] = 0
+        }
+
         aggregates.push({ $sort: { _id: -1 } });
         aggregates.push({ $project: project });
-        console.log(" aggregates ", JSON.stringify(aggregates));
 
         let policies = await Policies.aggregate(aggregates);
 

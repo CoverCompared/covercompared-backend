@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const Reviews = mongoose.model('Reviews');
 const Policies = mongoose.model('Policies');
 const Users = mongoose.model('Users');
+const TermsAndConditions = mongoose.model('TermsAndConditions');
 
 
 exports.products = async (req, res, next) => {
@@ -433,7 +434,8 @@ exports.coverDetails = async (req, res, next) => {
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+        pdf: null,
     }
 
     let findObj = {};
@@ -495,6 +497,12 @@ exports.coverDetails = async (req, res, next) => {
     }
 
     details.reviews = reviews;
+
+    let tc = await TermsAndConditions.findOne({ unique_ids: req.params.unique_id })
+    if(tc){
+        details.terms_and_conditions = tc.terms_and_conditions
+        details.pdf = tc.pdf;
+    }
 
     return res.send(utils.apiResponseData(true, details));
 }
