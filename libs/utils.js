@@ -109,6 +109,17 @@ utils.getNexusQuote = async (contractAddress, coverAmount, currency, period, res
     return nexusQuote;
 }
 
+utils.getInsureAceQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }, responseCallback) => {
+    let cacheKey = `${product_id}.${address}.${amount}.${period}.${supported_chain}.${currency}.${owner_id}.InsureAceQuote`;
+    insureAceQuote = myCache.get(cacheKey);
+    if (insureAceQuote == undefined) {
+        insureAceQuote = await responseCallback({ product_id, address, amount, period, supported_chain, currency, owner_id });
+        
+        if(insureAceQuote && insureAceQuote.status) myCache.set(cacheKey, insureAceQuote, config.cache_time)
+    }
+    return insureAceQuote;
+}
+
 utils.getSmartContractLogo = async (unique_id, logo_details = undefined) => {
     logo = myCache.get(`${unique_id}Logo`);
     if (logo == undefined && logo_details != undefined) {

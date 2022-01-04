@@ -268,7 +268,7 @@ exports.getCartItems = async (req, res, next) => {
     }
 }
 
-exports.quoteNexus = async (req, res, next) => {
+exports.coverQuote = async (req, res, next) => {
     let rules = {
         'company': ['required', `in:${companies.getCompanyCodes().join(",")}`],
         'address': ["required"],
@@ -298,7 +298,52 @@ exports.quoteNexus = async (req, res, next) => {
                         }
                     });
 
-                }else {
+                } else if (req.body.company == config_companies.insurace.code) {
+                    let rules = {
+                        'currency': ["required"],
+                        'owner_id': ["required"],
+                        'supported_chain': ["nullable"],
+                        'coverAmount': ["required", "integer"],
+                        'period': ["required", `min:${cover.duration_days_min}`, `max:${cover.duration_days_max}`],
+                        'product_id': ["required"]
+                    };
+
+                    let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
+                        if (!matched) {
+                            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
+                        } else {
+                            let quote = await companies.companies.insurace.getQuote(
+                                {
+                                    product_id: cover.product_id,
+                                    address: cover.address,
+                                    amount: req.body.coverAmount,
+                                    period: req.body.period,
+                                    currency: req.body.currency,
+                                    owner_id: req.body.owner_id,
+                                    supported_chain: req.body.supported_chain ? req.body.supported_chain : "Ethereum"
+                                }, false)
+                            res.send(utils.apiResponseData(quote.status, quote.data))
+                        }
+                    });
+                } else if (req.body.company == config_companies.nsure.code) {
+                    let rules = {
+                        'coverAmount': ["required", "integer"],
+                        'period': ["required", `min:${cover.duration_days_min}`, `max:${cover.duration_days_max}`],
+                    };
+
+                    let v = new niv.Validator(req.body, rules); v.check().then(async (matched) => {
+                        if (!matched) {
+                            res.status(422).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors))
+                        } else {
+                            let quote = await companies.companies.nsure.getQuote(cover.uid,
+                                utils.convertToCurrency(req.body.coverAmount, 18),
+                                req.body.period)
+                            res.send(utils.apiResponseData(quote.status, quote.data))
+                        }
+                    });
+
+
+                } else {
                     res.send(utils.apiResponseMessage(false, 'something-went-wrong'))
                 }
             } else {

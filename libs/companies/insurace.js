@@ -155,13 +155,8 @@ exports.coverList = async () => {
     return list
 }
 
-/**
- * 
- * @param {*} param0 
- * @returns 
- */
-exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }) => {
 
+exports.getQuoteWithPromise = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }) => {
     let limits = await this.currencyList();
     // console.log("limits", limits);
 
@@ -204,6 +199,63 @@ exports.getQuote = async ({ product_id, address, amount, period, supported_chain
     }
 
     return response
+}
+
+/**
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }, fromCache = true) => {
+
+    if(fromCache){
+        return await utils.getInsureAceQuote({ product_id, address, amount, period, supported_chain, currency, owner_id }, this.getQuoteWithPromise);
+    }
+
+    return await this.getQuoteWithPromise({ product_id, address, amount, period, supported_chain, currency, owner_id });
+
+    // let limits = await this.currencyList();
+    // // console.log("limits", limits);
+
+    // if (!(limits[supported_chain] && Array.isArray(limits[supported_chain]) && limits[supported_chain].length && limits[supported_chain].find(v => v.name == currency))) {
+    //     console.log("ERROR REPORT");
+    //     console.log("// Send Error Report - Get Quote has issue")
+    //     return { status: false, data: { message: "Currency not found." } };
+    // }
+    // let limitCurrency = limits[supported_chain].find(v => v.name == currency);
+    // let coverCurrency = limitCurrency.address;
+    // let coverAmounts = utils.convertToCurrency(amount, limitCurrency.decimals)
+
+    // let data = {
+    //     chain: supported_chain,
+    //     coverCurrency: coverCurrency,
+    //     productIds: [product_id],
+    //     coverDays: [period],
+    //     coverAmounts: [coverAmounts.toString()],
+    //     "owner": owner_id ? owner_id : this.company.owner_id,
+    //     "referralCode": ""
+    // }
+
+    // var config = {
+    //     url: utils.addQueryParams(this.company.apis.cover_quote.url, { code: encodeURIComponent(this.company.access_code) }),
+    //     method: "post",
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     data: data
+    // };
+
+    // let response = {};
+    // try {
+    //     response = await axios(config)
+    //     response = _.get(response, "data", {})
+    //     response = { status: true, data: response };
+    // } catch (error) {
+    //     console.log("// Send Error Report - Get quote response with Eror")
+    //     response = { status: false, data: error };
+    // }
+
+    // return response
 }
 
 exports.confirmPremium = async ({ chain, params }) => {
