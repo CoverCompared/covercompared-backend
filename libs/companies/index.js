@@ -103,9 +103,9 @@ exports.coverList = async (options = {}) => {
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
                     if (
-                        _.get(object.currency_limit, `${key}.min`, false) !== false && 
+                        _.get(object.currency_limit, `${key}.min`, false) !== false &&
                         (
-                            object.currency_limit[key].min >= options.amount_min || 
+                            object.currency_limit[key].min >= options.amount_min ||
                             (object.currency_limit[key].max == undefined || (object.currency_limit[key].max >= options.amount_min))
                         )
                     ) {
@@ -129,7 +129,7 @@ exports.coverList = async (options = {}) => {
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
                     if (
-                        _.get(object.currency_limit, `${key}.min`, false) !== false && (options.amount_max >= object.currency_limit[key].min) 
+                        _.get(object.currency_limit, `${key}.min`, false) !== false && (options.amount_max >= object.currency_limit[key].min)
                         // && (object.currency_limit[key].max == undefined || (object.currency_limit[key].max <= options.amount_max))
                     ) {
                         currency.push(key);
@@ -398,5 +398,19 @@ exports.getCompanyCodes = () => {
 
 exports.getCompanyCodeOfUniqueId = (unique_id) => {
     unique_id = unique_id.split(".");
-    return unique_id[unique_id.length-1];
+    return unique_id[unique_id.length - 1];
+}
+
+exports.decodeUniqueId = (unique_id) => {
+    unique_id = unique_id.split(".");
+    try {
+        return {
+            product_id: _.get(unique_id, 0, ""),
+            address: _.get(unique_id, unique_id.length - 2, ""),
+            company_code: _.get(unique_id, unique_id.length - 1, "")
+        }
+    } catch (error) {
+        /**
+         * TODO: Send error report error while decode unique_id */
+    }
 }

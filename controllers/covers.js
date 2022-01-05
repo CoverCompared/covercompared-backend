@@ -414,6 +414,7 @@ exports.insuracAceConfirmPremium = async (req, res, next) => {
 
 exports.coverDetails = async (req, res, next) => {
 
+    
     let details = {
         reviews: [],
         description: ``,
@@ -431,10 +432,10 @@ exports.coverDetails = async (req, res, next) => {
         details.description = "Secure your crypto-assets from any possible exchange hacks with our various crypto-exchange covers.  "
     }
 
-    let company_code = companies.getCompanyCodeOfUniqueId(req.params.unique_id);
-    console.log("Company Code", company_code);
-    if(company_code && Object.keys(config_companies).includes(company_code)){
-        if(company_code == "nexus"){
+    let unique_id = companies.decodeUniqueId(req.params.unique_id);
+    console.log("unique_id ", unique_id);
+    if(unique_id && unique_id.company_code && Object.keys(config_companies).includes(unique_id.company_code)){
+        if(unique_id.company_code == "nexus"){
             details.additional_details = "Nexus Mutual is a decentralized platform built on blockchain technology that offers insurance products for Ethereum users. ";
 
             if(req.params.type == "protocol"){
@@ -448,7 +449,7 @@ exports.coverDetails = async (req, res, next) => {
                 details.pdf = "https://nexusmutual.io/pages/CustodyCoverWordingv1.0.pdf";
             }
 
-        }else if(company_code == "insurace"){
+        }else if(unique_id.company_code == "insurace"){
 
             if(req.params.type == "protocol"){
                 details.pdf = "https://files.insurace.io/public/en/cover/SmartContractCover_v2.0.pdf";
@@ -516,5 +517,17 @@ exports.coverDetails = async (req, res, next) => {
 
     details.reviews = reviews;
 
-    return res.send(utils.apiResponseData(true, details));
+
+    // Get Capacity Details
+    let cover = {};
+    if(unique_id && unique_id.company_code && unique_id.address){
+        try {
+            console.log(unique_id.company_code, unique_id.address, _.get(unique_id, "product_id", false));
+            cover = await companies.coverCapacity(unique_id.company_code, unique_id.address, _.get(unique_id, "product_id", false));
+        } catch (error) {
+            
+        }
+    }
+
+    return res.send(utils.apiResponseData(true, {...details, cover}));
 }

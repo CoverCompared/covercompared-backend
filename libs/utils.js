@@ -254,6 +254,10 @@ utils.getTransactionLink = (payment, policy) => {
             }else{
                 if([constant.ProductTypes.mso_policy, constant.ProductTypes.device_insurance].includes(policy.product_type)){
                     transaction_link = `https://rinkeby.etherscan.io/tx/${payment.payment_hash}`;
+                }else if(policy.SmartContract.company_code == "nexus"){
+                    transaction_link = `https://kovan.etherscan.io/tx/${payment.payment_hash}`;
+                }else if(policy.SmartContract.company_code == "insurace"){
+                    transaction_link = `https://rinkeby.etherscan.io/tx/${payment.payment_hash}`;
                 }
             }
         }
@@ -280,6 +284,10 @@ utils.getNetworkDetails = (payment, policy) => {
                 return network = `Mainnet`;
             }else{
                 if([constant.ProductTypes.mso_policy, constant.ProductTypes.device_insurance].includes(policy.product_type)){
+                    network = `Rinkeby`;
+                }else if(policy.SmartContract.company_code == "nexus"){
+                    network = `Kovan`;
+                }else if(policy.SmartContract.company_code == "insurace"){
                     network = `Rinkeby`;
                 }
             }

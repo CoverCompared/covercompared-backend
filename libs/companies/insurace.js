@@ -27,6 +27,7 @@ exports.convertRiskType = (details) => {
     }
     return _.get(details, "risk_type", "");
 }
+
 exports.convertChainType = (details) => {
 
     let overrideValues = { 

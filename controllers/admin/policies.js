@@ -215,8 +215,11 @@ exports.show = async (req, res, next) => {
             user.first_name = policy.details ? _.get(policy, "details.first_name", "") : _.get(user, "first_name", "") ;
             user.last_name = policy.details ? _.get(policy, "details.last_name", "") : _.get(user, "last_name", "") ;
         }
-        payment.transaction_link = utils.getTransactionLink(payment, policy);
-        payment.network_name = utils.getNetworkDetails(payment, policy);
+        
+        if(payment){
+            payment.transaction_link = utils.getTransactionLink(payment, policy);
+            payment.network_name = utils.getNetworkDetails(payment, policy);
+        }
         return res.status(200).send(utils.apiResponseData(true, { ...policy, reviews, user, payment }));
     } catch (error) {
         console.log("ERR", error);
