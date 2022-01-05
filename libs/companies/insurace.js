@@ -15,6 +15,7 @@ exports.convertRiskType = (details) => {
 
     let overrideValues = {
         "Smart Contract Vulnerability": "protocol",
+        "Stablecoin De-Peg Risk": "token",
         "Custodian Risk": "custodian",
         "IDO Event Risk": "Decentralized Exchanges",
     }

@@ -219,12 +219,12 @@ PoliciesSchema.statics = {
                 } else if (policy.product_type == constant.ProductTypes.crypto_exchange) {
                     policy.details = policy.CryptoExchange;
                 }
-
+                
                 delete policy.MSOPolicy;
                 delete policy.DeviceInsurance;
                 delete policy.SmartContract;
                 delete policy.CryptoExchange;
-
+                if(policy.details && policy.details.signature) delete policy.details.signature
                 return policy;
             })
         }

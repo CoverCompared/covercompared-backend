@@ -395,3 +395,8 @@ exports.getCoverImage = async (unique_id) => {
 exports.getCompanyCodes = () => {
     return _.map(_.filter(Object.values(this.companies), "company.status"), "code");
 }
+
+exports.getCompanyCodeOfUniqueId = (unique_id) => {
+    unique_id = unique_id.split(".");
+    return unique_id[unique_id.length-1];
+}

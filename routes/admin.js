@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const loadFormDataMiddleware = require('./../middlewares/loadFormData')
 const blogController = require('./../controllers/admin/blogs')
-const TermsAndConditionsController = require('./../controllers/admin/terms-and-conditions')
 const policyRequestController = require('./../controllers/admin/policy-requests')
 const policiesController = require('./../controllers/admin/policies')
 const contactController = require('./../controllers/admin/contact-us')
@@ -27,9 +26,6 @@ authRoutes.post('/blogs/', loadFormDataMiddleware, blogController.validate("stor
 authRoutes.get('/blogs/:blogId', blogController.show);
 authRoutes.delete('/blogs/:blogId', blogController.destroy);
 authRoutes.put('/blogs/:blogId', loadFormDataMiddleware, blogController.validate("update"), blogController.update);
-
-// Terms & Conditions Module
-authRoutes.post('/terms-and-conditions/', TermsAndConditionsController.store);
 
 // policy-request routes 
 authRoutes.get('/policy-requests', policyRequestController.index);

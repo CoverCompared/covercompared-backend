@@ -261,6 +261,7 @@ utils.getTransactionLink = (payment, policy) => {
 
     return transaction_link
 }
+
 utils.getNetworkDetails = (payment, policy) => {
     let network = "";
     if(payment && payment.payment_hash){

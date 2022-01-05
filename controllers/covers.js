@@ -10,7 +10,6 @@ const mongoose = require('mongoose');
 const Reviews = mongoose.model('Reviews');
 const Policies = mongoose.model('Policies');
 const Users = mongoose.model('Users');
-const TermsAndConditions = mongoose.model('TermsAndConditions');
 
 
 exports.products = async (req, res, next) => {
@@ -417,33 +416,52 @@ exports.coverDetails = async (req, res, next) => {
 
     let details = {
         reviews: [],
-        description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-        additional_details: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-        terms_and_conditions: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+        description: ``,
+        additional_details: ``,
+        terms_and_conditions: ``,
         pdf: null,
     }
 
     let findObj = {};
     if (constant.SmartContractTypes.includes(req.params.type)) {
         findObj["policy.product_type"] = constant.ProductTypes.smart_contract;
+        details.description = "Protect your assets in case of a crack in your smart contract code. Our smart contract covers safeguards your crypto assets against any smart contract failures.";
     } else if (constant.CryptoExchangeTypes.includes(req.params.type)) {
         findObj["policy.product_type"] = constant.ProductTypes.crypto_exchange;
+        details.description = "Secure your crypto-assets from any possible exchange hacks with our various crypto-exchange covers.  "
     }
+
+    let company_code = companies.getCompanyCodeOfUniqueId(req.params.unique_id);
+    console.log("Company Code", company_code);
+    if(company_code && Object.keys(config_companies).includes(company_code)){
+        if(company_code == "nexus"){
+            details.additional_details = "Nexus Mutual is a decentralized platform built on blockchain technology that offers insurance products for Ethereum users. ";
+
+            if(req.params.type == "protocol"){
+                details.terms_and_conditions = "<p>Events covered:</p><ul><li>contract bugs</li><li>economic attacks, including oracle failures</li><li>governance attacks</li></ul><p><br></p><p>Claiming:</p><ul><li>You must provide proof of the incurred loss at claim time.</li><li>You should wait 72 hours after the event, so assessors have all details to make a decision.</li><li>You can claim up to 35 days after the cover period expires, given your cover was active when the incident happened.</li></ul><p>This cover is not a contract of insurance. Cover is provided on a discretionary basis with Nexus Mutual members having the final say on which claims are paid.</p>";
+                details.pdf = "https://nexusmutual.io/pages/ProtocolCoverv1.0.pdf";
+            }else if(req.params.type == "token"){
+                details.terms_and_conditions = "<p>Covered events:</p><ul><li>the yield bearing token de-pegs in value by more than 10%</li></ul><p><br></p><p>Claiming:</p><ul><li>You must wait for the mutual members to confirm and asses the incident.</li><li>You will then be able to send in your covered tokens in return for 90% of their value before the incident, up to the cover amount.</li><li>You can claim up to 14 days after the cover period expires, given your cover was active when the incident happened.</li></ul><p>This cover is not a contract of insurance. Cover is provided on a discretionary basis with Nexus Mutual members having the final say on which claims are paid.</p>";
+                details.pdf = "https://nexusmutual.io/pages/YieldTokenCoverv1.0.pdf";
+            }else if(req.params.type == "custodian"){
+                details.terms_and_conditions = "<p>Covered events:</p><ul><li>the custodian gets hacked and you lose more than 10% of your funds</li><li>withdrawals from the custodian are halted for more than 90 days.</li></ul><p>Claiming:</p><ul><li>You must provide proof of the incurred loss at claim time.</li><li>You should wait 72 hours after the event, so assessors have all details to make a decision.</li><li>You can claim up to 35 days after the cover period expires, given your cover was active when the incident happened.</li></ul><p>You declare that you have funds deposited with the custodian provider you want to buy cover for.</p><p>You declare that you are not the custodian, a representative of the custodian or a related entity or individual to the custodian.</p><p><br></p><p>Custodial services only, including Crypto Earn, Crypto Credit and Exchange. All non-custodial services such as DeFi Wallet, DeFi Earn and DeFi Swap are excluded.</p><p>This cover is not a contract of insurance. Cover is provided on a discretionary basis with Nexus Mutual members having the final say on which claims are paid.</p>";
+                details.pdf = "https://nexusmutual.io/pages/CustodyCoverWordingv1.0.pdf";
+            }
+
+        }else if(company_code == "insurace"){
+
+            if(req.params.type == "protocol"){
+                details.pdf = "https://files.insurace.io/public/en/cover/SmartContractCover_v2.0.pdf";
+            }else if(req.params.type == "token"){
+                details.pdf = "https://files.insurace.io/public/en/cover/USDTDepegCover.pdf";
+            }else if(req.params.type == "custodian"){
+                details.pdf = "https://files.insurace.io/public/en/cover/CustodianRiskCover.pdf";
+            }
+
+            details.additional_details = "InsurAce.io is a decentralized multi-chain insurance protocol that offers portfolio-based insurance products to primarily insure digital assets.";
+        }
+    }
+
     findObj["$or"] = [
         { "policy.SmartContract.unique_id": req.params.unique_id },
         { "policy.CryptoExchange.unique_id": req.params.unique_id }
@@ -497,12 +515,6 @@ exports.coverDetails = async (req, res, next) => {
     }
 
     details.reviews = reviews;
-
-    let tc = await TermsAndConditions.findOne({ unique_ids: req.params.unique_id })
-    if(tc){
-        details.terms_and_conditions = tc.terms_and_conditions
-        details.pdf = tc.pdf;
-    }
 
     return res.send(utils.apiResponseData(true, details));
 }
