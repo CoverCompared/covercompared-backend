@@ -254,9 +254,17 @@ utils.getTransactionLink = (payment, policy) => {
             }else{
                 if([constant.ProductTypes.mso_policy, constant.ProductTypes.device_insurance].includes(policy.product_type)){
                     transaction_link = `https://rinkeby.etherscan.io/tx/${payment.payment_hash}`;
-                }else if(policy.SmartContract.company_code == "nexus"){
+                }else if(
+                    (policy.details && _.get(policy, "details.company_code", false) == "nexus") ||
+                    (policy.SmartContract && _.get(policy, "SmartContract.company_code", false) == "nexus") ||
+                    (policy.CryptoExchange && _.get(policy, "CryptoExchange.company_code", false) == "nexus")
+                ){
                     transaction_link = `https://kovan.etherscan.io/tx/${payment.payment_hash}`;
-                }else if(policy.SmartContract.company_code == "insurace"){
+                }else if(
+                    (policy.details && _.get(policy, "details.company_code", false) == "insurace") ||
+                    (policy.SmartContract && _.get(policy, "SmartContract.company_code", false) == "insurace") ||
+                    (policy.CryptoExchange && _.get(policy, "CryptoExchange.company_code", false) == "insurace")
+                ){
                     transaction_link = `https://rinkeby.etherscan.io/tx/${payment.payment_hash}`;
                 }
             }
@@ -285,9 +293,18 @@ utils.getNetworkDetails = (payment, policy) => {
             }else{
                 if([constant.ProductTypes.mso_policy, constant.ProductTypes.device_insurance].includes(policy.product_type)){
                     network = `Rinkeby`;
-                }else if(policy.SmartContract.company_code == "nexus"){
+                }else if(
+                    (policy.details && _.get(policy, "details.company_code", false) == "nexus") ||
+                    (policy.SmartContract && _.get(policy, "SmartContract.company_code", false) == "nexus") ||
+                    (policy.CryptoExchange && _.get(policy, "CryptoExchange.company_code", false) == "nexus")
+                ){
                     network = `Kovan`;
-                }else if(policy.SmartContract.company_code == "insurace"){
+                }else if(
+                    (policy.details && _.get(policy, "details.company_code", false) == "insurace") ||
+                    (policy.SmartContract && _.get(policy, "SmartContract.company_code", false) == "insurace") ||
+                    (policy.CryptoExchange && _.get(policy, "CryptoExchange.company_code", false) == "insurace")
+                ){
+
                     network = `Rinkeby`;
                 }
             }
