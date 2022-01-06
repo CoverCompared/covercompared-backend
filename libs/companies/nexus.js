@@ -151,7 +151,9 @@ exports.getImageUrl = (logo_endpoint) => {
     if (logo_endpoint) {
         
         let replaceValues = {
-            "alpha-homora.jpg": "alpha-homora.svg"
+            "alpha-homora.jpg": "alpha-homora.svg",
+            "notional.png": "notional-finance.svg",
+            "pooltogether.png": "pooltogether.svg"
         }
         logo_endpoint = replaceValues[logo_endpoint] ? replaceValues[logo_endpoint] : logo_endpoint;
         return `${this.company.logo_url}${logo_endpoint}`
