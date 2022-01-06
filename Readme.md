@@ -17,3 +17,8 @@
 # Cover type details
     custodian - CryptoExchange
     protocol - SmartContract
+
+
+# Enable Mail sending functionality in local environment
+    .env
+    SEND_MAIL=1

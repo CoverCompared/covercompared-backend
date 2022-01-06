@@ -5,6 +5,7 @@ const blogController = require('./../controllers/admin/blogs')
 const policyRequestController = require('./../controllers/admin/policy-requests')
 const policiesController = require('./../controllers/admin/policies')
 const contactController = require('./../controllers/admin/contact-us')
+const subscriptionController = require('./../controllers/admin/subscription')
 const AdminAuthController = require("./../controllers/admin/auth")
 const AdminController = require("./../controllers/admin/admin");
 
@@ -39,6 +40,10 @@ authRoutes.get('/policies/:id', policiesController.show);
 // contact-us
 authRoutes.get('/contact-us/table', contactController.table);
 authRoutes.get('/contact-us/show/:id',contactController.show);
+
+// Subscription List
+authRoutes.get('/subscription/table', subscriptionController.table);
+
 
 router.use("/", adminVerifyPassword, authRoutes);
 

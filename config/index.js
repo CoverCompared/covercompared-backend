@@ -25,6 +25,7 @@ let config = {
         telegram: "https://t.me/PolkaCover",
         gitbook: "https://polkacover.gitbook.io"
     },
+    send_mail: false
 }
 
 const INFURA_KEY = "92a35c94033b48c6a8d248ac76e7650e";
@@ -37,11 +38,19 @@ config.NETWORK_URLS = {
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.api_url = "https://staging-covercompared.polkacover.com/api/";
     config.web_url = "https://staging-covercompared.polkacover.com/";
+    config.send_mail = true;
 } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
     config.api_url = "https://covercompared.polkacover.com/api/";
     config.web_url = "https://covercompared.polkacover.com/";
     config.is_mainnet = true;
+    config.send_mail = true;
 }
+
+if(process.env.SEND_MAIL && process.env.SEND_MAIL == 1){
+    config.send_mail = true;
+}
+
+console.log("Send Mail : ", config.send_mail);
 
 config.insurace = {
     base_url: "https://insurace-sl-microservice.azurewebsites.net/",

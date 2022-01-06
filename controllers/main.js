@@ -104,9 +104,9 @@ exports.landingAppSubscribe = async (req, res, next) => {
         return;
     }
 
-    let subscription = await Subscriptions.findOne({ email: req.body.email });
+    let subscription = await Subscriptions.findOne({ email: { $regex: `^${req.body.email}$`, $options: "i" } });
     let isNew = false;
-    
+
     if (subscription) {
 
         if (subscription.status != Subscriptions.STATUS.SUBSCRIBED) {
@@ -136,13 +136,13 @@ exports.landingAppSubscribe = async (req, res, next) => {
     }
 
     // Send Mail
-    let message ;
+    let message;
     if (isNew) {
         message = "Subscription added successfully."
         await mailer.landingAppSubscription(
             config.subscribe_mail,
             { email: req.body.email });
-        
+
         await mailer.subscribe(
             [{ name: subscription.name, address: subscription.email }],
             {
@@ -151,7 +151,7 @@ exports.landingAppSubscribe = async (req, res, next) => {
             },
             []
         )
-    }else{
+    } else {
         message = "User already subscribed."
     }
 
@@ -188,7 +188,7 @@ exports.contactUs = async (req, res) => {
         message: req.body.message
     });
 
-    if(contactRequest){
+    if (contactRequest) {
         return res.send(utils.apiResponseMessage(false, "Your Contact request already submitted."));
     }
 

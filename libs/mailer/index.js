@@ -5,10 +5,16 @@ const config = require("../../config");
 const utils = require("../utils");
 
 let mailer = {};
-if (process.env.MAIL_SERVICE == "aws") {
-    mailer.sendMail = (to, subject, html, attachments = []) => {
-        return new Promise(async (resolve) => {
+mailer.sendMail = (to, subject, html, attachments = []) => {
+    return new Promise(async (resolve) => {
 
+        /**If send mail is disable then it will skip the mail */
+        if (!config.send_mail) {
+            resolve(true);
+            return;
+        }
+
+        if (process.env.MAIL_SERVICE == "aws") {
             // Creating Transport
             // const transport = nodemailer.createTransport({
             //     service: "gmail",
@@ -56,57 +62,25 @@ if (process.env.MAIL_SERVICE == "aws") {
                 transporter.sendMail(options, (mErr, mRes) => {
                     console.log(mErr, mRes);
                     if (mErr) {
+                        /**
+                         * TODO: Send Error Report 
+                         * Type: critical
+                         * Message : Issue on sending mail
+                         * to, AWS_ACCESS_KEY_ID, mErr.toString(), mErr
+                         */
                         resolve(false);
                     } else { resolve(true); }
                 });
             } catch (error) {
+                /**
+                 * TODO: Send Error Report 
+                 * Type: critical
+                 * Message : Issue on sending mail
+                 * AWS_ACCESS_KEY_ID, error.toString(), error
+                 */
                 console.log(error);
             }
-
-        })
-        // return new Promise((resolve) => {
-
-        //     // configure AWS SDK
-        //     process.env.AWS_ACCESS_KEY_ID = process.env.MAIL_USERNAME;
-        //     process.env.AWS_SECRET_ACCESS_KEY = process.env.MAIL_PASSWORD;
-        //     const ses = new aws.SES({
-        //         apiVersion: "2010-12-01",
-        //         region: "eu-west-1"
-        //     });
-        //     console.log("ses", ses);
-        //     // create Nodemailer SES transporter
-        //     let transporter = nodemailer.createTransport({
-        //         SES: { ses, aws },
-        //     });
-
-        //     // Mail Options
-        //     const options = {
-        //         from: `"Cover Compared" no-replay@polkacover.com`,
-        //         to,
-        //         subject,
-        //         html
-        //     }
-
-        //     try {
-        //         // Sending Mail
-        //         transporter.sendMail(options, (mErr, mRes) => {
-        //             console.log("ERROR", mErr, mRes);
-        //             if (mErr)
-        //                 resolve(false);
-        //             else
-        //                 resolve(true);
-        //         });
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-
-        // })
-    }
-} else {
-    mailer.sendMail = (to, subject, html, attachments) => {
-
-        return new Promise((resolve) => {
-
+        } else {
             // Creating Transport
             // const transport = nodemailer.createTransport({
             //     service: "gmail",
@@ -139,14 +113,23 @@ if (process.env.MAIL_SERVICE == "aws") {
             // Sending Mail
             transport.sendMail(options, (mErr, mRes) => {
                 console.log(mErr);
-                if (mErr)
+                if (mErr) {
+                    /**
+                     * TODO: Send Error Report 
+                     * Type: critical
+                     * Message : Issue on sending mail
+                     * to, AWS_ACCESS_KEY_ID, mErr.toString(), mErr
+                     */
                     resolve(false);
-                else
+                }
+                else {
                     resolve(true);
+                }
             });
+        }
 
-        })
-    }
+    })
+
 }
 
 /**
@@ -194,7 +177,7 @@ mailer.landingAppSubscription = async (to, data, attachments = []) => {
  * @param {string} data.unsubscribe_token 
  * @param {Array} attachments 
  */
- mailer.subscribe = async (to, data, attachments) => {
+mailer.subscribe = async (to, data, attachments) => {
 
     data = { ...data, config: config }
     const html = await ejs.renderFile(__dirname + "/templates/subscribe.ejs", data);

@@ -3281,7 +3281,7 @@
 									"query": [
 										{
 											"key": "status",
-											"value": "active",
+											"value": "pending",
 											"disabled": true
 										}
 									]
@@ -3681,7 +3681,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"wallet_address\":\"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+							"raw": "{\n    \"wallet_address\":\"0xc789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4830,73 +4830,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}cover-details/protocol/null.0x11111254369792b2Ca5d084aB5eEA397cA8fa48B.nexus",
+					"raw": "{{host}}cover-details/protocol/null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus",
 					"host": [
 						"{{host}}cover-details"
 					],
 					"path": [
 						"protocol",
-						"null.0x11111254369792b2Ca5d084aB5eEA397cA8fa48B.nexus"
+						"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus"
 					]
 				}
 			},
 			"response": [
-				{
-					"name": "Cover Details",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}cover-details/protocol/null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus",
-							"host": [
-								"{{host}}cover-details"
-							],
-							"path": [
-								"protocol",
-								"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "1677"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"68d-DoXWCLOcXPzHg5bV1lu1EFyFOuw\""
-						},
-						{
-							"key": "Date",
-							"value": "Wed, 22 Dec 2021 12:24:00 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"reviews\": [\n            {\n                \"rating\": 2,\n                \"review\": \"good good\",\n                \"updatedAt\": \"2021-12-22T12:18:27.336Z\",\n                \"first_name\": \"Romik\",\n                \"last_name\": \"Makavana\",\n                \"email\": \"makavanaromik1214@gmail.com\"\n            }\n        ],\n        \"description\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\\n        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\\n        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\\n        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\\n        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\\n        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n        \"additional_details\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n        \"terms_and_conditions\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n    },\n    \"errors\": {}\n}"
-				},
 				{
 					"name": "Not found",
 					"originalRequest": {
@@ -4952,6 +4896,118 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"success\": false,\n    \"message\": \"Cover not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "InsurAce Cover Details",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}cover-details/protocol/26.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace",
+							"host": [
+								"{{host}}cover-details"
+							],
+							"path": [
+								"protocol",
+								"26.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1204"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4b4-6UX3OXeBu3GFY3LX7mnNIzF1rD0\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Jan 2022 11:27:22 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"reviews\": [],\n        \"description\": \"Protect your assets in case of a crack in your smart contract code. Our smart contract covers safeguards your crypto assets against any smart contract failures.\",\n        \"additional_details\": \"InsurAce.io is a decentralized multi-chain insurance protocol that offers portfolio-based insurance products to primarily insure digital assets.\",\n        \"terms_and_conditions\": \"\",\n        \"pdf\": \"https://files.insurace.io/public/en/cover/SmartContractCover_v2.0.pdf\",\n        \"cover\": {\n            \"unique_id\": \"26.0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.insurace\",\n            \"product_id\": \"26\",\n            \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n            \"name\": \"88mph V2\",\n            \"type\": \"protocol\",\n            \"logo\": \"https://app.insurace.io/asset/product/88mph.png\",\n            \"company\": \"InsurAce\",\n            \"company_icon\": \"http://localhost:3006/api/images/company-icons/insurace-icon.png\",\n            \"company_code\": \"insurace\",\n            \"min_eth\": 0.5,\n            \"capacity\": 191.89830037021318,\n            \"supportedChains\": [\n                \"Ethereum\"\n            ],\n            \"currency\": [\n                \"ETH\",\n                \"DAI\",\n                \"USDC\",\n                \"USDT\"\n            ],\n            \"currency_limit\": {\n                \"ETH\": {\n                    \"min\": 0.5,\n                    \"max\": 10000\n                },\n                \"DAI\": {\n                    \"min\": 1000,\n                    \"max\": 20000000\n                },\n                \"USDC\": {\n                    \"min\": 1000,\n                    \"max\": 20000000\n                },\n                \"USDT\": {\n                    \"min\": 1000,\n                    \"max\": 20000000\n                }\n            },\n            \"duration_days_min\": \"15\",\n            \"duration_days_max\": \"365\"\n        }\n    },\n    \"errors\": {}\n}"
+				},
+				{
+					"name": "Nexus Cover Details",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}cover-details/protocol/null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus",
+							"host": [
+								"{{host}}cover-details"
+							],
+							"path": [
+								"protocol",
+								"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1856"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"740-2lB0k2ga67M5CbeNyMDbRwpHKQs\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Jan 2022 11:30:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"reviews\": [\n            {\n                \"rating\": 2,\n                \"review\": \"good good\",\n                \"updatedAt\": \"2021-12-31T18:15:06.494Z\",\n                \"first_name\": \"\",\n                \"last_name\": \"\",\n                \"email\": \"makavanaromik1214@gmail.com\"\n            }\n        ],\n        \"description\": \"Protect your assets in case of a crack in your smart contract code. Our smart contract covers safeguards your crypto assets against any smart contract failures.\",\n        \"additional_details\": \"Nexus Mutual is a decentralized platform built on blockchain technology that offers insurance products for Ethereum users. \",\n        \"terms_and_conditions\": \"<p>Events covered:</p><ul><li>contract bugs</li><li>economic attacks, including oracle failures</li><li>governance attacks</li></ul><p><br></p><p>Claiming:</p><ul><li>You must provide proof of the incurred loss at claim time.</li><li>You should wait 72 hours after the event, so assessors have all details to make a decision.</li><li>You can claim up to 35 days after the cover period expires, given your cover was active when the incident happened.</li></ul><p>This cover is not a contract of insurance. Cover is provided on a discretionary basis with Nexus Mutual members having the final say on which claims are paid.</p>\",\n        \"pdf\": \"https://nexusmutual.io/pages/ProtocolCoverv1.0.pdf\",\n        \"cover\": {\n            \"unique_id\": \"null.0xB27F1DB0a7e473304A5a06E54bdf035F671400C0.nexus\",\n            \"product_id\": null,\n            \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\",\n            \"logo\": \"https://app.nexusmutual.io/logos/0x.png\",\n            \"name\": \"0x V3\",\n            \"type\": \"protocol\",\n            \"company\": \"Nexus Mutual\",\n            \"company_icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\",\n            \"company_code\": \"nexus\",\n            \"min_eth\": 1,\n            \"supportedChains\": [\n                \"Ethereum\",\n                \"BSC\"\n            ],\n            \"currency\": [\n                \"ETH\",\n                \"DAI\"\n            ],\n            \"currency_limit\": {\n                \"ETH\": {\n                    \"min\": 1\n                },\n                \"DAI\": {\n                    \"min\": 1\n                }\n            },\n            \"duration_days_min\": 30,\n            \"duration_days_max\": 365,\n            \"capacity\": {\n                \"capacityETH\": 2213.1200563046773,\n                \"capacityDAI\": 8463956866623403000\n            }\n        }\n    },\n    \"errors\": {}\n}"
 				}
 			]
 		},
@@ -5144,7 +5200,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"nexus\",\n    \"address\": \"0xB27F1DB0a7e473304A5a06E54bdf035F671400C0\"\n}",
+					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"product_id\": \"20\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -5374,7 +5430,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"company\": \"insurace\",\n    \"address\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"period\": \"30\",\n    \"product_id\": 20,\n    \"supported_chain\": \"Ethereum\",\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\"\n}",
+					"raw": "{\n    \"address\": \"0x3d5BC3c8d13dcB8bF317092d84783c2697AE9258\",\n    \"period\": 30,\n    \"product_id\": null,\n    \"owner_id\": \"0xC789300309520F5dDFa95C59571aB809aB1Da365\",\n    \"company\": \"nexus\",\n    \"currency\": \"ETH\",\n    \"coverAmount\": \"1\",\n    \"supported_chain\": \"Ethereum\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

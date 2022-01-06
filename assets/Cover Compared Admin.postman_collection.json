@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}admin/policies",
+							"raw": "{{host}}admin/policies?filter={\"product_type\": \"crypto_exchange\"}",
 							"host": [
 								"{{host}}admin"
 							],
@@ -44,8 +44,7 @@
 								},
 								{
 									"key": "filter",
-									"value": "{\"product_type\": \"mso_policy\"}",
-									"disabled": true
+									"value": "{\"product_type\": \"crypto_exchange\"}"
 								}
 							]
 						}
@@ -166,17 +165,80 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}admin/policies/61c62f4dd713d6c9de18a3f6",
+							"raw": "{{host}}admin/policies/61d5581cef8307b4c7dfff80",
 							"host": [
 								"{{host}}admin"
 							],
 							"path": [
 								"policies",
-								"61c62f4dd713d6c9de18a3f6"
+								"61d5581cef8307b4c7dfff80"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "View Policy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}admin/policies/61cc558e42b3b33e145d6f06",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policies",
+										"61cc558e42b3b33e145d6f06"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2372"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"944-pil9tvkC+Tai+ejT1dNwcBm9N3I\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Jan 2022 14:28:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"_id\": \"61cc558e42b3b33e145d6f06\",\n        \"txn_hash\": \"MSO-004037\",\n        \"product_type\": \"mso_policy\",\n        \"status\": \"active\",\n        \"payment_status\": \"paid\",\n        \"blockchain\": null,\n        \"wallet_address\": null,\n        \"block_timestamp\": null,\n        \"txn_type\": null,\n        \"payment_hash\": \"0x82263df39f30e2a3f2ea83efba7709b40248655ddd1c02bc40e11aead2526f08\",\n        \"currency\": \"CVR\",\n        \"amount\": 108,\n        \"discount_amount\": 27,\n        \"tax\": 0,\n        \"total_amount\": 81,\n        \"crypto_currency\": null,\n        \"crypto_amount\": null,\n        \"createdAt\": \"2021-12-29T12:33:18.534Z\",\n        \"updatedAt\": \"2022-01-04T14:10:13.582Z\",\n        \"__v\": 3,\n        \"plan_details\": {},\n        \"details\": {\n            \"plan_type\": \"GOLD_PLAN\",\n            \"name\": \"GOLD PLAN\",\n            \"policy_price\": 108,\n            \"quote\": \"108\",\n            \"mso_addon_service\": 0,\n            \"amount\": 108,\n            \"MSOMembers\": [\n                {\n                    \"user_type\": \"Main Member\",\n                    \"first_name\": \"Chancellor\",\n                    \"last_name\": \"Strong\",\n                    \"country\": \"KWT\",\n                    \"dob\": \"1981-06-13T18:30:00.000Z\",\n                    \"identity_type\": null,\n                    \"identity\": \"Consequat Laudantiu\",\n                    \"_id\": \"61cc558e42b3b33e145d6f07\"\n                }\n            ],\n            \"plan_details\": {\n                \"name\": \"GOLD PLAN\",\n                \"period\": 3,\n                \"type\": \"Family cover\",\n                \"MSOPlanDuration\": \"Annual Plan\",\n                \"MSOCoverUser\": \"3 plus 3: Husband, wives, and children\",\n                \"MSOCoverUserLimit\": \"6\",\n                \"totalUsers\": 6\n            },\n            \"signature\": {\n                \"message\": \"0xe98396e9c55617f297af5afdbf9029db3ee4ba414e6b3ab13b85ae6c49b9f5c2\",\n                \"messageHash\": \"0xc9b2e18ac4c54a437efe660161438ad61fefd321be58d72478ff5a2ed21fa8da\",\n                \"v\": \"0x1c\",\n                \"r\": \"0xc80b1cf7b7840cb7bb5840790ac4cadec6564125523429c5ee0fa683afa812ef\",\n                \"s\": \"0x7e5bb893a835b328a29bb055d96a17245c1f9b0eb7b791cce1b874aacf49fde7\",\n                \"signature\": \"0xc80b1cf7b7840cb7bb5840790ac4cadec6564125523429c5ee0fa683afa812ef7e5bb893a835b328a29bb055d96a17245c1f9b0eb7b791cce1b874aacf49fde71c\"\n            },\n            \"contract_product_id\": \"8\",\n            \"start_time\": 8\n        },\n        \"reviews\": null,\n        \"user\": {\n            \"_id\": \"61bdcea79371419c3091e17f\",\n            \"email\": \"makavanaromik1214@gmail.com\",\n            \"first_name\": \"Chancellor\",\n            \"last_name\": \"Strong\"\n        },\n        \"payment\": {\n            \"_id\": \"61cc55a442b3b33e145d6f13\",\n            \"crypto_currency\": \"Ether\",\n            \"crypto_amount\": 0,\n            \"blockchain\": \"Ethereum\",\n            \"wallet_address\": \"0x677FC2a06675E3fff07631B824D7e1E6B5813a1F\",\n            \"block_timestamp\": \"1640781217\",\n            \"txn_type\": \"onchain\",\n            \"payment_hash\": \"0x82263df39f30e2a3f2ea83efba7709b40248655ddd1c02bc40e11aead2526f08\",\n            \"currency\": \"USD\",\n            \"paid_amount\": \"81\",\n            \"payment_status\": \"paid\",\n            \"TokenTransferred\": [],\n            \"createdAt\": \"2021-12-29T12:33:40.567Z\",\n            \"updatedAt\": \"2021-12-29T12:33:40.567Z\",\n            \"__v\": 0,\n            \"transaction_link\": \"https://rinkeby.etherscan.io/tx/0x82263df39f30e2a3f2ea83efba7709b40248655ddd1c02bc40e11aead2526f08\"\n        }\n    },\n    \"errors\": {}\n}"
+						}
+					]
 				},
 				{
 					"name": "MSO Policy List",
@@ -1770,7 +1832,7 @@
 		"apikey": [
 			{
 				"key": "value",
-				"value": "{{admin_token}}",
+				"value": "{{staging_admin_token}}",
 				"type": "string"
 			},
 			{
@@ -1839,6 +1901,10 @@
 		},
 		{
 			"key": "admin_token",
+			"value": ""
+		},
+		{
+			"key": "staging_admin_token",
 			"value": ""
 		}
 	]
