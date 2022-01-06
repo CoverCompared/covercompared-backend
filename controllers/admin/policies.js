@@ -339,6 +339,20 @@ exports.msoPolicies = async (req, res) => {
 
         let policy = await Policies.aggregate(aggregate);
 
+        if(policy && Array.isArray(policy)){
+            policy = policy.map(value => {
+                if(value.product_type == constant.ProductTypes.mso_policy){
+                    let members = _.get(value.MSOPolicy, "MSOMembers", []);
+                    member = Array.isArray(members) ? members.find(m => m.user_type == "Main Member") : null;
+                    member = member ? member : _.get(members, 0, null);
+                    value.user.first_name = member ? _.get(member, "first_name", "") : _.get(value, "user.first_name", "") ;
+                    value.user.last_name = member ? _.get(member, "last_name", "") : _.get(value, "user.last_name", "") ;
+                }
+
+                return value;
+            })
+        }
+
         let data = {
             range: `${range[0]}-${range[1]}/${_.get(total, "0.total", 0)}`,
             data: policy
