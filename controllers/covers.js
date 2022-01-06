@@ -426,10 +426,10 @@ exports.coverDetails = async (req, res, next) => {
     let findObj = {};
     if (constant.SmartContractTypes.includes(req.params.type)) {
         findObj["policy.product_type"] = constant.ProductTypes.smart_contract;
-        details.description = "Protect your assets in case of a crack in your smart contract code. Our smart contract covers safeguards your crypto assets against any smart contract failures.";
+        details.description = "Smart contract cover ensures that a user’s funds are always protected in the event of a malicious attack/hack causing material loss to a user's staked funds. Depending upon the insurer a smart contract cover shall insure a user’s staked funds against vulnerability/bugs found and exploited by an malicious party, governance attacks, flash loan attacks, oracle manipulations and impermanent loss. It is advised to always view the insurer’s policy document before availing the cover to attain the exact understanding and scope of the cover.";
     } else if (constant.CryptoExchangeTypes.includes(req.params.type)) {
         findObj["policy.product_type"] = constant.ProductTypes.crypto_exchange;
-        details.description = "Secure your crypto-assets from any possible exchange hacks with our various crypto-exchange covers.  "
+        details.description = "The basis of how a centralized crypto exchange works is that they maintain an off chain ledger of balances to enable pear to pear (P2P) trading. This yields more speed, affordable transaction fees, increased scope of trading meaning coins irrespective of their native blockchains can be traded at one spot. The trade off for this is the off-chain self maintained centralized ledger of the crypto exchange. This ledger has proven to be very susceptible to hacks and attacks. To protect against this vulnerability centralized crypto exchange presents Crypto Exchange covers are devised. It is advised to always view the insurer’s policy document before availing the cover to attain the exact understanding and scope of the cover."
     }
 
     let unique_id = companies.decodeUniqueId(req.params.unique_id);
