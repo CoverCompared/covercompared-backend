@@ -51,6 +51,7 @@ exports.index = async (req, res) => {
             if (search.q) {
                 findObj["$or"] = [
                     { "txn_hash": { $regex: search.q, $options: "i" } },
+                    { "payment_hash": { $regex: search.q, $options: "i" } },
                     { "user.email": { $regex: search.q, $options: "i" } }
                 ];
             }

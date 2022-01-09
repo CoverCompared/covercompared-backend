@@ -314,4 +314,20 @@ utils.getNetworkDetails = (payment, policy) => {
     return network
 }
 
+utils.matchAddress = (address1, address2) => {
+    try {
+        return address1.toLowerCase() == address2.toLowerCase()
+    } catch (error) {}
+    return false;
+}
+
+utils.findAddressInList = (list, address) => {
+    address = address.toLowerCase();
+    return Boolean(Array.isArray(list) && list.length ? list.find(item => item.toLowerCase() == address) : false);
+}
+
+utils.checkIsCVRToken = (token) => {
+    return utils.findAddressInList(config.cvr_token_addresses, token);
+}
+
 module.exports = utils;

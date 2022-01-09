@@ -8,6 +8,8 @@ node_modules/
 dist/
 uploads/cache/
 !uploads/cache/no-image.png
+uploads/receipts/
+!uploads/receipts/no-image.png
 
 # Compiled Java class files
 *.class

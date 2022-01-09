@@ -669,25 +669,25 @@ exports.storeSmartContract = async (req, res, next) => {
         let policy = req.policy ? req.policy : new Policies;
         policy.user_id = req.user._id;
 
-        if (req.body.type == "protocol") {
-            policy.product_type = constant.ProductTypes.smart_contract;
-        } else {
+        if (constant.CryptoExchangeTypes.includes(req.body.type)) {
             policy.product_type = constant.ProductTypes.crypto_exchange;
+        } else {
+            policy.product_type = constant.ProductTypes.smart_contract;
         }
 
-        if(req.policy){
-            policy.status = constant.PolicyStatus.pending;
-            policy.StatusHistory.push({
-                status: policy.status,
-                updated_at: new Date(moment()),
-                updated_by: req.user._id
-            });
-            policy.payment_status = constant.PolicyPaymentStatus.unpaid;
-        }
+        // if(req.policy){
+        //     policy.status = constant.PolicyStatus.pending;
+        //     policy.StatusHistory.push({
+        //         status: policy.status,
+        //         updated_at: new Date(moment()),
+        //         updated_by: req.user._id
+        //     });
+        //     policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+        // }
         policy.crypto_currency = req.body.crypto_currency;
         policy.crypto_amount = req.body.crypto_amount;
-        if (req.body.type == "protocol") {
-            policy.SmartContract = {
+        if (constant.CryptoExchangeTypes.includes(req.body.type)) {
+            policy.CryptoExchange = {
                 company_code: req.body.company_code,
                 product_id: req.body.product_id,
                 token_id: req.body.token_id,
@@ -701,7 +701,7 @@ exports.storeSmartContract = async (req, res, next) => {
                 crypto_amount: req.body.crypto_amount
             }
         } else {
-            policy.CryptoExchange = {
+            policy.SmartContract = {
                 company_code: req.body.company_code,
                 product_id: req.body.product_id,
                 token_id: req.body.token_id,
@@ -716,7 +716,7 @@ exports.storeSmartContract = async (req, res, next) => {
             }
         }
         await policy.save();
-        let product_type = req.body.type == "protocol" ? "Smart Contract" : "Crypto Exchange";
+        let product_type = constant.CryptoExchangeTypes.includes(req.body.type) ? "Crypto Exchange" : "Smart Contract";
 
         return res.status(200).send(utils.apiResponse(true, `${product_type} added successfully.`, {
             _id: policy._id,

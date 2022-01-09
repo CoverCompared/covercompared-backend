@@ -25,7 +25,12 @@ let config = {
         telegram: "https://t.me/PolkaCover",
         gitbook: "https://polkacover.gitbook.io"
     },
-    send_mail: false
+    send_mail: false,
+    cvr_token_addresses: [
+        "0x3C03b4EC9477809072FF9CC9292C9B25d4A8e6c6",   // mainnet
+        "0xd3e48facd30a73609ffa60ae84851e72d10fea52",   // rinkeby
+        "0xfc9b2b2565b38511b9822887f99d036d694a11e6"    // kovan
+    ]
 }
 
 const INFURA_KEY = "92a35c94033b48c6a8d248ac76e7650e";

@@ -8,6 +8,8 @@ const config = require("../../config");
 const utils = require("../utils");
 const myCache = new NodeCache();
 
+const mongoose = require('mongoose');
+const Settings = mongoose.model('Settings');
 
 exports.companies = {
     nexus,
@@ -68,6 +70,34 @@ exports.coverList = async (options = {}) => {
         list = [...list, ...coverList];
 
     }
+
+    // Sync Cover with Setting table
+    let cover_details = await Settings.getKey("cover_details");
+    cover_details = Array.isArray(cover_details) ? cover_details : [];
+    let is_cover_detail_changed = false;
+    list.map((object) => {
+        let cover = {
+            unique_id: _.get(object, "unique_id", null),
+            type: _.get(object, "type", null),
+            product_id: _.get(object, "product_id", null),
+            address: _.get(object, "address", null),
+            name: _.get(object, "name", null),
+            company_code: _.get(object, "company_code", null)
+        };
+        
+        let findCover = cover_details.find(val => {
+            return val && _.get(val, "unique_id", null) == object.unique_id
+        })
+        if(!findCover || JSON.stringify(cover) != JSON.stringify(findCover)){
+            is_cover_detail_changed = true;
+            cover_details.push(cover);
+        }
+    })
+    if(is_cover_detail_changed){
+        await Settings.setKey("cover_details", cover_details);
+    }
+
+
     list = await list.filter((object) => {
         if (object.type == "protocol" && !_.get(object, "supportedChains", []).length) {
             console.log("// Send Error Report - Supported Chain Not found")

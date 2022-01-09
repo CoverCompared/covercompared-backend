@@ -96,6 +96,7 @@ const PoliciesSchema = new Schema({
         contract_product_id: { type: String, default: null }
     },
     SmartContract: {
+        block: { type: String, default: null },
         network: { type: String, default: null },
         company_code: { type: String, default: null },
         product_id: { type: String, default: null },
@@ -110,6 +111,7 @@ const PoliciesSchema = new Schema({
         crypto_amount: { type: Number, default: null }
     },
     CryptoExchange: {
+        block: { type: String, default: null },
         network: { type: String, default: null },
         company_code: { type: String, default: null },
         product_id: { type: String, default: null },
