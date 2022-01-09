@@ -40,6 +40,7 @@ authRoutes.get('/policies/:id', policiesController.show);
 // contact-us
 authRoutes.get('/contact-us/table', contactController.table);
 authRoutes.get('/contact-us/show/:id',contactController.show);
+authRoutes.get('/contact-us/mark-read/:id/:mark_read', contactController.markRead);
 
 // Subscription List
 authRoutes.get('/subscription/table', subscriptionController.table);

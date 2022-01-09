@@ -28,8 +28,8 @@ exports.connectSmartContract = async () => {
 
     try {
         if (MSOStartContract) {
-            let productId = MSOStartContract.methods.productIds().call()
-            if (productId) {
+            let productId = await MSOStartContract.methods.productIds().call()
+            if (productId >= 0) {
                 return MSOStartContract;
             }
         }
@@ -40,33 +40,6 @@ exports.connectSmartContract = async () => {
          * TODO: Send Error Report: issue on connect smart contract
          * data : smart_contract, config.is_mainnet, 
          */
-    }
-}
-
-let P4LTransactionPromises = [];
-let IsP4LTransactionRunning = false;
-
-exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
-    P4LTransactionPromises.push({ transaction_hash, p4l_from_block });
-    if (IsP4LTransactionRunning == false) {
-        console.log("P4L  ::  Started.");
-        while (P4LTransactionPromises.length > 0) {
-            IsP4LTransactionRunning = true;
-            let promise = P4LTransactionPromises[0];
-            await this.p4lSyncTransaction(promise.transaction_hash);
-            console.log("P4L  ::  Completed ", promise.transaction_hash);
-            if (promise.p4l_from_block) {
-                await Settings.setKey("p4l_from_block", promise.p4l_from_block)
-            }
-            P4LTransactionPromises.splice(0, 1);
-            console.log("P4L  ::  Rest ", P4LTransactionPromises.length);
-            if (P4LTransactionPromises.length == 0) {
-                IsP4LTransactionRunning = false;
-            }
-        }
-        console.log("P4L  ::  Completed.");
-    } else {
-        console.log("P4L  ::  Already running.....");
     }
 }
 
@@ -101,14 +74,14 @@ exports.msoPolicySync = async () => {
         // MSOEventSubscription.on('connected', str => console.log("CONNECTED ", str))
         MSOEventSubscription.on('error', str => {
             /**
-             * TODO: Send Error Report "P4L Start Contract issue on fetch all events."
+             * TODO: Send Error Report "MSO Start Contract issue on fetch all events."
              */
         })
 
     } catch (error) {
         console.log("Err", error);
         /**
-         * TODO: Send Error Report "P4LContract is not connected"
+         * TODO: Send Error Report "MSOContract is not connected"
          */
     }
 }
@@ -153,7 +126,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
         // console.log('Transaction Details ', TransactionDetails);
         let TransactionReceiptDetails = await this.getTransactionReceipt(transaction_hash);
 
-        // BuyProduct & BuyP4L Event Log
+        // BuyProduct & BuyMSO Event Log
         let BuyProductEventAbi = MSOSmartContractAbi.find(value => value.name == "BuyProduct" && value.type == "event");
         let hasBuyProductEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyProductEventAbi);
 
@@ -176,7 +149,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
             if(policy && policy.txn_hash != product.policyId){
                 /**
                  * TODO: Send Error Report : policy found but policy id not match with product
-                 * data : product_type : p4l, smart_contract_address, product, policy
+                 * data : product_type : mso, smart_contract_address, product, policy
                  */
             }
 

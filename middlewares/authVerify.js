@@ -21,6 +21,7 @@ module.exports = async function (req, res, next) {
             return res.status(401).json(utils.apiResponseMessage(false, "Unauthorized."));
         }
     } catch (error) {
+        console.log("ERR", error);
         if (error instanceof jwt.TokenExpiredError) {
             return res.status(401).json(utils.apiResponseMessage(false, "Unauthorized."));
         }

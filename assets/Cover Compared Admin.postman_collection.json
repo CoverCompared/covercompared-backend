@@ -934,6 +934,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Contact Us Mark As Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/contact-us/mark-read/61cc5e954ae87b5e81ea09c3/0",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"contact-us",
+								"mark-read",
+								"61cc5e954ae87b5e81ea09c3",
+								"0"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1832,7 +1852,7 @@
 		"apikey": [
 			{
 				"key": "value",
-				"value": "{{staging_admin_token}}",
+				"value": "{{admin_token}}",
 				"type": "string"
 			},
 			{

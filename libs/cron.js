@@ -6,9 +6,9 @@ var NodeCron = require('node-cron');
 const web3Actions = async () => {
     try {
         console.log("Web3 Connect");
-        let web3 = await web3Connect.connect()
-        await web3Connect.smart_contracts.p4l.p4lPolicySync();
-        await web3Connect.smart_contracts.mso.msoPolicySync();
+        // let web3 = await web3Connect.connect()
+        // await web3Connect.smart_contracts.p4l.p4lPolicySync();
+        // await web3Connect.smart_contracts.mso.msoPolicySync();
         // await web3Connect.smart_contracts.insurace.policySync()
     } catch (error) {
         /**

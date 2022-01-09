@@ -12,7 +12,8 @@ const ContactUsRequestsSchema = new Schema({
     name: {type: String, default: null},
     email: {type: String, default: null},
     user_type: {type: String, default:null},
-    message: {type: String, default: null}
+    message: {type: String, default: null},
+    mark_read: {type: Boolean, default: false}
 }, { timestamps: true });
 
 mongoose.model('ContactUsRequests', ContactUsRequestsSchema, "contactusrequests");

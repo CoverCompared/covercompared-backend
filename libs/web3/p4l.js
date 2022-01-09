@@ -29,8 +29,8 @@ exports.connectSmartContract = async () => {
     try {
         try {
             if (P4LStartContract) {
-                let productId = P4LStartContract.methods.productIds().call()
-                if (productId) {
+                let productId = await P4LStartContract.methods.productIds().call()
+                if (productId >= 0) {
                     return P4LStartContract;
                 }
             }

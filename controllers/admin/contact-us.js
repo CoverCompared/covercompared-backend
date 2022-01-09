@@ -61,3 +61,21 @@ exports.show = async (req, res, next) => {
     }
 
 }
+
+exports.markRead = async (req, res, next) => {
+    try {
+        let contact = await ContactUsRequests.findOne({ _id: req.params.id });
+        if (!contact) {
+            return res.status(200).send(utils.apiResponseMessage(false, "Contact-Request not found."));
+        }
+
+        contact.mark_read = req.params.mark_read == "1" ? true : false;
+        await contact.save();
+
+        let msg = contact.mark_read ? "read" : "unread";
+        return res.status(200).send(utils.apiResponseMessage(true, `Mark as ${msg} successfully.`));
+    } catch (error) {
+        console.log("ERR", error);
+        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+    }
+}

@@ -107,7 +107,7 @@ exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
 
 /**
  * It will get Transaction Receipt
- * @param {"p4l"|"mso"} smart_contract 
+ * @param {"p4l"|"mso"|"insurace"} smart_contract 
  * @param {*} transaction_hash 
  */
 exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
@@ -128,7 +128,7 @@ exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
 
 /**
  * It will get Transaction details
- * @param {"p4l"|"mso"} smart_contract 
+ * @param {"p4l"|"mso"|"insurace"} smart_contract 
  * @param {*} transaction_hash 
  */
 exports.getTransaction = async (smart_contract, transaction_hash) => {
@@ -171,8 +171,8 @@ exports.connectSmartContract = async (smart_contract) => {
         if (smart_contract == "p4l") {
             try {
                 if (P4LStartContract) {
-                    let productId = P4LStartContract.methods.productIds().call()
-                    if (productId) {
+                    let productId = await P4LStartContract.methods.productIds().call()
+                    if (productId >= 0) {
                         return P4LStartContract;
                     }
                 }
@@ -183,8 +183,8 @@ exports.connectSmartContract = async (smart_contract) => {
         }else if (smart_contract == "mso") {
             try {
                 if (MSOStartContract) {
-                    let productId = MSOStartContract.methods.productIds().call()
-                    if (productId) {
+                    let productId = await MSOStartContract.methods.productIds().call()
+                    if (productId >= 0) {
                         return MSOStartContract;
                     }
                 }
