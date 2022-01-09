@@ -71,7 +71,7 @@ exports.index = async (req, res) => {
         aggregate.push({ $unwind: { path: "$user" } });
         aggregate.push({
             $project: {
-                "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1,
+                "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1, "payment_hash": 1,
                 "total_amount": 1, "user_id": 1,
                 "currency": 1,
                 "createdAt": 1,
