@@ -330,4 +330,15 @@ utils.checkIsCVRToken = (token) => {
     return utils.findAddressInList(config.cvr_token_addresses, token);
 }
 
+utils.getTimestampDiff = (from, to, format = "days") => {
+    try {
+        to = moment(to, "X");
+        from = moment(from, "X");
+        return to.diff(from, format);
+    } catch (error) {
+        console.log("Something went wrong", error);
+    }
+    return 0
+}
+
 module.exports = utils;

@@ -108,7 +108,11 @@ const PoliciesSchema = new Schema({
         duration_days: { type: String, default: null },
         chain: { type: String, default: null },
         crypto_currency: { type: String, default: null },
-        crypto_amount: { type: Number, default: null }
+        crypto_amount: { type: Number, default: null },
+        expiry: { type: Schema.Types.Mixed, default: null },
+        sumAssured: { type: Schema.Types.Mixed, default: null },
+        premium: { type: Schema.Types.Mixed, default: null },
+        premiumNXM: { type: Schema.Types.Mixed, default: null },
     },
     CryptoExchange: {
         block: { type: String, default: null },
@@ -123,7 +127,11 @@ const PoliciesSchema = new Schema({
         duration_days: { type: String, default: null },
         chain: { type: String, default: null },
         crypto_currency: { type: String, default: null },
-        crypto_amount: { type: Number, default: null }
+        crypto_amount: { type: Number, default: null },
+        expiry: { type: Schema.Types.Mixed, default: null },
+        sumAssured: { type: Schema.Types.Mixed, default: null },
+        premium: { type: Schema.Types.Mixed, default: null },
+        premiumNXM: { type: Schema.Types.Mixed, default: null },
     }
 }, {
     timestamps: true

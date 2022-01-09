@@ -22,6 +22,7 @@ const Schema = mongoose.Schema;
 const SettingsSchema = new Schema({
     p4l_from_block: { type: String, default: null },
     insurace_from_block: { type: String, default: null },
+    nexus_from_block: { type: String, default: null },
     mso_from_block: { type: String, default: null },
     cover_details: [{type: Schema.Types.Mixed, default: null}]
 }, {
@@ -41,6 +42,7 @@ SettingsSchema.statics = {
         setting.p4l_from_block = setting.p4l_from_block ? setting.p4l_from_block : 0;
         setting.mso_from_block = setting.mso_from_block ? setting.mso_from_block : 0;
         setting.insurace_from_block = setting.insurace_from_block ? setting.insurace_from_block : 0;
+        setting.nexus_from_block = setting.nexus_from_block ? setting.nexus_from_block : 0;
         setting.cover_details = setting.cover_details ? setting.cover_details : [];
         return key ? setting[key] : setting;
     },

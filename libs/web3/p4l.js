@@ -151,7 +151,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
         // Get Transaction details
         let TransactionDetails = await this.getTransaction(transaction_hash);
-        console.log("Transaction Details ", TransactionDetails);
+        // console.log("Transaction Details ", TransactionDetails);
         let TransactionReceiptDetails = await this.getTransactionReceipt(transaction_hash);
 
         // BuyProduct & BuyP4L Event Log

@@ -16,9 +16,10 @@ const signMsg = require("./../sign_message");
 const { ethers } = require("ethers");
 
 exports.smart_contracts = {
-    p4l : require("./p4l"),
-    mso : require('./mso'),
-    insurace: require("./insurace")
+    p4l: require("./p4l"),
+    mso: require('./mso'),
+    insurace: require("./insurace"),
+    nexus: require("./nexus")
 }
 
 
@@ -73,7 +74,7 @@ exports.connect = () => {
 
 /**
  * Return web3 connect based on smart contract and network(mainnet or testnet)
- * @param {"p4l"|"mso"|"insurace"} smart_contract 
+ * @param {"p4l"|"mso"|"insurace"|"nexus"} smart_contract 
  */
 exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
     let web3Connect;
@@ -83,13 +84,15 @@ exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
     } else {
         if (["p4l", "mso", "insurace"].includes(smart_contract)) {
             chainId = config.SupportedChainId.RINKEBY;
+        } else if (["nexus"].includes(smart_contract)) {
+            chainId = config.SupportedChainId.KOVAN;
         }
     }
 
-    if(check_is_connected){
+    if (check_is_connected) {
         try {
             let listening = await this.isListening(web3[chainId]);
-            if(!listening){
+            if (!listening) {
                 web3[chainId] = new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[chainId]));
             }
         } catch (error) {
@@ -98,7 +101,7 @@ exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
              * code: web3_connect, 
              * chainId, config.NETWORK_URLS[chainId], error, error.toString()
              */
-            
+
         }
     }
     return web3[chainId];
@@ -107,7 +110,7 @@ exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
 
 /**
  * It will get Transaction Receipt
- * @param {"p4l"|"mso"|"insurace"} smart_contract 
+ * @param {"p4l"|"mso"|"insurace"|"nexus"} smart_contract 
  * @param {*} transaction_hash 
  */
 exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
@@ -128,7 +131,7 @@ exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
 
 /**
  * It will get Transaction details
- * @param {"p4l"|"mso"|"insurace"} smart_contract 
+ * @param {"p4l"|"mso"|"insurace"|"nexus"} smart_contract 
  * @param {*} transaction_hash 
  */
 exports.getTransaction = async (smart_contract, transaction_hash) => {
@@ -163,7 +166,7 @@ exports.connectSmartContract = async (smart_contract) => {
 
     if (smart_contract == "p4l") {
         SmartContractAddress = config.is_mainnet ? contracts.p4l[config.SupportedChainId.MAINNET] : contracts.p4l[config.SupportedChainId.RINKEBY];
-    }else if (smart_contract == "mso") {
+    } else if (smart_contract == "mso") {
         SmartContractAddress = config.is_mainnet ? contracts.mso[config.SupportedChainId.MAINNET] : contracts.mso[config.SupportedChainId.RINKEBY];
     }
 
@@ -180,7 +183,7 @@ exports.connectSmartContract = async (smart_contract) => {
             }
             P4LStartContract = new web3Connect.eth.Contract(P4LSmartContractAbi, SmartContractAddress);
             return P4LStartContract;
-        }else if (smart_contract == "mso") {
+        } else if (smart_contract == "mso") {
             try {
                 if (MSOStartContract) {
                     let productId = await MSOStartContract.methods.productIds().call()
@@ -271,4 +274,25 @@ exports.getAddressOfSignatureAccount = async (smart_contract) => {
     let web3Connect = await this.getWeb3Connect(smart_contract);
     let address = web3Connect.eth.accounts.privateKeyToAccount(config.signature_private_key);
     return _.get(address, "address");
+}
+
+/**
+ * 
+ * @param {Web3} web3Connect 
+ * @param {Object} eventAbi 
+ * @param {Array} eventAbi.inputs
+ * @param {Object} log 
+ * @param {String} log.data
+ * @param {Array} log.topics
+ */
+exports.decodeEventParametersLogs = (web3Connect, eventAbi, log) => {
+    let TransactionReceiptLog = Object.assign({}, log);
+    let EventAbiClone = Object.assign({}, eventAbi);
+
+    let inputs = [];
+    for (const key in EventAbiClone.inputs) {
+        if (key > 0) inputs.push(EventAbiClone.inputs[key])
+    }
+
+    return web3Connect.eth.abi.decodeParameters(inputs, TransactionReceiptLog.data);
 }
