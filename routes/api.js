@@ -21,6 +21,7 @@ const web3Connection = require("./../libs/web3");
 
 const mongoose = require("mongoose");
 const RequestLogs = mongoose.model('RequestLogs');
+const Settings = mongoose.model('Settings');
 
 var express1 = require('express');
 const config = require('../config');
@@ -94,6 +95,11 @@ router.get("/web3/connect", async (req, res) => {
     // console.log(events);
 
 })
+router.get("/setting", async (req, res) => {
+    let setting = await Settings.getKey()
+    return res.send(setting);
+})
+
 router.get("/web3/test", async (req, res) => {
 
     try {
