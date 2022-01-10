@@ -210,6 +210,8 @@ exports.getQuoteWithPromise = async ({ product_id, address, amount, period, supp
  */
 exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }, fromCache = true) => {
 
+    supported_chain = "Ethereum";
+
     if(fromCache){
         return await utils.getInsureAceQuote({ product_id, address, amount, period, supported_chain, currency, owner_id }, this.getQuoteWithPromise);
     }
