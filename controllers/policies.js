@@ -317,6 +317,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             "discount_amount": ["required", "numeric"],
             "tax": ["required", "numeric"],
             "total_amount": ["required", "numeric"],
+            "imei_or_serial_number": ["required"],
         }
 
         let v = new niv.Validator(req.body, rules);
@@ -367,7 +368,8 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             last_name: req.body.last_name,
             email: req.body.email,
             phone: req.body.phone,
-            durPlan: req.body.durPlan
+            durPlan: req.body.durPlan,
+            imei_or_serial_number: req.body.imei_or_serial_number
         }
         await policy.save();
 
