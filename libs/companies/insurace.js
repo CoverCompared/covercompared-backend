@@ -105,8 +105,8 @@ exports.coverList = async () => {
         if (_.get(data, "status", false) != "Enabled" || (_.get(data, "capacity_remaining", 0) / (10 ** 18) <= 0)) {
             return false;
         } else {
-            //let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
-            let supportedChain = "Ethereum";
+            let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
+            //let supportedChain = "Ethereum";
             let currency = [];
             let currency_limit = {};
             if (limits[supportedChain] && Array.isArray(limits[supportedChain]) && limits[supportedChain].length) {
