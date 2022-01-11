@@ -43,8 +43,8 @@ exports.convertChainType = (details) => {
 exports.currencyList = async () => {
 
     let currency_list = await utils.getCurrencyList("insurace-currency-list", async () => {
-        //let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
-        let chains = { "Ethereum": []};
+        let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
+        //let chains = { "Ethereum": []};
         for (const key in chains) {
             var config = {
                 url: utils.addQueryParams(this.company.apis.currency_list.url, { code: this.company.access_code }),
