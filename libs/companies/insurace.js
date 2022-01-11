@@ -43,8 +43,8 @@ exports.convertChainType = (details) => {
 exports.currencyList = async () => {
 
     let currency_list = await utils.getCurrencyList("insurace-currency-list", async () => {
-        let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
-        //let chains = { "Ethereum": []};
+        //let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
+        let chains = { "Ethereum": []};
         for (const key in chains) {
             var config = {
                 url: utils.addQueryParams(this.company.apis.currency_list.url, { code: this.company.access_code }),
@@ -105,8 +105,8 @@ exports.coverList = async () => {
         if (_.get(data, "status", false) != "Enabled" || (_.get(data, "capacity_remaining", 0) / (10 ** 18) <= 0)) {
             return false;
         } else {
-            let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
-            //let supportedChain = "Ethereum";
+            //let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
+            let supportedChain = "Ethereum";
             let currency = [];
             let currency_limit = {};
             if (limits[supportedChain] && Array.isArray(limits[supportedChain]) && limits[supportedChain].length) {
@@ -121,7 +121,7 @@ exports.coverList = async () => {
 
             let name = _.get(data, "name", "");
             let product_id = _.get(data, "product_id", "");
-            let address = _.get(data, "capacity_currency", "");
+            let address = key;
             let company_code = this.company.code;
             let unique_id = utils.getUniqueCoverID(product_id, address, company_code);
             let logo_endpoint = this.getLogoName(name);
@@ -210,7 +210,7 @@ exports.getQuoteWithPromise = async ({ product_id, address, amount, period, supp
  */
 exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }, fromCache = true) => {
 
-    //supported_chain = "Ethereum";
+    supported_chain = "Ethereum";
 
     if(fromCache){
         return await utils.getInsureAceQuote({ product_id, address, amount, period, supported_chain, currency, owner_id }, this.getQuoteWithPromise);
