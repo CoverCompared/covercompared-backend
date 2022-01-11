@@ -121,7 +121,7 @@ exports.coverList = async () => {
 
             let name = _.get(data, "name", "");
             let product_id = _.get(data, "product_id", "");
-            let address = key;
+            let address = _.get(data, "capacity_currency", "");
             let company_code = this.company.code;
             let unique_id = utils.getUniqueCoverID(product_id, address, company_code);
             let logo_endpoint = this.getLogoName(name);
