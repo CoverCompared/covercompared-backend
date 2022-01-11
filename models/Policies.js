@@ -93,7 +93,8 @@ const PoliciesSchema = new Schema({
         signature: { type: Schema.Types.Mixed, default: null },
         start_time: { type: Schema.Types.Mixed, default: null },
         durPlan: { type: Number, default: null },
-        contract_product_id: { type: String, default: null }
+        contract_product_id: { type: String, default: null },
+        imei_or_serial_number: { type: String, default: null}
     },
     SmartContract: {
         block: { type: String, default: null },
