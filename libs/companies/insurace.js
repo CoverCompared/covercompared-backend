@@ -43,8 +43,8 @@ exports.convertChainType = (details) => {
 exports.currencyList = async () => {
 
     let currency_list = await utils.getCurrencyList("insurace-currency-list", async () => {
-        let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
-
+        //let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
+        let chains = { "Ethereum": []};
         for (const key in chains) {
             var config = {
                 url: utils.addQueryParams(this.company.apis.currency_list.url, { code: this.company.access_code }),
@@ -105,8 +105,8 @@ exports.coverList = async () => {
         if (_.get(data, "status", false) != "Enabled" || (_.get(data, "capacity_remaining", 0) / (10 ** 18) <= 0)) {
             return false;
         } else {
-            let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
-
+            //let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
+            let supportedChain = "Ethereum";
             let currency = [];
             let currency_limit = {};
             if (limits[supportedChain] && Array.isArray(limits[supportedChain]) && limits[supportedChain].length) {
