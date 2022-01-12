@@ -6,6 +6,7 @@ const insureLogos = require("./insurace-logos.json");
 
 const mongoose = require('mongoose');
 const config = require("../../config");
+const { _toUtf8String } = require("@ethersproject/strings/lib/utf8");
 const SmartContractLogos = mongoose.model("SmartContractLogos");
 
 
@@ -32,6 +33,11 @@ exports.convertChainType = (details) => {
 
     let overrideValues = { 
         CEX: "Ethereum"
+    }
+
+    if(_.get(details, "chain_type", "") == "Multi-chain")
+    {
+        return _.get(details, "chain_type_list", "");
     }
 
     if (overrideValues[_.get(details, "chain_type", "")]) {
@@ -109,15 +115,17 @@ exports.coverList = async () => {
             //let supportedChain = "Ethereum";
             let currency = [];
             let currency_limit = {};
-            if (limits[supportedChain] && Array.isArray(limits[supportedChain]) && limits[supportedChain].length) {
-                limits[supportedChain].forEach(value => {
-                    currency.push(value.name);
-                    currency_limit[value.name] = {
-                        min: _.get(value, "amount_min", 0) / (10 ** _.get(value, "decimals", 0)),
-                        max: _.get(value, "amount_max", 0) / (10 ** _.get(value, "decimals", 0))
-                    }
-                })
-            }
+            supportedChain.forEach(chain => {
+                if (limits[chain] && Array.isArray(limits[chain]) && limits[chain].length) {
+                    limits[chain].forEach(value => {
+                        currency.push(value.name);
+                        currency_limit[value.name] = {
+                            min: _.get(value, "amount_min", 0) / (10 ** _.get(value, "decimals", 0)),
+                            max: _.get(value, "amount_max", 0) / (10 ** _.get(value, "decimals", 0))
+                        }
+                    })
+                }
+            })          
 
             let name = _.get(data, "name", "");
             let product_id = _.get(data, "product_id", "");
