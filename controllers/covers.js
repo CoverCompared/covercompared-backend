@@ -164,7 +164,7 @@ exports.list = async (req, res, next) => {
         search,
         companies: _.filter(company),
         type,
-        supported_chains: supported_chains,
+        //supported_chains: supported_chains,
         currency: _.filter(currency),
         duration_min_day, duration_max_day,
         amount_min, amount_max
@@ -336,7 +336,7 @@ exports.quote = async (req, res, next) => {
                         'currency': ["required"],
                         'owner_id': ["required"],
                         'supported_chain': ["nullable"],
-                        'coverAmount': ["required", "integer"],
+                        //'coverAmount': ["required", "integer"],
                         'period': ["required", `min:${cover.duration_days_min}`, `max:${cover.duration_days_max}`],
                         'product_id': ["required"]
                     };
