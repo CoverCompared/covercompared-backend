@@ -164,7 +164,7 @@ exports.list = async (req, res, next) => {
         search,
         companies: _.filter(company),
         type,
-        //supported_chains: supported_chains,
+        supported_chains: supported_chains,
         currency: _.filter(currency),
         duration_min_day, duration_max_day,
         amount_min, amount_max
