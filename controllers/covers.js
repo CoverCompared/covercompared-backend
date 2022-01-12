@@ -337,7 +337,7 @@ exports.quote = async (req, res, next) => {
                         'owner_id': ["required"],
                         'supported_chain': ["nullable"],
                         //'coverAmount': ["required", "integer"],
-                        'coverAmount': ["required"],
+                        //'coverAmount': ["required"],
                         'period': ["required", `min:${cover.duration_days_min}`, `max:${cover.duration_days_max}`],
                         'product_id': ["required"]
                     };
