@@ -273,7 +273,8 @@ exports.msoConfirmPayment = async (req, res, next) => {
         }));
     } catch (error) {
         console.log("ERR", error);
-        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+        //return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+        return res.status(500).send(utils.apiResponseMessage(false, error));
     }
 }
 
