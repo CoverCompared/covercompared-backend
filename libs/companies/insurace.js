@@ -79,7 +79,7 @@ exports.currencyList = async () => {
 exports.getLogoName = (name) => {
     let logo = insureLogos.find(cover => cover.name == name);
     try {
-        return logo ? logo.logo : name.replaceAll(" ", "") + ".png";
+        return logo ? logo.logo : name.replace(" ", "") + ".png";
     } catch (error) {
         console.log("name", name);
         return "";
