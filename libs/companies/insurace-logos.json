@@ -281,5 +281,17 @@
     {
         "logo": "AlphaHomora.png",
         "name": "Alpha Homora V1"
+    },
+    {
+        "logo": "NaosFinance.png",
+        "name": "NAOSFinance Formation V2"
+    },
+    {
+        "logo": "IdleFinance.png",
+        "name": "IDLE V4"
+    },
+    {
+        "logo": "PoolTogether.png",
+        "name": "Pool Together V4"
     }
 ]
