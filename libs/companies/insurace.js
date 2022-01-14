@@ -34,10 +34,10 @@ exports.convertChainType = (details) => {
         CEX: "Ethereum"
     }
 
-    if (overrideValues[_.get(details, "chain_type", "")]) {
-        return overrideValues[_.get(details, "chain_type", "")]
+    if (overrideValues[_.get(details, "data_source_chain", "")]) {
+        return overrideValues[_.get(details, "data_source_chain", "")]
     }
-    return _.get(details, "chain_type", "");
+    return _.get(details, "data_source_chain", "");
 }
 
 exports.currencyList = async () => {
