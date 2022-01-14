@@ -52,6 +52,7 @@ exports.index = async (req, res) => {
                 findObj["$or"] = [
                     { "txn_hash": { $regex: search.q, $options: "i" } },
                     { "payment_hash": { $regex: search.q, $options: "i" } },
+                    { "wallet_address": { $regex: search.q, $options: "i" } },
                     { "user.email": { $regex: search.q, $options: "i" } }
                 ];
             }
@@ -71,7 +72,7 @@ exports.index = async (req, res) => {
         aggregate.push({ $unwind: { path: "$user" } });
         aggregate.push({
             $project: {
-                "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1, "payment_hash": 1,
+                "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1, "payment_hash": 1, "wallet_address": 1,
                 "total_amount": 1, "user_id": 1,
                 "currency": 1,
                 "createdAt": 1,
