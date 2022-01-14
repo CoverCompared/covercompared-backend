@@ -465,12 +465,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             "partner_code": req.body.partner_code
         }
         let p4l_res = await this.createPolicy(p4l_req);
-        let p4lMsg = "";
-        if (_.get(p4l_res, "code", 0) == 200){
-            p4lMsg = _.get(p4l_res, "messageDesc", "");
-        }else{
-            p4lMsg = "p4l:" + _.get(p4l_res, "error_message", "");
-        }
+        let p4lMsg = _.get(p4l_res, "code", "0");
 
         let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
