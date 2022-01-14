@@ -466,7 +466,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
         }
         let p4l_res = await this.createPolicy(p4l_req);
         let p4lMsg = "";
-        if (_.get(p4l_res, "code", "") == "200"){
+        if (_.get(p4l_res, "code", 0) == 200){
             p4lMsg = _.get(p4l_res, "messageDesc", "");
         }else{
             p4lMsg = "p4l:" + _.get(p4l_res, "error_message", "");
