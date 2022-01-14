@@ -14,7 +14,6 @@ const constant = require("../libs/constants");
 const moment = require('moment');
 const msoPlans = require("../libs/mso-plans");
 const web3Connect = require("./../libs/web3");
-const { p4l } = require("../libs/contracts");
 
 
 exports.storeMso = async (req, res, next) => {
@@ -467,9 +466,9 @@ exports.deviceConfirmPayment = async (req, res, next) => {
         let p4l_res = await this.createPolicy(p4l_req);
         let p4lMsg = "";
         if (_.get(p4l_res, "code", "") == "200"){
-            p4lMsg = _.get(response, "messageDesc", "");
+            p4lMsg = _.get(p4l_res, "messageDesc", "");
         }else{
-            p4lMsg = "p4l:" + _.get(response, "error_message", "");
+            p4lMsg = "p4l:" + _.get(p4l_res, "error_message", "");
         }
 
         let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
