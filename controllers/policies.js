@@ -475,7 +475,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
                 txn_hash: policy.txn_hash,
                 payment_status: policy.payment_status,
                 status: policy.status,
-                p4l_status: p4l_res
+                p4l_status: p4l_res.code
             }));
         }
 
@@ -539,7 +539,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             txn_hash: policy.txn_hash,
             payment_status: policy.payment_status,
             status: policy.status,
-            p4l_status: p4l_res
+            p4l_status: p4l_res.code
         }));
 
     } catch (error) {
