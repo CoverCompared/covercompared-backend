@@ -299,6 +299,17 @@ exports.confirmPremium = async ({ chain, params }) => {
 
 exports.getImageUrl = (logo_endpoint) => {
     if (logo_endpoint) {
+        let replaceValues = {
+            "Abracadabra.money.png": "AbracadabraMoney.png",
+            "AldrinDEX.png": "Aldrin.png",
+            "Beefy.png": "BeefyFinance.png",
+            "MCDex.png": "MCDEX.png",
+            "PoolTogether V3.png": "PoolTogether.png",
+            "Spectrum.png": "SpectrumProtocol.png",
+            "TraderJOE.png": "TraderJoe.png",
+            "YieldYAK.png": "YieldYak.png",
+        }
+        logo_endpoint = replaceValues[logo_endpoint] ? replaceValues[logo_endpoint] : logo_endpoint;
         return `${this.company.logo_url}${logo_endpoint}`
     } else {
         return `${config.api_url}images/smart-contract-default.png`
