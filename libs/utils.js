@@ -83,6 +83,7 @@ utils.convertSupportedChain = (supportedChain) => {
 
     if (typeof supportedChain == "string") {
         supportedChain = overrideValues[supportedChain] ? overrideValues[supportedChain] : supportedChain
+        supportedChain = [supportedChain]
     } else {
         supportedChain = supportedChain.map(chain_type => {
             return overrideValues[chain_type] ? overrideValues[chain_type] : chain_type

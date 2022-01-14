@@ -4,6 +4,7 @@ const _ = require("lodash");
 const jwt = require('jsonwebtoken');
 const config = require("../config");
 
+const P4LToken = mongoose.model('P4LToken');
 const mongoose = require("mongoose");
 const Policies = mongoose.model('Policies');
 const Reviews = mongoose.model('Reviews');
@@ -273,7 +274,8 @@ exports.msoConfirmPayment = async (req, res, next) => {
         }));
     } catch (error) {
         console.log("ERR", error);
-        return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+        //return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
+        return res.status(500).send(utils.apiResponseMessage(false, error));
     }
 }
 
@@ -317,6 +319,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             "discount_amount": ["required", "numeric"],
             "tax": ["required", "numeric"],
             "total_amount": ["required", "numeric"],
+            "imei_or_serial_number": ["required"],
         }
 
         let v = new niv.Validator(req.body, rules);
@@ -367,7 +370,8 @@ exports.storeDeviceInsurance = async (req, res, next) => {
             last_name: req.body.last_name,
             email: req.body.email,
             phone: req.body.phone,
-            durPlan: req.body.durPlan
+            durPlan: req.body.durPlan,
+            imei_or_serial_number: req.body.imei_or_serial_number
         }
         await policy.save();
 
@@ -399,6 +403,27 @@ exports.storeDeviceInsurance = async (req, res, next) => {
     }
 }
 
+exports.createPolicy = async (req) => {
+    let config = {
+        method: 'post',
+        url: `https://dev.protect4less.com/app-api/create-policy-api/`,
+        headers: {
+            'Authorization': await P4LToken.getToken(),
+            'Content-Type': 'application/json'
+        },
+        data: req
+    };
+
+    let response = {};
+    try {
+        response = await axios(config)
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+    return response
+}
+
 exports.deviceConfirmPayment = async (req, res, next) => {
     try {
 
@@ -425,6 +450,27 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
+        //call p4l create-policy-api
+        let p4l_req = {
+            "first_name": req.body.first_name,
+            "last_name": req.body.last_name,
+            "mobile": req.body.mobile,
+            "email": req.body.email,
+            "model_code": req.body.model_code,
+            "custom_device_name": req.body.custom_device_name,
+            "imei_or_serial_number": req.body.imei_or_serial_number,
+            "tran_id": req.body.tran_id,
+            "purchase_date": req.body.purchase_date,
+            "partner_code": req.body.partner_code
+        }
+        let p4l_res = await this.createPolicy(p4l_req);
+        let p4lMsg = "";
+        if (_.get(p4l_res, "code", "") == "200"){
+            p4lMsg = _.get(p4l_res, "messageDesc", "");
+        }else{
+            p4lMsg = "p4l:" + _.get(p4l_res, "error_message", "");
+        }
+
         let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
         if(payment && payment.payment_status == constant.PolicyPaymentStatus.paid && policy.DeviceInsurance.contract_product_id){
@@ -432,7 +478,8 @@ exports.deviceConfirmPayment = async (req, res, next) => {
                 policy_id: policy._id,
                 txn_hash: policy.txn_hash,
                 payment_status: policy.payment_status,
-                status: policy.status
+                status: policy.status,
+                p4l_status: p4lMsg
             }));
         }
 
@@ -474,7 +521,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
         policy.txn_type = req.body.txn_type;
         policy.payment_hash = req.body.payment_hash;
         policy.currency = req.body.currency;
-
+        
         // if (policy.payment_status == constant.PolicyPaymentStatus.paid) {
         //     policy.status = constant.PolicyStatus.active;
         //     policy.StatusHistory.push({
@@ -495,7 +542,8 @@ exports.deviceConfirmPayment = async (req, res, next) => {
             policy_id: policy._id,
             txn_hash: policy.txn_hash,
             payment_status: policy.payment_status,
-            status: policy.status
+            status: policy.status,
+            p4l_status: p4lMsg
         }));
 
     } catch (error) {

@@ -6,6 +6,7 @@ const insureLogos = require("./insurace-logos.json");
 
 const mongoose = require('mongoose');
 const config = require("../../config");
+const { _toUtf8String } = require("@ethersproject/strings/lib/utf8");
 const SmartContractLogos = mongoose.model("SmartContractLogos");
 
 
@@ -37,14 +38,22 @@ exports.convertChainType = (details) => {
     if (overrideValues[_.get(details, "data_source_chain", "")]) {
         return overrideValues[_.get(details, "data_source_chain", "")]
     }
+    // if(_.get(details, "chain_type", "") == "Multi-chain")
+    // {
+    //     return _.get(details, "chain_type_list", "");
+    // }
+
+    // if (overrideValues[_.get(details, "chain_type", "")]) {
+    //     return overrideValues[_.get(details, "chain_type", "")]
+    // }
     return _.get(details, "data_source_chain", "");
 }
 
 exports.currencyList = async () => {
 
     let currency_list = await utils.getCurrencyList("insurace-currency-list", async () => {
-        let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
-
+        //let chains = { "Ethereum": [], "BSC": [], "Polygon": [] };
+        let chains = { "Ethereum": []};
         for (const key in chains) {
             var config = {
                 url: utils.addQueryParams(this.company.apis.currency_list.url, { code: this.company.access_code }),
@@ -73,7 +82,7 @@ exports.currencyList = async () => {
 exports.getLogoName = (name) => {
     let logo = insureLogos.find(cover => cover.name == name);
     try {
-        return logo ? logo.logo : name.replaceAll(" ", "") + ".png";
+        return logo ? logo.logo : name.replace(" ", "") + ".png";
     } catch (error) {
         console.log("name", name);
         return "";
@@ -106,18 +115,20 @@ exports.coverList = async () => {
             return false;
         } else {
             let supportedChain = utils.convertSupportedChain(this.convertChainType(data));
-
+            //let supportedChain = "Ethereum";
             let currency = [];
             let currency_limit = {};
-            if (limits[supportedChain] && Array.isArray(limits[supportedChain]) && limits[supportedChain].length) {
-                limits[supportedChain].forEach(value => {
-                    currency.push(value.name);
-                    currency_limit[value.name] = {
-                        min: _.get(value, "amount_min", 0) / (10 ** _.get(value, "decimals", 0)),
-                        max: _.get(value, "amount_max", 0) / (10 ** _.get(value, "decimals", 0))
-                    }
-                })
-            }
+            supportedChain.forEach(chain => {
+                if (limits[chain] && Array.isArray(limits[chain]) && limits[chain].length) {
+                    limits[chain].forEach(value => {
+                        currency.push(value.name);
+                        currency_limit[value.name] = {
+                            min: _.get(value, "amount_min", 0) / (10 ** _.get(value, "decimals", 0)),
+                            max: _.get(value, "amount_max", 0) / (10 ** _.get(value, "decimals", 0))
+                        }
+                    })
+                }
+            })          
 
             let name = _.get(data, "name", "");
             let product_id = _.get(data, "product_id", "");
@@ -209,6 +220,8 @@ exports.getQuoteWithPromise = async ({ product_id, address, amount, period, supp
  * @returns 
  */
 exports.getQuote = async ({ product_id, address, amount, period, supported_chain, currency = 'ETH', owner_id }, fromCache = true) => {
+
+    //supported_chain = "Ethereum";
 
     if(fromCache){
         return await utils.getInsureAceQuote({ product_id, address, amount, period, supported_chain, currency, owner_id }, this.getQuoteWithPromise);
