@@ -213,6 +213,10 @@ exports.syncTransaction = async (transaction_hash) => {
         let CoverDetailsEventEventAbi = NexusQuotationDataSmartContractAbi.find(value => value.name == "CoverDetailsEvent" && value.type == "event");
         let hasCoverDetailsEventEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, CoverDetailsEventEventAbi);
 
+        // MetaTransactionExecuted Log
+        // let MetaTransactionExecutedEventAbi = NexusSmartContractAbi.find(value => value.name == "MetaTransactionExecuted" && value.type == "event");
+        // let hasMetaTransactionExecutedEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, MetaTransactionExecutedEventAbi);
+
         if (hasBuyNexusMutualEvent) {
 
             if (!hasCoverDetailsEventEvent) {

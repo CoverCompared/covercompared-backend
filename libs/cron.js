@@ -10,8 +10,8 @@ const web3Actions = async () => {
 
         await web3Connect.smart_contracts.p4l.p4lPolicySync();
         await web3Connect.smart_contracts.mso.msoPolicySync();
-        await web3Connect.smart_contracts.insurace.policySync();
-        await web3Connect.smart_contracts.nexus.policySync();
+        // await web3Connect.smart_contracts.insurace.policySync();
+        // await web3Connect.smart_contracts.nexus.policySync();
     } catch (error) {
         /**
          * TODO: Send Error Report : issue wile run cron job
