@@ -1,5 +1,5 @@
 const web3Connection = require('./index');
-const MSOSmartContractAbi = require("./../abi/mso.json");
+let MSOSmartContractAbi = require("./../abi/mso.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -14,6 +14,55 @@ const Payments = mongoose.model('Payments');
 
 exports.getWeb3Connect = async (check_is_connected = false) => {
     return await web3Connection.getWeb3Connect("mso", check_is_connected);
+}
+
+/**
+ * This function is used to match the current smart-contract address with setting collection
+ * if Contract address does not match it will set from-block to 0 and check all the transaction with initial
+ */
+ exports.checkFromBlockAndSmartContractAddress = async () => {
+
+    // Get Smart Contract from Setting table
+    let mso_smart_contract_address = await Settings.getKey("mso_smart_contract_address");
+
+    // If does not match with config, Set from-block to 0
+    if(!utils.matchAddress(mso_smart_contract_address, this.getCurrentSmartContractAddress())){
+        Settings.setKey("mso_from_block", 0);
+        Settings.setKey("mso_smart_contract_address", this.getCurrentSmartContractAddress());
+    }
+
+
+    // Update ABI of Smart Contract
+    let SmartContractAbi = await Settings.getKey("mso_smart_contract_abi");
+    if (
+        !utils.matchAddress(mso_smart_contract_address, this.getCurrentSmartContractAddress()) ||
+        !SmartContractAbi
+    ) {
+        let SmartContractAbiResponse = await this.getAbiOfSmartContract();
+        if (SmartContractAbiResponse.status) {
+            SmartContractAbi = JSON.parse(SmartContractAbiResponse.data);
+            await Settings.setKey("mso_smart_contract_abi", SmartContractAbi);
+        }
+    }
+
+    /**
+     * TODO : Check JSON Schema Of SmartContractAbi for ABI Format
+     */
+    MSOSmartContractAbi = SmartContractAbi ? SmartContractAbi : MSOSmartContractAbi;
+
+}
+
+exports.getAbiOfSmartContract = async () => {
+    let chainId = config.is_mainnet ? config.SupportedChainId.MAINNET : config.SupportedChainId.RINKEBY;
+    let SmartContractAbi = await web3Connection.getAbiOfSmartContract(this.getCurrentSmartContractAddress(), chainId);
+    return SmartContractAbi;
+}
+
+exports.getCurrentSmartContractAddress = () => {
+    let SmartContractAddress;
+
+    SmartContractAddress = config.is_mainnet ? contracts.mso[config.SupportedChainId.MAINNET] : contracts.mso[config.SupportedChainId.RINKEBY];
+    return SmartContractAddress;
 }
 
 let MSOStartContract;

@@ -3,6 +3,7 @@ const config = require("../../config");
 const P4LSmartContractAbi = require("./../abi/p4l.json");
 const MSOSmartContractAbi = require("./../abi/mso.json");
 const contracts = require("./../contracts");
+const axios = require("axios");
 
 const _ = require('lodash');
 const moment = require('moment');
@@ -295,4 +296,54 @@ exports.decodeEventParametersLogs = (web3Connect, eventAbi, log) => {
     }
 
     return web3Connect.eth.abi.decodeParameters(inputs, TransactionReceiptLog.data);
+}
+
+/**
+ * Function is used to get api from contract address
+ * It will call the etherscan api and get the api
+ * 
+ * @param {*} contract_address 
+ * @param {"1"|"4"|"42"} chain_id - (1 - mainnet, 4 - rinkby, 42 - kovan)
+ * @returns 
+ */
+exports.getAbiOfSmartContract = async (contract_address, chain_id) => {
+
+    let params = {
+        module: "contract",
+        action: "getabi",
+        address: contract_address,
+        apikey: config.etherscan_key,
+    };
+
+    let apiBaseUrls = {
+        "1" : "https://api.etherscan.io/api",
+        "4" : "https://api-rinkeby.etherscan.io/api",
+        "42" : "https://api-kovan.etherscan.io/api"
+    }
+
+
+    var api_config = {
+        url: utils.addQueryParams(apiBaseUrls[chain_id], params)
+    };
+
+    let response = {};
+    try {
+        response = await axios(api_config)
+        response = _.get(response, "data", {})
+        if (response.status == '1') {
+            response = { status: true, data: response.result };
+        } else {
+            response = { status: false, data: response };
+        }
+
+    } catch (error) {
+        /**
+         * TODO: Send Error Report
+         * Message : Issue while getting api from contract address
+         * chain_id, contract_address, error.toString(), error
+         */
+        response = { status: false, data: error };
+    }
+    return response
+
 }

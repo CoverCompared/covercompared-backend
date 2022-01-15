@@ -1,5 +1,5 @@
 const web3Connection = require('./index');
-const P4LSmartContractAbi = require("./../abi/p4l.json");
+let P4LSmartContractAbi = require("./../abi/p4l.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -12,12 +12,59 @@ const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
 
 
+/**
+ * This function is used to match the current smart-contract address with setting collection
+ * if Contract address does not match it will set from-block to 0 and check all the transaction with initial
+ */
+exports.checkFromBlockAndSmartContractAddress = async () => {
+
+    // Get Smart Contract from Setting table
+    let p4l_smart_contract_address = await Settings.getKey("p4l_smart_contract_address");
+
+    // If does not match with config, Set from-block to 0
+    if (!utils.matchAddress(p4l_smart_contract_address, this.getCurrentSmartContractAddress())) {
+        Settings.setKey("p4l_from_block", 0);
+        Settings.setKey("p4l_smart_contract_address", this.getCurrentSmartContractAddress());
+    }
+
+    // Update ABI of Smart Contract
+    let SmartContractAbi = await Settings.getKey("p4l_smart_contract_abi");
+    if (
+        !utils.matchAddress(p4l_smart_contract_address, this.getCurrentSmartContractAddress()) ||
+        !SmartContractAbi
+    ) {
+        let SmartContractAbiResponse = await this.getAbiOfSmartContract();
+        if (SmartContractAbiResponse.status) {
+            SmartContractAbi = JSON.parse(SmartContractAbiResponse.data);
+            await Settings.setKey("p4l_smart_contract_abi", SmartContractAbi);
+        }
+    }
+
+    /**
+     * TODO : Check JSON Schema Of SmartContractAbi for ABI Format
+     */
+    P4LSmartContractAbi = SmartContractAbi ? SmartContractAbi : P4LSmartContractAbi;
+
+}
+
+exports.getAbiOfSmartContract = async () => {
+    let chainId = config.is_mainnet ? config.SupportedChainId.MAINNET : config.SupportedChainId.RINKEBY;
+    let SmartContractAbi = await web3Connection.getAbiOfSmartContract(this.getCurrentSmartContractAddress(), chainId);
+    return SmartContractAbi;
+}
+
 exports.getWeb3Connect = async (check_is_connected = false) => {
     return await web3Connection.getWeb3Connect("p4l", check_is_connected);
 }
 
 let P4LStartContract;
 let P4LEventSubscription;
+
+exports.getCurrentSmartContractAddress = () => {
+    let SmartContractAddress;
+    SmartContractAddress = config.is_mainnet ? contracts.p4l[config.SupportedChainId.MAINNET] : contracts.p4l[config.SupportedChainId.RINKEBY];
+    return SmartContractAddress;
+}
 
 exports.connectSmartContract = async () => {
     const web3Connect = await this.getWeb3Connect();
@@ -173,25 +220,25 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
             // Get Product Detail from ProductId
             let product = await this.p4lGetProductDetails(productId);
-            if(policy && policy.txn_hash != product.policyId){
+            if (policy && policy.txn_hash != product.policyId) {
                 /**
                  * TODO: Send Error Report : policy found but policy id not match with product
                  * data : product_type : p4l, smart_contract_address, product, policy
                  */
             }
 
-            if(!policy){
+            if (!policy) {
                 policy = await Policies.findOne({ txn_hash: product.policyId });
                 payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
             }
-            if(
+            if (
                 policy &&
                 (
                     policy.payment_status != constant.PolicyPaymentStatus.paid ||
                     !policy.payment_id || !payment || !payment.network ||
                     !policy.DeviceInsurance.contract_product_id || !policy.payment_hash
                 )
-            ){
+            ) {
                 policy.DeviceInsurance.contract_product_id = productId;
                 policy.DeviceInsurance.start_time = productId;
                 policy.DeviceInsurance.durPlan = product.durPlan;
@@ -239,7 +286,7 @@ exports.p4lSyncTransactionForApi = async (transaction_hash) => {
     await this.getWeb3Connect(true);
     try {
         await this.connectSmartContract();
-        await this.p4lSyncTransaction(transaction_hash);   
+        await this.p4lSyncTransaction(transaction_hash);
     } catch (error) {
         /**
          * TODO: Send Error Report : Issue on p4l Sync Transaction for api

@@ -1,5 +1,5 @@
 const web3Connection = require('./index');
-const NexusSmartContractAbi = require("./../abi/nexus.json");
+let NexusSmartContractAbi = require("./../abi/nexus.json");
 const NexusQuotationDataSmartContractAbi = require("./../abi/nexus-quotation-data.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
@@ -16,6 +16,55 @@ const Users = mongoose.model('Users');
 
 exports.getWeb3Connect = async (check_is_connected = false) => {
     return await web3Connection.getWeb3Connect("nexus", check_is_connected);
+}
+
+/**
+ * This function is used to match the current smart-contract address with setting collection
+ * if Contract address does not match it will set from-block to 0 and check all the transaction with initial
+ */
+exports.checkFromBlockAndSmartContractAddress = async () => {
+
+    // Get Smart Contract from Setting table
+    let nexus_smart_contract_address = await Settings.getKey("nexus_smart_contract_address");
+
+    // If does not match with config, Set from-block to 0
+    if (!utils.matchAddress(nexus_smart_contract_address, this.getCurrentSmartContractAddress())) {
+        Settings.setKey("nexus_from_block", 0);
+        Settings.setKey("nexus_smart_contract_address", this.getCurrentSmartContractAddress());
+    }
+
+
+    // Update ABI of Smart Contract
+    let SmartContractAbi = await Settings.getKey("nexus_smart_contract_abi");
+    if (
+        !utils.matchAddress(nexus_smart_contract_address, this.getCurrentSmartContractAddress()) ||
+        !SmartContractAbi
+    ) {
+        let SmartContractAbiResponse = await this.getAbiOfSmartContract();
+        if (SmartContractAbiResponse.status) {
+            SmartContractAbi = JSON.parse(SmartContractAbiResponse.data);
+            await Settings.setKey("nexus_smart_contract_abi", SmartContractAbi);
+        }
+    }
+
+    /**
+     * TODO : Check JSON Schema Of SmartContractAbi for ABI Format
+     */
+    NexusSmartContractAbi = SmartContractAbi ? SmartContractAbi : NexusSmartContractAbi;
+
+}
+
+exports.getAbiOfSmartContract = async () => {
+    let chainId = config.is_mainnet ? config.SupportedChainId.MAINNET : config.SupportedChainId.KOVAN;
+    let SmartContractAbi = await web3Connection.getAbiOfSmartContract(this.getCurrentSmartContractAddress(), chainId);
+    return SmartContractAbi;
+}
+
+exports.getCurrentSmartContractAddress = () => {
+    let SmartContractAddress;
+
+    SmartContractAddress = config.is_mainnet ? contracts.nexusMutual[config.SupportedChainId.MAINNET] : contracts.nexusMutual[config.SupportedChainId.KOVAN];
+    return SmartContractAddress;
 }
 
 let NexusStartContract;
@@ -42,6 +91,7 @@ exports.connectSmartContract = async () => {
              * data : smart_contract, config.is_mainnet, 
              */
         }
+        console.log("NexusSmartContractAbi", NexusSmartContractAbi);
         NexusStartContract = new web3Connect.eth.Contract(NexusSmartContractAbi, SmartContractAddress);
         return NexusStartContract;
     } catch (error) {
@@ -99,6 +149,7 @@ exports.policySync = async () => {
          * If there any new product found it will insert data to database
          */
         NexusEventSubscription.on('data', async (event) => {
+            console.log("event.event", event.event);
             if (["BuyNexusMutual"].includes(event.event)) {
                 // Find Policy
                 await this.addToSyncTransaction(event.transactionHash, event.blockNumber);

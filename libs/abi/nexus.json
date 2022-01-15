@@ -40,6 +40,12 @@
                 "internalType": "uint256",
                 "name": "_tokenAmount",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "_coverPeriod",
+                "type": "uint16"
             }
         ],
         "name": "BuyNexusMutual",
@@ -529,6 +535,32 @@
         "inputs": [
             {
                 "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "revokeAllowExchangeAgent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "setAllowanceExchangeAgent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
                 "name": "_exchangeAgent",
                 "type": "address"
             }
@@ -547,13 +579,6 @@
             }
         ],
         "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

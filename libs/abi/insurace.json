@@ -299,7 +299,7 @@
                 "type": "bytes32[]"
             }
         ],
-        "name": "buyCoverByETH",
+        "name": "buyETHCoverByETH",
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
@@ -367,9 +367,77 @@
                 "type": "bytes32[]"
             }
         ],
-        "name": "buyCoverByToken",
+        "name": "buyETHCoverByToken",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16[]",
+                "name": "products",
+                "type": "uint16[]"
+            },
+            {
+                "internalType": "uint16[]",
+                "name": "durationInDays",
+                "type": "uint16[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "amounts",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "address",
+                "name": "currency",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "referralCode",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "premiumAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "helperParameters",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "securityParameters",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "v",
+                "type": "uint8[]"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "r",
+                "type": "bytes32[]"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "s",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "buyTokenCoverByToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -518,6 +586,32 @@
     {
         "inputs": [],
         "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "revokeAllowExchangeAgent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "setAllowanceExchangeAgent",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
