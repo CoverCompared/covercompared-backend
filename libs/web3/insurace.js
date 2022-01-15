@@ -107,6 +107,10 @@ exports.addToSyncTransaction = async (transaction_hash, insurace_from_block) => 
     if (IsTransactionRunning == false) {
         console.log("INSURACE  ::  Started.");
         while (TransactionPromises.length > 0) {
+            if (TransactionPromises.length == 1) {
+                console.log("INSURACE  ::  Last Transaction Waiting.....");
+                await (new Promise(resolve => setTimeout(resolve, 1000 * 60))) // 1 min
+            }
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             await this.syncTransaction(promise.transaction_hash);
@@ -209,6 +213,8 @@ exports.syncTransaction = async (transaction_hash) => {
             cover_details = Array.isArray(cover_details) ? cover_details : [];
             let crypto_currency = utils.checkIsCVRToken(_.get(details, "_token", "")) ? "CVR" : "ETH";
             
+            let wallet_address = details._buyer;
+
             if (!policy) {
 
                 let cover = cover_details.find(value => {
@@ -216,7 +222,7 @@ exports.syncTransaction = async (transaction_hash) => {
                 })
 
                 let type = cover && constant.CryptoExchangeTypes.includes(cover.type) ? constant.ProductTypes.crypto_exchange : constant.ProductTypes.smart_contract;
-                let wallet_address = details._buyer;
+                // let wallet_address = details._buyer;
                 policy = new Policies;
                 policy.user_id = await Users.getUser(wallet_address);    
                 policy.product_type = type;
@@ -298,7 +304,7 @@ exports.syncTransaction = async (transaction_hash) => {
 
                 payment.payment_status = constant.PolicyPaymentStatus.paid;
                 payment.blockchain = "Ethereum";
-                payment.wallet_address = TransactionDetails.from;
+                payment.wallet_address = wallet_address;
                 payment.block_timestamp = _.get(blog_details, "timestamp", null);
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;
