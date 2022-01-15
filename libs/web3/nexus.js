@@ -1,5 +1,6 @@
 const web3Connection = require('./index');
 let NexusSmartContractAbi = require("./../abi/nexus.json");
+let TransferAbi = require("./../abi/transfer.json");
 const NexusQuotationDataSmartContractAbi = require("./../abi/nexus-quotation-data.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
@@ -91,7 +92,6 @@ exports.connectSmartContract = async () => {
              * data : smart_contract, config.is_mainnet, 
              */
         }
-        console.log("NexusSmartContractAbi", NexusSmartContractAbi);
         NexusStartContract = new web3Connect.eth.Contract(NexusSmartContractAbi, SmartContractAddress);
         return NexusStartContract;
     } catch (error) {
@@ -110,6 +110,10 @@ exports.addToSyncTransaction = async (transaction_hash, nexus_from_block) => {
     if (IsTransactionRunning == false) {
         console.log("NEXUS  ::  Started.");
         while (TransactionPromises.length > 0) {
+            if (TransactionPromises.length == 1) {
+                console.log("NEXUS  ::  Last Transaction Waiting.....");
+                await (new Promise(resolve => setTimeout(resolve, 1000 * 60))) // 1 min
+            }
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             await this.syncTransaction(promise.transaction_hash);
@@ -149,7 +153,6 @@ exports.policySync = async () => {
          * If there any new product found it will insert data to database
          */
         NexusEventSubscription.on('data', async (event) => {
-            console.log("event.event", event.event);
             if (["BuyNexusMutual"].includes(event.event)) {
                 // Find Policy
                 await this.addToSyncTransaction(event.transactionHash, event.blockNumber);
@@ -213,10 +216,6 @@ exports.syncTransaction = async (transaction_hash) => {
         let CoverDetailsEventEventAbi = NexusQuotationDataSmartContractAbi.find(value => value.name == "CoverDetailsEvent" && value.type == "event");
         let hasCoverDetailsEventEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, CoverDetailsEventEventAbi);
 
-        // MetaTransactionExecuted Log
-        // let MetaTransactionExecutedEventAbi = NexusSmartContractAbi.find(value => value.name == "MetaTransactionExecuted" && value.type == "event");
-        // let hasMetaTransactionExecutedEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, MetaTransactionExecutedEventAbi);
-
         if (hasBuyNexusMutualEvent) {
 
             if (!hasCoverDetailsEventEvent) {
@@ -242,6 +241,26 @@ exports.syncTransaction = async (transaction_hash) => {
             let blog_details = await web3Connect.eth.getBlock(TransactionDetails.blockNumber);
             let duration_days = utils.getTimestampDiff(blog_details.timestamp, event_cover_details.expiry);
 
+            let wallet_address;
+
+            // MetaTransactionExecuted Log
+            let MetaTransactionExecutedEventAbi = NexusSmartContractAbi.find(value => value.name == "MetaTransactionExecuted" && value.type == "event");
+            let hasMetaTransactionExecutedEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, MetaTransactionExecutedEventAbi);
+            if (hasMetaTransactionExecutedEvent) {
+                let MetaTransactionExecutedData = web3Connection.decodeEventParametersLogs(web3Connect, MetaTransactionExecutedEventAbi, hasMetaTransactionExecutedEvent);
+                wallet_address = MetaTransactionExecutedData.userAddress;
+            } else {
+                // Transfer Log
+                let TransferEventAbi = TransferAbi.find(value => value.name == "Transfer" && value.type == "event");
+                let hasTransferEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, TransferEventAbi, { findTopics: { from: this.getCurrentSmartContractAddress() } });
+                let transferEventIndexedData = hasTransferEvent ? web3Connection.decodeEventIndexedDataLogs(web3Connect, TransferEventAbi, hasTransferEvent) : false;
+                if (transferEventIndexedData) {
+                    wallet_address = MetaTransactionExecutedData.to;
+                }
+            }
+
+
+
             if (!policy) {
 
                 let cover = cover_details.find(value => {
@@ -249,7 +268,7 @@ exports.syncTransaction = async (transaction_hash) => {
                 })
 
                 let type = cover && constant.CryptoExchangeTypes.includes(cover.type) ? constant.ProductTypes.crypto_exchange : constant.ProductTypes.smart_contract;
-                let wallet_address = TransactionDetails.from;
+                // let wallet_address = TransactionDetails.from;
                 policy = new Policies;
                 policy.user_id = await Users.getUser(wallet_address);
                 policy.product_type = type;
@@ -318,7 +337,7 @@ exports.syncTransaction = async (transaction_hash) => {
 
                 payment.payment_status = constant.PolicyPaymentStatus.paid;
                 payment.blockchain = "Ethereum";
-                payment.wallet_address = TransactionDetails.from;
+                payment.wallet_address = wallet_address;
                 payment.block_timestamp = _.get(blog_details, "timestamp", null);
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;

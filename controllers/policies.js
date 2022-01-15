@@ -820,6 +820,11 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
             return res.status(200).send(utils.apiResponse(false, utils.getErrorMessage(v.errors), {}, v.errors));
         }
 
+        // let findPolicy = await Policies.findOne({ payment_hash: req.body.payment_hash });
+        // let reqPolicy = policy;
+        // policy = findPolicy ? findPolicy :  policy;
+        
+
         /**
          * TODO:
          * Error Report

@@ -257,18 +257,72 @@ exports.subscriptionStatus = async () => {
  * @param {"event"} abi.type 
  * @param {Object[]} abi.inputs 
  * @param {String} abi.inputs[].type
+ * @param {String} abi.inputs[].name
+ * @param {Boolean} abi.inputs[].indexed
+ * @param {Object} options
+ * @param {Boolean} options.getAll
+ * @param {Object} options.findTopics
  */
-exports.checkTransactionReceiptHasLog = (web3Connect, TransactionReceipt, abi) => {
+exports.checkTransactionReceiptHasLog = (web3Connect, TransactionReceipt, abi, options = {}) => {
+    options.getAll = options.getAll ? options.getAll : false;
+    options.findTopics = options.findTopics ? options.findTopics : false;
+
     let methodSha3 = web3Connect.utils.sha3(utils.convertEventToSha3(abi));
 
+    // Find index of params
+    let findIndex;
+    let findTopics = false;
+    if (options.findTopics) {
+        for (const key in options.findTopics) {
+            findIndex = abi.inputs.filter(value => value.indexed).findIndex((value) => value.indexed && value.name == key)
+            if (findIndex >= 0) {
+                findIndex = findIndex + 1;
+                find = abi.inputs.filter(value => value.indexed).find((value) => value.indexed && value.name == key)
+                findTopics = findTopics ? findTopics : {};
+                findTopics[findIndex] = web3Connect.eth.abi.encodeParameter(find.type, options.findTopics[key]);
+            }
+        }
+    }
+
     if (Array.isArray(TransactionReceipt.logs)) {
-        logEvent = TransactionReceipt.logs.find(log => {
-            return log.topics.find(topic => topic == methodSha3)
+        logEvent = TransactionReceipt.logs.filter(log => {
+            if (!log.topics.find(topic => topic == methodSha3)) {
+                return false
+            } else if (findTopics) {
+                for (const key in findTopics) {
+                    if (
+                        key >= log.topics.length ||
+                        log.topics[key] != findTopics[key]
+                    ) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         })
-        return logEvent;
+        return options.getAll ? logEvent : (logEvent.length > 0 ? logEvent[0] : false);
     }
 
     return false
+}
+
+exports.getValueFromTransactionReceiptLog = (web3Connect, TransactionReceiptLog, abi, fieldName, decode = false) => {
+
+    let findIndex = abi.inputs.filter(value => value.indexed).findIndex((value) => value.indexed && value.name == fieldName)
+    if (findIndex >= 0) {
+        findIndex = findIndex + 1;
+        find = abi.inputs.filter(value => value.indexed).find((value) => value.indexed && value.name == fieldName)
+        if (findIndex < TransactionReceiptLog.topics.length) {
+            if(decode){
+                let find = abi.inputs.filter(value => value.indexed).find((value) => value.indexed && value.name == fieldName)
+                return web3Connect.eth.abi.decodeParameter(find.type, TransactionReceiptLog.topics[findIndex]);
+            }else{
+                return TransactionReceiptLog.topics[findIndex];
+            }
+        }
+    }
+
+
 }
 
 exports.getAddressOfSignatureAccount = async (smart_contract) => {
@@ -290,12 +344,34 @@ exports.decodeEventParametersLogs = (web3Connect, eventAbi, log) => {
     let TransactionReceiptLog = Object.assign({}, log);
     let EventAbiClone = Object.assign({}, eventAbi);
 
-    let inputs = [];
-    for (const key in EventAbiClone.inputs) {
-        if (key > 0) inputs.push(EventAbiClone.inputs[key])
+    let inputs = EventAbiClone.inputs.filter(value => value.indexed == false);
+    
+    console.log("inputs", inputs);
+    console.log("TransactionReceiptLog.data", TransactionReceiptLog.data);
+    return web3Connect.eth.abi.decodeParameters(inputs, TransactionReceiptLog.data);
+}
+
+/**
+ * 
+ * @param {Web3} web3Connect 
+ * @param {Object} eventAbi 
+ * @param {Array} eventAbi.inputs
+ * @param {Object} log 
+ * @param {String} log.data
+ * @param {Array} log.topics
+ */
+exports.decodeEventIndexedDataLogs = (web3Connect, eventAbi, log) => {
+
+    let topics = {};
+
+    if(log.topics && log.topics.length){
+        topics[0] = log.topics[0];
+        eventAbi.inputs.filter(value => value.indexed).forEach((value, ind) => {
+            topics[value.name]  = web3Connect.eth.abi.decodeParameter(value.type, log.topics[ind+1]);
+        })
     }
 
-    return web3Connect.eth.abi.decodeParameters(inputs, TransactionReceiptLog.data);
+    return topics;
 }
 
 /**
@@ -316,9 +392,9 @@ exports.getAbiOfSmartContract = async (contract_address, chain_id) => {
     };
 
     let apiBaseUrls = {
-        "1" : "https://api.etherscan.io/api",
-        "4" : "https://api-rinkeby.etherscan.io/api",
-        "42" : "https://api-kovan.etherscan.io/api"
+        "1": "https://api.etherscan.io/api",
+        "4": "https://api-rinkeby.etherscan.io/api",
+        "42": "https://api-kovan.etherscan.io/api"
     }
 
 
@@ -347,3 +423,14 @@ exports.getAbiOfSmartContract = async (contract_address, chain_id) => {
     return response
 
 }
+
+// exports.getTransferEventLog = async (web3Connect, TransactionReceiptDetails, fromAddress) => {
+
+//     // Transfer Log
+//     let TransferEventAbi = TransferAbi.find(value => value.name == "Transfer" && value.type == "event");
+//     let hasTransferEvent = this.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, TransferEventAbi);
+
+// }
+
+exports.encodePa
+
