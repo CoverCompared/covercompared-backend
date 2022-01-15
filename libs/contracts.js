@@ -6,25 +6,25 @@ const contracts = {
   },
   p4l: {
     1: '',
-    4: '0x238E67Ef545cdAffa380623E4cE2F1614dAFD38D',
+    4: '0x51956B95f63894Ef378BFEb6e9AaEe837393e266',
     42: '0x0000000000000000000000000000000000000000',
   },
   mso: {
     1: '',
-    4: '0xd26ff61c97F95DbE79a28fCCfc40A8fa6e5e10A5',
+    4: '0x49d7Ed485b90aDc96e8e24240e96bc0c7bf5BD13',
     42: '0x0000000000000000000000000000000000000000',
   },
   exchangeAgent: {
     1: '',
-    4: '0xed698505e496B0c39Eb42B9696f141C5526DdF24',
-    42: '0x278d3387C18F6ca33c2f8a46CA1833C4BdC24c74',
+    4: '0x3320c193109265fac179cc3ef0a466cca01651df',
+    42: '0x51FCc54e9c7D8606cD16ea54e91Ed4D09F831e64',
   },
   priceFeed: {
     eth: {
       decimal: 8,
       1: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
-      4: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
-      42: '0x9326BFA02ADD2366b30bacB125260Af641031331',
+      4: '0xc86718f161412Ace9c0dC6F81B26EfD4D3A8F5e0',
+      42: '0xb3dEcC8bAAd6226835BdB92C19f082Fba443Ad3a',
     },
     bnb: {
       decimal: 8,
@@ -47,7 +47,7 @@ const contracts = {
     dai: {
       decimal: 8,
       1: '0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9',
-      4: '0x2bA49Aaa16E6afD2a993473cfB70Fa8559B523cF',
+      4: '0xBC33008AF81A03aA24dc0A0F112E29C979e317fB',
       42: '0x777A68032a88E5A84678A77Af2CD65A7b3c0775a',
     },
     link: {
@@ -128,11 +128,11 @@ const contracts = {
       4: '',
       42: '',
     },
-    crv: {
+    cvr: {
       decimal: 8,
       1: '0xCd627aA160A6fA45Eb793D19Ef54f5062F20f33f',
-      4: '',
-      42: '0xCd627aA160A6fA45Eb793D19Ef54f5062F20f33a',
+      4: '0x8d6D6eeA128a40EFbC0d0a04D7aaC36689F12A46',
+      42: '0x1962ab2E748D202BEEf87a71b1E26dCDeD9456Ac',
     },
     doge: {
       decimal: 8,
@@ -174,6 +174,26 @@ const contracts = {
     1: '',
     4: '0x2Bf563Fff6e951724136d069D6D5e885742942B6',
     42: '0x0000000000000000000000000000000000000000',
+  },
+  distributor: {
+    1: '',
+    4: '0x0000000000000000000000000000000000000000',
+    42: '0xe77250450FC9f682EdEfF9f0d252836189C01b53',
+  },
+  claims: {
+    1: '',
+    4: '0x0000000000000000000000000000000000000000',
+    42: '0xD9F691640F058617D16758708D0B31bcFe44b90B',
+  },
+  claimsData: {
+    1: '',
+    4: '0x0000000000000000000000000000000000000000',
+    42: '0xee778feA0CEBa8D4bAdE5565506B44F8F270c04D',
+  },
+  claimsReward: {
+    1: '',
+    4: '0x0000000000000000000000000000000000000000',
+    42: '0x53e3b0cf9A1fF1bb0B267fd2988D76D9f9a6ba0a',
   },
 };
   

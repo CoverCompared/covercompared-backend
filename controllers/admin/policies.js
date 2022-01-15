@@ -49,6 +49,7 @@ exports.index = async (req, res) => {
                 findObj["$and"].push({ createdAt: createdAt });
             }
             if (search.q) {
+                search.q = _.trim(search.q);
                 findObj["$or"] = [
                     { "txn_hash": { $regex: search.q, $options: "i" } },
                     { "payment_hash": { $regex: search.q, $options: "i" } },
