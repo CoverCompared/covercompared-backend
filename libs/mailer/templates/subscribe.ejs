@@ -1,0 +1,29 @@
+<table width="100%" bgcolor="#e4e4e4" style="background-color: #e4e4e4;" border="0">
+  <tbody>
+    <tr>
+      <td>
+        <div
+          style="max-width: 600px; width: 100%; margin: auto;background-color: white;padding: 10px;padding-top: 20px;">
+          <div style="text-align: center;">
+            <img style="height: 50px;" src="cid:covercomparedlogo@cid" alt="">
+          </div>
+          <div>
+            <p><b>Hello <%= name %>,</b></p>
+            <p>Thanks for subscribing to to articles from Cover Compared, you will now get email each time we publish a new post.
+            </p>
+            <div style="text-align: center; margin: 30px;">
+              <a href="<%= config.web_url + 'blogs' %>" style="padding: 15px 24px;
+                background: #3796a8;
+                border-radius: 24px;
+                color: white;
+                font-size: 18px;
+                text-decoration: none;">Read Most Recent Artical</a>
+            </div>
+            <%- include ("footer.ejs") %>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+</table>

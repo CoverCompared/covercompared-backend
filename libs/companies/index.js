@@ -8,6 +8,8 @@ const config = require("../../config");
 const utils = require("../utils");
 const myCache = new NodeCache();
 
+const mongoose = require('mongoose');
+const Settings = mongoose.model('Settings');
 
 exports.companies = {
     nexus,
@@ -34,6 +36,7 @@ exports.coverList = async (options = {}) => {
 
 
     let companies = Object.values(this.companies)
+    companies = companies.filter((company) => { return company.company.status; });
 
     if (options.companies.length) {
         companies = companies.filter(company => {
@@ -63,10 +66,38 @@ exports.coverList = async (options = {}) => {
                 })
             }
         })
-        
+
         list = [...list, ...coverList];
 
     }
+
+    // Sync Cover with Setting table
+    let cover_details = await Settings.getKey("cover_details");
+    cover_details = Array.isArray(cover_details) ? cover_details : [];
+    let is_cover_detail_changed = false;
+    list.map((object) => {
+        let cover = {
+            unique_id: _.get(object, "unique_id", null),
+            type: _.get(object, "type", null),
+            product_id: _.get(object, "product_id", null),
+            address: _.get(object, "address", null),
+            name: _.get(object, "name", null),
+            company_code: _.get(object, "company_code", null)
+        };
+        
+        let findCover = cover_details.find(val => {
+            return val && _.get(val, "unique_id", null) == object.unique_id
+        })
+        if(!findCover || JSON.stringify(cover) != JSON.stringify(findCover)){
+            is_cover_detail_changed = true;
+            cover_details.push(cover);
+        }
+    })
+    if(is_cover_detail_changed){
+        await Settings.setKey("cover_details", cover_details);
+    }
+
+
     list = await list.filter((object) => {
         if (object.type == "protocol" && !_.get(object, "supportedChains", []).length) {
             console.log("// Send Error Report - Supported Chain Not found")
@@ -81,16 +112,17 @@ exports.coverList = async (options = {}) => {
 
     if (options.duration_min_day) {
         list = await list.filter((object) => {
-            return object.duration_days_min <= options.duration_min_day
+            return object.duration_days_min >= options.duration_min_day || object.duration_days_max >= options.duration_min_day
         })
         list = await list.map((object) => {
-            object.duration_days_min = options.duration_min_day
+            object.duration_days_min = options.duration_min_day > object.duration_days_min ? options.duration_min_day : object.duration_days_min;
             return object;
         })
     }
     if (options.duration_max_day) {
         list = await list.filter((object) => {
-            return object.duration_days_max <= options.duration_max_day
+            return options.duration_max_day >= object.duration_days_min
+            // return object.duration_days_max <= options.duration_max_day
         })
     }
 
@@ -100,7 +132,13 @@ exports.coverList = async (options = {}) => {
             let currency_limit = {};
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
-                    if (_.get(object.currency_limit, `${key}.min`, false) !== false && object.currency_limit[key].min >= options.amount_min) {
+                    if (
+                        _.get(object.currency_limit, `${key}.min`, false) !== false &&
+                        (
+                            object.currency_limit[key].min >= options.amount_min ||
+                            (object.currency_limit[key].max == undefined || (object.currency_limit[key].max >= options.amount_min))
+                        )
+                    ) {
                         currency.push(key);
                         currency_limit[key] = object.currency_limit[key];
                     }
@@ -121,8 +159,8 @@ exports.coverList = async (options = {}) => {
             if (object.currency_limit) {
                 for (const key in object.currency_limit) {
                     if (
-                        object.currency_limit[key].max == undefined ||
-                        (object.currency_limit[key].max <= options.amount_max)
+                        _.get(object.currency_limit, `${key}.min`, false) !== false && (options.amount_max >= object.currency_limit[key].min)
+                        // && (object.currency_limit[key].max == undefined || (object.currency_limit[key].max <= options.amount_max))
                     ) {
                         currency.push(key);
                         currency_limit[key] = object.currency_limit[key];
@@ -138,9 +176,9 @@ exports.coverList = async (options = {}) => {
         })
     }
 
-    if (options.type) {
+    if (Array.isArray(options.type) && options.type.length) {
         list = await list.filter((object) => {
-            return options.type == object.type
+            return options.type.includes(object.type)
         })
     }
     if (Array.isArray(options.supported_chains) && options.supported_chains.length) {
@@ -169,6 +207,7 @@ exports.coverList = async (options = {}) => {
 exports.coverListOptions = async () => {
 
     let companies = Object.values(this.companies)
+    companies = companies.filter((company) => { return company.company.status; });
 
     let coverList;
 
@@ -299,9 +338,9 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
     let cacheKey = `quote-${company_code}-${address}-${amount}-${period}-${supported_chain}-${currency}-${product_id}`;
     quote = myCache.get(cacheKey);
     if (quote == undefined) {
-        if (company_code == this.companies.nexus.code) {
+        if (company_code == this.companies.nexus.code && this.companies.nexus.company.status) {
             quote = await this.companies.nexus.getQuote(address, amount, currency, period);
-        } else if (company_code == this.companies.insurace.code) {
+        } else if (company_code == this.companies.insurace.code && this.companies.insurace.company.status) {
             quote = await this.companies.insurace.getQuote({
                 supported_chain: supported_chain,
                 product_id: product_id,
@@ -311,9 +350,9 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
                 currency: currency
             })
 
-        } else if (company_code == this.companies.nsure.code) {
+        } else if (company_code == this.companies.nsure.code && this.companies.nsure.company.status) {
             quote = await this.companies.nsure.getQuote(product_id, utils.convertToCurrency(amount, 18), period)
-        } else if (company_code == this.companies.unore.code) {
+        } else if (company_code == this.companies.unore.code && this.companies.unore.company.status) {
             quote = await this.companies.unore.getQuote(product_id, utils.convertToCurrency(amount, 18), period)
         }
         if (quote.status == false) {
@@ -322,7 +361,7 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
         myCache.set(cacheKey, quote, config.cache_time)
     }
 
-    if (company_code == this.companies.nexus.code) {
+    if (company_code == this.companies.nexus.code && this.companies.nexus.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.price", false);
             if (quote !== false) {
@@ -331,7 +370,7 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
         } else {
             quote = false
         }
-    } else if (company_code == this.companies.insurace.code) {
+    } else if (company_code == this.companies.insurace.code && this.companies.insurace.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.premiumAmount", false);
             if (quote !== false) {
@@ -341,13 +380,13 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
             quote = false
         }
 
-    } else if (company_code == this.companies.nsure.code) {
+    } else if (company_code == this.companies.nsure.code && this.companies.nsure.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.list", false);
         } else {
             quote = false
         }
-    } else if (company_code == this.companies.unore.code) {
+    } else if (company_code == this.companies.unore.code && this.companies.unore.company.status) {
         if (quote.status == true) {
             quote = _.get(quote, "data.list", false);
         } else {
@@ -356,4 +395,52 @@ exports.getQuote = async ({ company_code, address, amount, period, supported_cha
     }
     return quote;
 
+}
+
+exports.getCoverImage = async (unique_id) => {
+    if (typeof unique_id === "string") {
+        let company_code = unique_id.split(".");
+        company_code = company_code[company_code.length - 1]
+        console.log("Company Code", company_code);
+        switch (company_code) {
+            case this.companies.nexus.code:
+                return await this.companies.nexus.getCoverImage(unique_id);
+                break;
+            case this.companies.insurace.code:
+                return await this.companies.insurace.getCoverImage(unique_id);
+                break;
+            case this.companies.nsure.code:
+                return await this.companies.nsure.getCoverImage(unique_id);
+                break;
+            case this.companies.unore.code:
+                return await this.companies.unore.getCoverImage(unique_id);
+                break;
+            default:
+                break;
+        }
+    }
+    return `${config.api_url}images/smart-contract-default.png`
+}
+
+exports.getCompanyCodes = () => {
+    return _.map(_.filter(Object.values(this.companies), "company.status"), "code");
+}
+
+exports.getCompanyCodeOfUniqueId = (unique_id) => {
+    unique_id = unique_id.split(".");
+    return unique_id[unique_id.length - 1];
+}
+
+exports.decodeUniqueId = (unique_id) => {
+    unique_id = unique_id.split(".");
+    try {
+        return {
+            product_id: _.get(unique_id, 0, ""),
+            address: _.get(unique_id, unique_id.length - 2, ""),
+            company_code: _.get(unique_id, unique_id.length - 1, "")
+        }
+    } catch (error) {
+        /**
+         * TODO: Send error report error while decode unique_id */
+    }
 }

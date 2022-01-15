@@ -3,6 +3,10 @@ const { nexus } = require("../../config/companies")
 const _ = require("lodash");
 const utils = require("../utils");
 
+const mongoose = require('mongoose');
+const config = require("../../config");
+const SmartContractLogos = mongoose.model("SmartContractLogos");
+
 exports.code = nexus.code;
 exports.company = nexus
 
@@ -57,17 +61,30 @@ exports.coverList = async () => {
                 if (currencyList[currency[k]])
                     currency_limit[currency[k]] = currencyList[currency[k]];
             }
+
+            let product_id = null;
+            let company_code = this.company.code;
+            let unique_id = utils.getUniqueCoverID(product_id, key, company_code);
+            let logo_endpoint = _.get(data, "logo", false);
+            let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
+            let type = _.get(data, "type", "");
+            let supportedChains = utils.convertSupportedChain(_.get(data, "supportedChains", [])); 
+            
+            console.log(type, supportedChains.length);
+            if(!supportedChains.length && type == "custodian"){
+                supportedChains = ["Ethereum"];
+            }
             return {
-                product_id: null,
+                unique_id,
+                product_id,
                 address: key,
-                logo: `${this.company.logo_url}${_.get(data, "logo", "")}`,
+                logo: this.getImageUrl(logo_endpoint),
                 name: _.get(data, "name", ""),
-                type: _.get(data, "type", ""),
-                company: this.company.name,
-                company_code: this.company.code,
+                type, company: this.company.name,
+                company_icon: this.company.icon,
+                company_code,
                 min_eth: this.company.min_eth,
-                supportedChains: utils.convertSupportedChain(_.get(data, "supportedChains", [])),
-                currency, currency_limit,
+                supportedChains, currency, currency_limit,
                 duration_days_min: 30,
                 duration_days_max: 365,
             }
@@ -103,7 +120,8 @@ exports.getCapacity = async (address) => {
 }
 
 
-exports.getQuote = async (contractAddress, coverAmount, currency, period) => {
+exports.getQuoteWithPromise = async (contractAddress, coverAmount, currency, period) => {
+
     var config = {
         url: utils.addQueryParams(this.company.apis.cover_quote.url, {
             contractAddress, coverAmount, currency, period
@@ -119,4 +137,67 @@ exports.getQuote = async (contractAddress, coverAmount, currency, period) => {
     }
 
     return response
+
+}
+
+exports.getQuote = async (contractAddress, coverAmount, currency, period, fromCache = true) => {
+    if(fromCache){
+        return await utils.getNexusQuote(contractAddress, coverAmount, currency, period, this.getQuoteWithPromise);
+    }
+    return await this.getQuoteWithPromise(contractAddress, coverAmount, currency, period, fromCache = true);
+}
+
+exports.getImageUrl = (logo_endpoint) => {
+    if (logo_endpoint) {
+        
+        let replaceValues = {
+            "alpha-homora.jpg": "alpha-homora.svg",
+            "notional.png": "notional-finance.svg",
+            "pooltogether.png": "pooltogether.svg"
+        }
+        logo_endpoint = replaceValues[logo_endpoint] ? replaceValues[logo_endpoint] : logo_endpoint;
+        return `${this.company.logo_url}${logo_endpoint}`
+    } else {
+        return `${config.api_url}images/smart-contract-default.png`
+    }
+}
+
+
+exports.getCoverImage = async (unique_id) => {
+
+    // Find from database
+    let logo = await SmartContractLogos.findOne({ company_code: this.company.code, unique_id: unique_id });
+
+    if (logo) {
+        return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    }
+
+    // Check from cache
+    let logo_details = await utils.getSmartContractLogo(unique_id);
+    if (logo_details != undefined) {
+        logo = new SmartContractLogos;
+        logo.company_code = this.company.code;
+        logo.unique_id = unique_id;
+        logo.logo_details = logo_details;
+        await logo.save();
+
+        return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    }
+
+    // Sync Cover List
+    await this.coverList();
+
+    // Check from cache
+    logo_details = await utils.getSmartContractLogo(unique_id);
+    if (logo_details != undefined) {
+        logo = new SmartContractLogos;
+        logo.company_code = this.company.code;
+        logo.unique_id = unique_id;
+        logo.logo_details = logo_details;
+        await logo.save();
+        return this.getImageUrl(_.get(logo, "logo_details.logo_endpoint", false));
+    }
+
+    // Send response
+    return `${config.api_url}images/smart-contract-default.png`
 }

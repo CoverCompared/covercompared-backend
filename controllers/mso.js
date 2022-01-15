@@ -1,53 +1,10 @@
 const utils = require("../libs/utils");
 const companies = require("./../libs/companies")
 const _ = require("lodash");
+const config = require("../config");
+const msoPlans = require("../libs/mso-plans");
 
-exports.defaultList = [
-    {
-        "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "name": "BASIC PLAN",
-        "quote": "50",
-        "MSOAddOnService": "15",
-        "type": "Single cover",
-        "MSOPlanDuration": "Annual Plan",
-        "MSOCoverUser": "User - 1",
-        "MSOCoverUserLimit": "1",
-        "EHR": "EHR & PORTAL"
-    },
-    {
-        "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "name": "SILVER PLAN",
-        "quote": "60",
-        "MSOAddOnService": "20",
-        "type": "Family cover",
-        "MSOPlanDuration": "Annual Plan",
-        "MSOCoverUser": "2 plus 2: Husband, wife and 2 children",
-        "MSOCoverUserLimit": "2",
-        "EHR": "EHR & PORTAL"
-    },
-    {
-        "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "name": "GOLD PLAN",
-        "quote": "70",
-        "MSOAddOnService": "25",
-        "type": "Family cover",
-        "MSOPlanDuration": "Annual Plan",
-        "MSOCoverUser": "3 plus 3: Husband, two wives, and 3 children",
-        "MSOCoverUserLimit": "3",
-        "EHR": "EHR & PORTAL"
-    },
-    {
-        "InsurancePlanType": "Medical Second Opinion (MSO)",
-        "name": "PLATINUM PLAN",
-        "quote": "85",
-        "MSOAddOnService": "30",
-        "type": "Family cover",
-        "MSOPlanDuration": "Annual Plan",
-        "MSOCoverUser": "unlimited: Husband, all wives, all children, parents on husband& wives’ side",
-        "MSOCoverUserLimit": "unlimited",
-        "EHR": "EHR & PORTAL"
-    }
-];
+exports.defaultList = msoPlans;
 
 exports.list = async (req, res, next) => {
 

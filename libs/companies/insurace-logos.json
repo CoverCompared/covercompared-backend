@@ -191,6 +191,10 @@
         "name": "88mph V2"
     },
     {
+        "logo": "88mph.png",
+        "name": "88mph V3"
+    },
+    {
         "logo": "dHEDGE.png",
         "name": "dHEDGE"
     },
@@ -277,5 +281,17 @@
     {
         "logo": "AlphaHomora.png",
         "name": "Alpha Homora V1"
+    },
+    {
+        "logo": "NaosFinance.png",
+        "name": "NAOS Finance Formation V2"
+    },
+    {
+        "logo": "IdleFinance.png",
+        "name": "Idle V4"
+    },
+    {
+        "logo": "PoolTogether.png",
+        "name": "Pool Together V4"
     }
 ]

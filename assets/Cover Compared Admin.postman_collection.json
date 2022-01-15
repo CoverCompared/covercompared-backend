@@ -1,0 +1,1931 @@
+{
+	"info": {
+		"_postman_id": "f02ac5b1-eef0-40c6-a6e6-5c8150dbc5fe",
+		"name": "Cover Compared Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Policy",
+			"item": [
+				{
+					"name": "Policy List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/policies?filter={\"product_type\": \"crypto_exchange\"}",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policies"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "[11,59]",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "{\"q\":\"DEVICE-007014\"}",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "{\"status\": \"active\"}",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "{\"product_type\": \"crypto_exchange\"}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}admin/policies?filter={\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}&range=[0,10]",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policies"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}"
+										},
+										{
+											"key": "range",
+											"value": "[0,10]"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "273"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"111-5r4u0PPHjlqCR0siukop9Sm9c3s\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 26 Oct 2021 17:39:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-10/3\",\n        \"data\": [\n            {\n                \"_id\": \"61ae236ab78ec3824be46ecd\",\n                \"txn_hash\": \"SC-001017\",\n                \"product_type\": \"smart_contract\",\n                \"status\": \"active\",\n                \"payment_status\": \"paid\",\n                \"currency\": \"USD\",\n                \"total_amount\": null,\n                \"crypto_currency\": \"ETH\",\n                \"crypto_amount\": 1,\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"createdAt\": \"2021-12-06T14:51:22.107Z\",\n                \"user\": {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            },\n            {\n                \"_id\": \"61a483738255e71994be233d\",\n                \"txn_hash\": \"MSO-015016\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"unpaid\",\n                \"currency\": \"USD\",\n                \"total_amount\": 53.75,\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"createdAt\": \"2021-11-29T07:38:27.621Z\",\n                \"user\": {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            },\n            {\n                \"_id\": \"61a47efb8255e71994be22fd\",\n                \"txn_hash\": \"MSO-014015\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"unpaid\",\n                \"currency\": \"USD\",\n                \"total_amount\": 53.75,\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"createdAt\": \"2021-11-29T07:19:23.064Z\",\n                \"user\": {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "View Policy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    let delete_id  = pm.collectionVariables.get(\"delete_id\");",
+									"    let delete_ids  = pm.collectionVariables.get(\"delete_ids\");",
+									"    delete_ids = JSON.parse(delete_ids);",
+									"    delete_ids = delete_ids.filter((value, index) => {",
+									"        return delete_id != value",
+									"    })",
+									"",
+									"    pm.collectionVariables.set(\"delete_ids\", JSON.stringify(delete_ids));",
+									"",
+									"    if(delete_ids.length > 0){",
+									"        pm.collectionVariables.set('delete_id', delete_ids[0])",
+									"    }",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}admin/policies/61d5581cef8307b4c7dfff80",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policies",
+								"61d5581cef8307b4c7dfff80"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "View Policy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}admin/policies/61cc558e42b3b33e145d6f06",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policies",
+										"61cc558e42b3b33e145d6f06"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2372"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"944-pil9tvkC+Tai+ejT1dNwcBm9N3I\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 04 Jan 2022 14:28:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"_id\": \"61cc558e42b3b33e145d6f06\",\n        \"txn_hash\": \"MSO-004037\",\n        \"product_type\": \"mso_policy\",\n        \"status\": \"active\",\n        \"payment_status\": \"paid\",\n        \"blockchain\": null,\n        \"wallet_address\": null,\n        \"block_timestamp\": null,\n        \"txn_type\": null,\n        \"payment_hash\": \"0x82263df39f30e2a3f2ea83efba7709b40248655ddd1c02bc40e11aead2526f08\",\n        \"currency\": \"CVR\",\n        \"amount\": 108,\n        \"discount_amount\": 27,\n        \"tax\": 0,\n        \"total_amount\": 81,\n        \"crypto_currency\": null,\n        \"crypto_amount\": null,\n        \"createdAt\": \"2021-12-29T12:33:18.534Z\",\n        \"updatedAt\": \"2022-01-04T14:10:13.582Z\",\n        \"__v\": 3,\n        \"plan_details\": {},\n        \"details\": {\n            \"plan_type\": \"GOLD_PLAN\",\n            \"name\": \"GOLD PLAN\",\n            \"policy_price\": 108,\n            \"quote\": \"108\",\n            \"mso_addon_service\": 0,\n            \"amount\": 108,\n            \"MSOMembers\": [\n                {\n                    \"user_type\": \"Main Member\",\n                    \"first_name\": \"Chancellor\",\n                    \"last_name\": \"Strong\",\n                    \"country\": \"KWT\",\n                    \"dob\": \"1981-06-13T18:30:00.000Z\",\n                    \"identity_type\": null,\n                    \"identity\": \"Consequat Laudantiu\",\n                    \"_id\": \"61cc558e42b3b33e145d6f07\"\n                }\n            ],\n            \"plan_details\": {\n                \"name\": \"GOLD PLAN\",\n                \"period\": 3,\n                \"type\": \"Family cover\",\n                \"MSOPlanDuration\": \"Annual Plan\",\n                \"MSOCoverUser\": \"3 plus 3: Husband, wives, and children\",\n                \"MSOCoverUserLimit\": \"6\",\n                \"totalUsers\": 6\n            },\n            \"signature\": {\n                \"message\": \"0xe98396e9c55617f297af5afdbf9029db3ee4ba414e6b3ab13b85ae6c49b9f5c2\",\n                \"messageHash\": \"0xc9b2e18ac4c54a437efe660161438ad61fefd321be58d72478ff5a2ed21fa8da\",\n                \"v\": \"0x1c\",\n                \"r\": \"0xc80b1cf7b7840cb7bb5840790ac4cadec6564125523429c5ee0fa683afa812ef\",\n                \"s\": \"0x7e5bb893a835b328a29bb055d96a17245c1f9b0eb7b791cce1b874aacf49fde7\",\n                \"signature\": \"0xc80b1cf7b7840cb7bb5840790ac4cadec6564125523429c5ee0fa683afa812ef7e5bb893a835b328a29bb055d96a17245c1f9b0eb7b791cce1b874aacf49fde71c\"\n            },\n            \"contract_product_id\": \"8\",\n            \"start_time\": 8\n        },\n        \"reviews\": null,\n        \"user\": {\n            \"_id\": \"61bdcea79371419c3091e17f\",\n            \"email\": \"makavanaromik1214@gmail.com\",\n            \"first_name\": \"Chancellor\",\n            \"last_name\": \"Strong\"\n        },\n        \"payment\": {\n            \"_id\": \"61cc55a442b3b33e145d6f13\",\n            \"crypto_currency\": \"Ether\",\n            \"crypto_amount\": 0,\n            \"blockchain\": \"Ethereum\",\n            \"wallet_address\": \"0x677FC2a06675E3fff07631B824D7e1E6B5813a1F\",\n            \"block_timestamp\": \"1640781217\",\n            \"txn_type\": \"onchain\",\n            \"payment_hash\": \"0x82263df39f30e2a3f2ea83efba7709b40248655ddd1c02bc40e11aead2526f08\",\n            \"currency\": \"USD\",\n            \"paid_amount\": \"81\",\n            \"payment_status\": \"paid\",\n            \"TokenTransferred\": [],\n            \"createdAt\": \"2021-12-29T12:33:40.567Z\",\n            \"updatedAt\": \"2021-12-29T12:33:40.567Z\",\n            \"__v\": 0,\n            \"transaction_link\": \"https://rinkeby.etherscan.io/tx/0x82263df39f30e2a3f2ea83efba7709b40248655ddd1c02bc40e11aead2526f08\"\n        }\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "MSO Policy List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/policies-mso",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policies-mso"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "[11,59]",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "{\"q\":\"DEVICE-007014\"}",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "{\"status\": \"active\"}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}admin/policies?filter={\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}&range=[0,10]",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policies"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{\"txn_hash\": \"DEVICE-00608\",\"status\": \"pending\",\"product_type\": \"device_insurance\"}"
+										},
+										{
+											"key": "range",
+											"value": "[0,10]"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "273"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"111-5r4u0PPHjlqCR0siukop9Sm9c3s\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 26 Oct 2021 17:39:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-10/3\",\n        \"data\": [\n            {\n                \"_id\": \"61ae236ab78ec3824be46ecd\",\n                \"txn_hash\": \"SC-001017\",\n                \"product_type\": \"smart_contract\",\n                \"status\": \"active\",\n                \"payment_status\": \"paid\",\n                \"currency\": \"USD\",\n                \"total_amount\": null,\n                \"crypto_currency\": \"ETH\",\n                \"crypto_amount\": 1,\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"createdAt\": \"2021-12-06T14:51:22.107Z\",\n                \"user\": {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            },\n            {\n                \"_id\": \"61a483738255e71994be233d\",\n                \"txn_hash\": \"MSO-015016\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"unpaid\",\n                \"currency\": \"USD\",\n                \"total_amount\": 53.75,\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"createdAt\": \"2021-11-29T07:38:27.621Z\",\n                \"user\": {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            },\n            {\n                \"_id\": \"61a47efb8255e71994be22fd\",\n                \"txn_hash\": \"MSO-014015\",\n                \"product_type\": \"mso_policy\",\n                \"status\": \"pending\",\n                \"payment_status\": \"unpaid\",\n                \"currency\": \"USD\",\n                \"total_amount\": 53.75,\n                \"user_id\": \"614b0b603f9334caf7e6903b\",\n                \"createdAt\": \"2021-11-29T07:19:23.064Z\",\n                \"user\": {\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\",\n                    \"email\": \"makavanaromik1214@gmail.com\"\n                }\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Policy Request",
+			"item": [
+				{
+					"name": "Policy requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/policy-requests",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"policy-requests"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "[0,3]",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}admin/policy-requests?filter={\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}&range=[0,3]",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"policy-requests"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{\"email\":\"TEST1@gmail.com\",\"country\": \"UAE\"}"
+										},
+										{
+											"key": "range",
+											"value": "[0,3]"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "319"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"13f-kUV0H+jjtuJ49DFdwkOzHjzW6uk\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 24 Oct 2021 07:59:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-10/3\",\n        \"policy_request\": [\n            {\n                \"_id\": \"617fd62d43d492ae4c585900\",\n                \"user_id\": null,\n                \"product_type\": \"device_insurance\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST1@gmail.com\",\n                \"createdAt\": \"2021-11-01T11:57:33.203Z\"\n            },\n            {\n                \"_id\": \"617cc61c86a2df0d340cb6f0\",\n                \"user_id\": {\n                    \"_id\": \"614b0b603f9334caf7e6903b\",\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\"\n                },\n                \"product_type\": \"device_insurance\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST@gmail.com\",\n                \"createdAt\": \"2021-10-30T04:12:12.643Z\"\n            },\n            {\n                \"_id\": \"6173a0b457e72205ec98e67c\",\n                \"user_id\": {\n                    \"_id\": \"614b0b603f9334caf7e6903b\",\n                    \"first_name\": \"Romik\",\n                    \"last_name\": \"Makavana\"\n                },\n                \"product_type\": \"mso_policy\",\n                \"country\": \"UAE\",\n                \"email\": \"TEST@gmail.com\",\n                \"createdAt\": \"2021-10-23T05:42:12.431Z\"\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "FInd Policy request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/admin/policy-requests/6173a0b457e72205ec98e67c",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"admin",
+								"policy-requests",
+								"6173a0b457e72205ec98e67c"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/policy-request/61746a517339a823dbeca0a4",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"policy-request",
+										"61746a517339a823dbeca0a4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "283"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"11b-hy3VvvIqpAQRDMIYXsTP5zH5Ra4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 24 Oct 2021 05:55:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": [\n        {\n            \"_id\": \"6173a0b457e72205ec98e67c\",\n            \"user_id\": {\n                \"_id\": \"614b0b603f9334caf7e6903b\",\n                \"first_name\": \"Romik\",\n                \"last_name\": \"Makavana\"\n            },\n            \"product_type\": \"mso_policy\",\n            \"country\": \"UAE\",\n            \"email\": \"TEST@gmail.com\",\n            \"createdAt\": \"2021-10-23T05:42:12.431Z\"\n        }\n    ],\n    \"errors\": {}\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/policy-request/61746a517339a823dbeca0a2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"policy-request",
+										"61746a517339a823dbeca0a2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "77"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4d-ZXzZQUSscAZQioHKqJaF0KGSKvs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 24 Oct 2021 05:58:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"Policy Request not found.\",\n    \"data\": {},\n    \"errors\": {}\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if(jsonData.success){",
+									"        pm.collectionVariables.set(\"admin_token\", jsonData.data.token)",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImY1NWUyOTRlZWRjMTY3Y2Q5N2JiNWE4MTliYmY3OTA2MzZmMTIzN2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY292ZXItY29tcGFyZWQtbG9jYWwiLCJhdWQiOiJjb3Zlci1jb21wYXJlZC1sb2NhbCIsImF1dGhfdGltZSI6MTYzNjg4OTE3MiwidXNlcl9pZCI6InhSREw1WllIRGFQQkVjcVl2Mk9LaW9vdmx0TjIiLCJzdWIiOiJ4UkRMNVpZSERhUEJFY3FZdjJPS2lvb3ZsdE4yIiwiaWF0IjoxNjM2ODg5MTcyLCJleHAiOjE2MzY4OTI3NzIsImVtYWlsIjoic3VwZXJhZG1pbkBjb3Zlci1jb21wYXJlZC1sb2NhbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VwZXJhZG1pbkBjb3Zlci1jb21wYXJlZC1sb2NhbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.NuE_Tz4CzSxZHsdJEY24yU49h_pORPJ-MxzjNbBoTavtniFC10rjc6I0aW-YMzDcSbf5ZjbEO7wAfhUdr7Tjv2f5IA2GARBudZZ_W6BaScpYT1K679Ts2Yb1zGlcyKo5czckoeen35ciO9g2Wfq9UoFQdBAc0SZ1woiyj0KLS6O_JzvzimfxJbMCsemARCBiTbp_uwUleyH7pX_h4EWWLCpui1X6i-t4Ufdq4d0PRa5G_-6NQRCg8OFuj53QkzQUqMWc2pMCeEx7Xmb4AqEM-qSf89fddw2LtK4SvfH1cUq2QP4z-4Xo5ACACfYl8CINu6_Sf6rzBUdlvcfWMuqXYg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}admin/login",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"superadmin@cover-compared-local.com\",\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}admin/login",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "266"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10a-yZ9XjJAYldsDdMKW4hc7kQ5I9GM\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Nov 2021 13:15:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjE4MTM2ZTBmMzIxMTMzZTJiMjdhZWQzIiwicm9sZSI6InN1cGVyLWFkbWluIiwiaWF0IjoxNjM1ODU4OTIzLCJleHAiOjE2MzU5NDUzMjN9.VdWwUr8FSXlUZIv8VGyUrmC66woVL0UUbfCcO78hnlk\"\n    },\n    \"errors\": {}\n}"
+						},
+						{
+							"name": "Form Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}admin/login",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "197"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c5-Bhs9D2llWeolLlCRXrYKLbpDsCg\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Nov 2021 13:16:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"email\": {\n            \"message\": \"The email field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"password\": {\n            \"message\": \"The password field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"superadmin@cover-compared-local.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}admin/login",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"superadmin@cover-compared-local.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}admin/profile",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact Us",
+			"item": [
+				{
+					"name": "Contact Us Table",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/admin/contact-us/table",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"admin",
+								"contact-us",
+								"table"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"q\":\"makavanaromik\"}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Contact Us Table",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/admin/contact-us/table",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"contact-us",
+										"table"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "497"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f1-frRxkG9k/e3WvxkRe9RsCXoYIZ8\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 13:42:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"range\": \"0-10/2\",\n    \"data\": [\n        {\n            \"_id\": \"61bde5433de4b512c78e6683\",\n            \"name\": \"Romik Makavana\",\n            \"email\": \"makavanaromik1214@gmail.com\",\n            \"user_type\": \"Customer\",\n            \"message\": \"Need to disscuss\",\n            \"createdAt\": \"2021-12-18T13:42:27.850Z\",\n            \"updatedAt\": \"2021-12-18T13:42:27.850Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"61bde5083de4b512c78e6677\",\n            \"name\": \"Romik Makavana\",\n            \"email\": \"makavanaromik1214@gmail.com\",\n            \"user_type\": \"Customer\",\n            \"message\": \"Need to disscuss\",\n            \"createdAt\": \"2021-12-18T13:41:28.238Z\",\n            \"updatedAt\": \"2021-12-18T13:41:28.238Z\",\n            \"__v\": 0\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Contact Us Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/contact-us/show/61bde5433de4b512c78e6683",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"contact-us",
+								"show",
+								"61bde5433de4b512c78e6683"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contact Us Mark As Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/contact-us/mark-read/61cc5e954ae87b5e81ea09c3/0",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"contact-us",
+								"mark-read",
+								"61cc5e954ae87b5e81ea09c3",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blogs",
+			"item": [
+				{
+					"name": "Blogs Table",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/admin/blogs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"admin",
+								"blogs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Blogs Table",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/admin/blogs",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"blogs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "308"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"134-jcUNFbP79l9WXe61IoYuUY14n4g\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:03:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"range\": \"0-10/2\",\n        \"data\": [\n            {\n                \"_id\": \"61bcc7c6d4445f2ba9f12711\",\n                \"title\": \"Test\",\n                \"status\": \"draft\",\n                \"createdAt\": \"2021-12-17T17:24:22.859Z\"\n            },\n            {\n                \"_id\": \"61b78652ba02014c1194060b\",\n                \"title\": \"Reprehenderit corrup\",\n                \"status\": \"published\",\n                \"createdAt\": \"2021-12-13T17:43:46.746Z\"\n            }\n        ]\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/blogs/61bcc7c6d4445f2ba9f12711",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"blogs",
+								"61bcc7c6d4445f2ba9f12711"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}admin/blogs/61bde5433de4b512c78e6683",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"blogs",
+										"61bde5433de4b512c78e6683"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-Dt3XxUn+PjiaDFgtRtA3Shrun98\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:04:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"Not found\"\n}"
+						},
+						{
+							"name": "Blog Show",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}admin/blogs/61bcc7c6d4445f2ba9f12711",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"blogs",
+										"61bcc7c6d4445f2ba9f12711"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "233"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e9-8i5hRNhdUqx4KjUz9u0vUuEaPUM\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:05:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"_id\": \"61bcc7c6d4445f2ba9f12711\",\n        \"slug\": \"test\",\n        \"title\": \"Test\",\n        \"description\": \"1Test\",\n        \"content\": \"<p>Test Test</p>\",\n        \"status\": \"draft\",\n        \"image\": \"http://localhost:3006/api/blogs/image/test\"\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "{{$randomJobTitle}}",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/romik/Downloads/Java Script(3).png"
+								},
+								{
+									"key": "status",
+									"value": "draft",
+									"description": "draft | published",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{$randomJobDescriptor}}",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "{{$randomLoremParagraphs}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}admin/blogs",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"blogs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "{{$randomJobTitle}}",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/romik/Downloads/Java Script(3).png"
+										},
+										{
+											"key": "status",
+											"value": "draft",
+											"description": "draft | published",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "{{$randomJobDescriptor}}",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "{{$randomLoremParagraphs}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}admin/blogs",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "993"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3e1-GQXxTDujG+fKWFXTHhKTJCqK2DU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:07:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Blog created successfully.\",\n    \"data\": {\n        \"_id\": \"61bdeb37f0b47d313297de97\",\n        \"slug\": \"forward-quality-producer\",\n        \"title\": \"Forward Quality Producer\",\n        \"description\": \"Dynamic\",\n        \"content\": \"Omnis nulla qui aut inventore occaecati et sed aut. Omnis cupiditate expedita tempore sint non corrupti rerum numquam excepturi. Quos reprehenderit deserunt. Sint expedita et optio officiis quis recusandae aut et. Et tempora non eos adipisci magnam sint cupiditate.\\n \\rAssumenda aut nostrum nisi molestiae est. Earum deserunt delectus iste et consequuntur nam nisi odit. Voluptatibus perferendis autem accusantium quia.\\n \\rEarum itaque quos possimus repudiandae quia. Incidunt minima rem eos voluptatem soluta fugiat aliquam. Voluptatum inventore voluptatum nemo iusto sunt. Quae veniam fuga repellendus rerum nisi maiores sit qui accusantium. Accusamus quia est vitae voluptates alias.\",\n        \"status\": \"draft\",\n        \"image\": \"http://localhost:3006/api/blogs/image/forward-quality-producer\"\n    },\n    \"errors\": {}\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "{{$randomJobTitle}}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/romik/Downloads/Java Script(3).png",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "draft",
+											"description": "draft | published",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "{{$randomJobDescriptor}}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "content",
+											"value": "{{$randomLoremParagraphs}}",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}admin/blogs",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "419"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1a3-M/vR2TVf867ShnFAMrjpKPB6DzY\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:08:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"\",\n    \"data\": {\n        \"title\": {\n            \"message\": \"The title field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"image\": {\n            \"message\": \"The image field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"status\": {\n            \"message\": \"The status field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"description\": {\n            \"message\": \"The description field is mandatory.\",\n            \"rule\": \"required\"\n        },\n        \"content\": {\n            \"message\": \"The content field is mandatory.\",\n            \"rule\": \"required\"\n        }\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "{{$randomJobTitle}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/romik/Downloads/Java Script(3).png",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "draft",
+									"description": "draft | published",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "{{$randomJobDescriptor}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "content",
+									"value": "{{$randomLoremParagraphs}}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}admin/blogs/61bcc7c6d4445f2ba9f12711",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"blogs",
+								"61bcc7c6d4445f2ba9f12711"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "{{$randomJobTitle}}",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/romik/Downloads/Java Script(3).png"
+										},
+										{
+											"key": "status",
+											"value": "draft",
+											"description": "draft | published",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "{{$randomJobDescriptor}}",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "{{$randomLoremParagraphs}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}admin/blogs/61bcc7c6d4445f2ba9f12711",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"blogs",
+										"61bcc7c6d4445f2ba9f12711"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "887"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"377-io+ZnQ8/KnvFWtDBTotfG/O/6Zg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:12:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Blog updated successfully.\",\n    \"data\": {\n        \"_id\": \"61bcc7c6d4445f2ba9f12711\",\n        \"slug\": \"investor-brand-representative\",\n        \"title\": \"Investor Brand Representative\",\n        \"description\": \"International\",\n        \"content\": \"Commodi dolor nesciunt unde omnis natus porro saepe suscipit voluptas. Accusamus earum hic. Maxime autem labore eos. Quas vel id.\\n \\rRem voluptatem hic aut vel non. Nihil voluptatem velit officia repellendus ex debitis. Libero pariatur placeat. Aspernatur modi dolorem fuga possimus nihil.\\n \\rMollitia iure molestias dolor dolor voluptatem. Hic aut provident facere nesciunt commodi sunt. Eos assumenda asperiores nesciunt soluta aliquam quibusdam omnis voluptatem mollitia. Voluptatem accusamus alias ducimus numquam quis sunt. Ut accusantium nesciunt nihil.\",\n        \"status\": \"draft\",\n        \"image\": \"http://localhost:3006/api/blogs/image/investor-brand-representative\"\n    },\n    \"errors\": {}\n}"
+						},
+						{
+							"name": "Update Status",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "{{$randomJobTitle}}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/romik/Downloads/Java Script(3).png",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "draft",
+											"description": "draft | published",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "{{$randomJobDescriptor}}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "content",
+											"value": "{{$randomLoremParagraphs}}",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}admin/blogs/61bcc7c6d4445f2ba9f12711",
+									"host": [
+										"{{host}}admin"
+									],
+									"path": [
+										"blogs",
+										"61bcc7c6d4445f2ba9f12711"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "887"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"377-io+ZnQ8/KnvFWtDBTotfG/O/6Zg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 18 Dec 2021 14:13:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Blog updated successfully.\",\n    \"data\": {\n        \"_id\": \"61bcc7c6d4445f2ba9f12711\",\n        \"slug\": \"investor-brand-representative\",\n        \"title\": \"Investor Brand Representative\",\n        \"description\": \"International\",\n        \"content\": \"Commodi dolor nesciunt unde omnis natus porro saepe suscipit voluptas. Accusamus earum hic. Maxime autem labore eos. Quas vel id.\\n \\rRem voluptatem hic aut vel non. Nihil voluptatem velit officia repellendus ex debitis. Libero pariatur placeat. Aspernatur modi dolorem fuga possimus nihil.\\n \\rMollitia iure molestias dolor dolor voluptatem. Hic aut provident facere nesciunt commodi sunt. Eos assumenda asperiores nesciunt soluta aliquam quibusdam omnis voluptatem mollitia. Voluptatem accusamus alias ducimus numquam quis sunt. Ut accusantium nesciunt nihil.\",\n        \"status\": \"draft\",\n        \"image\": \"http://localhost:3006/api/blogs/image/investor-brand-representative\"\n    },\n    \"errors\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}admin/blogs/61b78652ba02014c1194060b",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"blogs",
+								"61b78652ba02014c1194060b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Constants",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/admin/constants",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"admin",
+						"constants"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Constants",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/admin/constants",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"admin",
+								"constants"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "545"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"221-Q+K9ab0VNxaYfpq+Vgs3D9yTWns\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Dec 2021 13:34:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"COMPANY_NAMES\": {\n            \"nsure\": {\n                \"name\": \"Nsure Network\",\n                \"code\": \"nsure\",\n                \"icon\": \"http://localhost:3006/api/images/company-icons/Nsure Network.png\"\n            },\n            \"unore\": {\n                \"name\": \"Uno Re\",\n                \"code\": \"unore\",\n                \"icon\": \"http://localhost:3006/api/images/company-icons/UNORE.png\"\n            },\n            \"nexus\": {\n                \"name\": \"Nexus Mutual\",\n                \"code\": \"nexus\",\n                \"icon\": \"http://localhost:3006/api/images/company-icons/nexus-mutual-icon.png\"\n            },\n            \"insurace\": {\n                \"name\": \"InsurAce\",\n                \"code\": \"insurace\",\n                \"icon\": \"http://localhost:3006/api/images/company-icons/insurace-icon.png\"\n            }\n        }\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}admin/dashboard",
+					"host": [
+						"{{host}}admin"
+					],
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Dashboard",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}admin/dashboard",
+							"host": [
+								"{{host}}admin"
+							],
+							"path": [
+								"dashboard"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "392"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"188-OO+NHt7v1sRi/wga3oVtraYcJJ8\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 12 Dec 2021 05:09:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"\",\n    \"data\": {\n        \"total_count\": 3,\n        \"counts\": {\n            \"mso_policy\": {\n                \"total\": 2,\n                \"pending\": 2,\n                \"active\": 0,\n                \"cancelled\": 0,\n                \"complete\": 0\n            },\n            \"device_insurance\": {\n                \"total\": 0,\n                \"pending\": 0,\n                \"active\": 0,\n                \"cancelled\": 0,\n                \"complete\": 0\n            },\n            \"smart_contract\": {\n                \"total\": 1,\n                \"pending\": 0,\n                \"active\": 1,\n                \"cancelled\": 0,\n                \"complete\": 0\n            },\n            \"crypto_exchange\": {\n                \"total\": 0,\n                \"pending\": 0,\n                \"active\": 0,\n                \"cancelled\": 0,\n                \"complete\": 0\n            }\n        }\n    },\n    \"errors\": {}\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{admin_token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3006/api/"
+		},
+		{
+			"key": "staging",
+			"value": "https://staging-covercompared.polkacover.com/api/"
+		},
+		{
+			"key": "live",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "policy_id",
+			"value": ""
+		},
+		{
+			"key": "_id",
+			"value": ""
+		},
+		{
+			"key": "delete_ids",
+			"value": ""
+		},
+		{
+			"key": "delete_id",
+			"value": ""
+		},
+		{
+			"key": "admin_token",
+			"value": ""
+		},
+		{
+			"key": "staging_admin_token",
+			"value": ""
+		}
+	]
+}

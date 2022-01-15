@@ -1,4 +1,4 @@
-FROM node:10.19.0-alpine
+FROM node:12.22.5-alpine
 
 #RUN apk add --no-cache g++ make python3
 WORKDIR /root
