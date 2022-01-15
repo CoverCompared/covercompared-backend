@@ -255,7 +255,7 @@ exports.syncTransaction = async (transaction_hash) => {
                 let hasTransferEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, TransferEventAbi, { findTopics: { from: this.getCurrentSmartContractAddress() } });
                 let transferEventIndexedData = hasTransferEvent ? web3Connection.decodeEventIndexedDataLogs(web3Connect, TransferEventAbi, hasTransferEvent) : false;
                 if (transferEventIndexedData) {
-                    wallet_address = MetaTransactionExecutedData.to;
+                    wallet_address = transferEventIndexedData.to;
                 }
             }
 

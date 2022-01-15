@@ -346,8 +346,6 @@ exports.decodeEventParametersLogs = (web3Connect, eventAbi, log) => {
 
     let inputs = EventAbiClone.inputs.filter(value => value.indexed == false);
     
-    console.log("inputs", inputs);
-    console.log("TransactionReceiptLog.data", TransactionReceiptLog.data);
     return web3Connect.eth.abi.decodeParameters(inputs, TransactionReceiptLog.data);
 }
 
