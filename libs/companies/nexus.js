@@ -10,6 +10,16 @@ const SmartContractLogos = mongoose.model("SmartContractLogos");
 exports.code = nexus.code;
 exports.company = nexus
 
+exports.getAxiosConfig = () => {
+    return {
+        method: "get",
+        headers: {
+            // 'Origin': (process.env.NODE_ENV && process.env.NODE_ENV == 'production') ? 'https://app.covercompared.com' : 'https://staging-covercompared.polkacover.com'
+            'Origin': 'https://app.covercompared.com'
+        }
+    }
+}
+
 /**
  * 
  * @param {string|Array} currency 
@@ -68,10 +78,10 @@ exports.coverList = async () => {
             let logo_endpoint = _.get(data, "logo", false);
             let logo_details = utils.getSmartContractLogo(unique_id, { logo_endpoint })
             let type = _.get(data, "type", "");
-            let supportedChains = utils.convertSupportedChain(_.get(data, "supportedChains", [])); 
-            
+            let supportedChains = utils.convertSupportedChain(_.get(data, "supportedChains", []));
+
             console.log(type, supportedChains.length);
-            if(!supportedChains.length && type == "custodian"){
+            if (!supportedChains.length && type == "custodian") {
                 supportedChains = ["Ethereum"];
             }
             return {
@@ -102,12 +112,16 @@ exports.coverList = async () => {
  * @returns 
  */
 exports.getCapacity = async (address) => {
-    var config = { url: this.company.apis.cover_capacity.url(address) };
+    var config = {
+        url: this.company.apis.cover_capacity.url(address),
+        ...this.getAxiosConfig(),
+    };
     let response = {};
     try {
+        console.log("Config", config);
         response = await axios(config)
     } catch (error) {
-        console.log(error);
+        console.log("ERROR ", error);
         return false;
     }
 
@@ -123,6 +137,7 @@ exports.getCapacity = async (address) => {
 exports.getQuoteWithPromise = async (contractAddress, coverAmount, currency, period) => {
 
     var config = {
+        ...this.getAxiosConfig(),
         url: utils.addQueryParams(this.company.apis.cover_quote.url, {
             contractAddress, coverAmount, currency, period
         })
@@ -141,7 +156,7 @@ exports.getQuoteWithPromise = async (contractAddress, coverAmount, currency, per
 }
 
 exports.getQuote = async (contractAddress, coverAmount, currency, period, fromCache = true) => {
-    if(fromCache){
+    if (fromCache) {
         return await utils.getNexusQuote(contractAddress, coverAmount, currency, period, this.getQuoteWithPromise);
     }
     return await this.getQuoteWithPromise(contractAddress, coverAmount, currency, period, fromCache = true);
@@ -149,7 +164,7 @@ exports.getQuote = async (contractAddress, coverAmount, currency, period, fromCa
 
 exports.getImageUrl = (logo_endpoint) => {
     if (logo_endpoint) {
-        
+
         let replaceValues = {
             "alpha-homora.jpg": "alpha-homora.svg",
             "notional.png": "notional-finance.svg",
