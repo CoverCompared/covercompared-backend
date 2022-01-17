@@ -143,6 +143,16 @@ exports.coverList = async () => {
             //     supportedChains = [];
             // }
 
+            let chain_type_list = _.get(data, "chain_type_list", []);
+
+            if(
+                !chain_type_list || 
+                !Array.isArray(chain_type_list) || 
+                chain_type_list.length == 0
+            ){
+                chain_type_list = supportedChains
+            }
+
             return {
                 unique_id,
                 product_id,
@@ -156,6 +166,7 @@ exports.coverList = async () => {
                 min_eth: this.company.min_eth,
                 capacity: (_.get(data, "capacity_remaining", 0) / (10 ** 18)),
                 supportedChains,
+                chain_type_list,
                 currency, currency_limit,
                 duration_days_min: _.get(data, "duration_days_min", 15),
                 duration_days_max: _.get(data, "duration_days_max", 365),
