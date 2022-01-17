@@ -86,33 +86,26 @@ apiRoutes.post('/user/policies/:id/add-review', logsHistory, authVerify, policie
 
 router.use('/', apiRoutes);
 
-router.get("/web3/connect", async (req, res) => {
-    let web3 = await web3Connection.connect()
-    let isListning = await web3Connection.isListening("p4l");
-    await web3Connection.p4lPolicySync();
-    return res.send({ web3: isListning });
-    // let events = await web3Connection.p4lPolicySync();
-    // console.log(events);
-
-})
 router.get("/setting", async (req, res) => {
     let setting = await Settings.getKey()
     return res.send(setting);
 })
 
-router.get("/web3/test", async (req, res) => {
+// router.get("/web3/test", async (req, res) => {
+//     /**
+//      * TODO: Integrate Is listening
+//      */
+//     try {
+//         let subscription = web3Connection.subscriptionStatus()
+//         subscription.isListening()
+//         return res.send({ web3: await web3Connection.isListening("p4l") });
+//     } catch (error) {
+//         console.log("ERRR", error);
+//     }
+//     // let events = await web3Connection.p4lPolicySync();
+//     // console.log(events);
 
-    try {
-        let subscription = web3Connection.subscriptionStatus()
-        subscription.isListening()
-        return res.send({ web3: await web3Connection.isListening("p4l") });
-    } catch (error) {
-        console.log("ERRR", error);
-    }
-    // let events = await web3Connection.p4lPolicySync();
-    // console.log(events);
-
-})
+// })
 
 router.use('/admin', adminApis);
 router.get('/request-logs', async (req, res) => {
