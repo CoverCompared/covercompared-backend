@@ -67,6 +67,11 @@ exports.coverList = async (options = {}) => {
             }
         })
 
+        coverList = coverList.map(cover => {
+            cover.chain_type_list = _.get(cover, "chain_type_list", _.get(cover, "supportedChains", []));
+            return cover;
+        });
+
         list = [...list, ...coverList];
 
     }
