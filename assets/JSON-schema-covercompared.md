@@ -1,6 +1,6 @@
 # Base URL
 - Staging - https://staging-covercompared.polkacover.com/api/
-- Production - https://covercompared.polkacover.com/api/ 
+- Production - https://app.covercompared.com/api/ 
 
 # Txn Hash Format 
 Mso policy - MSO-XXX

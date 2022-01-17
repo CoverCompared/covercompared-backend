@@ -46,8 +46,8 @@ if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.web_url = "https://staging-covercompared.polkacover.com/";
     config.send_mail = true;
 } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
-    config.api_url = "https://covercompared.polkacover.com/api/";
-    config.web_url = "https://covercompared.polkacover.com/";
+    config.api_url = "https://app.covercompared.com/api/";
+    config.web_url = "https://app.covercompared.com/";
     config.is_mainnet = true;
     config.send_mail = true;
 }

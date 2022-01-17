@@ -9,7 +9,7 @@ module.exports = async () => {
     if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
         super_admin_firebase_uids.push("dYGraCTsNOYbR8f2ot32pUGymIG2");
     } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
-        super_admin_firebase_uids.push("7Q0cLEMxp6WE7HrHwaL8RR18MAx1");
+        super_admin_firebase_uids.push("Msvg9ibCkUSMPjLS5vaRzUlA9gV2");
     } else {
         super_admin_firebase_uids.push("xRDL5ZYHDaPBEcqYv2OKioovltN2");
     }
