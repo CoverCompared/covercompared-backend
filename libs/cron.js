@@ -6,7 +6,8 @@ var NodeCron = require('node-cron');
 const web3Actions = async () => {
     try {
         console.log("Web3 Connect");
-        let web3 = await web3Connect.connect()
+        let web3 = await web3Connect.connect();
+
         await web3Connect.smart_contracts.p4l.p4lPolicySync();
         await web3Connect.smart_contracts.mso.msoPolicySync();
         await web3Connect.smart_contracts.insurace.policySync();
@@ -18,7 +19,14 @@ const web3Actions = async () => {
     }
 }
 
-const cron = () => {
+const cron = async () => {
+
+    await web3Connect.smart_contracts.p4l.checkFromBlockAndSmartContractAddress();
+    await web3Connect.smart_contracts.mso.checkFromBlockAndSmartContractAddress();
+    await web3Connect.smart_contracts.insurace.checkFromBlockAndSmartContractAddress();
+    await web3Connect.smart_contracts.nexus.checkFromBlockAndSmartContractAddress();
+    console.log("Check Smart Contract Address...");
+
     web3Actions();
 	console.log("Cron running a every 30 minute");
 	NodeCron.schedule('*/30 * * * *', async () => {

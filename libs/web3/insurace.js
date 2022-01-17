@@ -1,5 +1,5 @@
 const web3Connection = require('./index');
-const InsurAceSmartContractAbi = require("./../abi/insurace.json");
+let InsurAceSmartContractAbi = require("./../abi/insurace.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -15,6 +15,54 @@ const Users = mongoose.model('Users');
 
 exports.getWeb3Connect = async (check_is_connected = false) => {
     return await web3Connection.getWeb3Connect("insurace", check_is_connected);
+}
+
+/**
+ * This function is used to match the current smart-contract address with setting collection
+ * if Contract address does not match it will set from-block to 0 and check all the transaction with initial
+ */
+ exports.checkFromBlockAndSmartContractAddress = async () => {
+
+    // Get Smart Contract from Setting table
+    let insurace_smart_contract_address = await Settings.getKey("insurace_smart_contract_address");
+
+    // If does not match with config, Set from-block to 0
+    if(!utils.matchAddress(insurace_smart_contract_address, this.getCurrentSmartContractAddress())){
+        Settings.setKey("insurace_from_block", 0);
+        Settings.setKey("insurace_smart_contract_address", this.getCurrentSmartContractAddress());
+    }
+
+    // Update ABI of Smart Contract
+    let SmartContractAbi = await Settings.getKey("insurace_smart_contract_abi");
+    if (
+        !utils.matchAddress(insurace_smart_contract_address, this.getCurrentSmartContractAddress()) ||
+        !SmartContractAbi
+    ) {
+        let SmartContractAbiResponse = await this.getAbiOfSmartContract();
+        if (SmartContractAbiResponse.status) {
+            SmartContractAbi = JSON.parse(SmartContractAbiResponse.data);
+            await Settings.setKey("insurace_smart_contract_abi", SmartContractAbi);
+        }
+    }
+
+    /**
+     * TODO : Check JSON Schema Of SmartContractAbi for ABI Format
+     */
+    InsurAceSmartContractAbi = SmartContractAbi ? SmartContractAbi : InsurAceSmartContractAbi;
+
+}
+
+exports.getAbiOfSmartContract = async () => {
+    let chainId = config.is_mainnet ? config.SupportedChainId.MAINNET : config.SupportedChainId.RINKEBY;
+    let SmartContractAbi = await web3Connection.getAbiOfSmartContract(this.getCurrentSmartContractAddress(), chainId);
+    return SmartContractAbi;
+}
+
+exports.getCurrentSmartContractAddress = () => {
+    let SmartContractAddress;
+
+    SmartContractAddress = config.is_mainnet ? contracts.insureAce[config.SupportedChainId.MAINNET] : contracts.insureAce[config.SupportedChainId.RINKEBY];
+    return SmartContractAddress;
 }
 
 let InsurAceStartContract;
@@ -59,6 +107,10 @@ exports.addToSyncTransaction = async (transaction_hash, insurace_from_block) => 
     if (IsTransactionRunning == false) {
         console.log("INSURACE  ::  Started.");
         while (TransactionPromises.length > 0) {
+            if (TransactionPromises.length == 1) {
+                console.log("INSURACE  ::  Last Transaction Waiting.....");
+                await (new Promise(resolve => setTimeout(resolve, 1000 * 60))) // 1 min
+            }
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             await this.syncTransaction(promise.transaction_hash);
@@ -161,6 +213,8 @@ exports.syncTransaction = async (transaction_hash) => {
             cover_details = Array.isArray(cover_details) ? cover_details : [];
             let crypto_currency = utils.checkIsCVRToken(_.get(details, "_token", "")) ? "CVR" : "ETH";
             
+            let wallet_address = details._buyer;
+
             if (!policy) {
 
                 let cover = cover_details.find(value => {
@@ -168,7 +222,7 @@ exports.syncTransaction = async (transaction_hash) => {
                 })
 
                 let type = cover && constant.CryptoExchangeTypes.includes(cover.type) ? constant.ProductTypes.crypto_exchange : constant.ProductTypes.smart_contract;
-                let wallet_address = details._buyer;
+                // let wallet_address = details._buyer;
                 policy = new Policies;
                 policy.user_id = await Users.getUser(wallet_address);    
                 policy.product_type = type;
@@ -250,7 +304,7 @@ exports.syncTransaction = async (transaction_hash) => {
 
                 payment.payment_status = constant.PolicyPaymentStatus.paid;
                 payment.blockchain = "Ethereum";
-                payment.wallet_address = TransactionDetails.from;
+                payment.wallet_address = wallet_address;
                 payment.block_timestamp = _.get(blog_details, "timestamp", null);
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;

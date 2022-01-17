@@ -1,5 +1,6 @@
 const web3Connection = require('./index');
-const NexusSmartContractAbi = require("./../abi/nexus.json");
+let NexusSmartContractAbi = require("./../abi/nexus.json");
+let TransferAbi = require("./../abi/transfer.json");
 const NexusQuotationDataSmartContractAbi = require("./../abi/nexus-quotation-data.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
@@ -16,6 +17,55 @@ const Users = mongoose.model('Users');
 
 exports.getWeb3Connect = async (check_is_connected = false) => {
     return await web3Connection.getWeb3Connect("nexus", check_is_connected);
+}
+
+/**
+ * This function is used to match the current smart-contract address with setting collection
+ * if Contract address does not match it will set from-block to 0 and check all the transaction with initial
+ */
+exports.checkFromBlockAndSmartContractAddress = async () => {
+
+    // Get Smart Contract from Setting table
+    let nexus_smart_contract_address = await Settings.getKey("nexus_smart_contract_address");
+
+    // If does not match with config, Set from-block to 0
+    if (!utils.matchAddress(nexus_smart_contract_address, this.getCurrentSmartContractAddress())) {
+        Settings.setKey("nexus_from_block", 0);
+        Settings.setKey("nexus_smart_contract_address", this.getCurrentSmartContractAddress());
+    }
+
+
+    // Update ABI of Smart Contract
+    let SmartContractAbi = await Settings.getKey("nexus_smart_contract_abi");
+    if (
+        !utils.matchAddress(nexus_smart_contract_address, this.getCurrentSmartContractAddress()) ||
+        !SmartContractAbi
+    ) {
+        let SmartContractAbiResponse = await this.getAbiOfSmartContract();
+        if (SmartContractAbiResponse.status) {
+            SmartContractAbi = JSON.parse(SmartContractAbiResponse.data);
+            await Settings.setKey("nexus_smart_contract_abi", SmartContractAbi);
+        }
+    }
+
+    /**
+     * TODO : Check JSON Schema Of SmartContractAbi for ABI Format
+     */
+    NexusSmartContractAbi = SmartContractAbi ? SmartContractAbi : NexusSmartContractAbi;
+
+}
+
+exports.getAbiOfSmartContract = async () => {
+    let chainId = config.is_mainnet ? config.SupportedChainId.MAINNET : config.SupportedChainId.KOVAN;
+    let SmartContractAbi = await web3Connection.getAbiOfSmartContract(this.getCurrentSmartContractAddress(), chainId);
+    return SmartContractAbi;
+}
+
+exports.getCurrentSmartContractAddress = () => {
+    let SmartContractAddress;
+
+    SmartContractAddress = config.is_mainnet ? contracts.nexusMutual[config.SupportedChainId.MAINNET] : contracts.nexusMutual[config.SupportedChainId.KOVAN];
+    return SmartContractAddress;
 }
 
 let NexusStartContract;
@@ -60,6 +110,10 @@ exports.addToSyncTransaction = async (transaction_hash, nexus_from_block) => {
     if (IsTransactionRunning == false) {
         console.log("NEXUS  ::  Started.");
         while (TransactionPromises.length > 0) {
+            if (TransactionPromises.length == 1) {
+                console.log("NEXUS  ::  Last Transaction Waiting.....");
+                await (new Promise(resolve => setTimeout(resolve, 1000 * 60))) // 1 min
+            }
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             await this.syncTransaction(promise.transaction_hash);
@@ -187,6 +241,26 @@ exports.syncTransaction = async (transaction_hash) => {
             let blog_details = await web3Connect.eth.getBlock(TransactionDetails.blockNumber);
             let duration_days = utils.getTimestampDiff(blog_details.timestamp, event_cover_details.expiry);
 
+            let wallet_address;
+
+            // MetaTransactionExecuted Log
+            let MetaTransactionExecutedEventAbi = NexusSmartContractAbi.find(value => value.name == "MetaTransactionExecuted" && value.type == "event");
+            let hasMetaTransactionExecutedEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, MetaTransactionExecutedEventAbi);
+            if (hasMetaTransactionExecutedEvent) {
+                let MetaTransactionExecutedData = web3Connection.decodeEventParametersLogs(web3Connect, MetaTransactionExecutedEventAbi, hasMetaTransactionExecutedEvent);
+                wallet_address = MetaTransactionExecutedData.userAddress;
+            } else {
+                // Transfer Log
+                let TransferEventAbi = TransferAbi.find(value => value.name == "Transfer" && value.type == "event");
+                let hasTransferEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, TransferEventAbi, { findTopics: { from: this.getCurrentSmartContractAddress() } });
+                let transferEventIndexedData = hasTransferEvent ? web3Connection.decodeEventIndexedDataLogs(web3Connect, TransferEventAbi, hasTransferEvent) : false;
+                if (transferEventIndexedData) {
+                    wallet_address = transferEventIndexedData.to;
+                }
+            }
+
+
+
             if (!policy) {
 
                 let cover = cover_details.find(value => {
@@ -194,7 +268,7 @@ exports.syncTransaction = async (transaction_hash) => {
                 })
 
                 let type = cover && constant.CryptoExchangeTypes.includes(cover.type) ? constant.ProductTypes.crypto_exchange : constant.ProductTypes.smart_contract;
-                let wallet_address = TransactionDetails.from;
+                // let wallet_address = TransactionDetails.from;
                 policy = new Policies;
                 policy.user_id = await Users.getUser(wallet_address);
                 policy.product_type = type;
@@ -263,7 +337,7 @@ exports.syncTransaction = async (transaction_hash) => {
 
                 payment.payment_status = constant.PolicyPaymentStatus.paid;
                 payment.blockchain = "Ethereum";
-                payment.wallet_address = TransactionDetails.from;
+                payment.wallet_address = wallet_address;
                 payment.block_timestamp = _.get(blog_details, "timestamp", null);
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;

@@ -20,9 +20,17 @@ const Schema = mongoose.Schema;
  */
 
 const SettingsSchema = new Schema({
+    p4l_smart_contract_address: { type: String, default: null },
+    p4l_smart_contract_abi: { type: Schema.Types.Mixed, default: null },
     p4l_from_block: { type: String, default: null },
+    insurace_smart_contract_address: { type: String, default: null },
+    insurace_smart_contract_abi: { type: Schema.Types.Mixed, default: null },
     insurace_from_block: { type: String, default: null },
+    nexus_smart_contract_address: { type: String, default: null },
+    nexus_smart_contract_abi: { type: Schema.Types.Mixed, default: null },
     nexus_from_block: { type: String, default: null },
+    mso_smart_contract_address: { type: String, default: null },
+    mso_smart_contract_abi: { type: Schema.Types.Mixed, default: null },
     mso_from_block: { type: String, default: null },
     cover_details: [{type: Schema.Types.Mixed, default: null}]
 }, {
@@ -43,6 +51,14 @@ SettingsSchema.statics = {
         setting.mso_from_block = setting.mso_from_block ? setting.mso_from_block : 0;
         setting.insurace_from_block = setting.insurace_from_block ? setting.insurace_from_block : 0;
         setting.nexus_from_block = setting.nexus_from_block ? setting.nexus_from_block : 0;
+        setting.p4l_smart_contract_address = setting.p4l_smart_contract_address ? setting.p4l_smart_contract_address : 0;
+        setting.insurace_smart_contract_address = setting.insurace_smart_contract_address ? setting.insurace_smart_contract_address : 0;
+        setting.nexus_smart_contract_address = setting.nexus_smart_contract_address ? setting.nexus_smart_contract_address : 0;
+        setting.mso_smart_contract_address = setting.mso_smart_contract_address ? setting.mso_smart_contract_address : 0;
+        setting.p4l_smart_contract_abi = setting.p4l_smart_contract_abi ? setting.p4l_smart_contract_abi : null;
+        setting.insurace_smart_contract_abi = setting.insurace_smart_contract_abi ? setting.insurace_smart_contract_abi : null;
+        setting.nexus_smart_contract_abi = setting.nexus_smart_contract_abi ? setting.nexus_smart_contract_abi : null;
+        setting.mso_smart_contract_abi = setting.mso_smart_contract_abi ? setting.mso_smart_contract_abi : null;
         setting.cover_details = setting.cover_details ? setting.cover_details : [];
         return key ? setting[key] : setting;
     },

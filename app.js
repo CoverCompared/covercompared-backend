@@ -22,7 +22,11 @@ axios.interceptors.request.use(function (config) {
 
 var app = express();
 
-if (process.env.NODE_ENV == "local" || process.env.NODE_ENV == "staging") {
+if (
+  process.env.NODE_ENV == "local" ||
+  process.env.NODE_ENV == "staging" ||
+  "1" == process.env.ALLOW_CORS
+) {
   app.use(require("cors")())
 }
 
@@ -35,12 +39,12 @@ app.use('/api', express.static(path.join(__dirname, 'public')));
 module.exports = async () => {
   /**Connect Database */
   let con = await connect();
-  
+
   /** Start Cron job */
-  cron()
+  await cron();
 
   var indexRouter = require('./routes/index');
-  var apiRouter = require('./routes/api');  
+  var apiRouter = require('./routes/api');
   app.use('/api', indexRouter);
   app.use('/api', apiRouter);
   return app;

@@ -22,3 +22,6 @@
 # Enable Mail sending functionality in local environment
     .env
     SEND_MAIL=1
+
+# Allow CORS is used to allow request cross origin
+    ALLOW_CORS=1
