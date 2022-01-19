@@ -16,7 +16,7 @@ const getPaddedHexStrFromINT = (bn) => {
 };
 
 exports.getSignMessage = (param, isUseCrv = false) => {
-    const value = new BigNumber(param.total_amount).multipliedBy(10 ** 18); // should be the decimals of USDC token
+    const value = new BigNumber(param.total_amount).multipliedBy(10 ** 6); // should be the decimals of USDC token
 
     const policyId = param.id === undefined ? 'first-test' : param.id;
     const durPlan = param.durPlan;
