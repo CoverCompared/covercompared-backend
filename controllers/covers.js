@@ -150,8 +150,8 @@ exports.list = async (req, res, next) => {
     let get_quote = _.get(req.query, "get_quote", false);
 
     // Remove cvr from filer list
-    if(Array.isArray(currency) && currency.length && currency.includes("cvr")){
-        let cvrIndex = currency.indexOf("cvr");
+    if(Array.isArray(currency) && currency.length && currency.includes("CVR")){
+        let cvrIndex = currency.indexOf("CVR");
         currency.splice(cvrIndex, 1);
     }
 
