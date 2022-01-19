@@ -386,7 +386,7 @@ exports.msoPolicies = async (req, res) => {
                         
                         val.cover_user_details = value.MSOPolicy.MSOMembers.map((val, ind) => {
                             all_data.push({
-                                member_id: utils.getMsoPolicyMembershipId(value.createdAt, value.txn_hash),
+                                member_id: utils.getMsoPolicyMembershipId(value.createdAt, _.get(value, "mso_policy_number", "")),
                                 email: _.get(value, "user.email", false) ? value.user.email : "",
                                 date_of_membership: utils.getFormattedDate(value.createdAt, "MM/DD/YYYY"),
                                 first_name: _.get(val, "first_name", ""),

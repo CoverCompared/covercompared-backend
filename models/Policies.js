@@ -28,6 +28,7 @@ const utils = require('../libs/utils');
 const PoliciesSchema = new Schema({
     user_id: { type: Schema.ObjectId, ref: "Users" },
     txn_hash: { type: String, default: null },
+    mso_policy_number: { type: String, default: null },
     product_type: { type: String, default: null },
     status: { type: String, default: null },
     StatusHistory: [{
@@ -146,7 +147,9 @@ PoliciesSchema.pre('save', async function (next) {
     if (!this.isNew) return next();
     if (!this.txn_hash) {
         const PolicyTxnHashCount = mongoose.model('PolicyTxnHashCount');
-        this.txn_hash = await PolicyTxnHashCount.getNewTxnHash(this.product_type);
+        let policy_number = await PolicyTxnHashCount.getNewTxnHash(this.product_type)
+        this.txn_hash = policy_number.txn_hash;
+        this.mso_policy_number = policy_number.mso_policy_number;
         next();
     } else { next() }
 });

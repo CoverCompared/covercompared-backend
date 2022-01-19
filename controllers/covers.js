@@ -437,7 +437,7 @@ exports.coverDetails = async (req, res, next) => {
     console.log("unique_id ", unique_id);
     if(unique_id && unique_id.company_code && Object.keys(config_companies).includes(unique_id.company_code)){
         if(unique_id.company_code == "nexus"){
-            details.additional_details = "Nexus Mutual is a decentralized platform built on blockchain technology that offers insurance products for Ethereum users. ";
+            details.additional_details = "Nexus Mutual is a decentralized platform built on blockchain technology that offers insurance products for Ethereum users. Curating +100 active cover products, having an active cover amount of +590M USD with annual premiums in force being +16M USD.";
 
             if(req.params.type == "protocol"){
                 details.terms_and_conditions = "<p>Events covered:</p><ul><li>contract bugs</li><li>economic attacks, including oracle failures</li><li>governance attacks</li></ul><p><br></p><p>Claiming:</p><ul><li>You must provide proof of the incurred loss at claim time.</li><li>You should wait 72 hours after the event, so assessors have all details to make a decision.</li><li>You can claim up to 35 days after the cover period expires, given your cover was active when the incident happened.</li></ul><p>This cover is not a contract of insurance. Cover is provided on a discretionary basis with Nexus Mutual members having the final say on which claims are paid.</p>";
@@ -460,7 +460,7 @@ exports.coverDetails = async (req, res, next) => {
                 details.pdf = "https://files.insurace.io/public/en/cover/CustodianRiskCover.pdf";
             }
 
-            details.additional_details = "InsurAce.io is a decentralized multi-chain insurance protocol that offers portfolio-based insurance products to primarily insure digital assets.";
+            details.additional_details = "InsurAce.io is a decentralized multi-chain insurance protocol that offers portfolio-based insurance products to primarily insure digital assets. Covering 95+ protocols, having an active cover amount of +70M USD and a total value locked of +35M USD.";
         }
     }
 
