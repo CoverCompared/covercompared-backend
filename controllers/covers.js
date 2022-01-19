@@ -149,6 +149,12 @@ exports.list = async (req, res, next) => {
     let amount_max = _.get(req.query, "amount_max", false);
     let get_quote = _.get(req.query, "get_quote", false);
 
+    // Remove cvr from filer list
+    if(Array.isArray(currency) && currency.length && currency.includes("CVR")){
+        let cvrIndex = currency.indexOf("CVR");
+        currency.splice(cvrIndex, 1);
+    }
+
     if (_.get(req.query, "amount", false)) {
         let amount = req.query.amount.split(",")
         amount_min = new Number(_.get(amount, "0", 0));
