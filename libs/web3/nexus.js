@@ -110,10 +110,10 @@ exports.addToSyncTransaction = async (transaction_hash, nexus_from_block) => {
     if (IsTransactionRunning == false) {
         console.log("NEXUS  ::  Started.");
         while (TransactionPromises.length > 0) {
-            if (TransactionPromises.length == 1) {
-                console.log("NEXUS  ::  Last Transaction Waiting.....");
+            // if (TransactionPromises.length == 1) {
+            //     console.log("NEXUS  ::  Last Transaction Waiting.....");
                 await (new Promise(resolve => setTimeout(resolve, config.sync_time_web3_smart_contract))) // 1min
-            }
+            // }
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             await this.syncTransaction(promise.transaction_hash);

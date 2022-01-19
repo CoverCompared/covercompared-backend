@@ -107,10 +107,10 @@ exports.addToSyncTransaction = async (transaction_hash, insurace_from_block) => 
     if (IsTransactionRunning == false) {
         console.log("INSURACE  ::  Started.");
         while (TransactionPromises.length > 0) {
-            if (TransactionPromises.length == 1) {
-                console.log("INSURACE  ::  Last Transaction Waiting.....");
+            // if (TransactionPromises.length == 1) {
+            //     console.log("INSURACE  ::  Last Transaction Waiting.....");
                 await (new Promise(resolve => setTimeout(resolve, config.sync_time_web3_smart_contract))) // 1 min
-            }
+            // }
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             await this.syncTransaction(promise.transaction_hash);
