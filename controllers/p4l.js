@@ -1,6 +1,7 @@
 var axios = require('axios');
 
 const mongoose = require('mongoose');
+const config = require('../config');
 const P4LToken = mongoose.model('P4LToken');
 
 exports.forward = async (req, res, next) => {
@@ -12,9 +13,9 @@ exports.forward = async (req, res, next) => {
     let endpoint = req.body.endpoint
     delete req.body.endpoint;
     
-    let config = {
+    let apiConfig = {
         method: 'post',
-        url: `https://dev.protect4less.com/app-api/${endpoint}/`,
+        url: `${config.p4l_api_baseurl}${endpoint}/`,
         headers: {
             'Authorization': await P4LToken.getToken(),
             'Content-Type': 'application/json'
@@ -23,7 +24,7 @@ exports.forward = async (req, res, next) => {
     };
 
 
-    axios(config)
+    axios(apiConfig)
         .then(function (response) {
             res
                 .header("Content-Type", response.headers['content-type'])

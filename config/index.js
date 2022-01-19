@@ -1,3 +1,5 @@
+const ms = require("ms");
+
 let config = {
     app_code: "cover-compared",
     cache_time: 300, // seconds
@@ -7,10 +9,13 @@ let config = {
     dbName: process.env.DATABASE_NAME,
     noreplay: `"Cover Compared" no-reply@polkacover.com`,
     subscribe_mail: "contact@polkacover.com",
+    p4l_api_baseurl: "https://dev.protect4less.com/app-api/",
     p4l_secret: process.env.P4L_SECRET,
     signature_private_key : process.env.SIGNATURE_PRIVATE_KEY,
-    JWT_TOKEN_EXPIRY: 86400, // 24h
+    JWT_TOKEN_EXPIRY: ms("24h"), // 24h
+    sync_time_web3_smart_contract: ms("5m"),
     is_mainnet: false,
+    
     SupportedChainId: {
         MAINNET: 1,
         RINKEBY: 4,
