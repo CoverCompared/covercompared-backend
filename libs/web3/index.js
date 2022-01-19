@@ -228,8 +228,8 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
 
 exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) => {
     let web3Connect = await this.getWeb3Connect("mso");
-    priceInUSD = utils.getBigNumber(priceInUSD);
-    conciergePrice = utils.getBigNumber(conciergePrice);
+    priceInUSD = utils.getBigNumber(priceInUSD, 6);
+    conciergePrice = utils.getBigNumber(conciergePrice, 6);
 
     try {
         let message = signMsg.getSignMessageForMSO({ policyId, value: priceInUSD, period, conciergePrice })
