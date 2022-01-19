@@ -202,8 +202,8 @@ utils.getErrorMessage = (errors) => {
     return _.get(Object.values(errors), "0.message", "");
 }
 
-utils.getMsoPolicyMembershipId = (createdAt, txn_hash) => {
-    return `WW-Z-PK-${utils.getFormattedDate(createdAt, "MM/DD/YYYY")}-${txn_hash}`;
+utils.getMsoPolicyMembershipId = (createdAt, mso_policy_number) => {
+    return `WW-Z-PC-${utils.getFormattedDate(createdAt, "MM/DD/YYYY")}-${mso_policy_number}`;
 }
 
 utils.isValidObjectID = (_id) => {

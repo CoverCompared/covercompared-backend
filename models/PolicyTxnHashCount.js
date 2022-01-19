@@ -42,10 +42,11 @@ PolicyTxnHashCountSchema.statics = {
         let txn_hash = "";
         
         record.total_count = parseInt(_.get(record, "total_count", 0)) + 1;
-
+        let mso_policy_number = "";
         if(type == constant.ProductTypes.mso_policy){
             record.mso_policy = parseInt(_.get(record, "mso_policy", 0)) + 1;
             txn_hash = `MSO-${utils.getPadNumber(record.mso_policy)}0${record.total_count}`;
+            mso_policy_number = record.mso_policy;
         }else if(type == constant.ProductTypes.device_insurance){
             record.device_insurance = parseInt(_.get(record, "device_insurance", 0)) + 1;
             txn_hash = `DEVICE-${utils.getPadNumber(record.device_insurance)}0${record.total_count}`;
@@ -57,7 +58,7 @@ PolicyTxnHashCountSchema.statics = {
             txn_hash = `CE-${utils.getPadNumber(record.crypto_exchange)}0${record.total_count}`;
         }
         await record.save();
-        return txn_hash;
+        return {txn_hash, mso_policy_number};
     },
 
     generateToken: function () {
