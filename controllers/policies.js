@@ -447,6 +447,11 @@ exports.storeDeviceInsurance = async (req, res, next) => {
       phone: req.body.phone,
       durPlan: req.body.durPlan,
       imei_or_serial_number: req.body.imei_or_serial_number,
+      model_code: req.body.model_code,
+      custom_device_name: req.body.custom_device_name,
+      tran_id: req.body.tran_id,
+      purchase_date: req.body.purchase_date,
+      partner_code: req.body.partner_code
     };
     await policy.save();
 

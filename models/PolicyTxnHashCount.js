@@ -45,17 +45,17 @@ PolicyTxnHashCountSchema.statics = {
         let mso_policy_number = "";
         if(type == constant.ProductTypes.mso_policy){
             record.mso_policy = parseInt(_.get(record, "mso_policy", 0)) + 1;
-            txn_hash = `MSO-${utils.getPadNumber(record.mso_policy)}0${record.total_count}`;
+            txn_hash = `MSO-${utils.getPadNumber(record.mso_policy)}-${record.total_count}`;
             mso_policy_number = record.mso_policy;
         }else if(type == constant.ProductTypes.device_insurance){
             record.device_insurance = parseInt(_.get(record, "device_insurance", 0)) + 1;
-            txn_hash = `DEVICE-${utils.getPadNumber(record.device_insurance)}0${record.total_count}`;
+            txn_hash = `DEVICE-${utils.getPadNumber(record.device_insurance)}-${record.total_count}`;
         }else if(type == constant.ProductTypes.smart_contract){
             record.smart_contract = parseInt(_.get(record, "smart_contract", 0)) + 1;
-            txn_hash = `SC-${utils.getPadNumber(record.smart_contract)}0${record.total_count}`;
+            txn_hash = `SC-${utils.getPadNumber(record.smart_contract)}-${record.total_count}`;
         }else if(type == constant.ProductTypes.crypto_exchange){
             record.crypto_exchange = parseInt(_.get(record, "crypto_exchange", 0)) + 1;
-            txn_hash = `CE-${utils.getPadNumber(record.crypto_exchange)}0${record.total_count}`;
+            txn_hash = `CE-${utils.getPadNumber(record.crypto_exchange)}-${record.total_count}`;
         }
         await record.save();
         return {txn_hash, mso_policy_number};

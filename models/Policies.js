@@ -79,6 +79,7 @@ const PoliciesSchema = new Schema({
         plan_details: { type: Schema.Types.Mixed, default: null }
     },
     DeviceInsurance: {
+        p4l_create_policy_api: { type: Schema.Types.Mixed, default: null },
         device_type: { type: String, default: null },
         brand: { type: String, default: null },
         value: { type: String, default: null },
@@ -95,7 +96,12 @@ const PoliciesSchema = new Schema({
         start_time: { type: Schema.Types.Mixed, default: null },
         durPlan: { type: Number, default: null },
         contract_product_id: { type: String, default: null },
-        imei_or_serial_number: { type: String, default: null}
+        imei_or_serial_number: { type: String, default: null },
+        model_code: { type: String, default: null },
+        custom_device_name: { type: String, default: null },
+        tran_id: { type: String, default: null },
+        purchase_date: { type: String, default: null },
+        partner_code: { type: String, default: null }
     },
     SmartContract: {
         block: { type: String, default: null },
@@ -170,41 +176,41 @@ PoliciesSchema.statics = {
 
         let findObj = { ...find, product_type: { $in: product_type } };
 
-        let project = { 
+        let project = {
             StatusHistory: 0,
-            PaymentStatusHistory: 0, 
-            user_id : 0, 
+            PaymentStatusHistory: 0,
+            user_id: 0,
             payment_id: 0
         };
         let aggregates = [];
         aggregates.push({ $match: findObj })
-        
-        if(review){
+
+        if (review) {
             aggregates.push({
                 $lookup:
-                  {
+                {
                     from: Reviews.collection.collectionName,
                     localField: "_id",
                     foreignField: "policy_id",
                     as: "review"
-                  }
-             });
+                }
+            });
             project["review._id"] = 0
             project["review.user_id"] = 0
             project["review.createdAt"] = 0
             project["review.updatedAt"] = 0
         }
 
-        if(payment){
+        if (payment) {
             aggregates.push({
                 $lookup:
-                  {
+                {
                     from: Payments.collection.collectionName,
                     localField: "payment_id",
                     foreignField: "_id",
                     as: "payment"
-                  }
-             });
+                }
+            });
             project["payment._id"] = 0
             project["payment.user_id"] = 0
             project["payment.createdAt"] = 0
@@ -233,13 +239,13 @@ PoliciesSchema.statics = {
                 } else if (policy.product_type == constant.ProductTypes.crypto_exchange) {
                     policy.details = policy.CryptoExchange;
                 }
-                
+
                 delete policy.MSOPolicy;
                 delete policy.DeviceInsurance;
                 delete policy.SmartContract;
                 delete policy.CryptoExchange;
-                if(policy.details && policy.details.signature) delete policy.details.signature
-                if(policy.payment && Array.isArray(policy.payment) && policy.payment.length){
+                if (policy.details && policy.details.signature) delete policy.details.signature
+                if (policy.payment && Array.isArray(policy.payment) && policy.payment.length) {
                     policy.payment = policy.payment.map((payment) => {
                         payment.crypto_currency = _.get(payment, "crypto_currency", false) ? _.get(payment, "crypto_currency", false) : "";
                         payment.crypto_amount = _.get(payment, "crypto_amount", false) ? _.get(payment, "crypto_amount", false) : "";
