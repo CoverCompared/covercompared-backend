@@ -239,12 +239,15 @@ PoliciesSchema.statics = {
                 delete policy.SmartContract;
                 delete policy.CryptoExchange;
                 if(policy.details && policy.details.signature) delete policy.details.signature
-                if(policy.payment){
-                    policy.payment.crypto_currency = _.get(policy, "payment.crypto_currency", "");
-                    policy.payment.crypto_amount = _.get(policy, "payment.crypto_amount", "");
+                if(policy.payment && Array.isArray(policy.payment) && policy.payment.length){
+                    policy.payment = policy.payment.map((payment) => {
+                        payment.crypto_currency = _.get(payment, "crypto_currency", false) ? _.get(payment, "crypto_currency", false) : "";
+                        payment.crypto_amount = _.get(payment, "crypto_amount", false) ? _.get(payment, "crypto_amount", false) : "";
+                        return payment;
+                    })
                 }
-                policy.crypto_currency = _.get(policy, "crypto_currency", "");
-                policy.crypto_amount = _.get(policy, "crypto_amount", "");
+                policy.crypto_currency = _.get(policy, "crypto_currency", false) ? _.get(policy, "crypto_currency", false) : "";
+                policy.crypto_amount = _.get(policy, "crypto_amount", false) ? _.get(policy, "crypto_amount", false) : "";
                 return policy;
             })
         }
