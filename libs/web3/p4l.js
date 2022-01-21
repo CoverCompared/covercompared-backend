@@ -10,7 +10,8 @@ const constant = require('../constants');
 const Settings = mongoose.model('Settings');
 const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
-
+const P4LToken = mongoose.model('P4LToken');
+const axios = require("axios");
 
 /**
  * This function is used to match the current smart-contract address with setting collection
@@ -274,12 +275,42 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
                 policy.payment_id = payment._id;
                 await policy.save();
+
+                await policy.callP4LCreatePolicyRequest();
+
+
             }
 
         }
     }
     return true;
 }
+
+exports.createPolicy = async (req) => {
+    let req_config = {
+        method: "post",
+        url: `${config.p4l_api_baseurl}create-policy-api/`,
+        headers: {
+            Authorization: await P4LToken.getToken(),
+            "Content-Type": "application/json",
+        },
+        data: req,
+    };
+
+    let response = {};
+    let result = {};
+    try {
+        response = await axios(req_config);
+        if (_.get(response.data, "status", false) == "OK") {
+            result = { status: true, response };
+        } else {
+            result = { status: false, response }
+        }
+    } catch (error) {
+        result = { status: false, error }
+    }
+    return result;
+};
 
 exports.p4lSyncTransactionForApi = async (transaction_hash) => {
     // Confirm web3Connection is connected

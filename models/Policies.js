@@ -7,6 +7,8 @@ const Schema = mongoose.Schema;
 const moment = require('moment');
 const msoPlans = require("./../libs/mso-plans");
 const utils = require('../libs/utils');
+const config = require('../config');
+const axios = require("axios");
 
 /**
  * Policies Schema
@@ -79,7 +81,13 @@ const PoliciesSchema = new Schema({
         plan_details: { type: Schema.Types.Mixed, default: null }
     },
     DeviceInsurance: {
-        p4l_create_policy_api: { type: Schema.Types.Mixed, default: null },
+        p4l_create_policy_response_ok: { type: Boolean, default: null },
+        p4l_create_policy_requests: [{
+            request_payload: { type: Schema.Types.Mixed, default: null },
+            response_data: { type: Schema.Types.Mixed, default: null },
+            response_status: { type: Schema.Types.Mixed, default: null },
+            status: { type: Boolean, default: null }
+        }],
         device_type: { type: String, default: null },
         brand: { type: String, default: null },
         value: { type: String, default: null },
@@ -273,6 +281,75 @@ PoliciesSchema.methods = {
         } else {
             return "-";
         }
+    },
+
+    /**
+     * Call function when want to push details to p4l partner
+     * Before calling this function must confirm that all the details are available in record
+     * Policy.product_type must be device_insurance
+     */
+    callP4LCreatePolicyRequest: async function () {
+        if(
+            this.product_type == constant.ProductTypes.device_insurance && 
+            !_.get(this.DeviceInsurance, "p4l_create_policy_response_ok", false)
+        ){
+            const P4LToken = mongoose.model('P4LToken');
+    
+            let request_payload = {
+                first_name: _.get(this, "DeviceInsurance.first_name", ""),
+                last_name: _.get(this, "DeviceInsurance.last_name", ""),
+                mobile: _.get(this, "DeviceInsurance.mobile", ""),
+                email: _.get(this, "DeviceInsurance.email", ""),
+                model_code: _.get(this, "DeviceInsurance.model_code", ""),
+                custom_device_name: _.get(this, "DeviceInsurance.custom_device_name", ""),
+                imei_or_serial_number: _.get(this, "DeviceInsurance.imei_or_serial_number", ""),
+                tran_id: _.get(this, "DeviceInsurance.tran_id", ""),
+                purchase_date: _.get(this, "DeviceInsurance.purchase_date", ""),
+                partner_code: _.get(this, "DeviceInsurance.partner_code", ""),
+            };
+    
+            let req_config = {
+                method: "post",
+                url: `${config.p4l_api_baseurl}create-policy-api/`,
+                headers: {
+                    Authorization: await P4LToken.getToken(),
+                    "Content-Type": "application/json",
+                },
+                data: request_payload,
+            };
+    
+            let response = {};
+            let response_status;
+            let p4l_create_policy_response_ok = _.get(this.DeviceInsurance, "p4l_create_policy_response_ok", false);
+            let response_data;
+            try {
+                response = await axios(req_config);
+                response_status = _.get(response, "status", "");
+                p4l_create_policy_response_ok = _.get(response, "data.status", false) == "OK" ? true : false;
+                response_data = _.get(response, "data", "");
+            } catch (error) {
+                response_data = error
+                // result = { status: false, error }
+            }
+
+            let PoliciesModel = this.constructor;
+            let p4l_create_policy_request = {
+                request_payload,
+                response_data,
+                response_status,
+                status : p4l_create_policy_response_ok
+            };
+            await PoliciesModel.updateOne(
+                { _id: this._id }, 
+                { 
+                    "DeviceInsurance.p4l_create_policy_response_ok": p4l_create_policy_response_ok,
+                    $push: { "DeviceInsurance.p4l_create_policy_requests": p4l_create_policy_request }
+                }
+            );
+            
+            return p4l_create_policy_response_ok;
+        }
+
     }
 }
 

@@ -544,19 +544,19 @@ exports.deviceConfirmPayment = async (req, res, next) => {
     }
 
     //call p4l create-policy-api
-    let p4l_req = {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      mobile: req.body.mobile,
-      email: req.body.email,
-      model_code: req.body.model_code,
-      custom_device_name: req.body.custom_device_name,
-      imei_or_serial_number: req.body.imei_or_serial_number,
-      tran_id: req.body.tran_id,
-      purchase_date: req.body.purchase_date,
-      partner_code: req.body.partner_code,
-    };
-    let p4l_res = await this.createPolicy(p4l_req);
+    // let p4l_req = {
+    //   first_name: req.body.first_name,
+    //   last_name: req.body.last_name,
+    //   mobile: req.body.mobile,
+    //   email: req.body.email,
+    //   model_code: req.body.model_code,
+    //   custom_device_name: req.body.custom_device_name,
+    //   imei_or_serial_number: req.body.imei_or_serial_number,
+    //   tran_id: req.body.tran_id,
+    //   purchase_date: req.body.purchase_date,
+    //   partner_code: req.body.partner_code,
+    // };
+    // let p4l_res = await this.createPolicy(p4l_req);
 
     let payment =
       policy && utils.isValidObjectID(policy.payment_id)
@@ -819,7 +819,6 @@ exports.show = async (req, res, next) => {
     let reviews = await Reviews.find({ policy_id: req.params.id })
       .select(["rating", "review", "updatedAt"])
       .lean();
-
     policy = await Policies.getPolicies(policy.product_type, {
       user_id: utils.getObjectID(req.user._id),
       _id: utils.getObjectID(req.params.id),
