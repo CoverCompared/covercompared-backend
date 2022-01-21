@@ -57,6 +57,7 @@ if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.send_mail = true;
     config.p4l_api_baseurl = "https://protect4less.com/app-api/";
 }
+config.p4l_api_baseurl = "https://protect4less.com/app-api/";
 
 if(process.env.SEND_MAIL && process.env.SEND_MAIL == 1){
     config.send_mail = true;
