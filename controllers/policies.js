@@ -80,8 +80,8 @@ exports.storeMso = async (req, res, next) => {
       utils.getFormattedAmount(parseFloat(req.body.total_amount)) !=
       utils.getFormattedAmount(
         parseFloat(req.body.amount) -
-          parseFloat(req.body.discount_amount) +
-          parseFloat(req.body.tax)
+        parseFloat(req.body.discount_amount) +
+        parseFloat(req.body.tax)
       )
     ) {
       return res
@@ -154,7 +154,7 @@ exports.storeMso = async (req, res, next) => {
         (oldPolicy.total_amount != policy.total_amount ||
           oldPolicy.mso_addon_service != policy.mso_addon_service ||
           oldPolicy.MSOPolicy.plan_details.period !=
-            policy.MSOPolicy.plan_details.period))
+          policy.MSOPolicy.plan_details.period))
     ) {
       signature = await web3Connect.msoSignDetails(
         policy.txn_hash,
@@ -406,8 +406,8 @@ exports.storeDeviceInsurance = async (req, res, next) => {
       utils.getFormattedAmount(parseFloat(req.body.total_amount)) !=
       utils.getFormattedAmount(
         parseFloat(req.body.amount) -
-          parseFloat(req.body.discount_amount) +
-          parseFloat(req.body.tax)
+        parseFloat(req.body.discount_amount) +
+        parseFloat(req.body.tax)
       )
     ) {
       return res
@@ -461,12 +461,12 @@ exports.storeDeviceInsurance = async (req, res, next) => {
       (oldPolicy &&
         (oldPolicy.total_amount != policy.total_amount ||
           oldPolicy.DeviceInsurance.durPlan != policy.DeviceInsurance.durPlan))
-          ) {
+    ) {
       signature = await web3Connect.p4lSignDetails(
         policy.txn_hash,
         policy.total_amount,
         policy.DeviceInsurance.durPlan
-        );
+      );
       policy.DeviceInsurance.signature = signature;
       await policy.save();
     } else {
@@ -558,6 +558,8 @@ exports.deviceConfirmPayment = async (req, res, next) => {
     // };
     // let p4l_res = await this.createPolicy(p4l_req);
 
+    let p4l_res;
+
     let payment =
       policy && utils.isValidObjectID(policy.payment_id)
         ? await Payments.findOne({ _id: policy.payment_id })
@@ -568,6 +570,10 @@ exports.deviceConfirmPayment = async (req, res, next) => {
       payment.payment_status == constant.PolicyPaymentStatus.paid &&
       policy.DeviceInsurance.contract_product_id
     ) {
+      policy = await Policies.findOne({ _id: policy._id });
+      await policy.callP4LCreatePolicyRequest();
+      p4l_res = _.get(policy, "DeviceInsurance.p4l_create_policy_requests", null);
+      p4l_res = (p4l_res && Array.isArray(p4l_res)) ?_.get(p4l_res, `${(p4l_res.length - 1)}.response_data`, null) : null;
       return res.status(200).send(
         utils.apiResponse(true, "Payment detail updated successfully.", {
           policy_id: policy._id,
@@ -638,6 +644,9 @@ exports.deviceConfirmPayment = async (req, res, next) => {
     );
 
     policy = await Policies.findOne({ _id: policy._id });
+
+    p4l_res = _.get(policy, "DeviceInsurance.p4l_create_policy_requests", null);
+    p4l_res = (p4l_res && Array.isArray(p4l_res)) ?_.get(p4l_res, `${(p4l_res.length - 1)}.response_data`, null) : null;
 
     return res.status(200).send(
       utils.apiResponse(true, "Payment detail updated successfully.", {
