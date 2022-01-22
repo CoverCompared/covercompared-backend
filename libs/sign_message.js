@@ -1,5 +1,6 @@
 const BigNumber = require('bignumber.js');
 const { ethers } = require("ethers");
+const config = require('../config');
 
 const getHexStrFromStr = (str) => {
     const strBytes = ethers.utils.toUtf8Bytes(str);
@@ -16,7 +17,7 @@ const getPaddedHexStrFromINT = (bn) => {
 };
 
 exports.getSignMessage = (param, isUseCrv = false) => {
-    const value = new BigNumber(param.total_amount).multipliedBy(10 ** 6); // should be the decimals of USDC token
+    const value = new BigNumber(param.total_amount).multipliedBy(10 ** config.is_mainnet ? 6 : 18); // should be the decimals of USDC token
 
     const policyId = param.id === undefined ? 'first-test' : param.id;
     const durPlan = param.durPlan;

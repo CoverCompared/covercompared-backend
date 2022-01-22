@@ -165,6 +165,11 @@ const contracts = {
       42: '',
     },
   },
+  tokens: {
+    usdc: {
+      decimal: { 1: 6, 4: 18, 42: 18 }
+    }
+  },
   nexusMutual: {
     1: '0x61002ee838244684c71cfc912f4404fa088cb596',
     4: '0x0000000000000000000000000000000000000000',
@@ -196,5 +201,5 @@ const contracts = {
     42: '0x53e3b0cf9A1fF1bb0B267fd2988D76D9f9a6ba0a',
   },
 };
-  
+
 module.exports = contracts;
