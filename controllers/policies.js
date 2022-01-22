@@ -461,12 +461,12 @@ exports.storeDeviceInsurance = async (req, res, next) => {
       (oldPolicy &&
         (oldPolicy.total_amount != policy.total_amount ||
           oldPolicy.DeviceInsurance.durPlan != policy.DeviceInsurance.durPlan))
-    ) {
+          ) {
       signature = await web3Connect.p4lSignDetails(
         policy.txn_hash,
         policy.total_amount,
         policy.DeviceInsurance.durPlan
-      );
+        );
       policy.DeviceInsurance.signature = signature;
       await policy.save();
     } else {

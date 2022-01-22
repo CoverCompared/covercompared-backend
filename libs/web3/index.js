@@ -222,14 +222,16 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
         /**
          * TODO: Send Error Report - Issue while sign p4l message
          * */
+        console.log("ERROR ", error);
     }
     return false;
 }
 
 exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) => {
     let web3Connect = await this.getWeb3Connect("mso");
-    priceInUSD = utils.getBigNumber(priceInUSD, config.is_mainnet ? 6 : 18);
-    conciergePrice = utils.getBigNumber(conciergePrice, config.is_mainnet ? 6 : 18);
+    const decimal = config.is_mainnet ? 6 : 18;
+    priceInUSD = utils.getBigNumber(priceInUSD, decimal);
+    conciergePrice = utils.getBigNumber(conciergePrice, decimal);
 
     try {
         let message = signMsg.getSignMessageForMSO({ policyId, value: priceInUSD, period, conciergePrice })
