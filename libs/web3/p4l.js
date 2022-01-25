@@ -107,7 +107,7 @@ exports.p4lAddToSyncTransaction = async (transaction_hash, p4l_from_block) => {
             await this.p4lSyncTransaction(promise.transaction_hash);
             console.log("P4L  ::  Completed ", promise.transaction_hash);
             if (promise.p4l_from_block) {
-                await Settings.setKey("p4l_from_block", promise.p4l_from_block)
+                if(!(process.env.UPDATE_P4L_FROM_BLOCK_OFF && process.env.UPDATE_P4L_FROM_BLOCK_OFF == "1")) await Settings.setKey("p4l_from_block", promise.p4l_from_block)
             }
             P4LTransactionPromises.splice(0, 1);
             console.log("P4L  ::  Rest ", P4LTransactionPromises.length);
@@ -128,6 +128,7 @@ exports.p4lPolicySync = async () => {
 
     try {
         let web3Connect = await this.getWeb3Connect();
+        let details = web3Connect.utils.hexToUtf8("0x68d336549dec75ffb2643695c6785482b1afb2708ba96a01f266a362a4c11cc3");
 
         await this.connectSmartContract();
 

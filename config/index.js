@@ -1,6 +1,7 @@
 const ms = require("ms");
 
 let config = {
+    env: "local",
     app_code: "cover-compared",
     cache_time: 300, // seconds
     api_url: "http://localhost:3006/api/",
@@ -11,11 +12,10 @@ let config = {
     subscribe_mail: "contact@polkacover.com",
     p4l_api_baseurl: "https://dev.protect4less.com/app-api/",
     p4l_secret: process.env.P4L_SECRET,
-    signature_private_key : process.env.SIGNATURE_PRIVATE_KEY,
+    signature_private_key: process.env.SIGNATURE_PRIVATE_KEY,
     JWT_TOKEN_EXPIRY: ms("24h"), // 24h
-    sync_time_web3_smart_contract: ms("5m"),
+    sync_time_web3_smart_contract: ms(process.env.WEB_SYNC_TIME ? process.env.WEB_SYNC_TIME : "5m"),
     is_mainnet: false,
-    
     SupportedChainId: {
         MAINNET: 1,
         RINKEBY: 4,
@@ -24,7 +24,7 @@ let config = {
     email_images: {
         logo: "images/cover-compared.png"
     },
-    social_links : {
+    social_links: {
         twitter: "https://twitter.com/PolkaCover",
         linkedin: "https://www.linkedin.com/company/PolkaCover",
         telegram: "https://t.me/PolkaCover",
@@ -46,11 +46,28 @@ config.NETWORK_URLS = {
     [config.SupportedChainId.KOVAN]: `wss://kovan.infura.io/ws/v3/${INFURA_KEY}`,
 }
 
+if (
+    process.env.NODE_ENV
+    && ['staging', 'production'].includes(process.env.NODE_ENV)
+) {
+    config.sync_time_web3_smart_contract = ms("5m");
+    process.env.UPDATE_P4L_FROM_BLOCK_OFF = undefined;
+    process.env.UPDATE_MSO_FROM_BLOCK_OFF = undefined;
+    process.env.UPDATE_INSURACE_FROM_BLOCK_OFF = undefined;
+    process.env.UPDATE_NEXUS_FROM_BLOCK_OFF = undefined;
+    process.env.P4L_SYNC_TRANSACTIONS_OFF = undefined;
+    process.env.MSO_SYNC_TRANSACTIONS_OFF = undefined;
+    process.env.INSURACE_SYNC_TRANSACTIONS_OFF = undefined;
+    process.env.NEXUS_SYNC_TRANSACTIONS_OFF = undefined;
+}
+
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
+    config.env = "staging";
     config.api_url = "https://staging-covercompared.polkacover.com/api/";
     config.web_url = "https://staging-covercompared.polkacover.com/";
     config.send_mail = true;
 } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
+    config.env = "production";
     config.api_url = "https://app.covercompared.com/api/";
     config.web_url = "https://app.covercompared.com/";
     config.is_mainnet = true;
@@ -58,7 +75,7 @@ if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.p4l_api_baseurl = "https://protect4less.com/app-api/";
 }
 
-if(process.env.SEND_MAIL && process.env.SEND_MAIL == 1){
+if (process.env.SEND_MAIL && process.env.SEND_MAIL == 1) {
     config.send_mail = true;
 }
 

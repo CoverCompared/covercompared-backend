@@ -129,6 +129,7 @@ const PoliciesSchema = new Schema({
         sumAssured: { type: Schema.Types.Mixed, default: null },
         premium: { type: Schema.Types.Mixed, default: null },
         premiumNXM: { type: Schema.Types.Mixed, default: null },
+        coverId: { type: Schema.Types.Mixed, default: null }
     },
     CryptoExchange: {
         block: { type: String, default: null },
@@ -148,6 +149,7 @@ const PoliciesSchema = new Schema({
         sumAssured: { type: Schema.Types.Mixed, default: null },
         premium: { type: Schema.Types.Mixed, default: null },
         premiumNXM: { type: Schema.Types.Mixed, default: null },
+        coverId: { type: Schema.Types.Mixed, default: null }
     }
 }, {
     timestamps: true
@@ -289,12 +291,12 @@ PoliciesSchema.methods = {
      * Policy.product_type must be device_insurance
      */
     callP4LCreatePolicyRequest: async function () {
-        if(
-            this.product_type == constant.ProductTypes.device_insurance && 
+        if (
+            this.product_type == constant.ProductTypes.device_insurance &&
             !_.get(this.DeviceInsurance, "p4l_create_policy_response_ok", false)
-        ){
+        ) {
             const P4LToken = mongoose.model('P4LToken');
-    
+
             let request_payload = {
                 first_name: _.get(this, "DeviceInsurance.first_name", ""),
                 last_name: _.get(this, "DeviceInsurance.last_name", ""),
@@ -307,7 +309,7 @@ PoliciesSchema.methods = {
                 purchase_date: _.get(this, "DeviceInsurance.purchase_date", ""),
                 partner_code: _.get(this, "DeviceInsurance.partner_code", ""),
             };
-    
+
             let req_config = {
                 method: "post",
                 url: `${config.p4l_api_baseurl}create-policy-api/`,
@@ -317,7 +319,7 @@ PoliciesSchema.methods = {
                 },
                 data: request_payload,
             };
-    
+
             let response = {};
             let response_status;
             let p4l_create_policy_response_ok = _.get(this.DeviceInsurance, "p4l_create_policy_response_ok", false);
@@ -337,16 +339,16 @@ PoliciesSchema.methods = {
                 request_payload,
                 response_data,
                 response_status,
-                status : p4l_create_policy_response_ok
+                status: p4l_create_policy_response_ok
             };
             await PoliciesModel.updateOne(
-                { _id: this._id }, 
-                { 
+                { _id: this._id },
+                {
                     "DeviceInsurance.p4l_create_policy_response_ok": p4l_create_policy_response_ok,
                     $push: { "DeviceInsurance.p4l_create_policy_requests": p4l_create_policy_request }
                 }
             );
-            
+
             return p4l_create_policy_response_ok;
         }
 
