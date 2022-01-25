@@ -116,7 +116,7 @@ exports.addToSyncTransaction = async (transaction_hash, insurace_from_block) => 
             await this.syncTransaction(promise.transaction_hash);
             console.log("INSURACE  ::  Completed ", promise.transaction_hash);
             if (promise.insurace_from_block) {
-                await Settings.setKey("insurace_from_block", promise.insurace_from_block)
+                if(!(process.env.UPDATE_INSURACE_FROM_BLOCK_OFF && process.env.UPDATE_INSURACE_FROM_BLOCK_OFF == "1")) await Settings.setKey("insurace_from_block", promise.insurace_from_block)
             }
             TransactionPromises.splice(0, 1);
             console.log("INSURACE  ::  Rest ", TransactionPromises.length);

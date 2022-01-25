@@ -70,8 +70,9 @@ const msoPlans = [
             "Main Member",
             "Spouse",
             "Dependent",
-            "Main Member Parent",
-            "Spouse Parent",
+            // "Main Member Parent",
+            // "Spouse Parent",
+            "Parents",
         ],
         totalUsers: -1,        // -1 is for unlimited
         "logo": `${config.api_url}images/mso.png`

@@ -1,6 +1,7 @@
 const web3Connection = require('./index');
 let NexusSmartContractAbi = require("./../abi/nexus.json");
 let TransferAbi = require("./../abi/transfer.json");
+let CoverBoughtAbi = require("./../abi/nexus-cover-bought-event.json");
 const NexusQuotationDataSmartContractAbi = require("./../abi/nexus-quotation-data.json");
 const _ = require('lodash');
 const mongoose = require('mongoose');
@@ -113,13 +114,13 @@ exports.addToSyncTransaction = async (transaction_hash, nexus_from_block) => {
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
             // if (TransactionPromises.length == 1) {
-                console.log(`NEXUS  ::  Last Transaction Waiting..... ${promise.transaction_hash}`);
-                await (new Promise(resolve => setTimeout(resolve, config.sync_time_web3_smart_contract))) // 1min
+            console.log(`NEXUS  ::  Last Transaction Waiting..... ${promise.transaction_hash}`);
+            await (new Promise(resolve => setTimeout(resolve, config.sync_time_web3_smart_contract))) // 1min
             // }
             await this.syncTransaction(promise.transaction_hash);
             console.log("NEXUS  ::  Completed ", promise.transaction_hash);
             if (promise.nexus_from_block) {
-                await Settings.setKey("nexus_from_block", promise.nexus_from_block)
+                if(!(process.env.UPDATE_NEXUS_FROM_BLOCK_OFF && process.env.UPDATE_NEXUS_FROM_BLOCK_OFF == "1")) await Settings.setKey("nexus_from_block", promise.nexus_from_block)
             }
             TransactionPromises.splice(0, 1);
             console.log("NEXUS  ::  Rest ", TransactionPromises.length);
@@ -183,6 +184,27 @@ exports.getTransactionReceipt = async (transaction_hash) => {
     return await web3Connection.getTransactionReceipt("nexus", transaction_hash);
 }
 
+exports.checkPolicyNeedToSync = (policy) => {
+    return (
+        !policy || policy.payment_status != constant.PolicyPaymentStatus.paid ||
+        !policy.payment_id || !payment ||
+        (
+            policy.product_type == constant.ProductTypes.smart_contract &&
+            (
+                !policy.SmartContract.block ||
+                !policy.SmartContract.coverId
+            )
+        ) ||
+        (
+            policy.product_type == constant.ProductTypes.crypto_exchange &&
+            (
+                !policy.CryptoExchange.block ||
+                !policy.CryptoExchange.coverId
+            )
+        )
+    )
+}
+
 exports.syncTransaction = async (transaction_hash) => {
 
     // Find Policy
@@ -191,10 +213,7 @@ exports.syncTransaction = async (transaction_hash) => {
 
     if (
         !policy ||
-        policy.payment_status != constant.PolicyPaymentStatus.paid ||
-        !policy.payment_id || !payment ||
-        (policy.product_type == constant.ProductTypes.smart_contract && !policy.SmartContract.block) ||
-        (policy.product_type == constant.ProductTypes.crypto_exchange && !policy.CryptoExchange.block)
+        this.checkPolicyNeedToSync()
     ) {
         let web3Connect = await this.getWeb3Connect();
 
@@ -259,7 +278,20 @@ exports.syncTransaction = async (transaction_hash) => {
                 }
             }
 
-
+            // CoverBought Log
+            let CoverBoughtEventAbi = CoverBoughtAbi.find(value => value.name == "CoverBought" && value.type == "event");
+            let hasCoverBoughtEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, CoverBoughtEventAbi, { findTopics: { buyer: this.getCurrentSmartContractAddress() } });
+            let coverBoughtEventIndexedData = hasCoverBoughtEvent ? web3Connection.decodeEventIndexedDataLogs(web3Connect, CoverBoughtEventAbi, hasCoverBoughtEvent) : false;
+            if (!hasCoverBoughtEvent) {
+                /**
+                 * TODO: Send Error Report
+                 * Message - Nexus Transaction does not includes CoverBought Event
+                 * transaction_hash, config.is_mainnet
+                 */
+            }
+            let event_cover_bought_details = {
+                coverId: _.get(coverBoughtEventIndexedData, "coverId", null)
+            };
 
             if (!policy) {
 
@@ -301,12 +333,7 @@ exports.syncTransaction = async (transaction_hash) => {
             }
             if (
                 policy &&
-                (
-                    policy.payment_status != constant.PolicyPaymentStatus.paid ||
-                    !policy.payment_id || !payment ||
-                    (policy.product_type == constant.ProductTypes.smart_contract && !policy.SmartContract.block) ||
-                    (policy.product_type == constant.ProductTypes.crypto_exchange && !policy.CryptoExchange.block)
-                )
+                ( this.checkPolicyNeedToSync() )
             ) {
                 let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
 
@@ -318,6 +345,7 @@ exports.syncTransaction = async (transaction_hash) => {
                 policy[policyType].duration_days = duration_days;
                 policy[policyType].block = TransactionDetails.blockNumber;
                 policy[policyType].network = chain;
+                policy[policyType].coverId = event_cover_bought_details.coverId;
 
                 policy.status = constant.PolicyStatus.active;
                 policy.StatusHistory.push({

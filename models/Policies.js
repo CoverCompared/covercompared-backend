@@ -7,6 +7,8 @@ const Schema = mongoose.Schema;
 const moment = require('moment');
 const msoPlans = require("./../libs/mso-plans");
 const utils = require('../libs/utils');
+const config = require('../config');
+const axios = require("axios");
 
 /**
  * Policies Schema
@@ -79,6 +81,13 @@ const PoliciesSchema = new Schema({
         plan_details: { type: Schema.Types.Mixed, default: null }
     },
     DeviceInsurance: {
+        p4l_create_policy_response_ok: { type: Boolean, default: null },
+        p4l_create_policy_requests: [{
+            request_payload: { type: Schema.Types.Mixed, default: null },
+            response_data: { type: Schema.Types.Mixed, default: null },
+            response_status: { type: Schema.Types.Mixed, default: null },
+            status: { type: Boolean, default: null }
+        }],
         device_type: { type: String, default: null },
         brand: { type: String, default: null },
         value: { type: String, default: null },
@@ -95,7 +104,12 @@ const PoliciesSchema = new Schema({
         start_time: { type: Schema.Types.Mixed, default: null },
         durPlan: { type: Number, default: null },
         contract_product_id: { type: String, default: null },
-        imei_or_serial_number: { type: String, default: null}
+        imei_or_serial_number: { type: String, default: null },
+        model_code: { type: String, default: null },
+        custom_device_name: { type: String, default: null },
+        tran_id: { type: String, default: null },
+        purchase_date: { type: String, default: null },
+        partner_code: { type: String, default: null }
     },
     SmartContract: {
         block: { type: String, default: null },
@@ -115,6 +129,7 @@ const PoliciesSchema = new Schema({
         sumAssured: { type: Schema.Types.Mixed, default: null },
         premium: { type: Schema.Types.Mixed, default: null },
         premiumNXM: { type: Schema.Types.Mixed, default: null },
+        coverId: { type: Schema.Types.Mixed, default: null }
     },
     CryptoExchange: {
         block: { type: String, default: null },
@@ -134,6 +149,7 @@ const PoliciesSchema = new Schema({
         sumAssured: { type: Schema.Types.Mixed, default: null },
         premium: { type: Schema.Types.Mixed, default: null },
         premiumNXM: { type: Schema.Types.Mixed, default: null },
+        coverId: { type: Schema.Types.Mixed, default: null }
     }
 }, {
     timestamps: true
@@ -170,41 +186,41 @@ PoliciesSchema.statics = {
 
         let findObj = { ...find, product_type: { $in: product_type } };
 
-        let project = { 
+        let project = {
             StatusHistory: 0,
-            PaymentStatusHistory: 0, 
-            user_id : 0, 
+            PaymentStatusHistory: 0,
+            user_id: 0,
             payment_id: 0
         };
         let aggregates = [];
         aggregates.push({ $match: findObj })
-        
-        if(review){
+
+        if (review) {
             aggregates.push({
                 $lookup:
-                  {
+                {
                     from: Reviews.collection.collectionName,
                     localField: "_id",
                     foreignField: "policy_id",
                     as: "review"
-                  }
-             });
+                }
+            });
             project["review._id"] = 0
             project["review.user_id"] = 0
             project["review.createdAt"] = 0
             project["review.updatedAt"] = 0
         }
 
-        if(payment){
+        if (payment) {
             aggregates.push({
                 $lookup:
-                  {
+                {
                     from: Payments.collection.collectionName,
                     localField: "payment_id",
                     foreignField: "_id",
                     as: "payment"
-                  }
-             });
+                }
+            });
             project["payment._id"] = 0
             project["payment.user_id"] = 0
             project["payment.createdAt"] = 0
@@ -233,13 +249,13 @@ PoliciesSchema.statics = {
                 } else if (policy.product_type == constant.ProductTypes.crypto_exchange) {
                     policy.details = policy.CryptoExchange;
                 }
-                
+
                 delete policy.MSOPolicy;
                 delete policy.DeviceInsurance;
                 delete policy.SmartContract;
                 delete policy.CryptoExchange;
-                if(policy.details && policy.details.signature) delete policy.details.signature
-                if(policy.payment && Array.isArray(policy.payment) && policy.payment.length){
+                if (policy.details && policy.details.signature) delete policy.details.signature
+                if (policy.payment && Array.isArray(policy.payment) && policy.payment.length) {
                     policy.payment = policy.payment.map((payment) => {
                         payment.crypto_currency = _.get(payment, "crypto_currency", false) ? _.get(payment, "crypto_currency", false) : "";
                         payment.crypto_amount = _.get(payment, "crypto_amount", false) ? _.get(payment, "crypto_amount", false) : "";
@@ -267,6 +283,75 @@ PoliciesSchema.methods = {
         } else {
             return "-";
         }
+    },
+
+    /**
+     * Call function when want to push details to p4l partner
+     * Before calling this function must confirm that all the details are available in record
+     * Policy.product_type must be device_insurance
+     */
+    callP4LCreatePolicyRequest: async function () {
+        if (
+            this.product_type == constant.ProductTypes.device_insurance &&
+            !_.get(this.DeviceInsurance, "p4l_create_policy_response_ok", false)
+        ) {
+            const P4LToken = mongoose.model('P4LToken');
+
+            let request_payload = {
+                first_name: _.get(this, "DeviceInsurance.first_name", ""),
+                last_name: _.get(this, "DeviceInsurance.last_name", ""),
+                mobile: _.get(this, "DeviceInsurance.mobile", ""),
+                email: _.get(this, "DeviceInsurance.email", ""),
+                model_code: _.get(this, "DeviceInsurance.model_code", ""),
+                custom_device_name: _.get(this, "DeviceInsurance.custom_device_name", ""),
+                imei_or_serial_number: _.get(this, "DeviceInsurance.imei_or_serial_number", ""),
+                tran_id: _.get(this, "DeviceInsurance.tran_id", ""),
+                purchase_date: _.get(this, "DeviceInsurance.purchase_date", ""),
+                partner_code: _.get(this, "DeviceInsurance.partner_code", ""),
+            };
+
+            let req_config = {
+                method: "post",
+                url: `${config.p4l_api_baseurl}create-policy-api/`,
+                headers: {
+                    Authorization: await P4LToken.getToken(),
+                    "Content-Type": "application/json",
+                },
+                data: request_payload,
+            };
+
+            let response = {};
+            let response_status;
+            let p4l_create_policy_response_ok = _.get(this.DeviceInsurance, "p4l_create_policy_response_ok", false);
+            let response_data;
+            try {
+                response = await axios(req_config);
+                response_status = _.get(response, "status", "");
+                p4l_create_policy_response_ok = _.get(response, "data.status", false) == "OK" ? true : false;
+                response_data = _.get(response, "data", "");
+            } catch (error) {
+                response_data = error
+                // result = { status: false, error }
+            }
+
+            let PoliciesModel = this.constructor;
+            let p4l_create_policy_request = {
+                request_payload,
+                response_data,
+                response_status,
+                status: p4l_create_policy_response_ok
+            };
+            await PoliciesModel.updateOne(
+                { _id: this._id },
+                {
+                    "DeviceInsurance.p4l_create_policy_response_ok": p4l_create_policy_response_ok,
+                    $push: { "DeviceInsurance.p4l_create_policy_requests": p4l_create_policy_request }
+                }
+            );
+
+            return p4l_create_policy_response_ok;
+        }
+
     }
 }
 

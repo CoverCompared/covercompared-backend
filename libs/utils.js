@@ -228,7 +228,7 @@ utils.getObjectID = (_id) => {
     return token;
 }
 
-utils.getBigNumber = (value, decimals = 18) => {
+utils.getBigNumber = (value, decimals) => {
     return BigInt(value * (10 ** decimals));
 }
 

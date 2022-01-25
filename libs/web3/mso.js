@@ -172,6 +172,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
 
         // Get Transaction details
         let TransactionDetails = await this.getTransaction(transaction_hash);
+
         // console.log('Transaction Details ', TransactionDetails);
         let TransactionReceiptDetails = await this.getTransactionReceipt(transaction_hash);
 
@@ -269,7 +270,7 @@ exports.msoAddToSyncTransaction = async (transaction_hash, mso_from_block) => {
             await this.msoSyncTransaction(promise.transaction_hash);
             console.log("MSO  ::  Completed ", promise.transaction_hash);
             if (promise.mso_from_block) {
-                await Settings.setKey("mso_from_block", promise.mso_from_block)
+                if(!(process.env.UPDATE_MSO_FROM_BLOCK_OFF && process.env.UPDATE_MSO_FROM_BLOCK_OFF == "1")) await Settings.setKey("mso_from_block", promise.mso_from_block)
             }
             MSOTransactionPromises.splice(0, 1);
             console.log("MSO  ::  Rest ", MSOTransactionPromises.length);

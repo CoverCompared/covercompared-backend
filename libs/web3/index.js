@@ -222,14 +222,16 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
         /**
          * TODO: Send Error Report - Issue while sign p4l message
          * */
+        console.log("ERROR ", error);
     }
     return false;
 }
 
 exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) => {
     let web3Connect = await this.getWeb3Connect("mso");
-    priceInUSD = utils.getBigNumber(priceInUSD, 6);
-    conciergePrice = utils.getBigNumber(conciergePrice, 6);
+    const decimal = config.is_mainnet ? 6 : 18;
+    priceInUSD = utils.getBigNumber(priceInUSD, decimal);
+    conciergePrice = utils.getBigNumber(conciergePrice, decimal);
 
     try {
         let message = signMsg.getSignMessageForMSO({ policyId, value: priceInUSD, period, conciergePrice })
@@ -313,10 +315,10 @@ exports.getValueFromTransactionReceiptLog = (web3Connect, TransactionReceiptLog,
         findIndex = findIndex + 1;
         find = abi.inputs.filter(value => value.indexed).find((value) => value.indexed && value.name == fieldName)
         if (findIndex < TransactionReceiptLog.topics.length) {
-            if(decode){
+            if (decode) {
                 let find = abi.inputs.filter(value => value.indexed).find((value) => value.indexed && value.name == fieldName)
                 return web3Connect.eth.abi.decodeParameter(find.type, TransactionReceiptLog.topics[findIndex]);
-            }else{
+            } else {
                 return TransactionReceiptLog.topics[findIndex];
             }
         }
@@ -345,7 +347,7 @@ exports.decodeEventParametersLogs = (web3Connect, eventAbi, log) => {
     let EventAbiClone = Object.assign({}, eventAbi);
 
     let inputs = EventAbiClone.inputs.filter(value => value.indexed == false);
-    
+
     return web3Connect.eth.abi.decodeParameters(inputs, TransactionReceiptLog.data);
 }
 
@@ -362,10 +364,10 @@ exports.decodeEventIndexedDataLogs = (web3Connect, eventAbi, log) => {
 
     let topics = {};
 
-    if(log.topics && log.topics.length){
+    if (log.topics && log.topics.length) {
         topics[0] = log.topics[0];
         eventAbi.inputs.filter(value => value.indexed).forEach((value, ind) => {
-            topics[value.name]  = web3Connect.eth.abi.decodeParameter(value.type, log.topics[ind+1]);
+            topics[value.name] = web3Connect.eth.abi.decodeParameter(value.type, log.topics[ind + 1]);
         })
     }
 
