@@ -445,3 +445,11 @@ exports.covertToDisplayValue = (web3Connect, value, token) => {
 //     let hasTransferEvent = this.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, TransferEventAbi);
 
 // }
+
+/**
+ *  
+ * @param {Number} value 
+ */
+exports.removeDecimalFromUSDPrice = (value) => {
+    return ((value) / (10 ** (config.is_mainnet ? 6 : 18)))
+}

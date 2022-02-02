@@ -167,6 +167,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
+        true ||
         !policy ||
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
         !policy.payment_id || !payment || !payment.network || !policy.MSOPolicy.contract_product_id
@@ -211,9 +212,11 @@ exports.msoSyncTransaction = async (transaction_hash) => {
                 policy = await Policies.findOne({ txn_hash: product.policyId });
                 payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
             }
+            
             if(
                 policy &&
                 (
+                    true ||
                     policy.payment_status != constant.PolicyPaymentStatus.paid ||
                     !policy.payment_id || !payment || !payment.network || !policy.MSOPolicy.contract_product_id ||
                     !policy.payment_hash
@@ -248,7 +251,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
                 policy.MSOPolicy.contract_product_id = productId;
                 policy.MSOPolicy.start_time = productId;
                 policy.MSOPolicy.plan_details.period = product.period;
-                policy.MSOPolicy.mso_addon_service = product.conciergePrice / (10 ** 18);
+                policy.MSOPolicy.mso_addon_service = web3Connection.removeDecimalFromUSDPrice(product.conciergePrice);
                 policy.status = constant.PolicyStatus.active;
                 policy.StatusHistory.push({
                     status: policy.status,
@@ -257,7 +260,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
                 });
                 policy.payment_status = constant.PolicyPaymentStatus.paid;
                 policy.payment_hash = transaction_hash;
-                policy.total_amount = (product.priceInUSD / (10 ** 18)) + policy.MSOPolicy.mso_addon_service;
+                policy.total_amount = web3Connection.removeDecimalFromUSDPrice(product.priceInUSD) + policy.MSOPolicy.mso_addon_service;
                 policy.crypto_currency = crypto_currency;
                 policy.crypto_amount = crypto_amount;
 
@@ -282,6 +285,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
 
                 policy.payment_id = payment._id;
                 await policy.save();
+                await Settings.setKey("mso_last_sync_transaction", transaction_hash)
             }
 
         }
