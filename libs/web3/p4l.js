@@ -128,7 +128,8 @@ exports.p4lPolicySync = async () => {
 
     try {
         let web3Connect = await this.getWeb3Connect();
-        let details = web3Connect.utils.hexToUtf8("0x68d336549dec75ffb2643695c6785482b1afb2708ba96a01f266a362a4c11cc3");
+        // console.log("web3Connect", web3Connect);
+        // let details = web3Connect.utils.hexToUtf8("0x68d336549dec75ffb2643695c6785482b1afb2708ba96a01f266a362a4c11cc3");
 
         await this.connectSmartContract();
 
