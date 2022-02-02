@@ -115,7 +115,12 @@ exports.msoPolicySync = async () => {
         MSOEventSubscription.on('data', async (event) => {
             if (["BuyMSO", "BuyProduct"].includes(event.event)) {
                 // Find Policy
-                await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
+                if(
+                    !process.env.DEBUG_MSO_TRANSACTION_HASH ||
+                    process.env.DEBUG_MSO_TRANSACTION_HASH == event.transactionHash
+                ){
+                    await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
+                }
             }
         })
 
@@ -157,11 +162,9 @@ exports.msoGetProductDetails = async (product_id) => {
 }
 
 exports.msoSyncTransaction = async (transaction_hash) => {
-
     // Find Policy
     let policy = await Policies.findOne({ payment_hash: transaction_hash });
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
-
 
     if (
         !policy ||
@@ -182,6 +185,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
 
         let BuyMSOEventAbi = MSOSmartContractAbi.find(value => value.name == "BuyMSO" && value.type == "event");
         let hasBuyMSOEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyMSOEventAbi);
+        let BuyMSOEventDetails = web3Connection.decodeEventParametersLogs(web3Connect, BuyMSOEventAbi, hasBuyMSOEvent);
 
         if (hasBuyProductEvent || hasBuyMSOEvent) {
             // Get ProductId from Transaction
@@ -215,6 +219,32 @@ exports.msoSyncTransaction = async (transaction_hash) => {
                     !policy.payment_hash
                 )
             ){
+                // Get Wallet Address from BuyMSO details
+                let wallet_address = _.get(BuyMSOEventDetails, "_buyer", null);
+                let currency_address =  _.get(BuyMSOEventDetails, "_currency", null);
+                let crypto_amount =   _.get(BuyMSOEventDetails, "_amount", null);
+
+                if(wallet_address == null){
+                    /**
+                     * TODO: Send Error Report
+                     * Message : "MSO Transaction buyer address is not valid",
+                     * config.is_mainnet, this.getCurrentSmartContractAddress(), transaction_hash
+                     */
+                }
+
+                // Get Currency and Amount Detail from BuyMSO details
+                let crypto_currency;
+                if(TransactionDetails.value > 0){
+                    crypto_currency = "Ether";
+                    crypto_amount = web3Connection.covertToDisplayValue(web3Connect, TransactionDetails.value, "eth");
+                }else if(utils.findAddressInList(config.cvr_token_addresses, currency_address)){
+                    crypto_currency = "CVR";
+                    crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "cvr");
+                }else if(utils.findAddressInList(config.dai_token_addresses, currency_address)){
+                    crypto_currency = "DAI";
+                    crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "dai");
+                }
+
                 policy.MSOPolicy.contract_product_id = productId;
                 policy.MSOPolicy.start_time = productId;
                 policy.MSOPolicy.plan_details.period = product.period;
@@ -228,6 +258,8 @@ exports.msoSyncTransaction = async (transaction_hash) => {
                 policy.payment_status = constant.PolicyPaymentStatus.paid;
                 policy.payment_hash = transaction_hash;
                 policy.total_amount = (product.priceInUSD / (10 ** 18)) + policy.MSOPolicy.mso_addon_service;
+                policy.crypto_currency = crypto_currency;
+                policy.crypto_amount = crypto_amount;
 
                 await policy.save();
 
@@ -237,15 +269,15 @@ exports.msoSyncTransaction = async (transaction_hash) => {
 
                 payment.payment_status = constant.PolicyPaymentStatus.paid;
                 payment.blockchain = "Ethereum";
-                payment.wallet_address = TransactionDetails.from;
+                payment.wallet_address = wallet_address;
                 payment.block_timestamp = product.startTime;
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;
                 payment.currency = "USD";
                 payment.paid_amount = policy.total_amount;
                 payment.network = chain;
-                payment.crypto_currency = "Ether";
-                payment.crypto_amount = TransactionDetails.value;
+                payment.crypto_currency = crypto_currency;
+                payment.crypto_amount = crypto_amount;
                 await payment.save();
 
                 policy.payment_id = payment._id;

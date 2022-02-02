@@ -424,6 +424,20 @@ exports.getAbiOfSmartContract = async (contract_address, chain_id) => {
 
 }
 
+/**
+ * Function covert value to display value
+ * like: 107999999999999999 to 0.107999999999999999
+ * @param {Number} value 
+ * @param {"eth"|"cvr"|"dai"} token 
+ */
+exports.covertToDisplayValue = (web3Connect, value, token) => {
+    let unit = "noether";
+    if(token == "eth") unit = "ether";
+    if(token == "cvr") unit = "ether";
+    if(token == "dai") unit = "ether";
+    return web3Connect.utils.fromWei(value, unit);
+}
+
 // exports.getTransferEventLog = async (web3Connect, TransactionReceiptDetails, fromAddress) => {
 
 //     // Transfer Log
@@ -431,6 +445,3 @@ exports.getAbiOfSmartContract = async (contract_address, chain_id) => {
 //     let hasTransferEvent = this.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, TransferEventAbi);
 
 // }
-
-exports.encodePa
-
