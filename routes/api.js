@@ -1,6 +1,8 @@
 var express = require('express');
+var path = require('path');
 var router = express.Router();
 const _ = require('lodash');
+const fs = require('fs');
 
 const coverController = require("./../controllers/covers");
 const msoController = require("./../controllers/mso");
@@ -149,6 +151,16 @@ router.use('/get-sign-address', async (req, res, next) => {
 router.use('/seed', async (req, res, next) => {
     await require("./../seeder/users")();
     res.send(utils.apiResponseMessage(true, "success"));
+});
+
+router.get('/logs/:filename', (req, res) => {
+    res.sendFile(path.join(__dirname, `/../uploads/logs/${req.params.filename}`));
+});
+
+router.get('/logs-dir', async (req, res) => {
+
+    let files = await fs.readdirSync(path.join(__dirname, `/../uploads/logs/`))
+    res.send({files: files})
 });
 
 module.exports = router;

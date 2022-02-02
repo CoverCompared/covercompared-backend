@@ -32,8 +32,8 @@ const SettingsSchema = new Schema({
     mso_smart_contract_address: { type: String, default: null },
     mso_smart_contract_abi: { type: Schema.Types.Mixed, default: null },
     mso_from_block: { type: String, default: null },
+    cover_details: [{type: Schema.Types.Mixed, default: null}],
     mso_last_sync_transaction: { type: String, default: null },
-    cover_details: [{type: Schema.Types.Mixed, default: null}]
 }, {
     timestamps: true
 });

@@ -6,6 +6,8 @@
 # Node artifact files
 node_modules/
 dist/
+uploads/logs/
+!uploads/logs/no-image.png
 uploads/cache/
 !uploads/cache/no-image.png
 uploads/receipts/

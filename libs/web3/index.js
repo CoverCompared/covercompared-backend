@@ -286,7 +286,7 @@ exports.checkTransactionReceiptHasLog = (web3Connect, TransactionReceipt, abi, o
         }
     }
 
-    if (TransactionReceipt.logs && Array.isArray(TransactionReceipt.logs)) {
+    if (TransactionReceipt && TransactionReceipt.logs && Array.isArray(TransactionReceipt.logs)) {
         logEvent = TransactionReceipt.logs.filter(log => {
             if (!log.topics.find(topic => topic == methodSha3)) {
                 return false
