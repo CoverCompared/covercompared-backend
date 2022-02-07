@@ -104,7 +104,7 @@ exports.msoPolicySync = async () => {
         await this.connectSmartContract("mso");
         console.log("MSO From Block", MSOFromBlock);
         MSOEventSubscription = await MSOStartContract.events.allEvents({ fromBlock: MSOFromBlock })
-        console.log("MSO subscription", MSOEventSubscription.toString(), JSON.stringify(MSOEventSubscription));
+        console.log("MSO subscription", MSOEventSubscription.toString());
 
         /**
          * BuyMSO, BuyProduct 
