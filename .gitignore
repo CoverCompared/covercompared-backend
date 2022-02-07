@@ -6,11 +6,12 @@
 # Node artifact files
 node_modules/
 dist/
-uploads/logs/
+uploads/logs/*
+uploads/cache/*
+uploads/receipts/*
+
 !uploads/logs/no-image.png
-uploads/cache/
 !uploads/cache/no-image.png
-uploads/receipts/
 !uploads/receipts/no-image.png
 
 # Compiled Java class files
