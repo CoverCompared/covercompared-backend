@@ -36,6 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/api', express.static(path.join(__dirname, 'public')));
+app.use('/api/log', express.static(path.join(__dirname, 'uploads/logs')));
 
 var fs = require('fs')
 
