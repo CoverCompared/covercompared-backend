@@ -69,7 +69,6 @@ if (
     process.env.MSO_SYNC_TRANSACTIONS_OFF = undefined;
     process.env.INSURACE_SYNC_TRANSACTIONS_OFF = undefined;
     process.env.NEXUS_SYNC_TRANSACTIONS_OFF = undefined;
-    process.env.DEBUG_MSO_TRANSACTION_HASH = undefined;
 }
 
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {

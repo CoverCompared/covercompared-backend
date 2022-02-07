@@ -117,14 +117,7 @@ exports.msoPolicySync = async () => {
             if (["BuyMSO", "BuyProduct"].includes(event.event)) {
                 console.log("MSO EVENT", event.transactionHash);
                 // Find Policy
-                if(
-                    process.env.DEBUG_MSO_TRANSACTION_HASH == undefined ||
-                    process.env.DEBUG_MSO_TRANSACTION_HASH == event.transactionHash
-                ){
-                    await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
-                }else{
-                    console.log("MSO DEBUG_MSO_TRANSACTION_HASH", process.env.DEBUG_MSO_TRANSACTION_HASH);
-                }
+                await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
             }
         })
 
