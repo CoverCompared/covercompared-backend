@@ -36,13 +36,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/api', express.static(path.join(__dirname, 'public')));
-app.use('/api/log', express.static(path.join(__dirname, 'uploads/logs')));
 
 var fs = require('fs')
 
 
 console.log = function(...d) {
-  fs.appendFile(path.join(__dirname, `uploads/logs/${moment().format("DD-MM-YYYY")}.txt`),   (moment().format("HH:MM:ss ") + (Array.isArray(d) ? d.join(", ") : JSON.stringify(d)) + "\n"), () => {})
+  fs.appendFile(path.join(__dirname, `uploads/logs/${moment().format("DD-MM-YYYY HH")}.txt`),   (moment().format("MM:ss ") + (Array.isArray(d) ? d.join(", ") : JSON.stringify(d)) + "\n"), () => {})
   console.info(...d)
 };
 
