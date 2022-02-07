@@ -259,6 +259,7 @@ exports.msoSyncTransaction = async (transaction_hash) => {
                 policy.payment_status = constant.PolicyPaymentStatus.paid;
                 policy.payment_hash = transaction_hash;
                 policy.total_amount = web3Connection.removeDecimalFromUSDPrice(product.priceInUSD) + policy.MSOPolicy.mso_addon_service;
+                policy.currency = "USD";
                 policy.crypto_currency = crypto_currency;
                 policy.crypto_amount = crypto_amount;
 
