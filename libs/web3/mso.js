@@ -123,7 +123,7 @@ exports.msoPolicySync = async () => {
                 ){
                     await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
                 }else{
-                    console.log("MSO DEBUG_MSO_TRANSACTION_HASH");
+                    console.log("MSO DEBUG_MSO_TRANSACTION_HASH", process.env.DEBUG_MSO_TRANSACTION_HASH);
                 }
             }
         })
