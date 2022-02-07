@@ -41,7 +41,7 @@ var fs = require('fs')
 
 
 console.log = function(...d) {
-  fs.appendFile(path.join(__dirname, `uploads/logs/${moment().format("DD-MM-YYYY HH")}.txt`),   (moment().format("MM:ss ") + (Array.isArray(d) ? d.join(", ") : JSON.stringify(d)) + "\n"), () => {})
+  fs.appendFile(path.join(__dirname, `uploads/logs/${moment().format("DD-MM-YYYY")}.txt`),   (moment().format("HH:MM:ss ") + (Array.isArray(d) ? d.join(", ") : JSON.stringify(d)) + "\n"), () => {})
   console.info(...d)
 };
 

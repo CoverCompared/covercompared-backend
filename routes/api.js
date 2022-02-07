@@ -158,7 +158,6 @@ router.get('/logs/:filename', (req, res) => {
 });
 
 router.get('/logs-dir', async (req, res) => {
-
     let files = await fs.readdirSync(path.join(__dirname, `/../uploads/logs/`))
     res.send({files: files})
 });
