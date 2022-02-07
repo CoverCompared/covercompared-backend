@@ -102,8 +102,9 @@ exports.msoPolicySync = async () => {
         let web3Connect = await this.getWeb3Connect("mso");
 
         await this.connectSmartContract("mso");
-
+        console.log("MSO From Block", MSOFromBlock);
         MSOEventSubscription = await MSOStartContract.events.allEvents({ fromBlock: MSOFromBlock })
+        console.log("MSO subscription", MSOEventSubscription.toString(), JSON.stringify(MSOEventSubscription));
 
         /**
          * BuyMSO, BuyProduct 
@@ -120,6 +121,8 @@ exports.msoPolicySync = async () => {
                     process.env.DEBUG_MSO_TRANSACTION_HASH == event.transactionHash
                 ){
                     await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
+                }else{
+                    console.log("MSO DEBUG_MSO_TRANSACTION_HASH");
                 }
             }
         })
@@ -127,6 +130,7 @@ exports.msoPolicySync = async () => {
         // MSOEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
         // MSOEventSubscription.on('connected', str => console.log("CONNECTED ", str))
         MSOEventSubscription.on('error', str => {
+            console.log("MSO Subscription Errro", str.toString(), JSON.stringify(str));
             /**
              * TODO: Send Error Report "MSO Start Contract issue on fetch all events."
              */
