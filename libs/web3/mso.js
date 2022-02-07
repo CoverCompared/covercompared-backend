@@ -115,6 +115,7 @@ exports.msoPolicySync = async () => {
          */
         MSOEventSubscription.on('data', async (event) => {
             if (["BuyMSO", "BuyProduct"].includes(event.event)) {
+                console.log("MSO EVENT", event.transactionHash);
                 // Find Policy
                 if(
                     !process.env.DEBUG_MSO_TRANSACTION_HASH ||
