@@ -92,10 +92,6 @@ router.get("/setting", async (req, res) => {
     let setting = await Settings.getKey()
     return res.send(setting);
 })
-router.post("/setting", async (req, res) => {
-    let setting = await Settings.setKey("mso_from_block", '0')
-    res.send({status: await Settings.getKey("mso_from_block")})
-})
 
 // router.get("/web3/test", async (req, res) => {
 //     /**

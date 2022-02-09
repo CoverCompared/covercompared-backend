@@ -102,9 +102,7 @@ exports.msoPolicySync = async () => {
         let web3Connect = await this.getWeb3Connect("mso");
 
         await this.connectSmartContract("mso");
-        console.log("MSO From Block", MSOFromBlock);
         MSOEventSubscription = await MSOStartContract.events.allEvents({ fromBlock: MSOFromBlock })
-        console.log("MSO subscription", MSOEventSubscription.toString());
 
         /**
          * BuyMSO, BuyProduct 
@@ -115,7 +113,6 @@ exports.msoPolicySync = async () => {
          */
         MSOEventSubscription.on('data', async (event) => {
             if (["BuyMSO", "BuyProduct"].includes(event.event)) {
-                console.log("MSO EVENT", event.transactionHash);
                 // Find Policy
                 await this.msoAddToSyncTransaction(event.transactionHash, event.blockNumber);
             }
@@ -165,7 +162,6 @@ exports.msoSyncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
-        true ||
         !policy ||
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
         !policy.payment_id || !payment || !payment.network || !policy.MSOPolicy.contract_product_id
@@ -214,7 +210,6 @@ exports.msoSyncTransaction = async (transaction_hash) => {
             if(
                 policy &&
                 (
-                    true ||
                     policy.payment_status != constant.PolicyPaymentStatus.paid ||
                     !policy.payment_id || !payment || !payment.network || !policy.MSOPolicy.contract_product_id ||
                     !policy.payment_hash
