@@ -36,6 +36,16 @@ let config = {
         "0xd3e48facd30a73609ffa60ae84851e72d10fea52",   // rinkeby
         "0xfc9b2b2565b38511b9822887f99d036d694a11e6"    // kovan
     ],
+    dai_token_addresses: [
+        "0x6b175474e89094c44da98b954eedeac495271d0f",   // mainnet
+        "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea",   // rinkeby
+        "0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa"    // kovan
+    ],
+    ether_token_addresses: [
+        "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", // mainnet
+        "0xc778417e063141139fce010982780140aa0cd5ab",   // rinkeby
+        "0xd0a1e359811322d97991e03f863a0c30c2cf029c"    // kovan
+    ],
     etherscan_key: process.env.ETHERSCAN_API_KEY ? process.env.ETHERSCAN_API_KEY : "JNBVMS9A3MSEDEIEDPC3B18HNNI2YQ6BGS",
 }
 
