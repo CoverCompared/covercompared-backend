@@ -34,6 +34,7 @@ const SettingsSchema = new Schema({
     mso_from_block: { type: String, default: null },
     cover_details: [{type: Schema.Types.Mixed, default: null}],
     mso_last_sync_transaction: { type: String, default: null },
+    p4l_last_sync_transaction: { type: String, default: null },
 }, {
     timestamps: true
 });
@@ -61,6 +62,7 @@ SettingsSchema.statics = {
         setting.nexus_smart_contract_abi = setting.nexus_smart_contract_abi ? setting.nexus_smart_contract_abi : null;
         setting.mso_smart_contract_abi = setting.mso_smart_contract_abi ? setting.mso_smart_contract_abi : null;
         setting.mso_last_sync_transaction = setting.mso_last_sync_transaction ? setting.mso_last_sync_transaction : null;
+        setting.p4l_last_sync_transaction = setting.p4l_last_sync_transaction ? setting.p4l_last_sync_transaction : null;
         setting.cover_details = setting.cover_details ? setting.cover_details : [];
         return key ? setting[key] : setting;
     },
