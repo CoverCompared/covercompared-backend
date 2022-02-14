@@ -210,6 +210,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
         let BuyP4LEventAbi = P4LSmartContractAbi.find(value => value.name == "BuyP4L" && value.type == "event");
         let hasBuyP4LEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyP4LEventAbi);
+        let BuyP4LEventDetails = web3Connection.decodeEventParametersLogs(web3Connect, BuyP4LEventAbi, hasBuyP4LEvent);
 
         if (hasBuyProductEvent || hasBuyP4LEvent) {
             // Get ProductId from Transaction
@@ -229,7 +230,6 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                  * data : product_type : p4l, smart_contract_address, product, policy
                  */
             }
-
             if (!policy) {
                 policy = await Policies.findOne({ txn_hash: product.policyId });
                 payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
@@ -242,6 +242,33 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                     !policy.DeviceInsurance.contract_product_id || !policy.payment_hash
                 )
             ) {
+
+                // Get Wallet Address from BuyP4L details
+                let wallet_address = _.get(BuyP4LEventDetails, "_buyer", null);
+                let currency_address =  _.get(BuyP4LEventDetails, "_currency", null);
+                let crypto_amount =   _.get(BuyP4LEventDetails, "_amount", null);
+
+                if(wallet_address == null){
+                    /**
+                     * TODO: Send Error Report
+                     * Message : "P4L Transaction buyer address is not valid",
+                     * config.is_mainnet, this.getCurrentSmartContractAddress(), transaction_hash
+                     */
+                }
+                
+                // Get Currency and Amount Detail from BuyP4L details
+                let crypto_currency;
+                if(TransactionDetails.value > 0){
+                    crypto_currency = "Ether";
+                    crypto_amount = web3Connection.covertToDisplayValue(web3Connect, TransactionDetails.value, "eth");
+                }else if(utils.findAddressInList(config.cvr_token_addresses, currency_address)){
+                    crypto_currency = "CVR";
+                    crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "cvr");
+                }else if(utils.findAddressInList(config.dai_token_addresses, currency_address)){
+                    crypto_currency = "DAI";
+                    crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "dai");
+                }
+
                 policy.DeviceInsurance.contract_product_id = productId;
                 policy.DeviceInsurance.start_time = productId;
                 policy.DeviceInsurance.durPlan = product.durPlan;
@@ -254,7 +281,10 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                 });
                 policy.payment_status = constant.PolicyPaymentStatus.paid;
                 policy.payment_hash = transaction_hash;
-                policy.total_amount = product.priceInUSD / (10 ** 18);
+                policy.total_amount = web3Connection.removeDecimalFromUSDPrice(product.priceInUSD);
+                policy.currency = "USD";
+                policy.crypto_currency = crypto_currency;
+                policy.crypto_amount = crypto_amount;
 
                 await policy.save();
 
@@ -264,21 +294,22 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
                 payment.payment_status = constant.PolicyPaymentStatus.paid;
                 payment.blockchain = "Ethereum";
-                payment.wallet_address = TransactionDetails.from;
+                payment.wallet_address = wallet_address;
                 payment.block_timestamp = product.startTime;
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;
                 payment.currency = "USD";
                 payment.paid_amount = policy.total_amount;
                 payment.network = chain;
-                payment.crypto_currency = "Ether";
-                payment.crypto_amount = TransactionDetails.value;
+                payment.crypto_currency = crypto_currency;
+                payment.crypto_amount = crypto_amount;
+
                 await payment.save();
 
                 policy.payment_id = payment._id;
                 await policy.save();
 
-                await policy.callP4LCreatePolicyRequest();
+                // await policy.callP4LCreatePolicyRequest();
 
 
             }

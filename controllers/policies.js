@@ -428,7 +428,7 @@ exports.storeDeviceInsurance = async (req, res, next) => {
       });
       policy.payment_status = constant.PolicyPaymentStatus.unpaid;
     }
-    policy.currency = req.body.currency;
+    policy.currency = "USD";
     policy.amount = req.body.amount;
     policy.discount_amount = req.body.discount_amount;
     policy.tax = req.body.tax;
