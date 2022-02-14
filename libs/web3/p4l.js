@@ -310,9 +310,9 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
                 policy.payment_id = payment._id;
                 await policy.save();
+                await Settings.setKey("p4l_last_sync_transaction", transaction_hash)
 
                 // await policy.callP4LCreatePolicyRequest();
-
 
             }
 
