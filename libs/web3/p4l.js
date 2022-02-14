@@ -238,6 +238,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
             if (
                 policy &&
                 (
+                    true ||
                     policy.payment_status != constant.PolicyPaymentStatus.paid ||
                     !policy.payment_id || !payment || !payment.network ||
                     !policy.DeviceInsurance.contract_product_id || !policy.payment_hash
