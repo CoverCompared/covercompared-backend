@@ -193,6 +193,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
+        true ||
         !policy ||
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
         !policy.payment_id || !payment || !payment.network || !policy.DeviceInsurance.contract_product_id
@@ -235,6 +236,7 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
                 payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
             }
             if (
+                true ||
                 policy &&
                 (
                     policy.payment_status != constant.PolicyPaymentStatus.paid ||
