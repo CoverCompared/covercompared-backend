@@ -212,7 +212,6 @@ exports.syncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
-        true ||
         !policy ||
         this.checkPolicyNeedToSync()
     ) {
@@ -359,7 +358,7 @@ exports.syncTransaction = async (transaction_hash) => {
             }
             if (
                 policy &&
-                ( this.checkPolicyNeedToSync() || true )
+                ( this.checkPolicyNeedToSync() )
             ) {
                 let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
 
