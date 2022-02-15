@@ -148,7 +148,7 @@ exports.policySync = async () => {
 
         /**
          * BuyNexusMutual
-         * These event execute from InsurAce SmartContract 
+         * These event execute from Nexus SmartContract 
          * Only when any user purchase successfully InsureAce product
          * This function will match event data with current database,
          * If there any new product found it will insert data to database
@@ -212,6 +212,7 @@ exports.syncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
+        true ||
         !policy ||
         this.checkPolicyNeedToSync()
     ) {
@@ -230,6 +231,8 @@ exports.syncTransaction = async (transaction_hash) => {
         // BuyNexusMutual Event Log
         let BuyNexusMutualEventAbi = NexusSmartContractAbi.find(value => value.name == "BuyNexusMutual" && value.type == "event");
         let hasBuyNexusMutualEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyNexusMutualEventAbi);
+        let BuyNexusMutualEventDetails = web3Connection.decodeEventParametersLogs(web3Connect, BuyNexusMutualEventAbi, hasBuyNexusMutualEvent);
+        console.log("BuyNexusMutualEventDetails", BuyNexusMutualEventDetails);
 
         // CoverDetailsEvent Log
         let CoverDetailsEventEventAbi = NexusQuotationDataSmartContractAbi.find(value => value.name == "CoverDetailsEvent" && value.type == "event");
@@ -289,6 +292,29 @@ exports.syncTransaction = async (transaction_hash) => {
                  * transaction_hash, config.is_mainnet
                  */
             }
+
+            // Get Currency and Amount Detail
+            let currency_address =  _.get(BuyNexusMutualEventDetails, "_buyToken", null);
+            let crypto_amount =   _.get(BuyNexusMutualEventDetails, "_tokenAmount", null);
+
+            let crypto_currency;
+            if(TransactionDetails.value > 0){
+                crypto_currency = "Ether";
+                crypto_amount = web3Connection.covertToDisplayValue(web3Connect, TransactionDetails.value, "eth");
+            }else if(utils.findAddressInList(config.cvr_token_addresses, currency_address)){
+                crypto_currency = "CVR";
+                crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "cvr");
+            }else if(utils.findAddressInList(config.dai_token_addresses, currency_address)){
+                crypto_currency = "DAI";
+                crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "dai");
+            }else{
+                /**
+                 * TODO: Send Error Report
+                 * currency_address does not found in existing list
+                 * "nexus", config.is_mainnet, currency_address, transaction_hash
+                 */
+            }
+
             let event_cover_bought_details = {
                 coverId: _.get(coverBoughtEventIndexedData, "coverId", null)
             };
@@ -299,7 +325,7 @@ exports.syncTransaction = async (transaction_hash) => {
                     return value && _.get(value, "address", false) == event_cover_details.address && _.get(value, "company_code", false) == "nexus"
                 })
 
-                let type = cover && constant.CryptoExchangeTypes.includes(cover.type) ? constant.ProductTypes.crypto_exchange : constant.ProductTypes.smart_contract;
+                let type = (cover && constant.CryptoExchangeTypes.includes(cover.type)) ? constant.ProductTypes.crypto_exchange : constant.ProductTypes.smart_contract;
                 // let wallet_address = TransactionDetails.from;
                 policy = new Policies;
                 policy.user_id = await Users.getUser(wallet_address);
@@ -325,15 +351,15 @@ exports.syncTransaction = async (transaction_hash) => {
                     name: _.get(cover, "name", null),
                     type: _.get(cover, "type", null),
                     chain: "ethereum",
-                    crypto_currency: null,
-                    crypto_amount: null
+                    crypto_currency: crypto_currency,
+                    crypto_amount: crypto_amount
                 }
 
                 await policy.save()
             }
             if (
                 policy &&
-                ( this.checkPolicyNeedToSync() )
+                ( this.checkPolicyNeedToSync() || true )
             ) {
                 let chain = web3Connect.utils.toDecimal(TransactionDetails.chainId)
 
@@ -347,6 +373,8 @@ exports.syncTransaction = async (transaction_hash) => {
                 policy[policyType].network = chain;
                 policy[policyType].coverId = event_cover_bought_details.coverId;
 
+                policy.crypto_currency = crypto_currency;
+                policy.crypto_amount = crypto_amount;
                 policy.status = constant.PolicyStatus.active;
                 policy.StatusHistory.push({
                     status: policy.status,
@@ -372,12 +400,14 @@ exports.syncTransaction = async (transaction_hash) => {
                 // payment.currency = crypto_currency;
                 // payment.paid_amount = policy.total_amount;
                 payment.network = chain;
-                // payment.crypto_currency = crypto_currency;
-                // payment.crypto_amount = TransactionDetails.value;
+                payment.crypto_currency = crypto_currency;
+                payment.crypto_amount = crypto_amount;
+                payment.currency_address = currency_address;
                 await payment.save();
 
                 policy.payment_id = payment._id;
                 await policy.save();
+                await Settings.setKey("nexus_last_sync_transaction", transaction_hash)
             }
 
         }

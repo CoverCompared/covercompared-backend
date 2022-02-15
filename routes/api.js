@@ -93,10 +93,10 @@ router.get("/setting", async (req, res) => {
     return res.send(setting);
 })
 
-// router.post("/setting", async (req, res) => {
-//     let setting = await Settings.setKey("p4l_from_block", '0')
-//     res.send({status: await Settings.getKey("p4l_from_block")})
-// })
+router.post("/setting", async (req, res) => {
+    let setting = await Settings.setKey("nexus_from_block", '0')
+    res.send({status: await Settings.getKey("nexus_from_block")})
+})
 
 // router.get("/web3/test", async (req, res) => {
 //     /**
