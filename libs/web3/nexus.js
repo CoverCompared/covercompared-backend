@@ -231,7 +231,6 @@ exports.syncTransaction = async (transaction_hash) => {
         let BuyNexusMutualEventAbi = NexusSmartContractAbi.find(value => value.name == "BuyNexusMutual" && value.type == "event");
         let hasBuyNexusMutualEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyNexusMutualEventAbi);
         let BuyNexusMutualEventDetails = web3Connection.decodeEventParametersLogs(web3Connect, BuyNexusMutualEventAbi, hasBuyNexusMutualEvent);
-        console.log("BuyNexusMutualEventDetails", BuyNexusMutualEventDetails);
 
         // CoverDetailsEvent Log
         let CoverDetailsEventEventAbi = NexusQuotationDataSmartContractAbi.find(value => value.name == "CoverDetailsEvent" && value.type == "event");
