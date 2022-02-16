@@ -78,8 +78,8 @@ if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.send_mail = true;
 } else if (process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
     config.env = "production";
-    config.api_url = "https://app.covercompared.com/api/";
-    config.web_url = "https://app.covercompared.com/";
+    config.api_url = "https://covercompared.com/api/";
+    config.web_url = "https://covercompared.com/";
     config.is_mainnet = true;
     config.send_mail = true;
     config.p4l_api_baseurl = "https://protect4less.com/app-api/";
