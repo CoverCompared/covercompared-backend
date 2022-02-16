@@ -187,7 +187,7 @@ exports.syncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
-        !policy ||
+        !policy || true ||
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
         !policy.payment_id || !payment || 
         (policy.product_type == constant.ProductTypes.smart_contract && !policy.SmartContract.block) ||
@@ -202,6 +202,8 @@ exports.syncTransaction = async (transaction_hash) => {
         // BuyInsureAce Event Log
         let BuyInsureAceEventAbi = InsurAceSmartContractAbi.find(value => value.name == "BuyInsureAce" && value.type == "event");
         let hasBuyInsureAceEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, BuyInsureAceEventAbi);
+        let BuyInsureAceEventDetails = web3Connection.decodeEventParametersLogs(web3Connect, BuyInsureAceEventAbi, hasBuyInsureAceEvent);
+        console.log("BuyInsureAceEventDetails", BuyInsureAceEventDetails);
 
         if (hasBuyInsureAceEvent) {
 
@@ -211,9 +213,29 @@ exports.syncTransaction = async (transaction_hash) => {
 
             let cover_details = await Settings.getKey("cover_details");
             cover_details = Array.isArray(cover_details) ? cover_details : [];
-            let crypto_currency = utils.checkIsCVRToken(_.get(details, "_token", "")) ? "CVR" : "ETH";
             
             let wallet_address = details._buyer;
+            // Get Currency and Amount Detail
+            let currency_address =  _.get(BuyInsureAceEventDetails, "_token", null);
+            let crypto_amount =   _.get(BuyInsureAceEventDetails, "_amount", null);
+
+            let crypto_currency;
+            if(TransactionDetails.value > 0){
+                crypto_currency = "Ether";
+                crypto_amount = web3Connection.covertToDisplayValue(web3Connect, TransactionDetails.value, "eth");
+            }else if(utils.findAddressInList(config.cvr_token_addresses, currency_address)){
+                crypto_currency = "CVR";
+                crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "cvr");
+            }else if(utils.findAddressInList(config.dai_token_addresses, currency_address)){
+                crypto_currency = "DAI";
+                crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "dai");
+            }else{
+                /**
+                 * TODO: Send Error Report
+                 * currency_address does not found in existing list
+                 * "InsurAce", config.is_mainnet, currency_address, transaction_hash
+                 */
+            }
 
             if (!policy) {
 
@@ -233,7 +255,7 @@ exports.syncTransaction = async (transaction_hash) => {
                     /**
                      * TODO: Send Error Report(critical)
                      * Message : Cover does not exist in list
-                     * transaction_hash, "RINKEBY"
+                     * transaction_hash, config.0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea
                      */
                 }
                 
@@ -249,7 +271,7 @@ exports.syncTransaction = async (transaction_hash) => {
                         duration_days: null,
                         chain: "ethereum",
                         crypto_currency: crypto_currency,
-                        crypto_amount: null
+                        crypto_amount: crypto_amount
                     }
                 }else{
                     policy.SmartContract = {
@@ -262,7 +284,7 @@ exports.syncTransaction = async (transaction_hash) => {
                         duration_days: null,
                         chain: "ethereum",
                         crypto_currency: crypto_currency,
-                        crypto_amount: null
+                        crypto_amount: crypto_amount
                     }
                 }
                 await policy.save()
@@ -270,7 +292,7 @@ exports.syncTransaction = async (transaction_hash) => {
             if (
                 policy &&
                 (
-                    policy.payment_status != constant.PolicyPaymentStatus.paid ||
+                    true || policy.payment_status != constant.PolicyPaymentStatus.paid ||
                     !policy.payment_id || !payment || 
                     (policy.product_type == constant.ProductTypes.smart_contract && !policy.SmartContract.block) ||
                     (policy.product_type == constant.ProductTypes.crypto_exchange && !policy.CryptoExchange.block)
@@ -295,6 +317,8 @@ exports.syncTransaction = async (transaction_hash) => {
                 policy.payment_status = constant.PolicyPaymentStatus.paid;
                 policy.payment_hash = transaction_hash;
                 // policy.total_amount = product.priceInUSD / (10 ** 18);
+                policy.crypto_currency = crypto_currency;
+                policy.crypto_amount = crypto_amount;
 
                 await policy.save();
 
@@ -308,15 +332,16 @@ exports.syncTransaction = async (transaction_hash) => {
                 payment.block_timestamp = _.get(blog_details, "timestamp", null);
                 payment.txn_type = "onchain";
                 payment.payment_hash = transaction_hash;
-                payment.currency = crypto_currency;
-                // payment.paid_amount = policy.total_amount;
+                payment.currency = '';
                 payment.network = chain;
                 payment.crypto_currency = crypto_currency;
-                // payment.crypto_amount = TransactionDetails.value;
+                payment.crypto_amount = crypto_amount;
+                payment.currency_address = currency_address;
                 await payment.save();
 
                 policy.payment_id = payment._id;
                 await policy.save();
+                await Settings.setKey("insurace_last_sync_transaction", transaction_hash)
             }
 
         }
