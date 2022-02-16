@@ -187,7 +187,7 @@ exports.syncTransaction = async (transaction_hash) => {
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
-        !policy || true ||
+        !policy ||
         policy.payment_status != constant.PolicyPaymentStatus.paid ||
         !policy.payment_id || !payment || 
         (policy.product_type == constant.ProductTypes.smart_contract && !policy.SmartContract.block) ||
@@ -292,7 +292,7 @@ exports.syncTransaction = async (transaction_hash) => {
             if (
                 policy &&
                 (
-                    true || policy.payment_status != constant.PolicyPaymentStatus.paid ||
+                    policy.payment_status != constant.PolicyPaymentStatus.paid ||
                     !policy.payment_id || !payment || 
                     (policy.product_type == constant.ProductTypes.smart_contract && !policy.SmartContract.block) ||
                     (policy.product_type == constant.ProductTypes.crypto_exchange && !policy.CryptoExchange.block)
