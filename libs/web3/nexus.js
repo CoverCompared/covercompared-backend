@@ -410,6 +410,9 @@ exports.syncTransaction = async (transaction_hash) => {
 
         }
     }
+    // Check Is there any other policy
+    Policies.checkPolicyForTransactionHash(transaction_hash, policy._id)
+    
     return true;
 }
 

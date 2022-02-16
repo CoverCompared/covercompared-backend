@@ -34,8 +34,7 @@ authRoutes.get('/policy-requests/:id', policyRequestController.show);
 authRoutes.get('/policies', policiesController.index);
 authRoutes.get('/policies-mso', policiesController.msoPolicies);
 authRoutes.get('/policies/:id', policiesController.show);
-// authRoutes.delete('/policies/:id/delete', policiesController.destroy);
-
+authRoutes.delete('/policies/:id/delete', policiesController.destroy);
 
 // contact-us
 authRoutes.get('/contact-us/table', contactController.table);

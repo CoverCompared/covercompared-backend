@@ -71,6 +71,8 @@ if (
     process.env.NEXUS_SYNC_TRANSACTIONS_OFF = undefined;
 }
 
+config.sync_time_web3_smart_contract = ms("1s");
+
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {
     config.env = "staging";
     config.api_url = "https://staging-covercompared.polkacover.com/api/";

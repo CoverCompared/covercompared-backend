@@ -275,6 +275,29 @@ PoliciesSchema.statics = {
         }
 
         return policies;
+    },
+    checkPolicyForTransactionHash: async function(transaction_hash, policy_id){
+        const Policies = mongoose.model("Policies");
+        let policyNeedToDelete = await Policies.aggregate([
+            { $match: { payment_hash: transaction_hash, _id: { $nin: [utils.getObjectID(policy_id)] } } },
+            { $project: { _id: 1, product_type: 1,  "SmartContract.company_code": 1, "CryptoExchange.company_code": 1 } }
+        ])
+        if(policyNeedToDelete && Array.isArray(policyNeedToDelete) && policyNeedToDelete.length >= 1){
+            let policy = policyNeedToDelete[0];
+
+            let product_type = _.get(policy, "product_type", false);
+            let company_code = _.get(policy, "SmartContract.company_code", false);
+            if(!company_code){
+                company_code = _.get(policy, "CryptoExchange.company_code", false);
+            }
+
+            console.error("Found more than one policy ", product_type, company_code, policy._id, transaction_hash);
+            /**
+             * TODO: Send ERROR Report
+             * Message : There are more than two policy for this transaction hash
+             * product_type, company_code, config.is_mainnet, transaction_hash
+             */
+        }
     }
 }
 
