@@ -184,6 +184,7 @@ exports.syncTransaction = async (transaction_hash) => {
 
     // Find Policy
     let policy = await Policies.findOne({ payment_hash: transaction_hash });
+
     let payment = policy && utils.isValidObjectID(policy.payment_id) ? await Payments.findOne({ _id: policy.payment_id }) : null;
 
     if (
@@ -346,6 +347,10 @@ exports.syncTransaction = async (transaction_hash) => {
 
         }
     }
+
+    // Check Is there any other policy
+    Policies.checkPolicyForTransactionHash(transaction_hash, policy._id)
+
     return true;
 }
 
