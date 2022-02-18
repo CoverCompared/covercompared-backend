@@ -118,7 +118,6 @@ exports.getCapacity = async (address) => {
     };
     let response = {};
     try {
-        console.log("Config", config);
         response = await axios(config)
     } catch (error) {
         console.log("ERROR ", error);
@@ -148,6 +147,7 @@ exports.getQuoteWithPromise = async (contractAddress, coverAmount, currency, per
         response = await axios(config)
         response = { status: true, data: _.get(response, "data", {}) };
     } catch (error) {
+        console.log("Err", error);
         response = { status: false, data: error };
     }
 

@@ -100,9 +100,6 @@ router.get("/setting", async (req, res) => {
 // })
 
 // router.get("/web3/test", async (req, res) => {
-//     /**
-//      * TODO: Integrate Is listening
-//      */
 //     try {
 //         let subscription = web3Connection.subscriptionStatus()
 //         subscription.isListening()

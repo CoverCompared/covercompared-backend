@@ -12,6 +12,7 @@ const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
 const P4LToken = mongoose.model('P4LToken');
 const axios = require("axios");
+const helpers = require('../helpers');
 
 /**
  * This function is used to match the current smart-contract address with setting collection
@@ -83,14 +84,20 @@ exports.connectSmartContract = async () => {
                 }
             }
         } catch (error) {
+            console.log("Err", error);
         }
         P4LStartContract = new web3Connect.eth.Contract(P4LSmartContractAbi, SmartContractAddress);
         return P4LStartContract;
     } catch (error) {
         /**
-         * TODO: Send Error Report: issue on connect smart contract
-         * data : smart_contract, config.is_mainnet, 
+         * Send Error Report: issue on connect smart contract
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue on connect smart contract", 
+            { SmartContractAddress, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
+        console.log("Err", error);
     }
 }
 
@@ -153,15 +160,25 @@ exports.p4lPolicySync = async () => {
         // P4LEventSubscription.on('connected', str => console.log("CONNECTED ", str))
         P4LEventSubscription.on('error', str => {
             /**
-             * TODO: Send Error Report "P4L Start Contract issue on fetch all events."
+             * Send Error Report "P4L Start Contract issue on fetch all events."
              */
+            helpers.addErrorReport(
+                "issue", 
+                "P4L Start Contract issue on fetch all events.", 
+                { is_mainnet: config.is_mainnet, errorNote: str.toString(), str }
+            )
         })
 
     } catch (error) {
         console.log("Err", error);
         /**
-         * TODO: Send Error Report "P4LContract is not connected"
+         * Send Error Report "P4LContract is not connected"
          */
+         helpers.addErrorReport(
+            "issue", 
+            "P4LContract is not connected", 
+            { is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -178,10 +195,7 @@ exports.p4lGetProductDetails = async (product_id) => {
     try {
         return await P4LStartContract.methods.products(product_id).call()
     } catch (error) {
-        /**
-         * TODO: Send Error report : issue while getting product detail from smart contract
-         * data : mainnet or testnet, product_id, error
-         */
+        console.log("Err", error);
     }
     return false;
 }
@@ -226,9 +240,13 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
             let product = await this.p4lGetProductDetails(productId);
             if (policy && policy.txn_hash != product.policyId) {
                 /**
-                 * TODO: Send Error Report : policy found but policy id not match with product
-                 * data : product_type : p4l, smart_contract_address, product, policy
+                 * Send Error Report : policy found but policy id not match with product
                  */
+                 helpers.addErrorReport(
+                    "issue", 
+                    "Policy found but policy id not match with product", 
+                    { SmartContractAddress: "P4L", SmartContractAddress: this.getCurrentSmartContractAddress(), is_mainnet: config.is_mainnet }
+                )
             }
             if (!policy) {
                 policy = await Policies.findOne({ txn_hash: product.policyId });
@@ -250,10 +268,13 @@ exports.p4lSyncTransaction = async (transaction_hash) => {
 
                 if(wallet_address == null){
                     /**
-                     * TODO: Send Error Report
-                     * Message : "P4L Transaction buyer address is not valid",
-                     * config.is_mainnet, this.getCurrentSmartContractAddress(), transaction_hash
+                     * Send Error Report
                      */
+                    helpers.addErrorReport(
+                        "issue", 
+                        "P4L Transaction buyer address is not valid", 
+                        { SmartContractAddress: "P4L", SmartContractAddress: this.getCurrentSmartContractAddress(), is_mainnet: config.is_mainnet, transaction_hash }
+                    )
                 }
                 
                 // Get Currency and Amount Detail from BuyP4L details
@@ -340,6 +361,7 @@ exports.createPolicy = async (req) => {
             result = { status: false, response }
         }
     } catch (error) {
+        console.log("Err", error);
         result = { status: false, error }
     }
     return result;
@@ -352,6 +374,7 @@ exports.p4lSyncTransactionForApi = async (transaction_hash) => {
         await this.connectSmartContract();
         await this.p4lSyncTransaction(transaction_hash);
     } catch (error) {
+        console.log("Err", error);
         /**
          * TODO: Send Error Report : Issue on p4l Sync Transaction for api
          * code: sync_transaction_for_api

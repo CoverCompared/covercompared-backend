@@ -39,6 +39,7 @@ exports.checkEmailExist = async (req, res, next) => {
             return res.status(200).send(utils.apiResponseData(true, { is_exist: false }))
         }
     } catch (error) {
+        console.log("Err", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 
@@ -84,6 +85,7 @@ exports.login = async (req, res, next) => {
 
 
     } catch (error) {
+        console.log("Err", error);
         return res.status(500).send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 

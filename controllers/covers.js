@@ -532,7 +532,7 @@ exports.coverDetails = async (req, res, next) => {
             console.log(unique_id.company_code, unique_id.address, _.get(unique_id, "product_id", false));
             cover = await companies.coverCapacity(unique_id.company_code, unique_id.address, _.get(unique_id, "product_id", false));
         } catch (error) {
-            
+            console.log("Err", error);
         }
     }
 

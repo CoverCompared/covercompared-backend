@@ -2,6 +2,7 @@
 const web3Connect = require("./web3");
 var NodeCron = require('node-cron');
 const config = require("../config");
+const helpers = require("./helpers");
 
 
 const web3Actions = async () => {
@@ -17,10 +18,16 @@ const web3Actions = async () => {
         else console.log("INSURACE  WEB3 Sync Is Off");
         if (!(process.env.NEXUS_SYNC_TRANSACTIONS_OFF && process.env.NEXUS_SYNC_TRANSACTIONS_OFF == "1")) await web3Connect.smart_contracts.nexus.policySync();
         else console.log("NEXUS  WEB3 Sync Is Off");
+
     } catch (error) {
         /**
-         * TODO: Send Error Report : issue wile run cron job
+         * Send Error Report : issue wile run cron job
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue while run cron job", 
+            { errorNote: error.toString(), error }
+        )
     }
 }
 

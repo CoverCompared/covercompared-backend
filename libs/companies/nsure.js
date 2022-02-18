@@ -112,6 +112,7 @@ exports.getQuote = async (product, amount, period, currency = 0) => {
         }
 
     } catch (error) {
+        console.log("Err", error);
         response = { status: false, data: error };
     }
 

@@ -192,11 +192,6 @@ exports.show = async (req, res, next) => {
             .lean();
 
         if (!policy) {
-            /**
-             * TODO:
-             * Error Report
-             * If policy or device_insurance record not found in database
-             */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }
 
@@ -245,11 +240,6 @@ exports.destroy = async (req, res, next) => {
             .lean();
 
         if (!policy) {
-            /**
-             * TODO:
-             * Error Report
-             * If policy or device_insurance record not found in database
-             */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy not found."));
         }
 

@@ -74,11 +74,6 @@ exports.show = async (req, res, next) => {
             });
 
         if (policy_request == "") {
-            /**
-             * TODO:
-             * Error Report
-             * If policy_request record not found in database
-             */
             return res.status(200).send(utils.apiResponseMessage(false, "Policy Request not found."));
         }
 

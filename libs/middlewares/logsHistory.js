@@ -31,6 +31,7 @@ module.exports = async (req, res, next) => {
                 request_obj.response_body = body;
                 request_obj.save();
             } catch (error) {
+                console.log("Err", error);
     
             }
             oldEnd.apply(res, arguments);
