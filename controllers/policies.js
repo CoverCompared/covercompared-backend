@@ -15,6 +15,7 @@ const constant = require("../libs/constants");
 const moment = require("moment");
 const msoPlans = require("../libs/mso-plans");
 const web3Connect = require("./../libs/web3");
+const helpers = require("../libs/helpers");
 
 exports.storeMso = async (req, res, next) => {
   try {
@@ -176,7 +177,7 @@ exports.storeMso = async (req, res, next) => {
       })
     );
   } catch (error) {
-    console.log("ERR", error);
+    console.log("Err", error);
     return res
       .status(500)
       .send(utils.apiResponseMessage(false, "Something went wrong."));
@@ -184,6 +185,14 @@ exports.storeMso = async (req, res, next) => {
 };
 
 exports.loadMsoPolicy = async (req, res, next) => {
+
+  // Check is valid id
+  if(!utils.isValidObjectID(req.params.id)){
+      return res
+      .status(200)
+      .send(utils.apiResponseMessage(false, "Policy not found."));
+  }
+
   let policy = await Policies.findOne({
     user_id: req.user._id,
     _id: req.params.id,
@@ -191,11 +200,6 @@ exports.loadMsoPolicy = async (req, res, next) => {
   });
 
   if (!policy) {
-    /**
-     * TODO:
-     * Error Report
-     * If policy record not found in database
-     */
     return res
       .status(200)
       .send(utils.apiResponseMessage(false, "Policy not found."));
@@ -260,10 +264,14 @@ exports.msoConfirmPayment = async (req, res, next) => {
     }
 
     /**
-     * TODO:
      * Error Report
-     * if req.body.paid_amount does not match with policy.total_amount
      */
+    await helpers.addErrorReport(
+      "issue", 
+      "if req.body.paid_amount does not match with policy.total_amount", 
+      { policy_id: policy._id, ...req.body }
+    )
+
 
     // Create Payment
     payment =
@@ -342,11 +350,6 @@ exports.loadDeviceInsurancePolicy = async (req, res, next) => {
   });
 
   if (!policy) {
-    /**
-     * TODO:
-     * Error Report
-     * If policy record not found in database
-     */
     return res
       .status(200)
       .send(utils.apiResponseMessage(false, "Policy not found."));
@@ -586,10 +589,13 @@ exports.deviceConfirmPayment = async (req, res, next) => {
     }
 
     /**
-     * TODO:
      * Error Report
-     * if req.body.paid_amount does not match with policy.total_amount
      */
+     await helpers.addErrorReport(
+      "issue", 
+      "if req.body.paid_amount does not match with policy.total_amount", 
+      { policy_id: policy._id, ...req.body }
+    )
 
     // Create Payment
     payment =
@@ -672,11 +678,6 @@ exports.policyReview = async (req, res, next) => {
     });
 
     if (!policy) {
-      /**
-       * TODO:
-       * Error Report
-       * If policy record not found in database
-       */
       return res
         .status(200)
         .send(utils.apiResponseMessage(false, "Policy not found."));
@@ -815,11 +816,6 @@ exports.show = async (req, res, next) => {
       _id: req.params.id,
     });
     if (!policy) {
-      /**
-       * TODO:
-       * Error Report
-       * If policy record not found in database
-       */
       return res
         .status(200)
         .send(utils.apiResponseMessage(false, "Policy not found."));
@@ -845,14 +841,6 @@ exports.show = async (req, res, next) => {
 };
 
 exports.storeSmartContract = async (req, res, next) => {
-  /**
-   * TODO: Create Error report if the (company_code|unique_id) is not in our list
-   */
-
-  /**
-   * TODO: For production environment if request does not pass validation therefor store the request data and then respond fail
-   */
-
   try {
     let rules = {
       company_code: ["required"],
@@ -966,11 +954,6 @@ exports.loadSmartContract = async (req, res, next) => {
   });
 
   if (!policy) {
-    /**
-     * TODO:
-     * Error Report
-     * If policy record not found in database
-     */
     return res
       .status(200)
       .send(utils.apiResponseMessage(false, "Cover not found."));
@@ -1019,12 +1002,6 @@ exports.smartContractConfirmPayment = async (req, res, next) => {
     // let findPolicy = await Policies.findOne({ payment_hash: req.body.payment_hash });
     // let reqPolicy = policy;
     // policy = findPolicy ? findPolicy :  policy;
-
-    /**
-     * TODO:
-     * Error Report
-     * if req.body.crypto_amount does not match with policy.crypto_amount
-     */
 
     // Create Payment
     let payment = new Payments();

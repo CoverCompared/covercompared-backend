@@ -85,6 +85,7 @@ exports.getLogoName = (name) => {
         return logo ? logo.logo : name.replace(" ", "") + ".png";
     } catch (error) {
         console.log("name", name);
+        console.log("Err", error);
         return "";
     }
 }

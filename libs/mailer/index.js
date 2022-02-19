@@ -59,25 +59,29 @@ mailer.sendMail = (to, subject, html, attachments = []) => {
 
             try {
                 // Sending Mail
-                transporter.sendMail(options, (mErr, mRes) => {
+                transporter.sendMail(options, async (mErr, mRes) => {
                     console.log(mErr, mRes);
                     if (mErr) {
                         /**
-                         * TODO: Send Error Report 
-                         * Type: critical
-                         * Message : Issue on sending mail
-                         * to, AWS_ACCESS_KEY_ID, mErr.toString(), mErr
+                         * Send Error Report 
                          */
+                        await utils.addErrorReport(
+                            "issue", 
+                            "Issue on sending mail", 
+                            { to, errorNote: mErr.toString(), mErr }, false
+                        )
                         resolve(false);
                     } else { resolve(true); }
                 });
             } catch (error) {
                 /**
-                 * TODO: Send Error Report 
-                 * Type: critical
-                 * Message : Issue on sending mail
-                 * AWS_ACCESS_KEY_ID, error.toString(), error
+                 * Send Error Report 
                  */
+                await utils.addErrorReport(
+                    "issue", 
+                    "Issue on sending mail", 
+                    { errorNote: error.toString(), error }, false
+                )
                 console.log(error);
             }
         } else {
@@ -111,15 +115,17 @@ mailer.sendMail = (to, subject, html, attachments = []) => {
             }
 
             // Sending Mail
-            transport.sendMail(options, (mErr, mRes) => {
+            transport.sendMail(options, async (mErr, mRes) => {
                 console.log(mErr);
                 if (mErr) {
                     /**
-                     * TODO: Send Error Report 
-                     * Type: critical
-                     * Message : Issue on sending mail
-                     * to, AWS_ACCESS_KEY_ID, mErr.toString(), mErr
+                     * Send Error Report 
                      */
+                    await utils.addErrorReport(
+                        "issue", 
+                        "Issue on sending mail", 
+                        { to, errorNote: mErr.toString(), mErr }, false
+                    )
                     resolve(false);
                 }
                 else {
@@ -237,6 +243,24 @@ mailer.sendContactUsMail = async (data) => {
     const subject = "Contact Us Enquiry @ polkacover. ";
 
     return mailer.sendMail(config.subscribe_mail, subject, html);
+}
+
+/**
+ * 
+ * It will send mail if generate any error in project.
+ * 
+ * @param {Object} data
+ * @param {String} data.message  
+ * @param {String} data.data
+ * 
+ * @returns 
+ */
+mailer.sendErrorReportMail = async (data) => {
+    data = { ...data, config: config };
+    const html = await ejs.renderFile(__dirname + "/templates/error-report.ejs", data);
+    const subject = `Error Report ${config.app_code} - ${config.env}: ${data.message}`;
+
+    return mailer.sendMail(config.developer_mail, subject, html);
 }
 
 module.exports = mailer;

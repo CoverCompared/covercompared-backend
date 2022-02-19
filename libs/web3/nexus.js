@@ -10,6 +10,7 @@ const config = require('../../config');
 const contracts = require('../contracts');
 const utils = require('../utils');
 const constant = require('../constants');
+const helpers = require('../helpers');
 const Settings = mongoose.model('Settings');
 const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
@@ -88,18 +89,30 @@ exports.connectSmartContract = async () => {
                 }
             }
         } catch (error) {
+            console.log("Err", error);
             /**
-             * TODO: Send Error Report: issue on connect smart contract
+             * Send Error Report: issue on connect smart contract
              * data : smart_contract, config.is_mainnet, 
              */
+             helpers.addErrorReport(
+                "issue", 
+                "Issue on connect smart contract", 
+                { SmartContractAddress, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+            )
         }
         NexusStartContract = new web3Connect.eth.Contract(NexusSmartContractAbi, SmartContractAddress);
         return NexusStartContract;
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error Report: issue on connect smart contract
+         * Send Error Report: issue on connect smart contract
          * data : smart_contract, config.is_mainnet, 
          */
+        helpers.addErrorReport(
+            "issue", 
+            "Issue on connect smart contract", 
+            { SmartContractAddress, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -164,15 +177,25 @@ exports.policySync = async () => {
         // NexusEventSubscription.on('connected', str => console.log("CONNECTED ", str))
         NexusEventSubscription.on('error', str => {
             /**
-             * TODO: Send Error Report "InsureAce Start Contract issue on fetch all events."
+             * Send Error Report "Nexus Start Contract issue on fetch all events."
              */
+            helpers.addErrorReport(
+                "issue", 
+                "Nexus Start Contract issue on fetch all events.", 
+                { is_mainnet: config.is_mainnet, errorNote: str.toString(), str }
+            )
         })
 
     } catch (error) {
         console.log("Err", error);
         /**
-         * TODO: Send Error Report "InsureAceContract is not connected"
+         * Send Error Report "NexusContract is not connected"
          */
+         helpers.addErrorReport(
+            "issue", 
+            "NexusContract is not connected", 
+            { is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -238,14 +261,6 @@ exports.syncTransaction = async (transaction_hash) => {
 
         if (hasBuyNexusMutualEvent) {
 
-            if (!hasCoverDetailsEventEvent) {
-                /**
-                 * TODO: Send Error Report (critical)
-                 * Message : CoverDetailsEvent does not exist in transaction
-                 * "kovan", transaction_hash
-                 */
-            }
-
             // console.log("hasCoverDetailsEventEvent ", hasCoverDetailsEventEvent);
             let details = web3Connection.decodeEventParametersLogs(web3Connect, CoverDetailsEventEventAbi, hasCoverDetailsEventEvent);
             let event_cover_details = {
@@ -283,13 +298,6 @@ exports.syncTransaction = async (transaction_hash) => {
             let CoverBoughtEventAbi = CoverBoughtAbi.find(value => value.name == "CoverBought" && value.type == "event");
             let hasCoverBoughtEvent = web3Connection.checkTransactionReceiptHasLog(web3Connect, TransactionReceiptDetails, CoverBoughtEventAbi, { findTopics: { buyer: this.getCurrentSmartContractAddress() } });
             let coverBoughtEventIndexedData = hasCoverBoughtEvent ? web3Connection.decodeEventIndexedDataLogs(web3Connect, CoverBoughtEventAbi, hasCoverBoughtEvent) : false;
-            if (!hasCoverBoughtEvent) {
-                /**
-                 * TODO: Send Error Report
-                 * Message - Nexus Transaction does not includes CoverBought Event
-                 * transaction_hash, config.is_mainnet
-                 */
-            }
 
             // Get Currency and Amount Detail
             let currency_address =  _.get(BuyNexusMutualEventDetails, "_buyToken", null);
@@ -307,10 +315,13 @@ exports.syncTransaction = async (transaction_hash) => {
                 crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "dai");
             }else{
                 /**
-                 * TODO: Send Error Report
-                 * currency_address does not found in existing list
-                 * "nexus", config.is_mainnet, currency_address, transaction_hash
+                 * Send Error Report
                  */
+                helpers.addErrorReport(
+                    "issue", 
+                    "currency_address does not found in existing list", 
+                    { SmartContract: "Nexus", is_mainnet: config.is_mainnet, currency_address, transaction_hash }
+                )
             }
 
             let event_cover_bought_details = {
@@ -330,14 +341,6 @@ exports.syncTransaction = async (transaction_hash) => {
                 policy.product_type = type;
                 policy.wallet_address = wallet_address;
                 policy.payment_hash = transaction_hash;
-
-                if (!cover) {
-                    /**
-                     * TODO: Send Error Report(critical)
-                     * Message : Cover does not exist in list
-                     * transaction_hash, "KOVAN"
-                     */
-                }
 
                 let policyType = policy.product_type == constant.ProductTypes.crypto_exchange ? "CryptoExchange" : "SmartContract";
 

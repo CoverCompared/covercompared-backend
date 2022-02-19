@@ -291,12 +291,12 @@ PoliciesSchema.statics = {
                 company_code = _.get(policy, "CryptoExchange.company_code", false);
             }
 
-            console.error("Found more than one policy ", product_type, company_code, policy._id, transaction_hash);
-            /**
-             * TODO: Send ERROR Report
-             * Message : There are more than two policy for this transaction hash
-             * product_type, company_code, config.is_mainnet, transaction_hash
-             */
+            /** Send ERROR Report */
+            await helpers.addErrorReport(
+                "issue", 
+                "There are more than two policy for this transaction hash", 
+                { product_type, company_code, is_mainnet: config.is_mainnet, transaction_hash }
+            )
         }
     }
 }

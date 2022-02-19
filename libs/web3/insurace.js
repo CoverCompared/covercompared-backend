@@ -7,6 +7,7 @@ const config = require('../../config');
 const contracts = require('../contracts');
 const utils = require('../utils');
 const constant = require('../constants');
+const helpers = require('../helpers');
 const Settings = mongoose.model('Settings');
 const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
@@ -84,18 +85,28 @@ exports.connectSmartContract = async () => {
                 }
             }
         } catch (error) {
+            console.log("Err", error);
             /**
-             * TODO: Send Error Report: issue on connect smart contract
-             * data : smart_contract, config.is_mainnet, 
+             * Send Error Report: issue on connect smart contract
              */
+             await helpers.addErrorReport(
+                "issue", 
+                "Issue on connect smart contract", 
+                { SmartContractAddress, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+            )
         }
         InsurAceStartContract = new web3Connect.eth.Contract(InsurAceSmartContractAbi, SmartContractAddress);
         return InsurAceStartContract;
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error Report: issue on connect smart contract
-         * data : smart_contract, config.is_mainnet, 
+         * Send Error Report: issue on connect smart contract
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue on connect smart contract", 
+            { SmartContractAddress, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -158,17 +169,27 @@ exports.policySync = async () => {
 
         // InsurAceEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
         // InsurAceEventSubscription.on('connected', str => console.log("CONNECTED ", str))
-        InsurAceEventSubscription.on('error', str => {
+        InsurAceEventSubscription.on('error', (str) => {
             /**
-             * TODO: Send Error Report "InsureAce Start Contract issue on fetch all events."
+             * Send Error Report "InsureAce Start Contract issue on fetch all events."
              */
+            helpers.addErrorReport(
+                "issue", 
+                "InsureAce Start Contract issue on fetch all events.", 
+                { is_mainnet: config.is_mainnet, errorNote: str.toString(), str }
+            )   
         })
 
     } catch (error) {
         console.log("Err", error);
         /**
-         * TODO: Send Error Report "InsureAceContract is not connected"
+         * Send Error Report "InsureAceContract is not connected"
          */
+        helpers.addErrorReport(
+            "issue", 
+            "InsureAceContract is not connected", 
+            { is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -232,10 +253,13 @@ exports.syncTransaction = async (transaction_hash) => {
                 crypto_amount = web3Connection.covertToDisplayValue(web3Connect, crypto_amount, "dai");
             }else{
                 /**
-                 * TODO: Send Error Report
-                 * currency_address does not found in existing list
-                 * "InsurAce", config.is_mainnet, currency_address, transaction_hash
+                 * Send Error Report
                  */
+                helpers.addErrorReport(
+                    "issue", 
+                    "currency_address does not found in existing list", 
+                    { SmartContract: "InsurAce", is_mainnet: config.is_mainnet, currency_address, transaction_hash }
+                )   
             }
 
             if (!policy) {
@@ -254,10 +278,13 @@ exports.syncTransaction = async (transaction_hash) => {
 
                 if(!cover){
                     /**
-                     * TODO: Send Error Report(critical)
-                     * Message : Cover does not exist in list
-                     * transaction_hash, config.0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea
+                     * Send Error Report(critical)
                      */
+                    helpers.addErrorReport(
+                        "issue", 
+                        "Cover does not exist in list", 
+                        { SmartContract: "InsurAce", is_mainnet: config.is_mainnet, transaction_hash }
+                    )   
                 }
                 
                 

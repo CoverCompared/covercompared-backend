@@ -445,7 +445,6 @@ exports.decodeUniqueId = (unique_id) => {
             company_code: _.get(unique_id, unique_id.length - 1, "")
         }
     } catch (error) {
-        /**
-         * TODO: Send error report error while decode unique_id */
+        console.log("Err", error);
     }
 }

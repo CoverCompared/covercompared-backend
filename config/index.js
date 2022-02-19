@@ -10,6 +10,7 @@ let config = {
     dbName: process.env.DATABASE_NAME,
     noreplay: `"Cover Compared" no-reply@polkacover.com`,
     subscribe_mail: "contact@polkacover.com",
+    developer_mail: process.env.DEVELOPER_MAIL,
     p4l_api_baseurl: "https://dev.protect4less.com/app-api/",
     p4l_secret: process.env.P4L_SECRET,
     signature_private_key: process.env.SIGNATURE_PRIVATE_KEY,
@@ -69,6 +70,7 @@ if (
     process.env.MSO_SYNC_TRANSACTIONS_OFF = undefined;
     process.env.INSURACE_SYNC_TRANSACTIONS_OFF = undefined;
     process.env.NEXUS_SYNC_TRANSACTIONS_OFF = undefined;
+    config.developer_mail = "romik@audacelabs.com"
 }
 
 if (process.env.NODE_ENV && process.env.NODE_ENV == 'staging') {

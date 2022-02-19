@@ -95,10 +95,12 @@ exports.login = async (req, res, next) => {
             // Send response
             res.status(200).json(utils.apiResponseData(true, { token }));
         } catch (error) {
+            console.log("Err", error);
             res.status(200).json(utils.apiResponseMessage(false, "Invalid auth token."));
         }
 
     } catch (error) {
+        console.log("Err", error);
         return res.status(error.statuscode || 500).json(utils.generateErrorResponse(error.statuscode || 500, (error && error.metadata) || {}, {}));
     }
 
@@ -141,6 +143,7 @@ exports.changePassword = async (req, res, next) => {
         res.send(utils.apiResponseMessage(true, "Password updated successfully."));
 
     } catch (error) {
+        console.log("Err", error);
         return res.status(error.statuscode || 500).json(utils.generateErrorResponse(error.statuscode || 500, (error && error.metadata) || {}, {}));
     }
 }
@@ -170,6 +173,7 @@ exports.updateEmail = async (req, res, next) => {
         return res.send(utils.apiResponseMessage(true, "Email updated successfully."));
 
     } catch (error) {
+        console.log("Err", error);
         return res.send(utils.apiResponseMessage(false, "Something went wrong."));
     }
 

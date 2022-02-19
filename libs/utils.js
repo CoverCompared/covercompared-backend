@@ -193,6 +193,7 @@ utils.getFormattedDateTime = (timestamp) => {
         let time = moment(timestamp).format('LLL')
         return time;
     } catch (error) {
+        console.log("Err", error);
         return "-";
     }
 }
@@ -318,7 +319,9 @@ utils.getNetworkDetails = (payment, policy) => {
 utils.matchAddress = (address1, address2) => {
     try {
         return address1.toLowerCase() == address2.toLowerCase()
-    } catch (error) {}
+    } catch (error) {
+        console.log("Err", error);
+    }
     return false;
 }
 
@@ -340,6 +343,25 @@ utils.getTimestampDiff = (from, to, format = "days") => {
         console.log("Something went wrong", error);
     }
     return 0
+}
+
+/**
+ * 
+ * @param {"issue"|"warning"} type 
+ * @param {String} message 
+ * @param {Object} data 
+ */
+ utils.addErrorReport = async (type, message, data) => {
+    const mongoose = require('mongoose');
+    const ErrorReports = mongoose.model('ErrorReports');
+
+    // Add Report in collection
+    let report = new ErrorReports;
+    report.type = type;
+    report.message = message;
+    report.data = data;
+    report.save();
+
 }
 
 module.exports = utils;

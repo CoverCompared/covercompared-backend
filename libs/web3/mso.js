@@ -7,6 +7,7 @@ const config = require('../../config');
 const contracts = require('../contracts');
 const utils = require('../utils');
 const constant = require('../constants');
+const helpers = require('../helpers');
 const Settings = mongoose.model('Settings');
 const Policies = mongoose.model('Policies');
 const Payments = mongoose.model('Payments');
@@ -85,10 +86,16 @@ exports.connectSmartContract = async () => {
         MSOStartContract = new web3Connect.eth.Contract(MSOSmartContractAbi, SmartContractAddress);
         return MSOStartContract;
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error Report: issue on connect smart contract
+         * Send Error Report: issue on connect smart contract
          * data : smart_contract, config.is_mainnet, 
          */
+        helpers.addErrorReport(
+            "issue", 
+            "Issue on connect smart contract", 
+            { SmartContractAddress, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -123,15 +130,25 @@ exports.msoPolicySync = async () => {
         MSOEventSubscription.on('error', str => {
             console.log("MSO Subscription Errro", str.toString(), JSON.stringify(str));
             /**
-             * TODO: Send Error Report "MSO Start Contract issue on fetch all events."
+             * Send Error Report "MSO Start Contract issue on fetch all events."
              */
+            helpers.addErrorReport(
+                "issue", 
+                "MSO Start Contract issue on fetch all events.", 
+                { is_mainnet: config.is_mainnet, errorNote: str.toString(), str }
+            )
         })
 
     } catch (error) {
         console.log("Err", error);
         /**
-         * TODO: Send Error Report "MSOContract is not connected"
+         * Send Error Report "MSOContract is not connected"
          */
+        helpers.addErrorReport(
+            "issue", 
+            "MSOContract is not connected", 
+            { is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 }
 
@@ -148,10 +165,7 @@ exports.msoGetProductDetails = async (product_id) => {
     try {
         return await MSOStartContract.methods.products(product_id).call()
     } catch (error) {
-        /**
-         * TODO: Send Error report : issue while getting product detail from smart contract
-         * data : mainnet or testnet, product_id, error
-         */
+        console.log("Err", error);
     }
     return false;
 }
@@ -197,9 +211,13 @@ exports.msoSyncTransaction = async (transaction_hash) => {
             let product = await this.msoGetProductDetails(productId);
             if(policy && policy.txn_hash != product.policyId){
                 /**
-                 * TODO: Send Error Report : policy found but policy id not match with product
-                 * data : product_type : mso, smart_contract_address, product, policy
+                 * Send Error Report : policy found but policy id not match with product
                  */
+                helpers.addErrorReport(
+                    "issue", 
+                    "Policy found but policy id not match with product", 
+                    { SmartContractAddress: "MSO", SmartContractAddress: this.getCurrentSmartContractAddress(), is_mainnet: config.is_mainnet }
+                )   
             }
 
             if(!policy){
@@ -222,10 +240,14 @@ exports.msoSyncTransaction = async (transaction_hash) => {
 
                 if(wallet_address == null){
                     /**
-                     * TODO: Send Error Report
+                     * Send Error Report
                      * Message : "MSO Transaction buyer address is not valid",
-                     * config.is_mainnet, this.getCurrentSmartContractAddress(), transaction_hash
                      */
+                    helpers.addErrorReport(
+                        "issue", 
+                        "MSO Transaction buyer address is not valid", 
+                        { SmartContractAddress: "MSO", SmartContractAddress: this.getCurrentSmartContractAddress(), is_mainnet: config.is_mainnet, transaction_hash }
+                    )   
                 }
 
                 // Get Currency and Amount Detail from BuyMSO details

@@ -15,6 +15,7 @@ const Payments = mongoose.model('Payments');
 const Settings = mongoose.model('Settings');
 const signMsg = require("./../sign_message");
 const { ethers } = require("ethers");
+const helpers = require("../helpers");
 
 exports.smart_contracts = {
     p4l: require("./p4l"),
@@ -59,8 +60,13 @@ exports.connect = () => {
             resolve(web3);
         } catch (error) {
             /**
-             * TODO: Send Error Report web3 connection issue.
+             * Send Error Report web3 connection issue.
              *  */
+            await helpers.addErrorReport(
+                "issue", 
+                "Send Error Report web3 connection issue.", 
+                { errorNote: error.toString(), error }
+            )
             console.log("ERROR", error);
             resolve(web3);
         }
@@ -97,12 +103,17 @@ exports.getWeb3Connect = async (smart_contract, check_is_connected = false) => {
                 web3[chainId] = new Web3(new Web3.providers.WebsocketProvider(config.NETWORK_URLS[chainId]));
             }
         } catch (error) {
+            console.log("Err", error);
             /**
-             * TODO: Send Error Report : issue on web3 connect
+             * Send Error Report : issue on web3 connect
              * code: web3_connect, 
              * chainId, config.NETWORK_URLS[chainId], error, error.toString()
              */
-
+             await helpers.addErrorReport(
+                "issue", 
+                "Issue on sending mail", 
+                { to, errorNote: mErr.toString(), mErr }, false
+            )
         }
     }
     return web3[chainId];
@@ -121,10 +132,15 @@ exports.getTransactionReceipt = async (smart_contract, transaction_hash) => {
     try {
         TransactionReceipt = await web3Connect.eth.getTransactionReceipt(transaction_hash)
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error report: issue while getting transaction receipt from transaction hash
-         * data : smart_contract, transaction_hash, config.is_mainnet
+         * Send Error report: issue while getting transaction receipt from transaction hash
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue while getting transaction receipt from transaction hash", 
+            { smart_contract, transaction_hash, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 
     return TransactionReceipt;
@@ -143,11 +159,15 @@ exports.getTransaction = async (smart_contract, transaction_hash) => {
     try {
         TransactionDetails = await web3Connect.eth.getTransaction(transaction_hash)
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error report: issue while getting transaction from transaction hash
-         * data : smart_contract, transaction_hash, config.is_mainnet
-         * error : 
+         * Send Error report: issue while getting transaction from transaction hash
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue while getting transaction receipt from transaction hash", 
+            { smart_contract, transaction_hash, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
     }
 
     return TransactionDetails;
@@ -181,6 +201,7 @@ exports.connectSmartContract = async (smart_contract) => {
                     }
                 }
             } catch (error) {
+                console.log("Err", error);
             }
             P4LStartContract = new web3Connect.eth.Contract(P4LSmartContractAbi, SmartContractAddress);
             return P4LStartContract;
@@ -193,15 +214,23 @@ exports.connectSmartContract = async (smart_contract) => {
                     }
                 }
             } catch (error) {
+                console.log("Err", error);
             }
             MSOStartContract = new web3Connect.eth.Contract(MSOSmartContractAbi, SmartContractAddress);
             return MSOStartContract;
         }
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error Report: issue on connect smart contract
+         * Send Error Report: issue on connect smart contract
          * data : smart_contract, config.is_mainnet, 
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue on connect smart contract", 
+            { smart_contract, is_mainnet: config.is_mainnet, errorNote: error.toString(), error }
+        )
+
     }
 }
 
@@ -220,8 +249,13 @@ exports.p4lSignDetails = async (policyId, value, durPlan) => {
         return sign;
     } catch (error) {
         /**
-         * TODO: Send Error Report - Issue while sign p4l message
+         * Send Error Report - Issue while sign p4l message
          * */
+         await helpers.addErrorReport(
+            "issue", 
+            "Issue while sign p4l message", 
+            { errorNote: error.toString(), error }
+        )
         console.log("ERROR ", error);
     }
     return false;
@@ -239,9 +273,15 @@ exports.msoSignDetails = async (policyId, priceInUSD, period, conciergePrice) =>
         const sign = web3Connect.eth.accounts.sign(ethers.utils.keccak256(message), config.signature_private_key);
         return sign;
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error Report - Issue while sign mso details
+         * Send Error Report - Issue while sign mso details
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue while sign mso details", 
+            { errorNote: error.toString(), error }
+        )
     }
     return false;
 }
@@ -413,11 +453,15 @@ exports.getAbiOfSmartContract = async (contract_address, chain_id) => {
         }
 
     } catch (error) {
+        console.log("Err", error);
         /**
-         * TODO: Send Error Report
-         * Message : Issue while getting api from contract address
-         * chain_id, contract_address, error.toString(), error
+         * Send Error Report
          */
+        await helpers.addErrorReport(
+            "issue", 
+            "Issue while getting api from contract address", 
+            { chain_id, contract_address, errorNote: error.toString(), error }
+        )
         response = { status: false, data: error };
     }
     return response
