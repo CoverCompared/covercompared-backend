@@ -81,7 +81,6 @@ apiRoutes.post('/user/policies-device-insurance/:id', logsHistory, authVerify, p
 apiRoutes.post('/user/policies-device-insurance/:id/confirm-payment', logsHistory, authVerify, policiesController.loadDeviceInsurancePolicy, policiesController.deviceConfirmPayment);
 
 apiRoutes.post('/user/policies-smart-contract', logsHistory, authVerify, policiesController.storeSmartContract);
-apiRoutes.post('/user/policies-smart-contract/:id', logsHistory, authVerify, policiesController.loadSmartContract, policiesController.storeSmartContract);
 apiRoutes.post('/user/policies-smart-contract/:id/confirm-payment', logsHistory, authVerify, policiesController.loadSmartContract, policiesController.smartContractConfirmPayment);
 
 apiRoutes.post('/user/policies/:id/add-review', logsHistory, authVerify, policiesController.policyReview);
