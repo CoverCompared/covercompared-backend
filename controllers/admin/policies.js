@@ -70,10 +70,19 @@ exports.index = async (req, res) => {
                 as: 'user'
             }
         });
+        aggregate.push({
+            $lookup: {
+                from: Payments.collection.collectionName,
+                localField: "payment_id",
+                foreignField: "_id",
+                as: 'payment'
+            }
+        });
         aggregate.push({ $unwind: { path: "$user" } });
         aggregate.push({
             $project: {
                 "txn_hash": 1, "product_type": 1, "status": 1, "payment_status": 1, "payment_hash": 1, "wallet_address": 1,
+                "payment": 1,
                 "total_amount": 1, "user_id": 1,
                 "currency": 1,
                 "createdAt": 1,
@@ -84,6 +93,8 @@ exports.index = async (req, res) => {
                 "MSOPolicy.MSOMembers.last_name" : 1,
                 "MSOPolicy.MSOMembers.user_type" : 1,
                 "DeviceInsurance.first_name" : 1,
+                "SmartContract" : 1,
+                "CryptoExchange" : 1,
                 "DeviceInsurance.last_name" : 1
             }
         });
@@ -112,8 +123,17 @@ exports.index = async (req, res) => {
                     value.user.first_name = value.DeviceInsurance ? _.get(value, "DeviceInsurance.first_name", "") : _.get(value, "user.first_name", "") ;
                     value.user.last_name = value.DeviceInsurance ? _.get(value, "DeviceInsurance.last_name", "") : _.get(value, "user.last_name", "") ;
                 }
+
+                if(value.payment && Array.isArray(value.payment) && value.payment.length){
+                    value.transaction_link = utils.getTransactionLink(value.payment[0], value);
+                    value.network_name = utils.getNetworkDetails(value.payment[0], value);
+                }
+
                 delete value.DeviceInsurance;
                 delete value.MSOPolicy;
+                delete value.SmartContract;
+                delete value.CryptoExchange;
+                
                 return value;
             })
         }
