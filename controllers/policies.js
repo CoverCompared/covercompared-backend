@@ -105,17 +105,38 @@ exports.storeMso = async (req, res, next) => {
     let oldPolicy = req.policy ? Object.assign({}, req.policy) : false;
 
     let policy = req.policy ? req.policy : new Policies();
+
+    if (
+      oldPolicy && 
+      policy.status == constant.PolicyStatus.active
+    ) {
+      /**
+       * Error Report
+       * Check if old policy and policy status is active
+       */
+      await helpers.addErrorReport(
+        "issue",
+        "Policy is already active therefor trying to update poilicy details",
+        { policy_id: policy._id, request_body: req.body }
+      )
+
+      return res.status(200).send(
+        utils.apiResponse(false, "Policy is already active therefor trying to update poilicy details.", { _id: policy._id, txn_hash: policy.txn_hash })
+      );
+
+    }
+
     policy.user_id = req.user._id;
     policy.product_type = constant.ProductTypes.mso_policy;
-    if (oldPolicy) {
-      policy.status = constant.PolicyStatus.pending;
-      policy.StatusHistory.push({
-        status: policy.status,
-        updated_at: new Date(moment()),
-        updated_by: req.user._id,
-      });
-      policy.payment_status = constant.PolicyPaymentStatus.unpaid;
-    }
+
+    policy.status = constant.PolicyStatus.pending;
+    policy.StatusHistory.push({
+      status: policy.status,
+      updated_at: new Date(moment()),
+      updated_by: req.user._id,
+    });
+    policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+
     policy.currency = "USD";
     policy.amount = req.body.amount;
     policy.discount_amount = req.body.discount_amount;
@@ -176,6 +197,8 @@ exports.storeMso = async (req, res, next) => {
         signature: signature.signature,
       })
     );
+
+
   } catch (error) {
     console.log("Err", error);
     return res
@@ -187,8 +210,8 @@ exports.storeMso = async (req, res, next) => {
 exports.loadMsoPolicy = async (req, res, next) => {
 
   // Check is valid id
-  if(!utils.isValidObjectID(req.params.id)){
-      return res
+  if (!utils.isValidObjectID(req.params.id)) {
+    return res
       .status(200)
       .send(utils.apiResponseMessage(false, "Policy not found."));
   }
@@ -267,8 +290,8 @@ exports.msoConfirmPayment = async (req, res, next) => {
      * Error Report
      */
     await helpers.addErrorReport(
-      "issue", 
-      "if req.body.paid_amount does not match with policy.total_amount", 
+      "issue",
+      "if req.body.paid_amount does not match with policy.total_amount",
       { policy_id: policy._id, ...req.body }
     )
 
@@ -420,17 +443,38 @@ exports.storeDeviceInsurance = async (req, res, next) => {
     let oldPolicy = req.policy ? Object.assign({}, req.policy) : false;
 
     let policy = req.policy ? req.policy : new Policies();
+
+    if (
+      oldPolicy && 
+      policy.status == constant.PolicyStatus.active
+    ) {
+      /**
+       * Error Report
+       * Check if old policy and policy status is active
+       */
+      await helpers.addErrorReport(
+        "issue",
+        "Policy is already active therefor trying to update poilicy details",
+        { policy_id: policy._id, request_body: req.body }
+      )
+
+      return res.status(200).send(
+        utils.apiResponse(false, "Policy is already active therefor trying to update poilicy details.", { _id: policy._id, txn_hash: policy.txn_hash })
+      );
+
+    }
+
     policy.user_id = req.user._id;
     policy.product_type = constant.ProductTypes.device_insurance;
-    if (oldPolicy) {
-      policy.status = constant.PolicyStatus.pending;
-      policy.StatusHistory.push({
-        status: policy.status,
-        updated_at: new Date(moment()),
-        updated_by: req.user._id,
-      });
-      policy.payment_status = constant.PolicyPaymentStatus.unpaid;
-    }
+
+    policy.status = constant.PolicyStatus.pending;
+    policy.StatusHistory.push({
+      status: policy.status,
+      updated_at: new Date(moment()),
+      updated_by: req.user._id,
+    });
+    policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+
     policy.currency = "USD";
     policy.amount = req.body.amount;
     policy.discount_amount = req.body.discount_amount;
@@ -576,7 +620,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
       policy = await Policies.findOne({ _id: policy._id });
       await policy.callP4LCreatePolicyRequest();
       p4l_res = _.get(policy, "DeviceInsurance.p4l_create_policy_requests", null);
-      p4l_res = (p4l_res && Array.isArray(p4l_res)) ?_.get(p4l_res, `${(p4l_res.length - 1)}.response_data`, null) : null;
+      p4l_res = (p4l_res && Array.isArray(p4l_res)) ? _.get(p4l_res, `${(p4l_res.length - 1)}.response_data`, null) : null;
       return res.status(200).send(
         utils.apiResponse(true, "Payment detail updated successfully.", {
           policy_id: policy._id,
@@ -591,9 +635,9 @@ exports.deviceConfirmPayment = async (req, res, next) => {
     /**
      * Error Report
      */
-     await helpers.addErrorReport(
-      "issue", 
-      "if req.body.paid_amount does not match with policy.total_amount", 
+    await helpers.addErrorReport(
+      "issue",
+      "if req.body.paid_amount does not match with policy.total_amount",
       { policy_id: policy._id, ...req.body }
     )
 
@@ -652,7 +696,7 @@ exports.deviceConfirmPayment = async (req, res, next) => {
     policy = await Policies.findOne({ _id: policy._id });
 
     p4l_res = _.get(policy, "DeviceInsurance.p4l_create_policy_requests", null);
-    p4l_res = (p4l_res && Array.isArray(p4l_res)) ?_.get(p4l_res, `${(p4l_res.length - 1)}.response_data`, null) : null;
+    p4l_res = (p4l_res && Array.isArray(p4l_res)) ? _.get(p4l_res, `${(p4l_res.length - 1)}.response_data`, null) : null;
 
     return res.status(200).send(
       utils.apiResponse(true, "Payment detail updated successfully.", {
@@ -873,7 +917,7 @@ exports.storeSmartContract = async (req, res, next) => {
       return;
     }
 
-    let policy = req.policy ? req.policy : new Policies();
+    let policy = new Policies();
     policy.user_id = req.user._id;
 
     if (constant.CryptoExchangeTypes.includes(req.body.type)) {
@@ -882,15 +926,14 @@ exports.storeSmartContract = async (req, res, next) => {
       policy.product_type = constant.ProductTypes.smart_contract;
     }
 
-    // if(req.policy){
-    //     policy.status = constant.PolicyStatus.pending;
-    //     policy.StatusHistory.push({
-    //         status: policy.status,
-    //         updated_at: new Date(moment()),
-    //         updated_by: req.user._id
-    //     });
-    //     policy.payment_status = constant.PolicyPaymentStatus.unpaid;
-    // }
+    policy.status = constant.PolicyStatus.pending;
+    policy.StatusHistory.push({
+        status: policy.status,
+        updated_at: new Date(moment()),
+        updated_by: req.user._id
+    });
+    policy.payment_status = constant.PolicyPaymentStatus.unpaid;
+
     policy.crypto_currency = req.body.crypto_currency;
     policy.crypto_amount = req.body.crypto_amount;
     if (constant.CryptoExchangeTypes.includes(req.body.type)) {
