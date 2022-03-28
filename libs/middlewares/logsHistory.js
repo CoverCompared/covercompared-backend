@@ -5,7 +5,7 @@ const _ = require('lodash');
 const config = require("../../config");
 
 module.exports = async (req, res, next) => {
-    if(config.is_mainnet){
+    if(config.is_mainnet && false){
 
         var oldWrite = res.write,
             oldEnd = res.end;

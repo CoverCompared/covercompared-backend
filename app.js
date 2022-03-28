@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
+
 const moment = require("moment");
 
 var express = require('express');
@@ -38,16 +39,6 @@ app.use(cookieParser());
 app.use('/api', express.static(path.join(__dirname, 'public')));
 
 var fs = require('fs')
-
-
-console.log = function(...d) {
-  fs.appendFile(path.join(__dirname, `uploads/logs/${moment().format("DD-MM-YYYY HH")}.txt`),   (moment().format("MM:ss ") + (Array.isArray(d) ? d.join(", ") : JSON.stringify(d)) + "\n"), () => {})
-  console.info(...d)
-};
-console.error = function(...d) {
-  fs.appendFile(path.join(__dirname, `uploads/logs/${moment().format("DD-MM-YYYY HH - ERROR")}.txt`),   (moment().format("MM:ss ") + (Array.isArray(d) ? d.join(", ") : JSON.stringify(d)) + "\n"), () => {})
-  console.info(...d)
-};
 
 
 module.exports = async () => {
