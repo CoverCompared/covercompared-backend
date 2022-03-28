@@ -56,7 +56,7 @@ module.exports = async () => {
   let con = await connect();
 
   /** Start Cron job */
-  await cron();
+  // await cron();
 
   var indexRouter = require('./routes/index');
   var apiRouter = require('./routes/api');
