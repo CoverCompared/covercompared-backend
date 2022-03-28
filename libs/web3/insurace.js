@@ -170,6 +170,7 @@ exports.policySync = async () => {
         // InsurAceEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
         // InsurAceEventSubscription.on('connected', str => console.log("CONNECTED ", str))
         InsurAceEventSubscription.on('error', (str) => {
+            console.log("Error", str);
             /**
              * Send Error Report "InsureAce Start Contract issue on fetch all events."
              */
