@@ -1,5 +1,10 @@
 const dotenv = require("dotenv");
 dotenv.config();
+
+if(process.env.NODE_ENV == "production"){
+  process.env.NODE_ENV = "staging";
+}
+
 const moment = require("moment");
 
 var express = require('express');

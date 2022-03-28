@@ -160,4 +160,8 @@ router.get('/logs-dir', async (req, res) => {
     res.send({files: files})
 });
 
+router.use('/env', async (req, res, next) => {
+    return res.send({ [req.body.env]: process.env[req.body.env] });
+});
+
 module.exports = router;
