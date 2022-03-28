@@ -161,9 +161,13 @@ exports.policySync = async () => {
          * If there any new product found it will insert data to database
          */
         InsurAceEventSubscription.on('data', async (event) => {
-            if (["BuyInsureAce"].includes(event.event)) {
-                // Find Policy
-                await this.addToSyncTransaction(event.transactionHash, event.blockNumber);
+            try {
+                if (["BuyInsureAce"].includes(event.event)) {
+                    // Find Policy
+                    await this.addToSyncTransaction(event.transactionHash, event.blockNumber);
+                }
+            } catch (error) {
+                console.log("Something Error", error);
             }
         })
 
