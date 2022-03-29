@@ -80,7 +80,6 @@ exports.coverList = async () => {
             let type = _.get(data, "type", "");
             let supportedChains = utils.convertSupportedChain(_.get(data, "supportedChains", []));
 
-            console.log(type, supportedChains.length);
             if (!supportedChains.length && type == "custodian") {
                 supportedChains = ["Ethereum"];
             }
