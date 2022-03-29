@@ -120,10 +120,10 @@ exports.addToSyncTransaction = async (transaction_hash, insurace_from_block) => 
         while (TransactionPromises.length > 0) {
             IsTransactionRunning = true;
             let promise = TransactionPromises[0];
-            // if (TransactionPromises.length == 1) {
+            if (TransactionPromises.length >= 1) {
                 console.log(`INSURACE  ::  Last Transaction Waiting..... ${promise.transaction_hash}`);
                 await (new Promise(resolve => setTimeout(resolve, config.sync_time_web3_smart_contract))) // 1 min
-            // }
+            }
             await this.syncTransaction(promise.transaction_hash);
             console.log("INSURACE  ::  Completed ", promise.transaction_hash);
             if (promise.insurace_from_block) {
@@ -161,15 +161,20 @@ exports.policySync = async () => {
          * If there any new product found it will insert data to database
          */
         InsurAceEventSubscription.on('data', async (event) => {
-            if (["BuyInsureAce"].includes(event.event)) {
-                // Find Policy
-                await this.addToSyncTransaction(event.transactionHash, event.blockNumber);
+            try {
+                if (["BuyInsureAce"].includes(event.event)) {
+                    // Find Policy
+                    await this.addToSyncTransaction(event.transactionHash, event.blockNumber);
+                }
+            } catch (error) {
+                console.log("Something Error", error);
             }
         })
 
         // InsurAceEventSubscription.on('changed', changed => console.log("CHANGED ", changed))
         // InsurAceEventSubscription.on('connected', str => console.log("CONNECTED ", str))
         InsurAceEventSubscription.on('error', (str) => {
+            console.log("Error", str);
             /**
              * Send Error Report "InsureAce Start Contract issue on fetch all events."
              */
