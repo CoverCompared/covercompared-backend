@@ -3,6 +3,7 @@ const web3Connect = require("./web3");
 var NodeCron = require('node-cron');
 const config = require("../config");
 const helpers = require("./helpers");
+const moment = require('moment');
 
 
 const web3Actions = async () => {
@@ -44,10 +45,19 @@ const cron = async () => {
     console.log("Check Smart Contract Address...");
 
     web3Actions();
+    
+    NodeCron.schedule('*/2 * * * * *', async () => {
+        console.log("TEST Working", moment().format("HH:mm:ss"));
+    })
+    
     console.log("Cron running a every 30 minute");
     NodeCron.schedule('*/30 * * * *', async () => {
-        web3Actions();
-        console.log('running a every 10 minute', `${moment().format('LTS')}`);
+        try {
+            web3Actions();
+            console.log('running a every 10 minute', `${moment().format('LTS')}`);
+        } catch (error) {
+            console.log("Cron ERROR", error);
+        }
     });
 
 }
