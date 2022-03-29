@@ -19,8 +19,8 @@ const web3Actions = async () => {
         if (!(process.env.INSURACE_SYNC_TRANSACTIONS_OFF && process.env.INSURACE_SYNC_TRANSACTIONS_OFF == "1")) await web3Connect.smart_contracts.insurace.policySync();
         else console.log("INSURACE  WEB3 Sync Is Off");
 
-        // if (!(process.env.NEXUS_SYNC_TRANSACTIONS_OFF && process.env.NEXUS_SYNC_TRANSACTIONS_OFF == "1")) await web3Connect.smart_contracts.nexus.policySync();
-        // else console.log("NEXUS  WEB3 Sync Is Off");
+        if (!(process.env.NEXUS_SYNC_TRANSACTIONS_OFF && process.env.NEXUS_SYNC_TRANSACTIONS_OFF == "1")) await web3Connect.smart_contracts.nexus.policySync();
+        else console.log("NEXUS  WEB3 Sync Is Off");
 
     } catch (error) {
         /**
