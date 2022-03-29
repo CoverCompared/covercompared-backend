@@ -53,8 +53,8 @@ const cron = async () => {
     console.log("Cron running a every 30 minute");
     NodeCron.schedule('*/30 * * * *', async () => {
         try {
-            web3Actions();
             console.log('running a every 10 minute', `${moment().format('LTS')}`);
+            web3Actions();
         } catch (error) {
             console.log("Cron ERROR", error);
         }
