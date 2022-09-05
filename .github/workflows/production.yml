@@ -1,43 +1,78 @@
-name: Production Workflow
+name: Production Pipeline
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-n-publish-image:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        run: |
-          docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
-          echo "$NODE_CONFIG" | base64 -d > .env
-          export BUILD_IMAGE=$DOCKER_REGISTRY/$REPO_SLUG:$SERVER_ENV-$GITHUB_RUN_NUMBER
-          docker build -t $BUILD_IMAGE .
-          docker push $BUILD_IMAGE
-          cat k8s.yaml | envsubst > k8s-real.yaml
-          cat k8s-real.yaml
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: me-south-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-n-push-image
         env:
-          SERVER_ENV: production
-          REPO_SLUG: covercompared-backend
-          K8S_NAMESPACE: polkacover
-          DOCKER_REGISTRY: audacelabs
-          NODE_CONFIG: ${{ secrets.NODE_CONFIG_PRODUCTION }}
-      - name: Remove Registry Login
-        uses: steebchen/kubectl@v2.0.0
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: prod-${{ github.run_number }}
+        shell: bash
+        run: |
+          docker build -t $ECR_REGISTRY/$GITHUB_REPOSITORY_NAME_PART_SLUG:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$GITHUB_REPOSITORY_NAME_PART_SLUG:$IMAGE_TAG
+          echo $ECR_REGISTRY/$GITHUB_REPOSITORY_NAME_PART_SLUG:$IMAGE_TAG > image-name.txt
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
         with:
-          config: ${{ secrets.KUBE_CONFIG }}
-          version: v1.18.17
-          command: delete secret --ignore-not-found=true docker-registry docker-registry-auth
-      - name: Create Registry Login
-        uses: steebchen/kubectl@v2.0.0
+          name: image-name
+          path: image-name.txt
+          retention-days: 1
+
+  writeback:
+    needs: build-n-publish-image
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          config: ${{ secrets.KUBE_CONFIG }}
-          version: v1.18.17
-          command: create secret docker-registry docker-registry-auth --docker-username=${{ secrets.REGISTRY_USERNAME }} --docker-password=${{ secrets.REGISTRY_PASSWORD }}
-      - name: Deploy
-        uses: steebchen/kubectl@v2.0.0
+          repository: audacelabs/kube-cluster-state
+          ref: master
+          ssh-key: ${{ secrets.GIT_WRITEBACK_SSH_KEY }}
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
         with:
-          config: ${{ secrets.KUBE_CONFIG }}
-          version: v1.18.17
-          command: apply -f k8s-real.yaml
+          name: image-name
+
+      - name: Checkout updated image
+        shell: bash
+        run: |
+          git config user.name "Git Writeback"
+          git config user.email git-writeback@audacelabs.com
+          export IMAGE_NAME=$(<image-name.txt)
+          rm image-name.txt
+          cd deploy/business-apps/kustomize/$GITHUB_REPOSITORY_OWNER_PART_SLUG/$GITHUB_REPOSITORY_NAME_PART_SLUG/prod
+          kustomize edit set image some-registry/some-repository=$IMAGE_NAME
+          git add .
+          git commit -m "Image updated '$GITHUB_REPOSITORY_NAME_PART | $GITHUB_REF_NAME | $GITHUB_RUN_NUMBER'"
+          git push
